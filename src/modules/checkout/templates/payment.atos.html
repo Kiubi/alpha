@@ -1,0 +1,86 @@
+<article class="post-article">
+  <header class="post-header">
+    <h1>Conditions préalables</h1>
+  </header>
+  <div class="post-content">
+    <p>
+      ATOS SIPS est la solution de paiement en ligne sécurisé proposée par les banques suivantes :
+      Société Générale - Sogénactif / Agora, Crédit Lyonnais - Sherlock, HSBC, CCF - Elysnet,
+      Crédit du Nord - Webaffaires, La Poste - Scellius, Crédit Agricole - e-Transactions, BNP Paribas - Merc@net.
+       Pour plus d'informations,
+      <a href="http://sips.worldline.com/fr-fr/accueil.html" target="_blank">rendez-vous sur le site officiel</a> ou prenez contact avec un établissement bancaire.
+    </p>
+    <p>
+      Afin de configurer correctement ce mode de paiement vous devez :
+    </p>
+    <ol>
+      <li>
+        Prendre contact avec un établissement bancaire afin d'obtenir l’ouverture d’un contrat monétique de Vente A Distance (VAD)
+        </li>
+        <li>
+          Une fois que vous avez eu confirmation du service technique de l'établissement bancaire que le TPE a été activé,
+          complétez le formulaire ci-dessous avec les informations fournis par l'établissement bancaire et activez le paiement
+        </li>
+      </ol>
+      <p>
+        <strong>Aucune autre intervention technique n’est nécessaire</strong>, si toutes les opérations ont été correctement effectuées,
+        ce mode de paiement sera alors actif sur le site. Une fois toutes ces opérations de configuration terminées,
+        <strong class="text-danger">il est indispensable d'effectuer au moins un paiement réel</strong> sur le site pour tester son bon fonctionnement.
+      </p>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Paramètres du mode de paiement</h1>
+    </header>
+    <div class="post-content">
+      <div class="form-group">
+        <label class="control-label" for="exmemple1">Intitulé du mode de paiement</label>
+        <input class="form-control" id="exmemple1" placeholder="Carte bancaire" type="text">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="">Utilisation</label>
+        <div class="radio-group">
+          <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+          <label for="affichage1" class="visible">Activé</label>
+          <input name="affichage" id="affichage0" value="option1" type="radio">
+          <label for="affichage0" class="not-visible">Désactivé</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label required" for="exmemple1">Certificat</label>
+        <p>
+          Fichier nommé <code>certif.fr.xxxxxxxxxxxxx</code>. Remplaçez les <code>x</code> par un numéro de marchand.
+          Le fichier et le numéro de marchand sont fournis par l'établissement bancaire.
+        </p>
+<input id="exampleInputFile" type="file">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="">Retour automatique au site après paiement</label>
+        <div class="radio-group">
+          <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+          <label for="affichage1" class="">Activé</label>
+          <input name="affichage" id="affichage0" value="option1" type="radio">
+          <label for="affichage0" class="">Désactivé</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label required" for="exmemple1">Message de confirmation</label>
+        <p>Le message de confirmation s'affiche à la fin de la procédure de commande, une fois le paiement validé.</p>
+        <textarea class="form-control" rows="5" placeholder=""></textarea>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <div class="save">
+    <div class="btn-toolbar" role="toolbar">
+      <a class="btn btn-cancel" href="/checkout/payments">Retour</a>
+      <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+    </div>
+  </div>
+
+  <footer class="footer"> </footer>

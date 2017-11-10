@@ -1,0 +1,65 @@
+<article class="post-article">
+	<div class="post-content">
+		<div class="row">
+			<form>
+			<% _(widget.settings).each(function(field, name){ %>
+
+				<% switch(field.ctl){ case 1: %>
+				<div class="col-xs-<%= (field.size && field.size == 'small') ? '6':'12'  %>">
+					<div class="form-group">
+						<label class="control-label" for="field_<%- name %>"><%- field.label %></label>
+						<input class="form-control" id="field_<%- name %>" name="<%- name %>" value="<%- field.value %>" placeholder="<%- field.desc %>" type="text">
+					</div>
+				</div>
+				<% break; case 2: %>
+				<div class="col-xs-6">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="field_<%- name %>"><%- field.label %></label>
+						<select class="form-control" id="field_<%- name %>" name="<%- name %>">
+							<% _(field.values).each(function(option){ %>
+							<option value="<%- field.type == 2 ? (option.value?'1':'0') : option.value %>" <%= (option.value == field.value) ? 'selected="selected"':''  %>><%- option.label %></option>
+							<% }) %>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-xs-offset-6"></div>
+				<% break; case 3: %>
+				<div class="col-xs-12">
+					<label class="control-label"><%- field.label %></label>
+					<div class="form-group">
+						<div class="radio-group">
+						<% _(field.values).each(function(input, i){ %>
+							<input name="<%- name %>" id="field_<%- name %>_<%- i %>" value="<%- field.type == 2 ? (input.value?'1':'0') : input.value %>" <%= (input.value == field.value) ? 'checked="checked"':''  %> type="radio">
+							<label for="field_<%- name %>_<%- i %>" class="visible"><%- input.label %></label>
+						<% }) %>
+						</div>
+					</div>
+				</div>
+				<% break; case 4: %>
+				<div class="col-xs-12">
+					<label class="control-label"><%- field.label %></label>
+					<div class="form-group">
+						<% _(field.values).each(function(input, i){ %>
+						<div class="checkbox-inline">
+							<input name="<%- name %>" id="field_<%- name %>_<%- i %>" value="<%- input.value %>" <%= _.contains(field.value, input.value) ? 'checked="checked"':''  %> type="checkbox">
+							<label for="field_<%- name %>_<%- i %>" class="visible"><%- input.label %></label>
+						</div>
+						<% }) %>
+					</div>
+				</div>
+				<% break; case 5: %>
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label" for="field_<%- name %>"><%- field.label %></label>
+						<textarea class="form-control" id="field_<%- name %>" name="<%- name %>" rows="5" placeholder="<%- field.desc %>"><%- field.value %></textarea>
+					</div>
+				</div>
+				<% break;} %>
+
+			<% }) %>
+			</form>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>

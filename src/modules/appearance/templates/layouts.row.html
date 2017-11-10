@@ -1,0 +1,39 @@
+<div class="media">
+	<div class="media-left">
+		<a href="/appearance/layouts/<%- page %>/<%- layout_id %>"><%= structure %></a>
+	</div>
+	<div class="media-body">
+		<h4><%- name %>
+			<% if(is_default) { %>
+			<span class="label label-default">Par défaut</span>
+			<% } else { %>
+			<span class="label label-variation">Variante</span>
+			<% } %>
+		</h4>
+		<p><span class="data-label">Service</span> <%- service %> <span class="data-label-breadcrumb"><%- page_title %></span><br>
+			<!-- <span class="data-label">Appliqué à</span> <a href="#"><%- usage_count %> pages</a><br> -->
+			<span class="data-label">Template</span> <%- model.name %><br>
+			<span class="data-label">Répertoire</span> <%- model.id %><br>
+		</p>
+
+		<div class="btn-toolbar pull-right" role="toolbar">
+
+		<% if (is_multi_layouts) { %>
+		<div class="btn-group" role="duplicate">
+			<a class="btn btn-bis" data-role="duplicate" href="#" role="button">Dupliquer</a>
+		</div>
+		<% } %>
+
+		<% if(is_default) { %>
+			<a class="btn btn-option" href="/appearance/layouts/<%- page %>/<%- layout_id %>" role="button">Modifier</a>
+		<% } else { %>
+			<div class="btn-group" role="edit"><a class="btn btn-option" href="/appearance/layouts/<%- page %>/<%- layout_id %>" role="button">Modifier</a>
+				<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a data-role="delete" href="#">Supprimer</a></li>
+				</ul>
+			</div>
+		<% } %>
+		</div>
+	</div>
+</div>

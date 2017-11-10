@@ -1,0 +1,107 @@
+<form>
+
+<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Gestion du stock</h1>
+	</header>
+	<section class="post-section">
+		<div class="row">
+			<div class="col-xs-6">
+				<div class="form-group has-feedback">
+					<label for="stockout_selling">Vente en cas de rupture de stock</label>
+					<select class="form-control" id="stockout_selling" name="stockout_selling">
+						<option value="1" <%= stockout_selling ? 'selected="selected"' : '' %>>Autoriser la vente du produit</option>
+						<option value="0" <%= !stockout_selling ? 'selected="selected"' : '' %>>Stopper la vente du produit</option>
+					</select>
+					<div class="form-control-feedback md-feedback md-select"></div>
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="form-group has-feedback">
+					<label for="decrement_stock">Retirer un produit du stock</label>
+					<select class="form-control" id="decrement_stock" name="decrement_stock">
+						<option value="at_payment" <%= decrement_stock == "at_payment" ? 'selected="selected"' : '' %>>Dès qu'il est commandé et payé</option>
+						<option value="never" <%= decrement_stock == "never" ? 'selected="selected"' : '' %>>Jamais</option>
+					</select>
+					<div class="form-control-feedback md-feedback md-select"></div>
+				</div>
+			</div>
+		</div>
+		<label class="control-label" for="exmemple1">Quantité avant rupture de stock</label>
+		<p>Vous pouvez indiquer une quantité minimale d'un produit qui doit rester en stock.
+			À la valeur indiquée et en dessous, le produit est considéré comme étant en rupture de stock.
+		</p>
+		<div class="row">
+			<div class="col-xs-3">
+				<div class="form-group">
+					<div class="input-group">
+						<span class="input-group-addon"></span><input class="form-control" name="stockout_threshold" value="<%- stockout_threshold %>"><span class="input-group-addon">produit(s)</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Numéros de commandes</h1>
+	</header>
+	<section class="post-section">
+		<p>Vous avez la possibilité de choisir la lettre qui préfixe les numéros des commandes passées sur votre site.
+			Si vous possédez plusieurs boutiques en ligne, vous pouvez ainsi plus facilement distinguer l’origine d'une commande.
+			Le préfixe par défaut est "C".
+		</p>
+		<label class="control-label" for="order_prefix">Préfixe des commandes</label>
+		<div class="row">
+			<div class="col-xs-3">
+				<div class="form-group has-feedback">
+					<select class="form-control" id="order_prefix" name="order_prefix">
+						<option value="A" <%= order_prefix == "A" ? 'selected="selected"' : '' %>>A</option>
+						<option value="B" <%= order_prefix == "B" ? 'selected="selected"' : '' %>>B</option>
+						<option value="C" <%= order_prefix == "C" ? 'selected="selected"' : '' %>>C</option>
+						<option value="D" <%= order_prefix == "D" ? 'selected="selected"' : '' %>>D</option>
+						<option value="E" <%= order_prefix == "E" ? 'selected="selected"' : '' %>>E</option>
+						<option value="F" <%= order_prefix == "F" ? 'selected="selected"' : '' %>>F</option>
+						<option value="G" <%= order_prefix == "G" ? 'selected="selected"' : '' %>>G</option>
+						<option value="H" <%= order_prefix == "H" ? 'selected="selected"' : '' %>>H</option>
+						<option value="I" <%= order_prefix == "I" ? 'selected="selected"' : '' %>>I</option>
+						<option value="J" <%= order_prefix == "J" ? 'selected="selected"' : '' %>>J</option>
+						<option value="K" <%= order_prefix == "K" ? 'selected="selected"' : '' %>>K</option>
+						<option value="L" <%= order_prefix == "L" ? 'selected="selected"' : '' %>>L</option>
+						<option value="M" <%= order_prefix == "M" ? 'selected="selected"' : '' %>>M</option>
+						<option value="N" <%= order_prefix == "N" ? 'selected="selected"' : '' %>>N</option>
+						<option value="O" <%= order_prefix == "O" ? 'selected="selected"' : '' %>>O</option>
+						<option value="P" <%= order_prefix == "P" ? 'selected="selected"' : '' %>>P</option>
+						<option value="Q" <%= order_prefix == "Q" ? 'selected="selected"' : '' %>>Q</option>
+						<option value="R" <%= order_prefix == "R" ? 'selected="selected"' : '' %>>R</option>
+						<option value="S" <%= order_prefix == "S" ? 'selected="selected"' : '' %>>S</option>
+						<option value="T" <%= order_prefix == "T" ? 'selected="selected"' : '' %>>T</option>
+						<option value="U" <%= order_prefix == "U" ? 'selected="selected"' : '' %>>U</option>
+						<option value="V" <%= order_prefix == "V" ? 'selected="selected"' : '' %>>V</option>
+						<option value="W" <%= order_prefix == "W" ? 'selected="selected"' : '' %>>W</option>
+						<option value="X" <%= order_prefix == "X" ? 'selected="selected"' : '' %>>X</option>
+						<option value="Y" <%= order_prefix == "Y" ? 'selected="selected"' : '' %>>Y</option>
+						<option value="Z" <%= order_prefix == "Z" ? 'selected="selected"' : '' %>>Z</option>
+					</select>
+					<div class="form-control-feedback md-feedback md-select"></div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+	<footer class="post-footer"></footer>
+</article>
+
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"> </footer>

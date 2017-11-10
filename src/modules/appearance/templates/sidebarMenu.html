@@ -1,0 +1,8 @@
+<% _(types).each(function(pages, service){ %>
+	<h2><%- service %></h2>
+	<ul class="nav nav-sidebar">
+		<% _(pages).each(function(page){ %>
+		<li><a href="/appearance/layouts/<%- page.page %>"><%- page.name %></a></li>
+		<% }) %>
+	</ul>
+<% }) %>

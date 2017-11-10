@@ -1,0 +1,139 @@
+<article class="post-article">
+  <header class="post-header">
+    <h1>Conditions préalables</h1>
+  </header>
+  <div class="post-content">
+    <p>
+      CM-CIC Monetico Paiement est la solution de paiement en ligne sécurisé proposée par les banques suivantes : Crédit Mutuel, OBC et Groupe CIC.
+      Pour plus d'informations,
+      <a href="https://www.cmcicpaiement.fr/fr/index.html" target="_blank">rendez-vous sur le site officiel</a> ou prenez contact avec un établissement bancaire.
+    </p>
+    <p>
+      Afin de configurer correctement ce mode de paiement vous devez :
+    </p>
+    <ol>
+      <li>
+        Prendre contact avec un établissement bancaire afin d'obtenir l’ouverture d’un contrat monétique de Vente A Distance (VAD)
+        </li>
+        <li>
+          Une fois le dossier d'adhésion fourni par l'établissement bancaire déposé,
+          contactez le service technique de l'établissement bancaire afin de configurer
+          le paramètre CGI2 avec les informations suivantes (ces informations restent
+          valables même si le nom de domaine du site change ultérieurement) :
+          <br/><br/>
+          URL CGI 2 :
+          <br/>
+          <strong><%- domain %>/TPEV/cm_cic/218cb8258770.html </strong>
+          <br/><br/>
+        </li>
+        <li>
+          Une fois que vous avez eu confirmation du service technique de l'établissement bancaire que la configuration a été effectuée,
+          complétez le formulaire ci-dessous avec les informations fournis par l'établissement bancaire et activez le paiement
+        </li>
+        <li>
+        <strong class="text-danger">Effectuez 1 paiement en mode TEST</strong>
+        </li>
+        <li>
+            Si le paiement en mode TEST s'est correctement déroulé :
+            <ul style="margin-bottom: 0;">
+            <li>la commande doit être présente dans <a href="/checkout">la gestion des commandes</a></li>
+            <li>vous avez reçu un email de l'établissement bancaire vous indiquant que le paiement a bien été effectué...</li>
+            <li>...MAIS vous n'avez été crédité/débité d'aucun montant</li>
+            <li><strong class="text-danger">passez le paiement en mode PRODUCTION</strong></li>
+
+
+        </ul>
+          </li>
+        <li>
+        Si le paiement en mode TEST ne s'est pas correctement déroulé :
+        <ul style="margin-bottom: 0;">
+        <li>vérifiez que vous avez correctement renseigné le fromulaire ci-dessous</li>
+        <li>vérifiez que l'email de l'établissement bancaire ne se trouve pas dans votre "boîte à spams"</li>
+        <li>contactez le service technique de l'établissement bancaire afin de vous assurer que tout a été activé correctement</li>
+        <li>répétez l'opération à partir du point 4</li>
+        </ul>
+        </li>
+      </ol>
+      <p>
+        <strong>Aucune autre intervention technique n’est nécessaire</strong>, si toutes les opérations ont été correctement effectuées,
+        ce mode de paiement sera alors actif sur le site. Une fois toutes ces opérations de configuration terminées,
+        <strong class="text-danger">il est indispensable d'effectuer au moins un paiement réel</strong> sur le site pour tester son bon fonctionnement.
+      </p>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Paramètres du mode de paiement</h1>
+    </header>
+    <div class="post-content">
+      <div class="form-group">
+        <label class="control-label" for="exmemple1">Intitulé du mode de paiement</label>
+        <input class="form-control" id="exmemple1" placeholder="Carte bancaire" type="text">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="">Utilisation</label>
+        <div class="radio-group">
+          <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+          <label for="affichage1" class="visible">Activé</label>
+          <input name="affichage" id="affichage0" value="option1" type="radio">
+          <label for="affichage0" class="not-visible">Désactivé</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group has-feedback">
+            <label class="control-label" for="exmemple3">Banque</label>
+            <select class="form-control" ic="exmemple3">
+              <option value="cm" selected="selected">Crédit Mutuel</option>
+              <option value="monetico">Monetico Paiement</option>
+              <option value="cic">Groupe CIC</option>
+              <option value="obc">OBC</option>
+            </select>
+            <div class="form-control-feedback md-feedback md-select"></div>
+          </div>
+        </div>
+</div>
+<div class="form-group">
+  <label class="control-label" for="">Mode</label>
+  <div class="radio-group">
+    <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+    <label for="affichage1" class="">TEST</label>
+    <input name="affichage" id="affichage0" value="option1" type="radio">
+    <label for="affichage0" class="">PRODUCTION</label>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="control-label required" for="exmemple1">Numéro de TPE</label>
+  <input class="form-control" id="exmemple1" placeholder="Numéro fourni par l'établissement bancaire" type="text">
+</div>
+
+<div class="form-group">
+  <label class="control-label required" for="exmemple1">Code société</label>
+  <input class="form-control" id="exmemple1" placeholder="Code fourni par l'établissement bancaire" type="text">
+</div>
+
+<div class="form-group">
+  <label class="control-label required" for="exmemple1">Clé</label>
+  <input class="form-control" id="exmemple1" placeholder="Une série de 40 chiffres et lettres fournis par l'établissement bancaire" type="text">
+</div>
+
+      <div class="form-group">
+        <label class="control-label required" for="exmemple1">Message de confirmation</label>
+        <p>Le message de confirmation s'affiche à la fin de la procédure de commande, une fois le paiement validé.</p>
+        <textarea class="form-control" rows="5" placeholder=""></textarea>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <div class="save">
+    <div class="btn-toolbar" role="toolbar">
+      <a class="btn btn-cancel" href="/checkout/payments">Retour</a>
+      <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+    </div>
+  </div>
+
+  <footer class="footer"> </footer>

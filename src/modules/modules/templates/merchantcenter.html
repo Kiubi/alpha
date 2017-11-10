@@ -1,0 +1,230 @@
+<form>
+
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Conditions préalables</h1>
+    </header>
+    <div class="post-content">
+      <p><a href="https://www.google.fr/retail/merchant-center/" target="_blank">Google Merchant Center</a>
+       permet d'importer des produits sur Google et les proposer dans Google Shopping ainsi que dans d'autres services Google.
+      </p>
+      <p>Afin de configurer correctement l'export vers Google Merchant Center, vous devez suivre la procédure suivante :</p>
+      <ol>
+        <li>Dans Google Merchant Center :
+          <ol>
+            <li><a href="https://www.google.fr/retail/merchant-center/" target="_blank">Ouvrez un compte</a> Google Merchant Center
+            </li>
+            <li>Terminez le processus d'ouverture de compte en validant l'adresse du site Internet pour en revendiquer
+              la propriété sur la page <em>Paramètres généraux</em> de Google Merchant center
+            </li>
+          </ol>
+        </li>
+        <li>Dans la console d'administration de Kiubi :
+          <ol>
+            <li>Il est recommandé d'activer l'<a href="/prefs/https">accès en HTTPS</a>, sans quoi le flux pourrait être refusé par Google Merchant Center</li>
+            <li>Dans le formulaire ci-dessous, choisissez les catégories de produits à exporter et activez le module</li>
+            <li>Attendez le lendemain matin que le flux journalier soit généré</li>
+            <li>Une fois le flux généré, un lien <em>Adresse du flux vers
+              Google Merchant Center</em> est disponible. Cliquez sur ce lien pour télécharger le flux.
+            </li>
+          </ol>
+        </li>
+        <li>Dans Google Merchant Center :
+          <ol>
+            <li>Allez dans <em>Flux de données</em> et cliquez sur le lien <em>Nouveau flux de données test</em>
+            </li>
+            <li>Indiquez le pays et un nom de flux (<code>flux_de_test.txt</code>, par exemple).
+              Enregistrez les modifications
+            </li>
+            <li>Cliquez sur le lien <em>Importation manuelle</em> en face du flux de test
+              et sélectionnez le flux précédement téléchargé. Cliquez sur <em>Importer et traiter ce fichier</em>
+            </li>
+            <li> Attendez que Google traite le flux (l'opération peut prendre plus d'une heure)
+            </li>
+            <li>Une fois l'opération terminée, vérifiez que le flux a été importé sans erreur.
+              Dans le cas contraire, cliquez sur <em>Afficher les erreurs</em>
+              et suivez les corrections proposées
+            </li>
+            <li>UNIQUEMENT si l'importation s'est faite sans aucune erreur,
+              créez un nouveau flux, mais pas de test cette fois
+            </li>
+            <li>Cliquez sur le lien <em>Créer un planning</em>. Importez le flux tous les jours à 6h.
+              Indiquez dans le champ URL du flux l'<em>adresse du flux vers Google Merchant Center</em>
+            </li>
+            <li>Cliquez sur le bouton <em>Planifier et récupérer</em>
+            </li>
+          </ol>
+        </li>
+      </ol>
+      <p>Aucune autre intervention n'est nécessaire, si toutes les opérations ont été correctement effectuées,
+        Google Merchant Center récupéra le flux de produits tous les jours.
+      </p>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Informations générales</h1>
+    </header>
+    <div class="post-content">
+      <div class="form-group">
+        <label class="control-label">Utilisation</label>
+        <div class="radio-group">
+          <input name="is_enabled" id="is_enabled1" value="1" type="radio">
+          <label for="is_enabled1" class="visible">Activé</label>
+          <input name="is_enabled" id="is_enabled0" value="0" type="radio" checked="checked">
+          <label for="is_enabled0" class="not-visible">Désactivé</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Adresse du flux vers Google Merchant Center</label>
+        <p class="form-control-static">L'adresse est disponible 24 heures après l'activation du module.</p>
+        <p class="form-control-static lead"><a href="http://maquettes.kiubi-web.com/exports/google_merchant/c01859b59afe.txt.gz">http://maquettes.kiubi-web.com/exports/google_merchant/c01859b59afe.txt.gz</a></p>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Catégories à inclure dans le flux</h1>
+    </header>
+    <div class="post-content post-list">
+      <p>
+        Sélectionner les catégories de produits du catalogue à inclure dans le flux vers Google Merchant Center.
+        Pour chaque catégorie, vous pouvez indiquer à quelle catégorie de Google Merchant Center elle correspond.
+        Utiliser le moteur de recherche pour trouver la catégorie la plus pertinente.</p>
+
+        <p>La correspondance est strictement obligatoire pour les produits de type vêtements, livres, médias (DVD, musique, ...) et jeux vidéo,
+        sous peine de voir Google pénaliser ou refuser les produits.
+        Elle reste fortement recommandée pour tous les autres types de produits.
+        Pour plus d'informations, <a href="https://support.google.com/merchants/answer/6324436?hl=fr&visit_id=1-636395331083356320-666099108&rd=1" target="_blank">consulter le centre d'aide Google Merchant Center</a>.
+        </p>
+        <div class="row">
+          <div class="col-xs-5"><label class="control-label" for="">Catégorie du catalogue</label>
+          </div>
+          <div class="col-xs-7"><label class="control-label" for="">Catégorie de Google Merchant Center</label>
+          </div>
+        </div>
+
+        <div class="list-item list-item-form">
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="form-group has-feedback">
+                <select class="form-control" ic="exmemple3">
+                  <option value="151" selected="selected">1 Kg acheté = 1 Kg offert</option>
+                  <option value="6">Amandes &amp; douceurs</option>
+                  <option value="7">Pains d'épices</option>
+                  <option value="12">Meringues à la française</option>
+                  <option value="47">Macarons fins</option>
+                  <option value="19">Macarons de Riquewihr</option>
+                  <option value="26">Gâteaux de Noël "Bredele"</option>
+                  <option value="20">Gâteaux d'Alsace</option>
+                  <option value="30">Chocolat &amp; Confiserie</option>
+                  <option value="32">Biscuits Sablés fins</option>
+                  <option value="33">Coffrets cadeaux et &lt;br /&gt;Boîtes...</option>
+                  <option value="212">Notre Sélection &lt;br /&gt; Fête des ...</option>
+                  <option value="382">Au pied du Sapin</option>
+                  <option value="392">Fleurs de Pâques</option>
+                  <option value="402">Fête des mères</option>
+                  <option value="412">Le goût du bonheur</option>
+                  <option value="422">Les Trésors de Noël</option>
+                </select>
+                <div class="form-control-feedback md-feedback md-select"></div>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="form-group has-feedback">
+                <input class="form-control" id="exmemple1" placeholder="Recherche sur Google Merchant Center" type="text"><span class="form-control-feedback md-feedback md-search"></span>
+              </div>
+            </div>
+            <div class="col-xs-1"><a href="#" class="md-icon md-delete pull-right"></a></div>
+          </div>
+        </div>
+        <div class="list-item list-item-form">
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="form-group has-feedback">
+                <select class="form-control" ic="exmemple3">
+                  <option value="151" selected="selected">1 Kg acheté = 1 Kg offert</option>
+                  <option value="6">Amandes &amp; douceurs</option>
+                  <option value="7">Pains d'épices</option>
+                  <option value="12">Meringues à la française</option>
+                  <option value="47">Macarons fins</option>
+                  <option value="19">Macarons de Riquewihr</option>
+                  <option value="26">Gâteaux de Noël "Bredele"</option>
+                  <option value="20">Gâteaux d'Alsace</option>
+                  <option value="30">Chocolat &amp; Confiserie</option>
+                  <option value="32">Biscuits Sablés fins</option>
+                  <option value="33">Coffrets cadeaux et &lt;br /&gt;Boîtes...</option>
+                  <option value="212">Notre Sélection &lt;br /&gt; Fête des ...</option>
+                  <option value="382">Au pied du Sapin</option>
+                  <option value="392">Fleurs de Pâques</option>
+                  <option value="402">Fête des mères</option>
+                  <option value="412">Le goût du bonheur</option>
+                  <option value="422">Les Trésors de Noël</option>
+                </select>
+                <div class="form-control-feedback md-feedback md-select"></div>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="form-group has-feedback">
+                <input class="form-control" id="exmemple1" placeholder="Recherche sur Google Merchant Center" type="text"><span class="form-control-feedback md-feedback md-search"></span>
+              </div>
+            </div>
+            <div class="col-xs-1"><a href="#" class="md-icon md-delete pull-right"></a></div>
+          </div>
+        </div>
+        <div class="list-item list-item-form">
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="form-group has-feedback">
+                <select class="form-control" ic="exmemple3">
+                  <option value="151" selected="selected">1 Kg acheté = 1 Kg offert</option>
+                  <option value="6">Amandes &amp; douceurs</option>
+                  <option value="7">Pains d'épices</option>
+                  <option value="12">Meringues à la française</option>
+                  <option value="47">Macarons fins</option>
+                  <option value="19">Macarons de Riquewihr</option>
+                  <option value="26">Gâteaux de Noël "Bredele"</option>
+                  <option value="20">Gâteaux d'Alsace</option>
+                  <option value="30">Chocolat &amp; Confiserie</option>
+                  <option value="32">Biscuits Sablés fins</option>
+                  <option value="33">Coffrets cadeaux et &lt;br /&gt;Boîtes...</option>
+                  <option value="212">Notre Sélection &lt;br /&gt; Fête des ...</option>
+                  <option value="382">Au pied du Sapin</option>
+                  <option value="392">Fleurs de Pâques</option>
+                  <option value="402">Fête des mères</option>
+                  <option value="412">Le goût du bonheur</option>
+                  <option value="422">Les Trésors de Noël</option>
+                </select>
+                <div class="form-control-feedback md-feedback md-select"></div>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="form-group has-feedback">
+                <input class="form-control" id="exmemple1" placeholder="Recherche sur Google Merchant Center" type="text"><span class="form-control-feedback md-feedback md-search"></span>
+              </div>
+            </div>
+            <div class="col-xs-1"><a href="#" class="md-icon md-delete pull-right"></a></div>
+          </div>
+        </div>
+        <div class="list-item no-hover"><a href="">Ajouter une catégorie</a></div>
+      </div>
+      <footer class="post-footer"></footer>
+    </article>
+
+  </form>
+
+  <div class="save">
+    <div class="btn-toolbar" role="toolbar">
+      <a class="btn btn-cancel" href="/modules">Retour</a>
+      <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+    </div>
+  </div>
+
+  <footer class="footer"> </footer>

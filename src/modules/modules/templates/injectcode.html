@@ -1,0 +1,37 @@
+<form>
+
+<div class="alert alert-warning" role="alert">
+  Vous pouvez insérer du code (html, js, css...) avant la balise <code>&lt;/head&gt;</code> et <code>&lt;/body&gt;</code>
+  qui sera <strong>utilisé par défaut</strong> pour toutes les pages du site Internet.
+  Vous pouvez également <strong>personnaliser ce code pour chaque page</strong>.
+</div>
+
+<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Code à injecter</h1>
+  </header>
+  <div class="post-content">
+    <div class="form-group">
+      <label class="control-label" for="js_head">Code avant <code>&lt;/head&gt;</code> par défaut</label>
+      <textarea class="form-control" rows="5" id="js_head" name="js_head" placeholder="Code utilisé par défaut avant la balise &lt;/head&gt; "><%- js_head %></textarea>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="js_body">Code avant <code>&lt;/body&gt;</code> par défaut</label>
+      <textarea class="form-control" rows="5" id="js_body" name="js_body" placeholder="Code utilisé par défaut avant la balise &lt;/body&gt; "><%- js_body %></textarea>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+</form>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <a class="btn btn-cancel" href="/modules">Retour</a>
+    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

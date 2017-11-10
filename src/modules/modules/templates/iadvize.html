@@ -1,0 +1,43 @@
+<form>
+  <div class="alert alert-warning" role="alert">
+    iAdvize est une solution de
+      chat commercial enrichie qui permet de répondre en direct aux visiteurs du site
+      et de les orienter vers la solution ou le produit qui répondra à leurs besoins.
+    Pour bénéficier de ses fonctionnalités, vous devez au préalable vous
+    <a href="https://www.iadvize.com/fr/?sp=113" target="_blank" >ouvrir un compte sur le site d'iAdvize</a>.
+  </div>
+
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Configuration de iAdvize</h1>
+    </header>
+    <div class="post-content">
+      <div class="form-group">
+        <label class="control-label required" for="UA">Numéro de compte</label>
+        <input id="UA" name="UA" class="form-control" value="" placeholder="">
+      </div>
+      <div class="form-group">
+        <label class="control-label">Utilisation</label>
+        <div class="radio-group">
+          <input name="is_enabled" id="is_enabled1" value="1" type="radio" checked="checked">
+          <label for="is_enabled1" class="visible">Activé</label>
+          <input name="is_enabled" id="is_enabled0" value="0" type="radio">
+          <label for="is_enabled0" class="not-visible">Désactivé</label>
+        </div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+</form>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <a class="btn btn-cancel" href="/modules">Retour</a>
+    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

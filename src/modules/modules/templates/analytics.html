@@ -1,0 +1,76 @@
+<form>
+
+  <div class="alert alert-warning" role="alert">
+    <a href="https://aide.kiubi.com/documentation/marketing-et-referencement/google-analytics.html" class="md-icon md-help pull-right" target="_blank"></a>
+    Google Analytics est <strong>le service d'analyse d'audience</strong> proposé par Google.
+    Pour bénéficier de ces fonctionnalités, vous devez vous
+    <a href="https://www.google.com/intl/fr_ALL/analytics/"  target="_blank">ouvrir un compte sur Google Analytics</a>.<br/><br/>
+    Google Analytics vous permettra également de <strong>suivre précisément l'activité de vente en ligne</strong>
+    si vous activez l'option "<em>Site Web de commerce électronique</em>" dans l'interface de Google Analytics.
+  </div>
+
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Configuration de Google Analytics</h1>
+    </header>
+    <div class="post-content">
+      <div class="form-group">
+        <label class="control-label required" for="UA">Numéro de compte</label>
+        <p>Ce numéro est contenu dans le fragment de code fourni pour Google Analytics à l'ouverture d'un compte.
+          Seul ce numéro, de la forme UA-XXXXX-X, doit être renseigné ci-dessous et non pas l'ensemble du fragment de code.</p>
+        <input id="UA" name="UA" class="form-control" value="<%- UA %>" placeholder="Numéro de la forme : UA-XXXXX-X">
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Utilisation</label>
+        <div class="radio-group">
+          <input name="is_enabled" id="is_enabled1" value="1" <%= is_enabled ? 'checked="checked"' : '' %> type="radio">
+          <label for="is_enabled1" class="visible">Activé</label>
+          <input name="is_enabled" id="is_enabled0" value="0" <%= !is_enabled ? 'checked="checked"' : '' %> type="radio">
+          <label for="is_enabled0" class="not-visible">Désactivé</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group has-feedback">
+            <label for="type" class="control-label">Type de Tracker</label>
+            <select class="form-control" id="type" name="type">
+              <option value="Universel" <%= type == "Universel" ? 'selected="selected"' : '' %>>Tracking universel (recommandé)</option>
+              <option value="Asynchrone" <%= type == "Asynchrone" ? 'selected="selected"' : '' %>>Tracking web asynchrone</option>
+              <option value="Synchrone" <%= type == "Synchrone" ? 'selected="selected"' : '' %>>Tracking web standard</option>
+            </select>
+            <div class="form-control-feedback md-feedback md-select"></div>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="form-group has-feedback">
+            <label for="target" class="control-label">Position du tracker</label>
+            <select class="form-control" id="target" name="target">
+              <option value="body" <%= target == "body" ? 'selected="selected"' : '' %>>Avant la balise &lt;/body&gt; (recommandé)</option>
+              <option value="head" <%= target == "head" ? 'selected="selected"' : '' %>>Avant la balise &lt;/head&gt;</option>
+            </select>
+            <div class="form-control-feedback md-feedback md-select"></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="options">Paramètres complémentaires</label>
+        <textarea class="form-control" rows="5" id="options" name="options"><%- options %></textarea>
+      </div>
+
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+</form>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <a class="btn btn-cancel" href="/modules">Retour</a>
+    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

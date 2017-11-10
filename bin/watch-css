@@ -1,0 +1,18 @@
+#!/bin/bash
+
+PATH=$(npm bin):$PATH
+
+dest=./dist
+
+if ! command -v watchify > /dev/null; then
+	echo "run \`npm install -g watchify\` first";
+	exit 0;
+fi
+if ! test -d "${dest}"; then
+	echo "run \`npm run build\` first";
+	exit 0;
+fi
+
+output="${dest}/assets/css/app.css";
+
+catw -v -w ./src/assets/css/*.css -o ${output}

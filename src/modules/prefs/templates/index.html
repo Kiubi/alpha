@@ -1,0 +1,243 @@
+<form>
+
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Informations générales</h1>
+    </header>
+    <div class="post-content">
+      <div class="form-group">
+        <label class="control-label required" for="UA">Nom du site Internet</label>
+        <p>
+          Donnez un nom explicite au site pour permettre son identification par Kiubi et par les Internautes.
+          Ce nom est mentionné dans de nombreux documents : factures, commandes, mentions légales, etc.
+        </p>
+        <input id="UA" name="UA" class="form-control" value="" placeholder="">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="exmemple1">Logo du site Internet</label>
+        <p>Le logo peut être utilisé dans tous les templates du site Internet, dans les emails, le bloc-marque et le détail des commandes.
+        </p>
+        <p><a href="#">Accéder à la médiathèque</a><a href="#" class="md-icon md-delete"></a></p>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Accès au site Internet</label>
+        <div class="radio">
+          <input name="is_enabled" id="is_enabled1" value="1" type="radio" checked="checked">
+          <label for="is_enabled1" class="visible">Le site est ouvert, ses pages sont publiquement accessibles</label>
+        </div>
+        <div class="radio">
+          <input name="is_enabled" id="is_enabled0" value="0" type="radio">
+          <label for="is_enabled0" class="not-visible">Le site est fermé, aucune page n'est accessible sauf pour les utilisateurs de la console d'administration</label>
+        </div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Services accessibles</h1>
+    </header>
+    <div class="post-content">
+      <p>
+        Vous pouvez activer ou désactiver l'accès aux différents services de Kiubi est fonction des besoins du site.
+        Un service désactivé ne sera accessible à personne : ni aux Internautes, ni aux utilisateurs de la console d'administration.
+      </p>
+      <div class="row">
+        <div class="col-xs-5">
+          <div class="form-group">
+            <label class="control-label">Vente en ligne</label>
+            <div class="radio-group">
+              <input name="is_enabled1" id="is_enabled11" value="1" type="radio" checked="checked">
+              <label for="is_enabled11" class="visible">Activée</label>
+              <input name="is_enabled1" id="is_enabled01" value="0" type="radio">
+              <label for="is_enabled01" class="not-visible">Désactivée</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Catalogue</label>
+            <div class="radio-group">
+              <input name="is_enabled2" id="is_enabled12" value="1" type="radio" checked="checked">
+              <label for="is_enabled12" class="visible">Activé</label>
+              <input name="is_enabled2" id="is_enabled02" value="0" type="radio">
+              <label for="is_enabled02" class="not-visible">Désactivé</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-5">
+          <div class="form-group">
+            <label class="control-label">Blog</label>
+            <div class="radio-group">
+              <input name="is_enabled3" id="is_enabled13" value="1" type="radio" checked="checked">
+              <label for="is_enabled13" class="visible">Activé</label>
+              <input name="is_enabled3" id="is_enabled03" value="0" type="radio">
+              <label for="is_enabled03" class="not-visible">Désactivé</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Page de contact</label>
+            <div class="radio-group">
+              <input name="is_enabled4" id="is_enabled14" value="1" type="radio" checked="checked">
+              <label for="is_enabled14" class="visible">Activée</label>
+              <input name="is_enabled4" id="is_enabled04" value="0" type="radio">
+              <label for="is_enabled04" class="not-visible">Désactivée</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Accès restreint</h1>
+    </header>
+    <div class="post-content">
+      <p>
+        Vous pouvez restreindre l'accès à l'ensemble du site, par exemple si ce dernier est encore en travaux,
+        en ajoutant une demande d'identification directement avant la page d'accueil.
+      </p>
+      <div class="form-group">
+        <label class="control-label" for="UA">Identifiant</label>
+        <input id="UA" name="UA" class="form-control" value="" placeholder="Si le mot de passe est renseigné, cet identifiant sera demandé pour accéder au site">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="UA">Mot de passe</label>
+        <input id="UA" name="UA" class="form-control" value="" placeholder="Si l'identifiant est renseigné, ce mot de passe sera demandé pour accéder au site">
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+  
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Bloc-marque</h1>
+    </header>
+    <div class="post-content">
+      <p>
+        Le bloc-marque représente l'identité du site Internet et est généralement affiché dans la zone d'entête de ce dernier.
+        Il est composé du nom de la marque ou de la société, de sa signature (ou slogan) ainsi que du logo.
+      </p>
+      <div class="form-group">
+        <label class="control-label" for="UA">Nom de la marque</label>
+        <input id="UA" name="UA" class="form-control" value="" placeholder="Le nom est généralement affichée dans la zone d'entête du site">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="UA">Signature de la marque</label>
+        <input id="UA" name="UA" class="form-control" value="" placeholder="La signature est généralement affichée en dessous du nom">
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+          <div class="form-group">
+            <label class="control-label">Afficher le nom</label>
+            <div class="radio-group">
+              <input name="is_enabled34" id="is_enabled134" value="1" type="radio" checked="checked">
+              <label for="is_enabled134" class="">Oui</label>
+              <input name="is_enabled34" id="is_enabled034" value="0" type="radio">
+              <label for="is_enabled034" class="">Non</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <div class="form-group">
+            <label class="control-label">Afficher la signature</label>
+            <div class="radio-group">
+              <input name="is_enabled35" id="is_enabled135" value="1" type="radio" checked="checked">
+              <label for="is_enabled135" class="">Oui</label>
+              <input name="is_enabled35" id="is_enabled035" value="0" type="radio">
+              <label for="is_enabled035" class="">Non</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <div class="form-group">
+            <label class="control-label">Afficher le logo</label>
+            <div class="radio-group">
+              <input name="is_enabled36" id="is_enabled136" value="1" type="radio" checked="checked">
+              <label for="is_enabled136" class="">Oui</label>
+              <input name="is_enabled36" id="is_enabled036" value="0" type="radio">
+              <label for="is_enabled036" class="">Non</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Fil d'Ariane</h1>
+    </header>
+    <div class="post-content post-list no-hover">
+      <p>
+        Le fil d'Ariane du blog et du catalogue peut être renommé et l'adresse du répertoire de base peut être personnalisée.
+        Une redirection 301 est alors mise en place automatiquement vers la nouvelle adresse.
+      </p>
+      <div class="row">
+        <div class="col-xs-3"><label class="control-label" for="exmemple1">Nom du service</label></div>
+        <div class="col-xs-8"><label class="control-label" for="exmemple1">Adresse du répertoire</label></div>
+      </div>
+      <div class="list-item list-item-form">
+        <div class="row">
+          <div class="col-xs-3">
+            <div class="form-group">
+              <input class="form-control" value="Blog" placeholder="Blog">
+            </div>
+          </div>
+          <div class="col-xs-9">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"><%- domain %>/</span>
+                <input class="form-control" value="blog" placeholder="blog">
+                <span class="input-group-addon" id="basic-addon2">/</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-item list-item-form">
+        <div class="row">
+          <div class="col-xs-3">
+            <div class="form-group">
+              <input class="form-control" value="Catalogue" placeholder="Catalogue">
+            </div>
+          </div>
+          <div class="col-xs-9">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"><%- domain %>/</span>
+                <input class="form-control" value="catalogue" placeholder="catalogue">
+                <span class="input-group-addon" id="basic-addon2">/</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Sitemap</h1>
+    </header>
+    <div class="post-content">
+      <p>Un sitemap est mis à jour automatiquement à l'adresse :
+        <a href="<%- domain %>/sitemap.xml" target="_blank"><%- domain %>/sitemap.xml</a>.</p>
+      </div>
+      <footer class="post-footer"></footer>
+    </article>
+
+  </form>
+
+  <div class="save">
+    <div class="btn-toolbar" role="toolbar">
+      <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+    </div>
+  </div>
+
+  <footer class="footer"> </footer>

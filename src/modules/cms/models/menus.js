@@ -1,0 +1,172 @@
+var Backbone = require('backbone');
+var _ = require('underscore');
+
+var Page = require('./page');
+
+var Pages = Backbone.Collection;
+
+module.exports = Backbone.Collection.extend({
+
+	url: 'sites/@site/cms/menus',
+
+	model: require('./menu'),
+	parse: function(response) {
+		this.meta = response.meta;
+
+		_.each(response.data, function(menu) {
+			var collection = [];
+			if (menu.pages) {
+				_.each(menu.pages, function(page) {
+					collection.push(new Page(page));
+				});
+			}
+			menu.pages = new Pages(collection);
+
+		});
+
+		return response.data;
+	},
+
+	selectPayloadFilter: null,
+
+	selectPayload: function() {
+
+		var collector = [];
+		var filter = this.selectPayloadFilter;
+
+		_.each(this.toJSON(), function(item) {
+
+			if (item.pages) {
+
+				var tree = {};
+
+				collector.push({
+					'value': '',
+					'label': item.name,
+					'is_group': true
+				});
+
+				var insertItem = {
+					'value': 'm' + item.menu_id,
+					'label': '--- aucune page ---',
+					'indent': 0
+				};
+				if (filter) {
+					insertItem = filter(insertItem, null);
+				}
+				if (insertItem !== false) collector.push(insertItem);
+
+				_.each(item.pages.toJSON(), function(page) {
+
+					var indent = 1;
+					if (page.page_parent_id > 0) {
+						indent = 1 + tree['p' + page.page_parent_id];
+					}
+
+					tree['p' + page.page_id] = indent;
+
+					var item = {
+						'value': page.page_id,
+						'label': page.name,
+						'indent': indent
+					};
+
+					if (filter) item = filter(item, page);
+					if (item !== false) collector.push(item);
+				});
+			} else {
+				collector.push({
+					'value': item.menu_id,
+					'label': item.name
+				});
+			}
+
+		});
+
+		return collector;
+	},
+
+	/**
+	 * Find a page in current collection
+	 * 
+	 * @param {int} page_id
+	 * @returns {Object}
+	 */
+	findPage: function(page_id) {
+		var collector = null;
+
+		_.each(this.toJSON(), function(item) {
+			if (item.pages && collector == null) {
+				_.each(item.pages.toJSON(), function(page) {
+					if (page.page_id == page_id) {
+						collector = page;
+					}
+				});
+			}
+		});
+
+		return collector;
+	},
+
+	/**
+	 * 
+	 * @returns {Array}
+	 */
+	childPages: function(menu_id, parent_id) {
+
+		var collector = [];
+
+		_.each(this.toJSON(), function(item) {
+			if (item.menu_id == menu_id && item.pages) {
+				_.each(item.pages.toJSON(), function(page) {
+					if (page.page_parent_id == parent_id && !page.is_home) {
+						collector.push(page);
+					}
+				});
+			}
+		});
+
+		return collector;
+	},
+
+	/**
+	 * Return a menu tree from the current collection
+	 * 
+	 * @params {int} menu_id
+	 * @return {Array}
+	 */
+	getMenuTree: function(menu_id) {
+
+		if (this.length == 0) {
+			return [];
+		}
+
+		var root = null;
+		this.each(function(menu) {
+			if (menu.get('menu_id') != menu_id) return;
+			var fastHash = {};
+			root = {
+				menu_id: menu.get('menu_id'),
+				model: null,
+				childs: []
+			};
+			menu.get('pages').each(function(page) {
+				var node = {
+					model: page,
+					childs: []
+				};
+				fastHash['i' + page.get('page_id')] = node;
+				var parent;
+				if (page.get('page_parent_id') == 0) {
+					parent = root;
+				} else {
+					parent = fastHash['i' + page.get('page_parent_id')];
+				}
+				parent.childs.push(node);
+			});
+		});
+
+		return root;
+	}
+
+});

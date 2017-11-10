@@ -1,0 +1,8 @@
+<label class="control-label"><%- fieldLabel %></label>
+
+<p><a href="#" data-role="select"><%- file ? file.name : 'Accéder à la médiathèque' %></a>
+<% if(file) { %>
+<a href="#" data-role="clear" class="md-icon md-delete"></a></p>
+<% } %>
+
+<input type="hidden" name="<%- fieldname %>" value="<%- value %>">

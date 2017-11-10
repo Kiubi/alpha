@@ -1,0 +1,879 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-10">
+
+		<div id="spy1" style="height:35px; margin-top:-35px;"></div>
+
+		<article class="post-article">
+			<header class="post-header">
+				<h1>Informations générales</h1>
+			</header>
+			<div class="post-content">
+				<div class="form-group">
+					<label class="control-label required" for="exmemple1">Intitulé du produit</label>
+					<input class="form-control" id="exmemple1" placeholder="Intitulé du produit tel qu'il apparaîtra dans le catalogue" type="text">
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<div class="form-group has-feedback">
+							<label class="control-label" for="exmemple3">Produit vedette</label>
+							<select class="form-control" ic="exmemple3">
+								<option selected="selected">Aucune mise en avant</option>
+								<option>Produit mis en avant</option>
+							</select>
+							<div class="form-control-feedback md-feedback md-select"></div>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group has-feedback">
+							<label class="control-label" for="exmemple2">Date de disponibilité</label>
+							<input class="form-control" id="exmemple2" placeholder="jj/mm/aaaa à hh:mm" type="text">
+							<span class="form-control-feedback md-feedback md-date"></span>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label class="control-label" for="">Affichage</label>
+							<div class="radio-group">
+								<input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+								<label for="affichage1" class="visible">Visible</label>
+								<input name="affichage" id="affichage0" value="option1" type="radio">
+								<label for="affichage0" class="not-visible">Masqué</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="post-footer"></footer>
+		</article>
+
+		<div id="spy2" class="spacer-spy"></div>
+
+		<article class="post-article">
+			<header class="post-header">
+				<h1>Organisation</h1>
+			</header>
+			<div class="post-content">
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group has-feedback">
+							<label class="control-label" for="exmemple3">Catégorie principale</label>
+							<div class="dropdown">
+								<input class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="exmemple1" placeholder="Rechercher une catégorie" type="text"><span class="form-control-feedback md-feedback md-search"></span>
+								<ul class="dropdown-menu item-search">
+									<li><a href="#">Pains d'épices</a></li>
+									<li><a href="#">Meringues à la française</a></li>
+									<li><a href="#">Macarons fins</a></li>
+									<li><a href="#">Gâteaux de Noël "Bredele"</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="#">Ajouter une catégorie <span class="md-icon md-add-outline"></span></a></li>
+								</ul>
+							</div>
+							<!--
+							<select class="form-control" ic="exmemple3">
+							<option value="151" selected="selected">1 Kg acheté = 1 Kg offert</option>
+							<option value="6">Amandes &amp; douceurs</option>
+							<option value="7">Pains d'épices</option>
+							<option value="12">Meringues à la française</option>
+							<option value="47">Macarons fins</option>
+							<option value="19">Macarons de Riquewihr</option>
+							<option value="26">Gâteaux de Noël "Bredele"</option>
+							<option value="20">Gâteaux d'Alsace</option>
+							<option value="30">Chocolat &amp; Confiserie</option>
+							<option value="32">Biscuits Sablés fins</option>
+							<option value="33">Coffrets cadeaux et &lt;br /&gt;Boîtes...</option>
+							<option value="42">Saint Valentin</option>
+							<option value="44">Collection de Pâques 2011</option>
+							<option value="46">Cadeaux Fête des Mères 2011</option>
+							<option value="50">Fête des Grands-mères</option>
+							<option value="61">Cadeaux Fête des Pères</option>
+							<option value="101">Boîtes décorées vides</option>
+							<option value="111">Desserts d'été 2011</option>
+							<option value="121">Nos Nouveautés fruitées</option>
+							<option value="131">En attendant Noël</option>
+							<option value="141">Prodigieusement Noël</option>
+							<option value="161">Notre Collection de Pâques 2012</option>
+							<option value="162">Notre Sélection Fête des Mères 2...</option>
+							<option value="172">Les Lillikougs</option>
+							<option value="182">Sélection de Noël 2012</option>
+							<option value="192">Moule à "Lamala"</option>
+							<option value="202">Notre Collection de Pâques 2013</option>
+							<option value="212">Notre Sélection &lt;br /&gt; Fête des ...</option>
+							<option value="222">Spectaculaire, Café &amp; Thé</option>
+							<option value="232">Un Noël aux saveurs d'étoiles...</option>
+							<option value="242">Notre "délicieux bestiaire" de P...</option>
+							<option value="252">Test</option>
+							<option value="262">Nos idées cadeaux Fête des Mères</option>
+							<option value="282">Les plus "chocolatés"</option>
+							<option value="292">Le meilleur de Noël</option>
+							<option value="302">Notre sélection de Pâques 2015</option>
+							<option value="312">Catégorie</option>
+							<option value="322">Secrets de printemps</option>
+							<option value="332">Sélection Fête des Mères</option>
+							<option value="342">Kougelhopf Spécial Apéritif</option>
+							<option value="352">Assortiments à classer</option>
+							<option value="362">Produits à arrêter</option>
+							<option value="9">Nos Assortiments de biscuits</option>
+							<option value="382">Au pied du Sapin</option>
+							<option value="392">Fleurs de Pâques</option>
+							<option value="402">Fête des mères</option>
+							<option value="412">Le goût du bonheur</option>
+							<option value="422">Les Trésors de Noël</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					-->
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="form-group has-feedback">
+					<a href="#" class="md-icon md-edit pull-right"></a>
+					<label class="control-label" for="exmemple3">Marque</label>
+					<select class="form-control" ic="exmemple3">
+						<option>&nbsp;</option>
+						<option selected="selected">Nike</option>
+						<optgroup label="----------------------------------------"></optgroup>
+						<option>Créer une nouvelle marque</option>
+					</select>
+					<div class="form-control-feedback md-feedback md-select"></div>
+				</div>
+				<div class="form-group has-feedback" style="display: none;">
+					<a href="#" class="md-icon md-edit pull-right"></a>
+					<label class="control-label" for="exmemple1">Marque</label>
+					<input class="form-control" id="exmemple1" placeholder="Nouvelle marque" type="text">
+					<span class="form-control-feedback md-feedback md-cancel"></span>
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="form-group has-feedback">
+					<label class="control-label" for="exmemple1">Catégories secondaires</label>
+					<div class="dropup">
+						<input class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="exmemple1" placeholder="Rechercher des catégories" type="text"><span class="form-control-feedback md-feedback md-search"></span>
+						<ul class="dropdown-menu item-search">
+							<li><a href="#">Pains d'épices</a></li>
+							<li><a href="#">Meringues à la française</a></li>
+							<li><a href="#">Macarons fins</a></li>
+							<li><a href="#">Gâteaux de Noël "Bredele"</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Ajouter une catégorie <span class="md-icon md-add-outline"></span></a></li>
+						</ul>
+					</div>
+					<span class="label label-tag label-list ">Le goût du bonheur<span class="md-icon md-close"></span></span>
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="form-group">
+					<label class="control-label" for="exmemple1">Tags</label>
+					<input class="form-control" id="exmemple1" placeholder="Nouveauté, Sans gluten, Promotion..." type="text">
+					<span class="label label-tag label-list ">Nouveauté<span class="md-icon md-close"></span></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<div id="spy3" class="spacer-spy"></div>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Détail du produit</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label class="control-label" for="exmemple1">Chapô</label>
+			<p>Le chapô sert de description courte au produit et s'affiche généralement à la place du contenu dans une liste de produit. </p>
+			<textarea class="form-control" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro"></textarea>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="exmemple1">Description</label>
+			<p>La description s'affiche généralement dans le détail d'un produit.</p>
+			<textarea class="form-control" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg"></textarea>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<div id="spy4" class="spacer-spy"></div>
+
+<article class="post-article">
+	<header class="post-header no-border">
+		<h1>Type de produit</h1>
+	</header>
+	<div class="post-content">
+		<div class="post-group">
+			<div class="form-group has-feedback">
+				<p>Le type de produit détermine l'apparence de la fiche produit et si des informations complémentaires peuvent y être ajoutées :</p>
+				<div class="row">
+					<div class="col-xs-6">
+						<select name="select" class="form-control" ic="exmemple3">
+							<option>Titres, texte</option>
+							<option selected="selected">Produit page simple</option>
+							<option>Produit simple</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="exmemple2">Titre</label>
+			<input class="form-control" id="exmemple2" placeholder="Placeholder du titre" type="text">
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="exmemple1">Sous-titre</label>
+			<input class="form-control" id="exmemple2" placeholder="Placeholder du sous-titre" type="text">
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="exmemple1">Image</label>
+			<p><a href="#">Accéder à la médiathèque</a><a href="#" class="md-icon md-delete"></a></p>
+		</div>
+		<label class="control-label" for="exmemple3">Liste déroulante</label>
+		<div class="row">
+			<div class="col-xs-5">
+				<div class="form-group has-feedback">
+					<select name="select2" class="form-control" ic="exmemple3">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+					<div class="form-control-feedback md-feedback md-select"></div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="exmemple1">Content</label>
+			<textarea name="textarea" rows="5" class="form-control" placeholder="Placeholder du contenu" data-role="wysiwyg"></textarea>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<div id="spy5" class="spacer-spy"></div>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Variantes</h1>
+	</header>
+	<div class="post-content post-list">
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-5">
+					<div class="media">
+						<div class="media-left">
+							<div class="media-object md-icon md-image img-default"></div>
+							<div class="media-object"><img alt="" src="http://pausegeek.fr/img/news/2016/10/the-lego-batman-movie-poster-001-2017.jpg" /></div>
+						</div>
+						<div class="media-left"> <a href="#" class="md-icon md-drag btn-drag"></a>
+						</div>
+						<div class="media-body">
+							<h4>Un intitulé d'un truc toto</h4>
+							Réf. : 1234567890
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-2">300,17€HT<br/>
+					359,00€TTC
+				</div>
+				<div class="col-xs-2"><span class="label label-stockout">Rupture</span></div>
+				<div class="col-xs-3">
+					<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="http://www.google.com" role="button">Détail</a>
+						<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a href="#">Dupliquer</a></li>
+							<li><a href="#">Supprimer</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-5">
+					<div class="media">
+						<div class="media-left">
+							<div class="media-object md-icon md-image img-default"></div>
+							<div class="media-object"><img alt="" src="http://pausegeek.fr/img/news/2016/10/the-lego-batman-movie-poster-001-2017.jpg" /></div>
+						</div>
+						<div class="media-left"> <a href="#" class="md-icon md-drag btn-drag"></a>
+						</div>
+						<div class="media-body">
+							<h4>Un intitulé d'un truc</h4>
+							Réf. : 1234567890
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-2">300,17€HT<br/>
+					359,00€TTC
+				</div>
+				<div class="col-xs-2"><span class="label label-stockin">15 en stock</span></div>
+				<div class="col-xs-3">
+					<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="http://www.google.com" role="button">Détail</a>
+						<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a href="#">Dupliquer</a></li>
+							<li><a href="#">Supprimer</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group has-feedback"><a href="#" class="md-icon md-edit pull-right"></a>
+						<label class="control-label" for="exmemple3">Intitulé de la variante</label>
+						<select class="form-control" ic="exmemple3">
+							<option selected="selected">Valeur de base</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<optgroup label="-----------------------------------------"></optgroup>
+							<option>Créer une nouvelle variante</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="exmemple1">Référence</label>
+						<input class="form-control" id="exmemple1" placeholder="" type="text">
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="exmemple1">Code-barre (EAN/ISBN)</label>
+						<input class="form-control" id="exmemple1" placeholder="8, 10, 12, 13 ou 14 chiffres" type="text">
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Prix HT</label>
+						<input class="form-control" id="exmemple2" placeholder="0,00" type="text">
+						<span class="form-control-feedback md-price"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Prix TTC</label>
+						<input class="form-control" id="exmemple2" placeholder="0,00" type="text">
+						<span class="form-control-feedback md-price"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple3">Taxe</label>
+						<select class="form-control" ic="exmemple3">
+							<option selected="selected">20,00%</option>
+							<option>5,50%</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Promotion HT</label>
+						<input class="form-control" id="exmemple2" placeholder="Pas de promotion" type="text">
+						<span class="form-control-feedback md-price"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Promotion TTC</label>
+						<input class="form-control" id="exmemple2" placeholder="Pas de promotion" type="text">
+						<span class="form-control-feedback md-price"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Date de fin</label>
+						<input class="form-control" id="exmemple2" placeholder="jj/mm/aaaa à hh:mm" type="text">
+						<span class="form-control-feedback md-feedback md-date"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Poids</label>
+						<input class="form-control" id="exmemple2" placeholder="0" type="text">
+						<span class="form-control-feedback md-weight"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple3">Etat</label>
+						<select class="form-control" ic="exmemple3">
+							<option selected="selected">Neuf</option>
+							<option>Occasion</option>
+							<option>Reconditionné</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Eco-participation incluse</label>
+						<input class="form-control" id="exmemple2" placeholder="Pas d'éco-participation" type="text">
+						<span class="form-control-feedback md-price"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple3">Stock</label>
+						<select class="form-control" ic="exmemple3">
+							<option selected="selected">Quantité limitée</option>
+							<option>Stock illimité</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="exmemple2">Ajouter au stock</label>
+						<input class="form-control" id="exmemple2" placeholder="+ pour ajouter ou - pour retirer" type="text">
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="exmemple1">Stock actuel</label>
+						<p class="form-control-static">12</p>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="exmemple1">Illustration</label><br/>
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-image active">
+						<input name="options" id="option1" autocomplete="off" checked="" type="radio">
+						<img alt="Un intitulé d'un truc" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTkxZDcxZGE3NiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1OTFkNzFkYTc2Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi40NTgzMzM5NjkxMTYyMTEiIHk9IjM2LjgiPjY0eDY0PC90ZXh0PjwvZz48L2c+PC9zdmc+">
+					</label>
+					<label class="btn btn-image">
+						<input name="options" id="option2" autocomplete="off" type="radio">
+						<img alt="Un intitulé d'un truc" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTkxZDcxZGE3NiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1OTFkNzFkYTc2Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi40NTgzMzM5NjkxMTYyMTEiIHk9IjM2LjgiPjY0eDY0PC90ZXh0PjwvZz48L2c+PC9zdmc+">
+					</label>
+					<label class="btn btn-image">
+						<input name="options" id="option3" autocomplete="off" type="radio">
+						<img alt="Un intitulé d'un truc" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTkxZDcxZGE3NiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1OTFkNzFkYTc2Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi40NTgzMzM5NjkxMTYyMTEiIHk9IjM2LjgiPjY0eDY0PC90ZXh0PjwvZz48L2c+PC9zdmc+">
+					</label>
+				</div>
+			</div>
+			<div class="btn-toolbar" role="toolbar">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-cancel">Annuler</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-action">Enregistrer</button>
+				</div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-5">
+					<div class="media">
+						<div class="media-left">
+							<div class="media-object md-icon md-image img-default"></div>
+							<div class="media-object"><img alt="" src="http://fr.web.img3.acsta.net/videothumbnails/16/11/04/16/27/220962.jpg" /></div>
+						</div>
+						<div class="media-left"> <a href="#" class="md-icon md-drag btn-drag"></a>
+						</div>
+						<div class="media-body">
+							<h4>Un intitulé d'un truc</h4>
+							Réf. : 1234567890
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-2">300,17€HT<br/>
+					359,00€TTC
+				</div>
+				<div class="col-xs-2"><span class="label label-stockin">Stock illimité</span></div>
+				<div class="col-xs-3">
+					<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="http://www.google.com" role="button">Détail</a>
+						<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a href="#">Dupliquer</a></li>
+							<li><a href="#">Supprimer</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="list-item no-hover"><a href="">Ajouter une variante</a></div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Variantes (pour un produit téléchargeable)</h1>
+	</header>
+	<div class="post-content post-list">
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-5">
+					<div class="media">
+						<div class="media-left">
+							<div class="media-object md-icon md-image img-default"></div>
+							<div class="media-object"><img alt="" src="http://pausegeek.fr/img/news/2016/10/the-lego-batman-movie-poster-001-2017.jpg" /></div>
+						</div>
+						<div class="media-left"> <a href="#" class="md-icon md-drag btn-drag"></a>
+						</div>
+						<div class="media-body">
+							<h4>Un intitulé d'un truc toto</h4>
+							Réf. : 1234567890
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-2">300,17€HT<br/>
+					359,00€TTC
+				</div>
+				<div class="col-xs-2"><span class="label label-stockin">Téléchargeable</span></div>
+				<div class="col-xs-3">
+					<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="http://www.google.com" role="button">Détail</a>
+						<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a href="#">Dupliquer</a></li>
+							<li><a href="#">Supprimer</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-5">
+					<div class="media">
+						<div class="media-left">
+							<div class="media-object md-icon md-image img-default"></div>
+							<div class="media-object"><img alt="" src="http://pausegeek.fr/img/news/2016/10/the-lego-batman-movie-poster-001-2017.jpg" /></div>
+						</div>
+						<div class="media-left"> <a href="#" class="md-icon md-drag btn-drag"></a>
+						</div>
+						<div class="media-body">
+							<h4>Un intitulé d'un truc</h4>
+							Réf. : 1234567890
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-2">300,17€HT<br/>
+					359,00€TTC
+				</div>
+				<div class="col-xs-2"><span class="label label-stockin">Téléchargeable</span></div>
+				<div class="col-xs-3">
+					<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="http://www.google.com" role="button">Détail</a>
+						<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a href="#">Dupliquer</a></li>
+							<li><a href="#">Supprimer</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group has-feedback"><a href="#" class="md-icon md-edit pull-right"></a>
+						<label class="control-label" for="exmemple3">Intitulé de la variante</label>
+						<select class="form-control" ic="exmemple3">
+							<option selected="selected">Valeur de base</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<optgroup label="-----------------------------------------"></optgroup>
+							<option>Créer une nouvelle variante</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="exmemple1">Référence</label>
+						<input class="form-control" id="exmemple1" placeholder="" type="text">
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="exmemple1">Code-barre (EAN/ISBN)</label>
+						<input class="form-control" id="exmemple1" placeholder="8, 10, 12, 13 ou 14 chiffres" type="text">
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Prix HT</label>
+						<input class="form-control" id="exmemple2" placeholder="0,00" type="text">
+						<span class="form-control-feedback md-price"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Prix TTC</label>
+						<input class="form-control" id="exmemple2" placeholder="0,00" type="text">
+						<span class="form-control-feedback md-price"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple3">Taxe</label>
+						<select class="form-control" ic="exmemple3">
+							<option selected="selected">20,00%</option>
+							<option>5,50%</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Promotion HT</label>
+						<input class="form-control" id="exmemple2" placeholder="Pas de promotion" type="text">
+						<span class="form-control-feedback md-price"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Promotion TTC</label>
+						<input class="form-control" id="exmemple2" placeholder="Pas de promotion" type="text">
+						<span class="form-control-feedback md-price"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple2">Date de fin</label>
+						<input class="form-control" id="exmemple2" placeholder="jj/mm/aaaa à hh:mm" type="text">
+						<span class="form-control-feedback md-feedback md-date"></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label required" for="exmemple1">Fichier téléchargeable</label>
+				<p><a href="#">Accéder à la médiathèque</a><a href="#" class="md-icon md-delete" style="line-height: normal; height: auto;"></a></p>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="exmemple1">Illustration</label><br/>
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-image active">
+						<input name="options" id="option1" autocomplete="off" checked="" type="radio">
+						<img alt="Un intitulé d'un truc" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTkxZDcxZGE3NiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1OTFkNzFkYTc2Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi40NTgzMzM5NjkxMTYyMTEiIHk9IjM2LjgiPjY0eDY0PC90ZXh0PjwvZz48L2c+PC9zdmc+">
+					</label>
+					<label class="btn btn-image">
+						<input name="options" id="option2" autocomplete="off" type="radio">
+						<img alt="Un intitulé d'un truc" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTkxZDcxZGE3NiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1OTFkNzFkYTc2Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi40NTgzMzM5NjkxMTYyMTEiIHk9IjM2LjgiPjY0eDY0PC90ZXh0PjwvZz48L2c+PC9zdmc+">
+					</label>
+					<label class="btn btn-image">
+						<input name="options" id="option3" autocomplete="off" type="radio">
+						<img alt="Un intitulé d'un truc" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTkxZDcxZGE3NiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1OTFkNzFkYTc2Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi40NTgzMzM5NjkxMTYyMTEiIHk9IjM2LjgiPjY0eDY0PC90ZXh0PjwvZz48L2c+PC9zdmc+">
+					</label>
+				</div>
+			</div>
+			<div class="btn-toolbar" role="toolbar">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-cancel">Annuler</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-action">Enregistrer</button>
+				</div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-5">
+					<div class="media">
+						<div class="media-left">
+							<div class="media-object md-icon md-image img-default"></div>
+							<div class="media-object"><img alt="" src="http://fr.web.img3.acsta.net/videothumbnails/16/11/04/16/27/220962.jpg" /></div>
+						</div>
+						<div class="media-left"> <a href="#" class="md-icon md-drag btn-drag"></a>
+						</div>
+						<div class="media-body">
+							<h4>Un intitulé d'un truc</h4>
+							Réf. : 1234567890
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-2">300,17€HT<br/>
+					359,00€TTC
+				</div>
+				<div class="col-xs-2"><span class="label label-stockin">Téléchargeable</span></div>
+				<div class="col-xs-3">
+					<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="http://www.google.com" role="button">Détail</a>
+						<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a href="#">Dupliquer</a></li>
+							<li><a href="#">Supprimer</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="list-item no-hover"><a href="">Ajouter une variante</a></div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+
+<div id="spy6" class="spacer-spy"></div>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Illustrations</h1>
+	</header>
+	<div class="post-content post-picture">
+		<div class="btn-group" data-toggle="buttons">
+			<label class="btn btn-image active">
+				<input name="picture" id="picture1" autocomplete="off" checked="" type="radio">
+				<img alt="Un intitulé d'un truc" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTkxZDcxZGE3NiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1OTFkNzFkYTc2Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi40NTgzMzM5NjkxMTYyMTEiIHk9IjM2LjgiPjY0eDY0PC90ZXh0PjwvZz48L2c+PC9zdmc+"><a href="#" class="md-icon md-delete"></a>
+			</label>
+			<label class="btn btn-image">
+				<input name="picture" id="picture2" autocomplete="off" type="radio">
+				<img alt="Un intitulé d'un truc" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTkxZDcxZGE3NiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1OTFkNzFkYTc2Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi40NTgzMzM5NjkxMTYyMTEiIHk9IjM2LjgiPjY0eDY0PC90ZXh0PjwvZz48L2c+PC9zdmc+"><a href="#" class="md-icon md-delete"></a>
+			</label>
+			<label class="btn btn-image">
+				<input name="picture" id="picture3" autocomplete="off" type="radio">
+				<img alt="Un intitulé d'un truc" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTkxZDcxZGE3NiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1OTFkNzFkYTc2Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi40NTgzMzM5NjkxMTYyMTEiIHk9IjM2LjgiPjY0eDY0PC90ZXh0PjwvZz48L2c+PC9zdmc+"><a href="#" class="md-icon md-delete"></a>
+			</label>
+		</div>
+		<p><a href="">Ajouter une illustration</a></p>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<div id="spy7" style="height:35px; margin-top:-35px;"></div>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Logistique</h1>
+	</header>
+	<div class="post-content">
+		<label class="control-label" for="exmemple1">Frais de port additionels HT</label>
+		<p>Les frais de port additionels sont ajoutés au montant total HT des frais de port. La TVA appliquée est celle du tansporteur choisit au moment de la commande.</p>
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="form-group has-feedback">
+					<input class="form-control" id="exmemple1" placeholder="0,00" type="text">
+					<span class="form-control-feedback md-price"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<div id="spy8" class="spacer-spy"></div>
+
+<article class="post-article">
+	<header class="post-header no-border">
+		<h1>Mise en page</h1>
+	</header>
+	<div class="post-content post-group templates">
+		<div class="media">
+			<div class="media-left"><a href="#">
+				<table class="template">
+					<tbody><tr>
+						<td colspan="2"></td>
+					</tr>
+					<tr>
+						<td colspan="2"></td>
+					</tr>
+					<tr>
+						<td style="width: 33%;"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="2"></td>
+					</tr>
+				</tbody></table></a>
+			</div>
+			<div class="media-body">
+				<div class="form-group has-feedback">
+					<p>La mise en page choisie détermine l'apparence de cette page :</p>
+					<div class="row">
+						<div class="col-xs-6">
+							<select class="form-control" ic="exmemple3">
+								<option>Page de contenu</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+							</select>
+							<div class="form-control-feedback md-feedback md-select"></div>
+						</div>
+					</div>
+				</div>
+				<p><a href="#">Modifier cette mise en page</a><br><a href="#">Créer une nouvelle mise en page</a></p>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<div id="spy9" class="spacer-spy"></div>
+
+<article class="post-article">
+	<header class="post-header"><a href="#seo" class="pull-right" data-toggle="collapse"
+		aria-expanded="false" aria-controls="seo">Afficher plus d'options</a>
+		<h1>Référencement</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label class="control-label required" for="exmemple1">Adresse de la page</label>
+			<div class="input-group"> <span class="input-group-addon" id="basic-addon3">https://kv4.kiubi-web.com/catalogue/</span>
+				<input class="form-control" value="adresse-de-la-page">
+				<span class="input-group-addon" id="basic-addon2">.html</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="checkbox">
+				<input id="checkbox1" value="" type="checkbox">
+				<label for="checkbox1">Créer une redirection vers la nouvelle adresse</label>
+			</div>
+		</div>
+		<div class="form-group"><span class="letter-counter">123</span>
+			<label class="control-label" for="exmemple2">Titre de la page</label>
+			<input class="form-control" id="exmemple2" placeholder="Contenu de la balise &lt;title&gt; qui remplacera celle définie par défaut" type="text">
+		</div>
+		<div class="form-group"><span class="letter-counter">123</span>
+			<label class="control-label" for="exmemple1">Description de la page</label>
+			<textarea class="form-control" rows="5" placeholder="Contenu de la balise &lt;meta description&gt; qui remplacera celle définie par défaut"></textarea>
+		</div>
+		<div class="collapse" id="seo">
+			<div class="form-group"><span class="letter-counter">123</span>
+				<label class="control-label" for="exmemple1">Mots clés de la page</label>
+				<textarea class="form-control" rows="5" placeholder="Contenu de la balise &lt;meta keywords&gt; qui remplacera celle définie par défaut"></textarea>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="exmemple1">Code avant <code>&lt;/head&gt;</code></label>
+				<textarea class="form-control" rows="5" placeholder="Code placé avant la balise &lt;/head&gt; qui remplacera celui défini par défaut"></textarea>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="exmemple1">Code avant <code>&lt;/body&gt;</code></label>
+				<textarea class="form-control" rows="5" placeholder="Code placé avant la balise &lt;/body&gt; qui remplacera celui défini par défaut"></textarea>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+</div>
+<div class="col-xs-0 col-sm-2">
+
+	<ul class="nav affix nav-spy" id="nav-spy">
+		<li class="active"><a href="#spy1">Infos générales</a></li>
+		<li><a href="#spy2">Organisation</a></li>
+		<li><a href="#spy3">Détail</a></li>
+		<li><a href="#spy4">Type</a></li>
+		<li><a href="#spy5">Variantes</a></li>
+		<li><a href="#spy6">Illustrations</a></li>
+		<li><a href="#spy7">Logistique</a></li>
+		<li><a href="#spy8">Mise en page</a></li>
+		<li><a href="#spy9">Référencement</a></li>
+	</ul>
+</div>
+</div>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-delete">Supprimer</button>
+		<button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"> </footer>

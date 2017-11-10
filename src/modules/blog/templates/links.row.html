@@ -1,0 +1,61 @@
+<div class="row" data-role="list">
+	<div class="col-xs-9">
+		<div class="media">
+			<div class="media-left">
+				<div class="checkbox-inline">
+					<input id="selection_<%- link_id %>" name="selection" value="<%- link_id %>" type="checkbox">
+					<label for="selection_<%- link_id %>"></label>
+				</div>
+			</div>
+			<div class="media-left"><a href="#" class="md-icon md-drag btn-drag"></a></div>
+			<div class="media-body">
+				<h4><%- name %></h4>
+				<%- description %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-3">
+		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="#" role="button" data-role="action" data-action="edit">Détail</a>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<form style="display: none;" data-role="edit">
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+	<div class="form-group">
+		<label class="control-label">Affichage</label>
+		<div class="radio-group">
+			<input name="is_enabled" id="f_<%- link_id %>_is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %> >
+			<label for="f_<%- link_id %>_is_enabled1" class="visible">Visible</label>
+			<input name="is_enabled" id="f_<%- link_id %>_is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
+			<label for="f_<%- link_id %>_is_enabled0" class="not-visible">Masqué</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label required" for="f_<%- link_id %>_name">Intitulé</label>
+		<input class="form-control" id="f_<%- link_id %>_name" name="name" value="<%- name %>" placeholder="Intitulé du lien tel qu'il apparaitra dans le blogroll" type="text">
+	</div>
+	<div class="form-group">
+		<label class="control-label required" for="f_<%- link_id %>_url">Adresse</label>
+		<input class="form-control" id="f_<%- link_id %>_url" name="url" value="<%- url %>" placeholder="Adresse du lien sous la forme http://www.adresse-du-lien.com/" type="text">
+	</div>
+	<div class="form-group">
+		<label class="control-label" for="f_<%- link_id %>_description">Description</label>
+		<input class="form-control" id="f_<%- link_id %>_description" name="description" value="<%- description %>" placeholder="Description telle qu'elle apparaitra dans l'attribut title du lien" type="text">
+	</div>
+	<div class="btn-toolbar" role="toolbar">
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-cancel" data-role="action" data-action="cancel">Annuler</button>
+		</div>
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-action" data-role="action" data-action="save">Enregistrer</button>
+		</div>
+	</div>
+</form>
+

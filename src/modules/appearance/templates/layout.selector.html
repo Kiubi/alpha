@@ -1,0 +1,27 @@
+<header class="post-header no-border">
+	<h1>Mise en page</h1>
+</header>
+<div class="post-content post-group templates">
+	<div class="media">
+		<div class="media-left">
+			<a href="/appearance/layouts/<%- page %>/<%- layout_id %>"><%= structure %></a>
+		</div>
+		<div class="media-body">
+			<div class="form-group has-feedback">
+				<p>La mise en page choisie détermine l'apparence de cette page :</p>
+				<div class="row">
+					<div class="col-xs-7">
+						<select class="form-control">
+							<% _(layouts).each(function(item){%>
+							<option value="<%- item.layout_id %>" <%= layout_id == item.layout_id ? 'selected="selected"' : '' %>><%- item.name %></option>
+							<% }) %>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+			</div>
+			<p><a href="/appearance/layouts/<%- page %>/<%- layout_id %>">Modifier cette mise en page</a><br><a href="#" data-role="create">Créer une nouvelle mise en page</a></p>
+		</div>
+	</div>
+</div>
+<footer class="post-footer"></footer>

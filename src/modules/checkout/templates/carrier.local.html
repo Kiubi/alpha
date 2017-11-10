@@ -1,0 +1,454 @@
+<div class="alert alert-warning" role="alert">
+  <a href="https://aide.kiubi.com/documentation/Commandes/frais-de-port.html" class="md-icon md-help pull-right" target="_blank"></a>
+  Un transporteur local est défini pour une livraison à l'adresse indiquée dans une commande.
+  Les frais de port sont calculés en fonction du <strong>code postal</strong> de livraison, par <strong>tranche de poids</strong>.
+</div>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Informations générales</h1>
+  </header>
+  <div class="post-content">
+    <div class="form-group">
+      <label class="control-label required" for="exmemple1">Intitulé du transporteur</label>
+      <input class="form-control" id="exmemple1" placeholder="Intitulé du transporteur tel qu'il apparaîtra dans le choix de la livraison" type="text">
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <div class="form-group">
+          <label class="control-label" for="">Transporteur par défaut</label>
+          <div class="radio-group">
+            <input name="Transporteur" id="Transporteur1" value="option1" checked="checked" type="radio">
+            <label for="Transporteur1">Oui</label>
+            <input name="Transporteur" id="Transporteur0" value="option1" type="radio">
+            <label for="Transporteur0">Non</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="form-group">
+          <label class="control-label" for="">Utilisation</label>
+          <div class="radio-group">
+            <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+            <label for="affichage1" class="visible">Activé</label>
+            <input name="affichage" id="affichage0" value="option1" type="radio">
+            <label for="affichage0" class="not-visible">Désactivé</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Informations complémentaires</h1>
+  </header>
+  <div class="post-content">
+    <div class="form-group">
+      <label class="control-label" for="exmemple1">Description</label>
+      <textarea class="form-control" rows="5" placeholder="Description du transporteur telle qu'elle apparaîtra dans le choix de la livraison"></textarea>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="form-group">
+          <label class="control-label" for="exmemple1">Montant de commande minimum</label>
+          <div class="input-group"> <span class="input-group-addon" id="basic-addon3">Actif à partir de</span>
+            <input class="form-control" value="300,00" placeholder="1,00">
+            <span class="input-group-addon" id="basic-addon2">€TCC d'achat</span>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-xs-3">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Taxe</label>
+          <select class="form-control" ic="exmemple3">
+            <option selected="selected">20,00%</option>
+            <option>5,50%</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Plannification de la date de retrait</h1>
+  </header>
+  <div class="post-content">
+    <p>La plannification de la date de retrait permet de proposer le choix d'une date et d'une heure auxquelles les commandes peuvent être retirées en magasin.</p>
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Plannification</label>
+          <select class="form-control" ic="exmemple3">
+            <option>Désactivée</option>
+            <option>Activée sans plage horaire</option>
+            <option selected="selected">Activée avec plages horaires</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Lundi</label>
+          <select class="form-control" ic="exmemple3">
+            <option>Fermé</option>
+            <option selected="selected">Ouvert</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+      <div class="col-xs-9">
+        <div class="form-group">
+          <label class="control-label required" for="exmemple1">Heures d'ouverture</label>
+          <input class="form-control" id="exmemple1" placeholder="Jusqu'à 4 plages horaires (hh-hh) séparées par des virgules (ex. : 9-12,14-18)">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Mardi</label>
+          <select class="form-control" ic="exmemple3">
+            <option>Fermé</option>
+            <option selected="selected">Ouvert</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+      <div class="col-xs-9">
+        <div class="form-group">
+          <label class="control-label required" for="exmemple1">Heures d'ouverture</label>
+          <input class="form-control" id="exmemple1" placeholder="Jusqu'à 4 plages horaires (hh-hh) séparées par des virgules (ex. : 9-12,14-18)">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Mercredi</label>
+          <select class="form-control" ic="exmemple3">
+            <option>Fermé</option>
+            <option selected="selected">Ouvert</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+      <div class="col-xs-9">
+        <div class="form-group">
+          <label class="control-label required" for="exmemple1">Heures d'ouverture</label>
+          <input class="form-control" id="exmemple1" placeholder="Jusqu'à 4 plages horaires (hh-hh) séparées par des virgules (ex. : 9-12,14-18)">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Jeudi</label>
+          <select class="form-control" ic="exmemple3">
+            <option>Fermé</option>
+            <option selected="selected">Ouvert</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+      <div class="col-xs-9">
+        <div class="form-group">
+          <label class="control-label required" for="exmemple1">Heures d'ouverture</label>
+          <input class="form-control" id="exmemple1" placeholder="Jusqu'à 4 plages horaires (hh-hh) séparées par des virgules (ex. : 9-12,14-18)">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Vendredi</label>
+          <select class="form-control" ic="exmemple3">
+            <option>Fermé</option>
+            <option selected="selected">Ouvert</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+      <div class="col-xs-9">
+        <div class="form-group">
+          <label class="control-label required" for="exmemple1">Heures d'ouverture</label>
+          <input class="form-control" id="exmemple1" placeholder="Jusqu'à 4 plages horaires (hh-hh) séparées par des virgules (ex. : 9-12,14-18)">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Samedi</label>
+          <select class="form-control" ic="exmemple3">
+            <option>Fermé</option>
+            <option selected="selected">Ouvert</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+      <div class="col-xs-9">
+        <div class="form-group">
+          <label class="control-label required" for="exmemple1">Heures d'ouverture</label>
+          <input class="form-control" id="exmemple1" placeholder="Jusqu'à 4 plages horaires (hh-hh) séparées par des virgules (ex. : 9-12,14-18)">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Dimanche</label>
+          <select class="form-control" ic="exmemple3">
+            <option selected="selected">Fermé</option>
+            <option>Ouvert</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+      <div class="col-xs-9">
+        <div class="form-group">
+          <label class="control-label required" for="exmemple1">Heures d'ouverture</label>
+          <input class="form-control" id="exmemple1" placeholder="Jusqu'à 4 plages horaires (hh-hh) séparées par des virgules (ex. : 9-12,14-18)">
+        </div>
+      </div>
+    </div>
+    <hr style="margin-top: 0;">
+    <div class="form-group">
+      <label class="control-label " for="exmemple1">Jours de fermeture exceptionelle</label>
+      <input class="form-control" id="exmemple1" type="text" placeholder="Jusqu'à 20 dates (jj/mm/aaaa) séparées par des virgules (ex. : 01/05/2017,14/07/2017,01/08/2018)">
+    </div>
+    <label class="control-label" for="exmemple1">Heure de bascule</label>
+    <p>Heure à partir de laquelle les commandes ne peuvent être retirées que le prochain jour ouvré.</p>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group">
+          <input class="form-control" id="exmemple1" type="text" placeholder="ex. : 14h45">
+        </div>
+      </div>
+    </div>
+    <label class="control-label" for="exmemple1">Délai minimal avant de pouvoir retirer les commandes</label>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"></span>
+            <input class="form-control" name="stockout_threshold" placeholder="0">
+            <span class="input-group-addon">jour(s)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <label class="control-label" for="exmemple1">Délai maximal pour pouvoir retirer les commandes</label>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"></span>
+            <input class="form-control" name="stockout_threshold" placeholder="—">
+            <span class="input-group-addon">jour(s)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+  <header class="post-header no-border">
+    <h1>Zones livrables</h1>
+  </header>
+  <div class="post-content post-list">
+    <div class="post-group">
+      <div class="form-group has-feedback">
+        <a href="#" class="md-icon md-delete pull-right"></a>&nbsp;<a href="#" class="md-icon md-edit pull-right"></a>
+        <label class="control-label" for="exmemple3">Zone concernée</label>
+        <select class="form-control" ic="exmemple3">
+          <option value="73" selected="selected">68000, 67000</option>
+          <option value="73">65000, 65000, 65000, 65000, 65000, 65000, 65000,
+            65000, 65000, 65000, 65000, 65000, 65000, 65000, 65000, 65000, 65000, 65000, 65000, 65000 </option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+        <p style="margin-top: -15px"><a href="">Ajouter une zone</a></p>
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple1">Codes postaux</label>
+          <input class="form-control" id="exmemple1" placeholder="Rechercher et ajouter jusqu'à 20 codes postaux par zone">
+          <span class="form-control-feedback md-feedback md-search"></span>
+          <span class="label label-default label-list">68000<span class="md-icon md-close"></span></span>
+          <span class="label label-default label-list">67000<span class="md-icon md-close"></span></span>
+        </div>
+        <div class="btn-toolbar" role="toolbar">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-cancel">Annuler</button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-action">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label class="control-label" for="exmemple1">Francos de port pour la zone concernée</label>
+            <div class="input-group"> <span class="input-group-addon" id="basic-addon3">Gratuit à partir de</span>
+              <input class="form-control" value="300,00" placeholder="—">
+              <span class="input-group-addon" id="basic-addon2">€TCC d'achat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4"><label class="control-label" for="exmemple1">Tranche de poids</label></div>
+        <div class="col-xs-3"><label class="control-label" for="exmemple1">Frais du port</label></div>
+      </div>
+      <div class="list-item list-item-form">
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3">Jusqu'à</span>
+                <input class="form-control" value="300" placeholder="—">
+                <span class="input-group-addon" id="basic-addon2">Kg</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"></span>
+                <input class="form-control" value="10,00" placeholder="0,00">
+                <span class="input-group-addon" id="basic-addon2">€HT</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"></span>
+                <input class="form-control" value="12,00" placeholder="0,00">
+                <span class="input-group-addon" id="basic-addon2">€TTC</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-2"><a href="#" class="md-icon md-delete pull-right"></a></div>
+        </div>
+      </div>
+      <div class="list-item list-item-form">
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3">Jusqu'à</span>
+                <input class="form-control" value="300" placeholder="—">
+                <span class="input-group-addon" id="basic-addon2">Kg</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"></span>
+                <input class="form-control" value="10,00" placeholder="0,00">
+                <span class="input-group-addon" id="basic-addon2">€HT</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"></span>
+                <input class="form-control" value="12,00" placeholder="0,00">
+                <span class="input-group-addon" id="basic-addon2">€TTC</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-2"><a href="#" class="md-icon md-delete pull-right"></a></div>
+        </div>
+      </div>
+      <div class="list-item list-item-form">
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3">Jusqu'à</span>
+                <input class="form-control" value="300" placeholder="—">
+                <span class="input-group-addon" id="basic-addon2">Kg</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"></span>
+                <input class="form-control" value="10,00" placeholder="0,00">
+                <span class="input-group-addon" id="basic-addon2">€HT</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"></span>
+                <input class="form-control" value="12,00" placeholder="0,00">
+                <span class="input-group-addon" id="basic-addon2">€TTC</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-2"><a href="#" class="md-icon md-delete pull-right"></a></div>
+        </div>
+      </div>
+      <div class="list-item list-item-form">
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3">Jusqu'à</span>
+                <input class="form-control" value="" placeholder="—">
+                <span class="input-group-addon" id="basic-addon2">Kg</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"></span>
+                <input class="form-control" value="" placeholder="0,00">
+                <span class="input-group-addon" id="basic-addon2">€HT</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"></span>
+                <input class="form-control" value="" placeholder="0,00">
+                <span class="input-group-addon" id="basic-addon2">€TTC</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-2"><a href="#" class="md-icon md-delete pull-right"></a></div>
+        </div>
+      </div>
+      <div class="list-item no-hover"><a href="">Ajouter une tranche pour la zone concernée</a></div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <div class="save">
+    <div class="btn-toolbar" role="toolbar">
+      <button type="button" class="btn btn-delete">Supprimer</button>
+      <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+    </div>
+  </div>
+
+  <footer class="footer"> </footer>

@@ -1,0 +1,151 @@
+<form>
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Informations générales</h1>
+		</header>
+		<div class="post-content">
+			<div class="form-group">
+				<label class="control-label required" for="title">Intitulé du billet</label>
+				<input class="form-control" id="title" name="title" value="<%- title %>" placeholder="Intitulé du billet tel qu'il apparaîtra dans le blog" type="text">
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label">Catégorie</label>
+						<select data-role="categories"></select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="publication_date">Date de publication</label>
+						<input data-role="datetimepicker" class="form-control" id="publication_date" name="publication_date" value="<%- publication_date  %>" placeholder="jj/mm/aaaa à hh:mm" type="text">
+						<span class="form-control-feedback md-feedback md-date"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label">Affichage</label>
+						<div class="radio-group">
+							<input name="is_visible" id="affichage1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
+							<label for="affichage1" class="visible">Visible</label>
+							<input name="is_visible" id="affichage0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
+							<label for="affichage0" class="not-visible">Masqué</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Détail du billet</h1>
+		</header>
+		<div class="post-content">
+
+			<div data-role="image"></div>
+
+			<div class="form-group">
+				<label class="control-label" for="header">Chapô</label>
+				<p>Le chapô sert d'introduction au billet et s'affiche généralement à la place du contenu dans une liste de billets. </p>
+				<textarea class="form-control" id="header" name="header" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro"><%- header %></textarea>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="content">Contenu</label>  <p>Le contenu s'affiche généralement après le chapô dans le détail d'un billet.</p>
+				<textarea class="form-control" id="content" name="content" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg"><%- content %></textarea>
+			</div>
+			<div class="row">
+				<!--<div class="col-xs-6">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="author">Auteur</label>
+						<select class="form-control" id="author" name="author">
+							<option>Marc BEYER</option>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>-->
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label">Commentaires</label>
+						<div class="radio-group">
+							<input name="has_comments_open" id="commentaires1" value="true" <%= has_comments_open ? 'checked="checked"' : '' %> type="radio">
+							<label for="commentaires1">Ouverts</label>
+							<input name="has_comments_open" id="commentaires0" value="false" <%= !has_comments_open ? 'checked="checked"' : '' %> type="radio">
+							<label for="commentaires0">Fermés</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<article data-role="type"></article>
+
+	<article data-role="layout"></article>
+
+	<article class="post-article">
+		<header class="post-header"><a href="#seo" class="pull-right" data-toggle="collapse"
+			aria-expanded="false" aria-controls="seo">Afficher plus d'options</a>
+			<h1>Référencement</h1>
+		</header>
+		<div class="post-content">
+			<div class="form-group">
+				<label class="control-label required" for="slug">Adresse de la page</label>
+				<div class="input-group"> <span class="input-group-addon"><%- domain %>/blog/</span>
+					<input class="form-control" id="slug" name="slug" value="<%- slug %>">
+					<span class="input-group-addon">.html</span>
+				</div>
+			</div>
+			<!-- <div class="form-group">
+			<div class="checkbox">
+			<input id="checkbox1" value="" type="checkbox">
+			<label for="checkbox1">Créer une redirection vers la nouvelle adresse</label>
+		</div>
+	</div> -->
+	<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+		<label class="control-label" for="meta_title">Titre de la page</label>
+		<input class="form-control" id="meta_title" name="meta_title" value="<%- meta_title %>" placeholder="Contenu de la balise &lt;title&gt; qui remplacera celle définie par défaut" type="text">
+	</div>
+	<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+		<label class="control-label" for="meta_description">Description de la page</label>
+		<textarea class="form-control" id="meta_description" name="meta_description" rows="5" placeholder="Contenu de la balise &lt;meta description&gt; qui remplacera celle définie par défaut"><%- meta_description %></textarea>
+	</div>
+	<div class="collapse" id="seo">
+		<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+			<label class="control-label" for="meta_keywords">Mots clés de la page</label>
+			<textarea class="form-control" id="meta_keywords" name="meta_keywords" rows="5" placeholder="Contenu de la balise &lt;meta keywords&gt; qui remplacera celle définie par défaut"><%- meta_keywords %></textarea>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="js_head">Code avant <code>&lt;/head&gt;</code></label>
+			<textarea class="form-control" id="js_head" name="js_head" rows="5" placeholder="Code placé avant la balise &lt;/head&gt; qui remplacera celui défini par défaut"><%- js_head %></textarea>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="js_body">Code avant <code>&lt;/body&gt;</code></label>
+			<textarea class="form-control" id="js_body" name="js_body" rows="5" placeholder="Code placé avant la balise &lt;/body&gt; qui remplacera celui défini par défaut"><%- js_body %></textarea>
+		</div>
+	</div>
+</div>
+<footer class="post-footer"></footer>
+</article>
+
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"> </footer>

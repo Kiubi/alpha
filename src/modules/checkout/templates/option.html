@@ -1,0 +1,70 @@
+<article class="post-article">
+  <header class="post-header">
+    <h1>Informations générales</h1>
+  </header>
+  <div class="post-content">
+    <div class="form-group">
+      <label class="control-label" for="exmemple1">Type d'option</label>
+      <p>Option simple sous la forme d'une case à cocher pour y souscire dans le détail du panier.</p>
+      <p>Zone de texte permettant d'ajouter un commentaire si l'option est souscrite dans le détail du panier.</p>
+      <p>Liste de valeurs prédéterminées sélectionnables si l'option est souscrite dans le détail du panier.</p>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="">Affichage</label>
+      <div class="radio-group">
+        <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+        <label for="affichage1" class="visible">Visible</label>
+        <input name="affichage" id="affichage0" value="option1" type="radio">
+        <label for="affichage0" class="not-visible">Masqué</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label required" for="exmemple1">Intitulé de l'option</label>
+      <input class="form-control" id="exmemple1" placeholder="Intitulé de l'option tel qu'il apparaîtra dans le détail du panier" type="text">
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple2">Prix HT</label>
+          <input class="form-control" id="exmemple2" placeholder="Gratuit" type="text">
+          <span class="form-control-feedback md-price"></span>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple2">Prix TTC</label>
+          <input class="form-control" id="exmemple2" placeholder="Gratuit" type="text">
+          <span class="form-control-feedback md-price"></span>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Taxe</label>
+          <select class="form-control" ic="exmemple3">
+            <option selected="selected">20,00%</option>
+            <option>5,50%</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label required" for="exmemple1">Liste des valeurs</label>
+      <input class="form-control" id="exmemple1" placeholder="Valeur 1, Valeur 2, Valeur 3, ..." type="text">
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="exmemple1">Description</label>
+      <textarea class="form-control" rows="5" placeholder="Description de l'option telle qu'elle apparaîtra dans le détail du panier"></textarea>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <button type="button" class="btn btn-delete">Supprimer</button>
+    <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

@@ -1,0 +1,6 @@
+.DS_Store
+.Spotlight-V100
+.Trashes
+Thumbs.db
+node_modules
+src/locales/*/LC_MESSAGES/messages.json

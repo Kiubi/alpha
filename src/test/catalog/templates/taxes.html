@@ -1,0 +1,103 @@
+<article class="post-article">
+	<header class="post-header">
+		<h1>Paramètres généraux</h1>
+	</header>
+	<section class="post-section">
+		<div class="form-group">
+			<label for="">Affichage des prix</label>
+			<p>Vous pouvez choisir d'afficher les prix de votre catalogue en HT ou en TTC.
+				Les commandes seront toujours payées en TTC.
+			</p>
+			<div class="radio-group">
+				<input name="catalogue_prix_HT" id="catalogue_prix_HT1" value="option1" checked="checked" type="radio">
+				<label for="catalogue_prix_HT1">Prix HT</label>
+				<input name="catalogue_prix_HT" id="catalogue_prix_HT0" value="option1" type="radio">
+				<label for="catalogue_prix_HT0">Prix TTC</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="">Éxoneration de TVA</label>
+			<p>Selon la législation en vigueur et le statut de votre entreprise, vous pouvez être exonéré de TVA.
+				Si vous choisissez l'exonération de TVA, les nouveaux montants des prix seront calculés sur leur base HT actuelle.
+			</p>
+			<div class="radio-group">
+				<input name="catalogue_exo_TVA" id="catalogue_exo_TVA0" value="option1" checked="checked" type="radio">
+				<label for="catalogue_exo_TVA0">Sans éxoneration</label>
+				<input name="catalogue_exo_TVA" id="catalogue_exo_TVA1" value="option1" type="radio">
+				<label for="catalogue_exo_TVA1">Avec éxoneration</label>
+			</div>
+		</div>
+	</section>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Liste des taux de taxes</h1>
+	</header>
+	<section class="post-section post-list">
+		<div class="list-item list-item-form">
+			<div class="row">
+				<div class="col-xs-2">
+					<div class="form-group has-feedback">
+						<input class="form-control" id="exmemple2" placeholder="Taxe" value="">
+						<span class="form-control-feedback md-percent"></span>
+					</div>
+				</div>
+				<div class="col-xs-4"></div>
+				<div class="col-xs-5">
+					<div class="form-group has-feedback" style="width: 180px;">
+						<select name="select" class="form-control" ic="exmemple3">
+							<option>&nbsp;</option>
+							<option selected="selected">Taxe par défaut</option>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+				<div class="col-xs-1"><a href="#" class="md-icon md-delete pull-right"></a></div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-2">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="exmemple1">Montant</label>
+						<input class="form-control" id="exmemple2" placeholder="Taxe" value=""> <span class="form-control-feedback md-percent"></span>
+					</div>
+				</div>
+				<div class="col-xs-4"></div>
+				<div class="col-xs-5">
+					<div class="form-group">
+						<label class="control-label" for="exmemple1">Taxe par défaut</label>
+
+						<div class="radio-group">
+							<input name="taxe_defaut" id="taxe_defaut1" value="option1" checked="checked" type="radio">
+							<label for="taxe_defaut1">Oui</label>
+							<input name="taxe_defaut" id="taxe_defaut0" value="option1" type="radio">
+							<label for="taxe_defaut0">Non</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="btn-toolbar" role="toolbar">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-cancel">Annuler</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-action">Ajouter</button>
+				</div>
+			</div>
+		</div>
+		<div class="list-item no-hover"><a href="">Ajouter une taxe</a></div>
+	</section>
+	<footer class="post-footer"></footer>
+</article>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-cancel">Supprimer</button>
+		<button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"> </footer>

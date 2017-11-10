@@ -1,0 +1,30 @@
+<div class="row">
+	<div class="col-xs-6 col-md-7">
+		<div class="media">
+			<div class="media-left">
+				<div class="checkbox-inline">
+					<input id="cms_post_<%- post_id %>" name="selection" value="<%- post_id %>" type="checkbox">
+					<label for="cms_post_<%- post_id %>"></label>
+				</div>
+			</div>
+			<div class="media-left"><a href="#" class="md-icon md-drag btn-drag"></a></div>
+			<div class="media-body">
+				<h4><%- label %></h4>
+				<% if (is_visible) { %>
+				<%- type_name %>
+				<% } else { %>
+				<span class="text-danger">Masqué</span>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-3"><% if(group) { %><span class="label label-default"><%- group %><% } %></span></div>
+	<div class="col-xs-3 col-md-2">
+		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/cms/posts/<%- post_id %>" role="button">Détail</a>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

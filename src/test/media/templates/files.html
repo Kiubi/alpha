@@ -1,0 +1,363 @@
+<article data-role="list"></article>
+
+<a href="#" data-toggle="modal" data-target="#upload">Publier</a> <a href="#" data-toggle="modal" data-target="#mediatheque-list">Choisir</a>
+<a href="#" data-toggle="modal" data-target="#mediatheque-detail">Détail</a>
+
+<div class="modal fade mediatheque modal-right" id="upload" tabindex="-1" role="dialog" aria-labelledby="upload">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close md-icon md-cancel" data-dismiss="modal" aria-label="Close"></button>
+				<h4 class="modal-title" id="myModalLabel">Médiathèque</h4>
+			</div>
+			<div class="modal-body">
+				<article class="post-article">
+					<section class="post-section mediatheque-upload">
+						<div id="dropzone" class="dropzone">
+							<div class="md-icon md-upload"></div>
+							Glisser-déposer des fichiers ici
+						</div>
+						<div class="file-select">
+							<input id="exampleInputFile" type="file" style="display: none;">
+							<a type="button" class="btn btn-option" href="#" role="button">Sélectionner un fichier...</a>
+						</div>
+					</section>
+					<footer class="post-footer"></footer>
+				</article>
+				<article class="post-article">
+					<section class="post-section post-list list-media mediatheque-uploaded-file">
+						<div class="list-item">
+							<div class="row">
+								<div class="col-xs-8">
+									<div class="media">
+										<div class="media-left">
+											<div class="media-object md-icon md-image img-default"></div>
+											<div class="media-object"><img alt="" src="http://fr.web.img3.acsta.net/videothumbnails/16/11/04/16/27/220962.jpg" /></div>
+										</div>
+										<div class="media-body">
+											<h4>nom_du_fichier.jpg</h4>
+											81,88 Ko
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-3">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%"></div>
+									</div>
+								</div>
+								<div class="col-xs-1"><a href="#" class="md-icon md-delete pull-right"></a></div>
+							</div>
+						</div>
+						<div class="list-item">
+							<div class="row">
+								<div class="col-xs-8">
+									<div class="media">
+										<div class="media-left"><div class="md-icon md-file media-object file"></div><span class="file-type">pdf</span></div>
+										<div class="media-body">
+											<h4>nom_du_fichier.jpg</h4>
+											81,88 Ko
+											<div class="text-danger">Ce fichier est trop volumineux</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-3">
+								</div>
+								<div class="col-xs-1"><a href="#" class="md-icon md-delete pull-right"></a></div>
+							</div>
+						</div><div class="list-item">
+							<div class="row">
+								<div class="col-xs-8">
+									<div class="media">
+										<div class="media-left">
+											<div class="media-object md-icon md-image img-default"></div>
+											<div class="media-object"><img alt="" src="http://pausegeek.fr/img/news/2016/10/the-lego-batman-movie-poster-001-2017.jpg"></div>
+										</div>
+										<div class="media-body">
+											<h4>nom_du_fichier.jpg</h4>
+											81,88 Ko
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-3">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%"></div>
+									</div>
+								</div>
+								<div class="col-xs-1"><a href="#" class="md-icon md-delete pull-right"></a></div>
+							</div>
+						</div>
+					</section>
+					<footer class="post-footer"></footer>
+				</article>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" data-dismiss="modal">Fermer</button>
+				<button type="button" class="btn btn-action">Publier</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade mediatheque modal-right" id="mediatheque-list" tabindex="-1" role="dialog" aria-labelledby="mediatheque-list">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close md-icon md-cancel" data-dismiss="modal" aria-label="Close"></button>
+				<h4 class="modal-title" id="myModalLabel">Médiathèque</h4>
+			</div>
+			<div class="modal-body">
+				<article class="post-article">
+					<header class="post-header"><br />
+						<div class="form-inline">
+							<div class="form-group has-feedback">
+								<select class="form-control select-category" ic="exmemple3">
+									<option>Dossiers</option>
+									<option>liste des dossiers</option>
+								</select>
+								<div class="form-control-feedback md-feedback md-select"></div>
+							</div>
+							<div class="form-group has-feedback">
+								<input class="form-control" id="exmemple2" placeholder="Rechercher" type="text">
+								<span class="form-control-feedback md-feedback md-search"></span>
+							</div>
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-modal btn-icon md-icon md-sort dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+								<ul class="dropdown-menu">
+									<li class="active"><a href="#">Intitulé</a></li>
+									<li><a href="#">Modification</a></li>
+								</ul>
+							</div>
+						</div>
+					</header>
+					<section class="post-section post-list list-media">
+						<div class="list-item">
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="media">
+										<div class="media-left">
+											<div class="media-object md-icon md-image img-default"></div>
+											<div class="media-object"><img alt="" src="http://fr.web.img3.acsta.net/videothumbnails/16/11/04/16/27/220962.jpg" /></div>
+										</div>
+										<div class="media-body">
+											<h4>nom_du_fichier.jpg</h4>
+											81,88 Ko • 1200 x 1200px
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-4">Modifié le 2016-05-11 16:27:24<br>Par Marc BEYER</div>
+								<div class="col-xs-2">
+									<a type="button" class="btn btn-option pull-right" href="http://www.google.com" role="button">Choisir</a>
+								</div>
+							</div>
+						</div>
+						<div class="list-item">
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="media">
+										<div class="media-left">
+											<div class="md-icon md-file media-object file"></div>
+											<span class="file-type">pdf</span>
+										</div>
+										<div class="media-body">
+											<h4>nom_du_fichier.pdf</h4>
+											81,88 Ko • 1200 x 1200px
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-4">Modifié le 2016-05-11 16:27:24<br>Par Marc BEYER</div>
+								<div class="col-xs-2">
+									<a type="button" class="btn btn-option pull-right" href="http://www.google.com" role="button">Choisir</a>
+								</div>
+							</div>
+						</div>
+						<div class="list-item">
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="media">
+										<div class="media-left">
+											<div class="media-object md-icon md-image img-default"></div>
+											<div class="media-object"><img alt="" src="http://pausegeek.fr/img/news/2016/10/the-lego-batman-movie-poster-001-2017.jpg"></div>
+										</div>
+										<div class="media-body">
+											<h4>nom_du_fichier.jpg</h4>
+											81,88 Ko • 1200 x 1200px
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-4">Modifié le 2016-05-11 16:27:24<br>Par Marc BEYER</div>
+								<div class="col-xs-2">
+									<a type="button" class="btn btn-option pull-right" href="http://www.google.com" role="button">Choisir</a>
+								</div>
+							</div>
+						</div>
+					</section>
+					<footer class="post-footer"></footer>
+				</article>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" data-dismiss="modal">Fermer</button>
+				<button type="button" class="btn btn-action">Publier</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade mediatheque modal-right" id="mediatheque-detail" tabindex="-1" role="dialog" aria-labelledby="mediatheque-detail">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close md-icon md-cancel" data-dismiss="modal" aria-label="Close"></button>
+				<h4 class="modal-title" id="myModalLabel">Médiathèque</h4>
+			</div>
+			<div class="modal-body">
+				<article class="post-article">
+					<section class="post-section">
+						<div class="media media-detail">
+							<div class="media-left">
+								<div class="media-object">
+									<a class="preview" href="http://fr.web.img3.acsta.net/videothumbnails/16/11/04/16/27/220962.jpg" target="_blank">
+										<img alt="Un intitulé d'un truc"  src="http://fr.web.img3.acsta.net/videothumbnails/16/11/04/16/27/220962.jpg">
+									</a>
+								</div>
+								<p class="media-info">
+									nom_du_fichier.jpg<br />
+									81,88 Ko <br />
+									1200 x 1200px<br />
+									Modifié le 2016-05-11 16:27:24<br />
+									Par Marc BEYER
+								</p>
+							</div>
+							<div class="media-body">
+								<div class="row">
+									<div class="col-xs-7">
+										<div class="form-group has-feedback">
+											<label class="control-label" for="exmemple3">Type d'intégration</label>
+											<select class="form-control" ic="exmemple3">
+												<option selected="selected" value="1">Insérer l'image</option>
+												<option value="2">Insérer uniquement un lien vers l'image</option>
+											</select>
+											<div class="form-control-feedback md-feedback md-select"></div>
+										</div>
+										<div class="form-group has-feedback">
+											<label class="control-label" for="exmemple3">Taille de l'image</label>
+											<select class="form-control" ic="exmemple3">
+												<option value="normale" selected="selected">Taille d'origine : 1200 x 1200px</option>
+												<option value="g_vignette">Grande vignette : 960 x 960px</option>
+												<option value="vignette">Vignette : 420 x 420px</option>
+												<option value="g_miniature">Grande miniature : 240 x 240px</option>
+												<option value="miniature">Miniature : 120 x 120px</option>
+											</select>
+											<div class="form-control-feedback md-feedback md-select"></div>
+										</div>
+										<div class="form-group has-feedback">
+											<label class="control-label" for="exmemple3">Alignement</label>
+											<select class="form-control" ic="exmemple3">
+												<option value="">Par défaut</option>
+												<option value="">À gauche</option>
+												<option value="">À droite</option>
+												<option value="">Au milieu</option>
+											</select>
+											<div class="form-control-feedback md-feedback md-select"></div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="exmemple1">Texte alternatif</label>
+									<input class="form-control" id="exmemple1" placeholder="Contenu de l'attribut alt" type="text">
+								</div>
+								<label class="control-label" for="exmemple2">Marges</label>
+								<div class="row">
+									<div class="col-xs-3">
+										<div class="form-group has-feedback">
+											<input class="form-control" id="exmemple2" placeholder="Haut" type="text">
+											<span class="form-control-feedback md-pixel"></span>
+										</div>
+									</div>
+									<div class="col-xs-3">
+										<div class="form-group has-feedback">
+											<input class="form-control" id="exmemple2" placeholder="Droite" type="text">
+											<span class="form-control-feedback md-pixel"></span>
+										</div>
+									</div>
+									<div class="col-xs-3">
+										<div class="form-group has-feedback">
+											<input class="form-control" id="exmemple2" placeholder="Bas" type="text">
+											<span class="form-control-feedback md-pixel"></span>
+										</div>
+									</div>
+									<div class="col-xs-3">
+										<div class="form-group has-feedback">
+											<input class="form-control" id="exmemple2" placeholder="Gauche" type="text">
+											<span class="form-control-feedback md-pixel"></span>
+										</div>
+									</div>
+								</div>
+								<label class="control-label" for="exmemple2">Taille</label>
+								<div class="row">
+									<div class="col-xs-3">
+										<div class="form-group has-feedback">
+											<input class="form-control" id="exmemple2" placeholder="Largeur" type="text">
+											<span class="form-control-feedback md-pixel"></span>
+										</div>
+									</div>
+									<div class="col-xs-3">
+										<div class="form-group has-feedback">
+											<input class="form-control" id="exmemple2" placeholder="Hauteur" type="text">
+											<span class="form-control-feedback md-pixel"></span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="exmemple1">Titre</label>
+									<input class="form-control" id="exmemple1" placeholder="Contenu de l'attribut title" type="text">
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="exmemple1">Class</label>
+									<input class="form-control" id="exmemple1" placeholder="Contenu de l'attribut class" type="text">
+								</div>
+								<label class="control-label" for="exmemple1">Insérer également les informations sur fichier</label>
+								<div class="form-group">
+									<div class="checkbox-inline">
+										<input id="checkbox1" value="" type="checkbox">
+										<label for="checkbox1"> Nom</label>
+									</div>
+									<div class="checkbox-inline">
+										<input id="checkbox1" value="" type="checkbox">
+										<label for="checkbox1"> Fichier</label>
+									</div>
+									<div class="checkbox-inline">
+										<input id="checkbox1" value="" type="checkbox">
+										<label for="checkbox1">Poids</label>
+									</div>
+									<div class="checkbox-inline">
+										<input id="checkbox1" value="" type="checkbox">
+										<label for="checkbox1"> Fichier</label>
+									</div><br />
+									<div class="checkbox-inline">
+										<input id="checkbox1" value="" type="checkbox">
+										<label for="checkbox1">Taille</label>
+									</div>
+									<div class="checkbox-inline">
+										<input id="checkbox1" value="" type="checkbox">
+										<label for="checkbox1">Date de modification</label>
+									</div>
+									<div class="checkbox-inline">
+										<input id="checkbox1" value="" type="checkbox">
+										<label for="checkbox1">Auteur</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+					<footer class="post-footer"></footer>
+				</article>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" data-dismiss="modal">Retour</button>
+				<button type="button" class="btn btn-action">Publier</button>
+			</div>
+		</div>
+	</div>
+</div>

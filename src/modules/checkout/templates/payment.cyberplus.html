@@ -1,0 +1,139 @@
+<article class="post-article">
+  <header class="post-header">
+    <h1>Conditions préalables</h1>
+  </header>
+  <div class="post-content">
+    <p>
+      Systempay est la solution de paiement en ligne sécurisé proposé par la Banque Populaire.
+      Pour plus d'informations,
+      <a href="http://www.cyberpluspaiement.com" target="_blank">rendez-vous sur le site officiel</a> ou prenez contact avec un établissement bancaire.
+    </p>
+    <p>
+      Afin de configurer correctement ce mode de paiement vous devez :
+    </p>
+    <ol>
+      <li>
+        Prendre contact avec un établissement bancaire afin d'obtenir l’ouverture d’un contrat monétique de Vente A Distance (VAD)
+      </li>
+      <li>
+        Une fois le dossier d'adhésion fourni par l'établissement bancaire déposé,
+        récupérez l'identifiant boutique sur l'outil de gestion de caisse fourni par l'établissement bancaire
+      </li>
+      <li>
+        Récupérez le certificat de test sur l'outil de gestion de caisse
+      </li>
+      <li>
+        Renseignez l'URL serveur TEST, appelée aussi "URL silencieuse", dans l'outil de gestion de caisse :
+        <br/><br/>
+        URL serveur de la boutique en mode test :
+        <br/>
+        <strong><%- domain %>/TPEV/systempay/88169987e6fa.html</strong>
+        <br/><br/>
+      </li>
+      <li>
+        Renseignez l'URL de retour de la boutique en mode TEST dans l'outil de gestion de caisse :
+        <br/><br/>
+        URL de retour de la boutique en mode test :
+        <br/>
+        <strong><%- domain %>/ecommerce/validation.html</strong>
+        <br/><br/>
+      </li>
+      <li>
+        Completez le formulaire ci-dessous en indiquant l'identifiant boutique et le certificat de test et activez le paiement
+      </li>
+      <li>
+        <strong class="text-danger">Effectuez 1 paiement en mode TEST</strong>
+      </li>
+      <li>
+        Vérifiez que sans cliquer sur le bouton de retour à la boutique, Kiubi est bien renseigné sur la validation du paiement
+      </li>
+      <li>
+        Remplir le PV de recette et renvoyez le au getionnaire de votre solution de paiement
+      </li>
+      <li>
+        Dès validation du PV de recette, vous recevrez un email indiquant que le certificat de production a été généré
+      </li>
+      <li>
+        Renseignez l'URL serveur PRODUCTION, appelée aussi "URL silencieuse", dans l'outil de gestion de caisse :
+        <br/><br/>
+        URL serveur de la boutique :
+        <br/>
+        <strong><%- domain %>/TPEV/systempay/88169987e6fa.html</strong>
+        <br/><br/>
+      </li>
+      <li>
+        Renseignez l'URL de retour de la boutique en mode PRODUCTION dans l'outil de gestion de caisse :
+        <br/><br/>
+        URL de retour de la boutique :
+        <br/>
+        <strong><%- domain %>/ecommerce/validation.html</strong>
+        <br/><br/>
+      </li>
+      <li>
+        Configurez dans le module de paiement le champ "Mode" dans l'outil de gestion de caisse. Effacez TEST et saisir en majuscules PRODUCTION
+      </li>
+      <li>
+        <strong class="text-danger">Passez le paiement en mode PRODUCTION</strong> dans le formulaire ci-dessous
+      </li>
+    </ol>
+    <p>
+      <strong>Aucune autre intervention technique n’est nécessaire</strong>, si toutes les opérations ont été correctement effectuées,
+      ce mode de paiement sera alors actif sur le site. Une fois toutes ces opérations de configuration terminées,
+      <strong class="text-danger">il est indispensable d'effectuer au moins un paiement réel</strong> sur le site pour tester son bon fonctionnement.
+    </p>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Paramètres du mode de paiement</h1>
+  </header>
+  <div class="post-content">
+    <div class="form-group">
+      <label class="control-label" for="exmemple1">Intitulé du mode de paiement</label>
+      <input class="form-control" id="exmemple1" placeholder="Carte bancaire" type="text">
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="">Utilisation</label>
+      <div class="radio-group">
+        <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+        <label for="affichage1" class="visible">Activé</label>
+        <input name="affichage" id="affichage0" value="option1" type="radio">
+        <label for="affichage0" class="not-visible">Désactivé</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="">Mode</label>
+      <div class="radio-group">
+        <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+        <label for="affichage1" class="">TEST</label>
+        <input name="affichage" id="affichage0" value="option1" type="radio">
+        <label for="affichage0" class="">PRODUCTION</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label required" for="exmemple1">Identifiant boutique</label>
+      <input class="form-control" id="exmemple1" placeholder="8 chiffres fournis par l'établissement bancaire" type="text">
+    </div>
+    <div class="form-group">
+      <label class="control-label required" for="exmemple1">Certificat</label>
+      <input class="form-control" id="exmemple1" placeholder="Une série de 16 chiffres fournis par l'établissement bancaire" type="text">
+    </div>
+    <div class="form-group">
+      <label class="control-label required" for="exmemple1">Message de confirmation</label>
+      <p>Le message de confirmation s'affiche à la fin de la procédure de commande, une fois le paiement validé.</p>
+      <textarea class="form-control" rows="5" placeholder=""></textarea>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <a class="btn btn-cancel" href="/checkout/payments">Retour</a>
+    <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

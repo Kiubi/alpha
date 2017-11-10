@@ -1,0 +1,136 @@
+<div class="alert alert-warning" role="alert">
+  <a href="https://aide.kiubi.com/documentation/Gestion-du-compte/gerer-les-noms-de-domaine.html" class="md-icon md-help pull-right" target="_blank"></a>
+  Vous pouvez associer un ou plusieurs noms de domaine, préalablement acquis chez
+  <a href="https://fr.wikipedia.org/wiki/Registar" target="_blank">un dépositaire</a>,
+  à votre site Internet.
+
+  Une fois le dépôt effectué et validé, votre dépositaire vous permet de configurer la zone DNS de vos domaines.
+  <a href="https://aide.kiubi.com/documentation/Gestion-du-compte/gerer-les-noms-de-domaine.html" target="_blank">Définissez l'enregistrement A</a>
+  des domaines pour le serveur de Kiubi à l'adresse IP :
+
+  <p class="lead text-center" style="margin: 10px 0 20px 0;"><strong>91.121.40.8</strong></p>
+  Une fois validée, cette reconfiguration peut prendre de <strong>24 à 48 heures pour être opérationnelle</strong>.
+  Du côté de Kiubi, veillez à ajouter les noms de domaine que vous avez déposés et à en choisir un comme domaine principal.
+  <br/><br/>
+  Votre adresse d'origine <code><%- domain %></code> restera toujours valable et n'est pas modifiable.
+</div>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Liste des noms de domaine</h1>
+  </header>
+  <div class="post-content post-list">
+    <div class="list-item">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="media">
+            <div class="media-body">
+              <h4>maquettes.kiubi-web.com</h4>
+              HTTPS activé
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2"></div>
+        <div class="col-xs-4">
+          <button type="button" class="btn btn-option pull-right" role="button">Rendre principal</button>
+        </div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="media">
+            <div class="media-body">
+              <h4>maquettes.kiubi-web.com</h4>
+              HTTPS en cours d'activation
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2"></div>
+        <div class="col-xs-4">
+          <div class="btn-group pull-right" role="group"> <button type="button" class="btn btn-option" role="button">Rendre principal</button>
+            <button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="#">Supprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="media">
+            <div class="media-body">
+              <h4>13communication-demo-ecommerce.kiubi-web.com</h4>
+              HTTPS activé
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2"><span class="label label-enable">Principal</span></div>
+        <div class="col-xs-4">
+          <div class="btn-group pull-right" role="group"> <button type="button" class="btn btn-option disabled" role="button">Rendre principal</button>
+            <button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="media">
+            <div class="media-body">
+              <h4>maquettes.kiubi-web.com</h4>
+              HTTPS activé
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2"></div>
+        <div class="col-xs-4">
+          <div class="btn-group pull-right" role="group"> <button type="button" class="btn btn-option" role="button">Rendre principal</button>
+            <button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="#">Supprimer</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="form-group">
+        <label class="control-label required" for="exmemple1">Nom de domaine</label>
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon3">http://</span>
+          <input class="form-control" value="" placeholder="domaine.com">
+          <span class="input-group-addon" id="basic-addon2"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="">Ajouter le nom de domaine www.domaine.com ?</label>
+        <div class="radio-group">
+          <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+          <label for="affichage1" class="">Oui</label>
+          <input name="affichage" id="affichage0" value="option1" type="radio">
+          <label for="affichage0" class="">Non</label>
+        </div>
+      </div>
+      <p>
+        Si vous souhaitez utiliser des noms de domaine accentués,
+        vous devez les saisir sous le format <a href="https://www.punycoder.com/" target="_blank">Punycode</a> :
+        <br/><code>www.accentué.fr</code> doit être saisi <code>www.xn--accentu-hya.fr</code>
+      </p>
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-cancel">Annuler</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-action">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+    <div class="list-item no-hover"><a href="">Associer un nom de domaine</a></div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<footer class="footer"> </footer>

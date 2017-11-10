@@ -1,0 +1,37 @@
+<div class="sidebar-header">
+
+	<h1 title="<%- name %>"><%- name %></h1>
+
+	<a href="<%- domain %>" class="md-icon md-launch" target="_blank"></a>
+	<div class="dropdown toggle-site">
+		<a href="javascript:;" class="dropdown-toggle" id="toggle-site" role="button"
+		data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="<%- domain %>">
+		<span class="btn-content"><%- fqdn %></span>
+		<span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu" aria-labelledby="toggle-site" data-container="body" data-role="site-search">
+		<li class="dropdown-content">
+			<span class="form-group has-feedback">
+				<input class="form-control" placeholder="Rechercher un site">
+				<span class="form-control-feedback md-feedback md-search"></span>
+			</span>
+		</li>
+	</ul>
+</div>
+
+<div class="form-group has-feedback sidebar-search">
+	<input class="form-control" placeholder="Recherche" type="text">
+	<span class="form-control-feedback md-feedback md-search"></span>
+</div>
+
+</div>
+
+<div class="sidebar-content">
+
+	<div>
+
+		<div data-role="content"></div>
+
+	</div>
+
+</div>

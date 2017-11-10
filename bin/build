@@ -1,0 +1,146 @@
+#!/bin/bash
+
+PATH=$(npm bin):$PATH
+
+dest="dist";
+
+[ ! -d "./$dest" ] && mkdir "$dest";
+rm -rf ./$dest/*
+
+pushd node_modules
+if [ -e kiubi ]; then
+ 	rm kiubi;
+fi
+ln -s ../src kiubi
+popd
+
+echo "Bundle assets"
+echo " - src"
+cp ./src/index.html "./$dest"
+mkdir -p ./$dest/{locales,vendor,assets/css,assets/fonts,assets/img}
+cat ./src/assets/css/*.css > "./$dest/assets/css/app.css"
+cp -r ./src/assets/img/* "./$dest/assets/img/"
+cp -r ./src/assets/fonts/* "./$dest/assets/fonts/"
+
+echo " - bootstrap"
+mkdir -p ./$dest/vendor/bootstrap/css
+cp -r ./node_modules/bootstrap/dist/css/bootstrap.min.css ./$dest/vendor/bootstrap/css/
+cat ./node_modules/bootstrap-datetimepicker-npm/build/css/bootstrap-datetimepicker.min.css >> ./$dest/vendor/bootstrap/css/bootstrap.min.css
+
+echo " - tinymce"
+mkdir -p ./$dest/vendor/tinymce/skins
+cp -r ./node_modules/tinymce/skins/lightgray ./$dest/vendor/tinymce/skins/
+cat ./src/vendor/tinymce/skins/lightgray/content.css >> ./$dest/vendor/tinymce/skins/lightgray/content.min.css
+
+echo "Bundle locales"
+
+locales=""
+
+for lang in $(ls ./src/locales); do
+	echo " - $lang";
+
+	browserify_options="";
+	for LC_MESSAGE in $(ls ./src/locales/$lang/LC_MESSAGES/*.po); do
+		# conversion des fichiers po en fichier json
+		po2json ${LC_MESSAGE%.*}{.po,.json}
+
+		# recupération du nom du fichier
+		filename=$(basename $LC_MESSAGE);
+
+		# nom du module require(..) sous lequel sera disponible le fichier
+		module="locales_$lang/${filename%.*}";
+		locales="$locales --exclude $module"
+
+		browserify_options="$browserify_options -r ${LC_MESSAGE%.*}.json:$module";
+	done;
+
+	# Creation d'un fichier locales_$lang.js minifié
+	browserify $browserify_options \
+		-p [minifyify --no-map] -o "$dest/locales/$lang.js"
+done;
+
+echo "Bundle vendors"
+
+output="${dest}/vendor/bundle.min.js";
+if [ "$1" = "--no-map" ]; then
+	minifyify="[minifyify --no-map]";
+else
+	minifyify="[minifyify --map bundle.min.js.map --output  ${dest}/vendor/bundle.min.js.map]";
+fi
+
+browserify -d -p ${minifyify} -o "${output}" \
+	-r jquery                           \
+	-r jquery.cookie                    \
+	-r jquery-ui                        \
+	-r jquery-ui/draggable              \
+	-r jquery-ui/core                   \
+	-r jquery-ui/widget                 \
+	-r jquery-ui/mouse                  \
+	-r jquery-ui/sortable               \
+	-r bootstrap						\
+	-r bootstrap-datetimepicker-npm		\
+	-r chart.js		                    \
+	-r underscore                       \
+	-r underscore.string                \
+	-r backbone.marionette              \
+	-r backbone							\
+	-r moment						    \
+	-r form-serialize					\
+	-r tinymce							\
+	-r tinymce/plugins/lists/plugin.js	     \
+	-r tinymce/plugins/fullscreen/plugin.js	 \
+	-r tinymce/plugins/paste/plugin.js	     \
+	-r tinymce/plugins/charmap/plugin.js	 \
+	-r tinymce/plugins/code/plugin.js	     \
+	-r tinymce/plugins/anchor/plugin.js	     \
+	-r tinymce/plugins/colorpicker/plugin.js \
+	-r tinymce/plugins/image/plugin.js	     \
+	-r tinymce/plugins/contextmenu/plugin.js \
+	-r tinymce/plugins/textcolor/plugin.js	 \
+	-r tinymce/plugins/table/plugin.js	     \
+	-r keypress.js/keypress-2.1.4.min.js
+
+echo "Bundle Kiubi Back"
+
+output="${dest}/app.js";
+
+if [ "$1" = "--no-map" ]; then
+	minifyify="[minifyify --no-map]";
+else
+	minifyify="[minifyify --map app.js.map --output  ${dest}/app.js.map]";
+fi
+
+browserify -d ./src/app.js              \
+	--exclude jquery                    \
+	--exclude jquery.cookie             \
+	--exclude jquery-ui        			\
+	--exclude jquery-ui/draggable	    \
+	--exclude jquery-ui/core	        \
+	--exclude jquery-ui/widget	        \
+	--exclude jquery-ui/mouse	        \
+	--exclude jquery-ui/sortable	    \
+	--exclude bootstrap                 \
+	--exclude bootstrap-datetimepicker-npm          \
+	--exclude chart.js		            \
+	--exclude underscore                \
+	--exclude underscore.string         \
+	--exclude backbone.marionette       \
+	--exclude backbone                  \
+	--exclude moment                    \
+	--exclude form-serialize        	\
+	--exclude tinymce                   \
+	--exclude tinymce/plugins/lists/plugin.js       \
+	--exclude tinymce/plugins/fullscreen/plugin.js  \
+	--exclude tinymce/plugins/paste/plugin.js       \
+	--exclude tinymce/plugins/charmap/plugin.js     \
+	--exclude tinymce/plugins/code/plugin.js        \
+	--exclude tinymce/plugins/anchor/plugin.js      \
+	--exclude tinymce/plugins/colorpicker/plugin.js \
+	--exclude tinymce/plugins/image/plugin.js       \
+	--exclude tinymce/plugins/contextmenu/plugin.js \
+	--exclude tinymce/plugins/textcolor/plugin.js   \
+	--exclude tinymce/plugins/table/plugin.js       \
+	--exclude keypress.js/keypress-2.1.4.min.js     \
+	$locales                            \
+	-p bundle-collapser/plugin          \
+    -p ${minifyify} -o ${output}

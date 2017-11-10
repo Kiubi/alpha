@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-xs-6 col-md-7">
+		<div class="media">
+			<div class="media-left">
+				<div class="checkbox-inline">
+					<input id="section_<%- category_id %>" name="selection" value="<%- category_id %>" type="checkbox">
+					<label for="section_<%- category_id %>"></label>
+				</div>
+			</div>
+			<div class="media-left"><a href="#" class="md-icon md-drag btn-drag"></a> </div>
+			<div class="media-body">
+				<h4><%- name %></h4>
+				<% if(!is_visible) { %>
+				<span class="text-danger">Masqué</span>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-3"><a href="/blog/categories/<%- category_id %>/posts"><%- posts_count %> <%= plural(posts_count, 'billet posté', 'billets postés') %></a></div>
+	<div class="col-xs-3 col-md-2">
+		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/blog/categories/<%- category_id %>" role="button">Détail</a>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="<%- preview %>" target="_blank">Aperçu</a></li>
+				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,33 @@
+<a href="#" class="bt-closed md-icon"></a>
+
+<div class="logo"><img src="/assets/img/logo_kiubi.png"></div>
+
+<ul class="nav nav-stacked">
+	<% _(mainItems).each(function(item){ %>
+	<li class="<%= item.is_active ? 'active' : '' %>">
+		<a href='<%- item.path %>'><span class="md-icon md-icon-menu <%- item.className %>"></span><span class="nav-label"><%- item.name %></span></a>
+	</li>
+	<% }) %>
+</ul>
+
+<ul class="nav nav-stacked tools">
+	<% _(toolsItems).each(function(item){ %>
+	<li class="<%= item.is_active ? 'active' : '' %>">
+		<a href='<%- item.path %>'><span class="md-icon md-icon-menu <%- item.className %>"></span><span class="nav-label"><%- item.name %></span></a>
+	</li>
+	<% }) %>
+</ul>
+
+<% if(isAuth) { %>
+<div class="user">
+	<div class="media">
+		<div class="media-left">
+			<a href="#"> <img src="<%- avatar %>" class="img-circle media-object img-avatar"> </a>
+		</div>
+		<div class="media-body">
+			<h4><%- initials %></h4>
+			<span class="user-profil">Premium</span>
+		</div>
+	</div>
+</div>
+<% } %>

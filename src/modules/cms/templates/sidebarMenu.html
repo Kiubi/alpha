@@ -1,0 +1,9 @@
+<% _.each(items, function(menu){ %>
+
+	<h2><a href="/cms/menus/<%- menu.menu_id %>"><span class="md-icon md-edit"></span><%- menu.name %></a></h2>
+
+	<%= renderMenu(menu.menu_id) %>
+
+<% }) %>
+
+<h2><a href="#" data-role="menu-add"><span class="md-icon md-add-outline"></span>Nouveau menu</a></h2>

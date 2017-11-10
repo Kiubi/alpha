@@ -1,0 +1,137 @@
+<form>
+
+<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Devise</h1>
+	</header>
+	<div class="post-content">
+		<p>
+			Vous pouvez choisir la devise affichée dans le catalogue. Si vous choisissez une devise différente de l'Euro (EUR),
+			assurez-vous au près de votre établissement bancaire que votre terminal de paiement virtuel accepte les paiements dans cette devise.
+			Attention cependant, Kiubi n'assure pas de conversion automatique en cas de changement de devise.
+		</p>
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="form-group has-feedback">
+					<label class="control-label" for="currency">Préfixe des commandes</label>
+					<select class="form-control" id="currency" name="currency">
+						<option value="EUR" <%= currency == "EUR" ? 'selected="selected"' : '' %>>Euro (EUR)</option>
+						<option value="CHF" <%= currency == "CHF" ? 'selected="selected"' : '' %>>Franc suisse (CHF)</option>
+						<option value="CAD" <%= currency == "CAD" ? 'selected="selected"' : '' %>>Dollar canadien (CAD)</option>
+						<option value="USD" <%= currency == "USD" ? 'selected="selected"' : '' %>>Dollar américain (USD)</option>
+						<option value="AUD" <%= currency == "AUD" ? 'selected="selected"' : '' %>>Dollar australien (AUD)</option>
+						<option value="GBP" <%= currency == "GBP" ? 'selected="selected"' : '' %>>Livre sterling (GBP)</option>
+					</select>
+					<div class="form-control-feedback md-feedback md-select"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Vente privée</h1>
+	</header>
+	<div class="post-content">
+		<p>
+			La vente privée vous permet de restreindre l'accès du catalogue aux visiteurs inscrits et connectés au site web.
+			Pour en savoir plus sur la vente privée,
+			<a href="https://aide.kiubi.com/documentation/catalogue/vente-privee.html" target="_blank">consultez l'aide en ligne</a>.
+		</p>
+		<div class="form-group">
+			<label class="control-label" for="">Utilisation de la vente privée </label>
+			<div class="radio-group">
+				<input name="require_auth" id="require_auth1" value="1" <%= require_auth ? 'checked="checked"' : '' %> type="radio">
+				<label for="require_auth1" class="visible">Activée</label>
+				<input name="require_auth" id="require_auth0" value="0" <%= !require_auth ? 'checked="checked"' : '' %> type="radio">
+				<label for="require_auth0" class="not-visible">Désactivée</label>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Évaluations</h1>
+	</header>
+	<div class="post-content">
+		<p>
+			Les visiteurs du site peuvent poster une évaluation pour chacun des produits,
+			en leur donnant une note de 1 à 10, assortie qu'un commentaire.
+		</p>
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="form-group">
+					<label class="control-label" for="">Évaluations ouvertes</label>
+					<div class="radio-group">
+						<input name="comments_allowed" id="comments_allowed1" value="1" <%= comments_allowed ? 'checked="checked"' : '' %> type="radio">
+						<label for="comments_allowed1">Oui</label>
+						<input name="comments_allowed" id="comments_allowed0" value="0" <%= !comments_allowed ? 'checked="checked"' : '' %> type="radio">
+						<label for="comments_allowed0">Non</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="form-group">
+					<label class="control-label" for="">Évaluations anonymes</label>
+					<div class="radio-group">
+						<input name="comments_anonymous" id="comments_anonymous1" value="1" <%= comments_anonymous ? 'checked="checked"' : '' %> type="radio">
+						<label for="comments_anonymous1">Oui</label>
+						<input name="comments_anonymous" id="comments_anonymous0" value="0" <%= !comments_anonymous ? 'checked="checked"' : '' %> type="radio">
+						<label for="comments_anonymous0">Non</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="form-group">
+					<label class="control-label" for="">Publication immédiate</label>
+					<div class="radio-group">
+						<input name="comments_autopublish" id="comments_autopublish1" value="1" <%= comments_autopublish ? 'checked="checked"' : '' %> type="radio">
+						<label for="comments_autopublish1">Oui</label>
+						<input name="comments_autopublish" id="comments_autopublish0" value="0" <%= !comments_autopublish ? 'checked="checked"' : '' %> type="radio">
+						<label for="comments_autopublish0">Non</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Captcha</h1>
+	</header>
+	<div class="post-content">
+		<p>
+			Le "captcha" est une sorte d'anti-spam pour se prémunir contre l'usage
+			abusif des commentaires : un champ de validation requiert de l'internaute
+			qu'il réponde à une question aléatoirement posée pour poster un nouveau commentaire.
+		</p>
+		<div class="form-group">
+			<label class="control-label" for="">Utilisation du captcha</label>
+			<div class="radio-group">
+				<input name="comments_captcha" id="comments_captcha1" value="1" <%= comments_captcha ? 'checked="checked"' : '' %> type="radio">
+				<label for="comments_captcha1" class="visible">Activé</label>
+				<input name="comments_captcha" id="comments_captcha0" value="0" <%= !comments_captcha ? 'checked="checked"' : '' %> type="radio">
+				<label for="comments_captcha0" class="not-visible">Désactivé</label>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"> </footer>

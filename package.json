@@ -1,0 +1,64 @@
+{
+  "name": "kiubi.back",
+  "version": "1.0.0",
+  "description": "Standalone Backoffice for Kiubi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./bin/build",
+    "watch-js": "./bin/watch-js",
+    "watch-css": "./bin/watch-css",
+    "watch": "npm run-script watch-js & npm run-script watch-css",
+    "start": "pushd ./dist && ../bin/server",
+    "jshint": "jshint -c .jshintrc --exclude-path .gitignore ./src || true",
+    "js-beautify": "find ./src | grep -v '^./src/vendor' | grep '.js$' | xargs js-beautify -r | grep -vE 'unchanged' || true"
+  },
+  "author": "Kiubi",
+  "license": "MIT",
+  "dependencies": {
+    "backbone": "~1.3.3",
+    "backbone.marionette": "~3.0.0",
+    "bootstrap": "^3.3.6",
+    "bootstrap-datetimepicker-npm": "^4.17.37-npm",
+    "chart.js": "^2.7.0",
+    "form-serialize": "^0.7.2",
+    "jquery": "^3.1.0",
+    "jquery-ui": "1.10.x",
+    "jquery.cookie": "^1.4.1",
+    "keypress.js": "^2.1.4",
+    "markdown": "^0.5.0",
+    "moment": "^2.13.0",
+    "sprintf-js": "^1.0.3",
+    "tinymce": "^4.7.1",
+    "underscore": "1.8.3",
+    "underscore.string": "^3.3.4"
+  },
+  "devDependencies": {
+    "browserify": "^13.3.0",
+    "bundle-collapser": "^1.3.0",
+    "cssify": "^1.0.2",
+    "imagify": "^0.1.0",
+    "js-beautify": "^1.7.4",
+    "jshint": "^2.9.5",
+    "jstify": "^0.14.0",
+    "minifyify": "^7.3.5",
+    "po2json": "^0.4.5"
+  },
+  "browserify": {
+    "transform": [
+      "cssify",
+      "imagify",
+      [
+        "jstify",
+        {
+          "minifierOpts": {
+            "removeAttributeQuotes": false,
+            "removeRedundantAttributes": true,
+            "collapseWhitespace": true,
+            "conservativeCollapse": false
+          }
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+#!/bin/bash
+
+PATH=$(npm bin):$PATH
+
+pushd node_modules
+if [ -e kiubi ]; then
+ 	rm kiubi;
+fi
+ln -s ../src kiubi
+popd
+
+dest=./dist
+
+if ! command -v watchify > /dev/null; then
+	echo "run \`npm install -g watchify\` first";
+	exit 0;
+fi
+if ! test -d "${dest}"; then
+	echo "run \`npm run build\` first";
+	exit 0;
+fi
+
+output="${dest}/app.js";
+
+plugin="[minifyify --map app.js.map --output  ${dest}/app.js.map]";
+
+watchify -v -d ./src/app.js             \
+	--exclude jquery                    \
+	--exclude jquery.cookie             \
+	--exclude jquery-ui        			\
+	--exclude jquery-ui/draggable	    \
+	--exclude jquery-ui/core	        \
+	--exclude jquery-ui/widget	        \
+	--exclude jquery-ui/mouse	        \
+	--exclude jquery-ui/sortable	    \
+	--exclude bootstrap                 \
+	--exclude bootstrap-datetimepicker-npm \
+	--exclude chart.js		            \
+	--exclude underscore                \
+	--exclude underscore.string         \
+	--exclude backbone.marionette       \
+	--exclude backbone                  \
+	--exclude moment                    \
+	--exclude form-serialize        	\
+	--exclude tinymce                   \
+	--exclude tinymce/plugins/lists/plugin.js       \
+	--exclude tinymce/plugins/fullscreen/plugin.js  \
+	--exclude tinymce/plugins/paste/plugin.js       \
+	--exclude tinymce/plugins/charmap/plugin.js     \
+	--exclude tinymce/plugins/code/plugin.js        \
+	--exclude tinymce/plugins/anchor/plugin.js      \
+	--exclude tinymce/plugins/colorpicker/plugin.js \
+	--exclude tinymce/plugins/image/plugin.js       \
+	--exclude tinymce/plugins/contextmenu/plugin.js \
+	--exclude tinymce/plugins/textcolor/plugin.js   \
+	--exclude tinymce/plugins/table/plugin.js       \
+	--exclude keypress.js/keypress-2.1.4.min.js     \
+	-p bundle-collapser/plugin          \
+    -p ${plugin} -o ${output}

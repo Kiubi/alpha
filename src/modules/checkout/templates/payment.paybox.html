@@ -1,0 +1,142 @@
+<article class="post-article">
+  <header class="post-header">
+    <h1>Conditions préalables</h1>
+  </header>
+  <div class="post-content">
+    <p>PayBox est une solution de paiement en ligne sécurisée multi-banques. Pour plus d’informations,
+      <a href="http://www1.paybox.com/nos-produits-et-services/" target="_blank">rendez-vous sur le site officiel</a>.
+    </p>
+    <p>Afin de configurer correctement ce mode de paiement vous devez :</p>
+    <ol>
+      <li>
+        Impérativement obtenir l’ouverture d’un contrat monétique de Vente A Distance (VAD) auprès d'un établissement bancaire
+      </li>
+      <li>
+        Complétez <a href="https://cdn.kiubi-admin.com/69/documents/adhesion_PAYBOX_SYSTEM.pdf" target="_blank">
+          le dossier d’adhésion à PayBox</a> avec les informations suivantes
+          (ces informations restent valables même si le nom de domaine du site change ultérieurement) :
+          <br/><br/>
+          Système d’exploitation du site web (NT, Unix SCO, AIX,…) :
+          <br/>
+          <strong>Unix</strong>
+          <br/><br/>
+          URL du serveur web du commerçant :
+          <br/>
+          <strong><%- domain %></strong>
+          <br/><br/>
+          URL de retour par défaut si paiement accepté (PBX_EFFECTUE) :
+          <br/>
+          <strong><%- domain %>/ecommerce/validation.html</strong>
+          <br/><br/>
+          URL de retour par défaut si paiement refusé (PBX_REFUSE) :
+          <br/>
+          <strong><%- domain %>/ecommerce/validation.html</strong>
+          <br/><br/>
+          URL de retour par défaut si paiement annulé par le porteur (PBX_ANNULE) :
+          <br/>
+          <strong><%- domain %>/ecommerce/validation.html</strong>
+          <br/><br/>
+          Retour immédiat à la boutique après paiement :
+          <br/>
+          <strong>Oui</strong>
+          <br/><br/>
+          Si vous rencontrez des difficultés pour remplir le dossier d’adhésion, vous pouvez directement
+          <a href="http://www1.paybox.com/contact/" target="_blank">prendre contact avec PayBox</a>.<br/><br/>
+        </li>
+        <li>
+          Retournez le dossier préalablement rempli aux adresses postales indiquées dans celui-ci
+        </li>
+        <li>
+          Une fois l'adhésion validée par PayBox, contactez le support de PayBox pour leur indiquer d'activer l'URL "IPN" avec l'adresse suivante :
+          <br/><br/>
+          URL "IPN" (PBX_REPONDRE_A) :
+          <br/>
+          <strong><%- domain %>/TPEV/paybox/308d63a37017.html</strong>
+          <br/><br/>
+        </li>
+        <li>
+          Demandez au support de PayBox de <strong class="text-danger">passer le terminal de paiement en mode REEL</strong>,
+          car PayBox ouvre les terminaux de paiement par défaut en mode TEST qui n'est pas utilisé par Kiubi.
+        </li>
+        <li>
+          Après confirmation du changement par PayBox, complétez le formulaire ci-dessous avec les informations fournis par PayBox et activez le paiement.
+        </li>
+      </ol>
+      <p>
+        <strong>Aucune autre intervention technique n’est nécessaire</strong>, si toutes les opérations ont été correctement effectuées,
+        ce mode de paiement sera alors actif sur le site. Une fois toutes ces opérations de configuration terminées,
+        <strong class="text-danger">il est indispensable d'effectuer au moins un paiement réel</strong> sur le site pour tester son bon fonctionnement.
+      </p>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Paramètres du mode de paiement</h1>
+    </header>
+    <div class="post-content">
+      <div class="form-group">
+        <label class="control-label" for="exmemple1">Intitulé du mode de paiement</label>
+        <input class="form-control" id="exmemple1" placeholder="Paybox" type="text">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="">Utilisation</label>
+        <div class="radio-group">
+          <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+          <label for="affichage1" class="visible">Activé</label>
+          <input name="affichage" id="affichage0" value="option1" type="radio">
+          <label for="affichage0" class="not-visible">Désactivé</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group has-feedback">
+            <label class="control-label" for="exmemple3">Banque</label>
+            <select class="form-control" ic="exmemple3">
+              <option value="" selected="selected">Multi-banques</option>
+              <option value="CA">Crédit agricole (E-transactions)</option>
+            </select>
+            <div class="form-control-feedback md-feedback md-select"></div>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="form-group has-feedback">
+            <label class="control-label" for="exmemple3">Mode de cryptage</label>
+            <select class="form-control" ic="exmemple3">
+              <option value="cgi">CGI (ancienne version)</option>
+              <option value="hmac" selected="selected">HMAC (Recommandé)</option>
+            </select>
+            <div class="form-control-feedback md-feedback md-select"></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label required" for="exmemple1">Numéro du site</label>
+        <input class="form-control" id="exmemple1" placeholder="7 chiffres fournis par PayBox" type="text">
+      </div>
+      <div class="form-group">
+        <label class="control-label required" for="exmemple1">Rang</label>
+        <input class="form-control" id="exmemple1" placeholder="2 chiffres fournis par PayBox" type="text">
+      </div>
+      <div class="form-group">
+        <label class="control-label required" for="exmemple1">Identifiant PAYBOX</label>
+        <input class="form-control" id="exmemple1" placeholder="Une série de chiffres fournis par PayBox" type="text">
+      </div>
+      <div class="form-group">
+        <label class="control-label required" for="exmemple1">Message de confirmation</label>
+        <p>Le message de confirmation s'affiche à la fin de la procédure de commande, une fois le paiement validé.</p>
+        <textarea class="form-control" rows="5" placeholder=""></textarea>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <div class="save">
+    <div class="btn-toolbar" role="toolbar">
+      <a class="btn btn-cancel" href="/checkout/payments">Retour</a>
+      <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+    </div>
+  </div>
+
+  <footer class="footer"> </footer>

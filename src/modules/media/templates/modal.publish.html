@@ -1,0 +1,22 @@
+<article class="post-article">
+	<div class="post-content mediatheque-upload" data-role="dropzone">
+	
+		<% if(canDragAndDrop) { %>
+		<div id="dropzone" class="dropzone">
+			<div class="md-icon md-upload"></div>
+			Glisser-déposer des fichiers ici
+		</div>
+		<% } %>
+		
+		<label class="file-select btn btn-option">
+			Sélectionner un fichier&hellip; <input type="file" style="display: none;" <%= isMultiFiles ? 'multiple="multiple"' : '' %>>
+		</label>
+		
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<div data-role="list"></div>
+	<footer class="post-footer"></footer>
+</article>

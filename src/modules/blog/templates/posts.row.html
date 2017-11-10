@@ -1,0 +1,37 @@
+<div class="row">
+	<div class="col-xs-6 col-md-7">
+		<div class="media">
+			<div class="media-left">
+				<div class="checkbox-inline">
+					<input id="blog_post_<%- post_id %>" name="selection" value="<%- post_id %>" type="checkbox">
+					<label for="blog_post_<%- post_id %>"></label>
+				</div>
+			</div>
+			<div class="media-left">
+				<div class="media-object md-icon md-image img-default"></div>
+				<% if(thumb) { %>
+				<div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath(thumb.url_miniature) %>" /></div>
+				<% } %>
+			</div>
+			<div class="media-body">
+				<h4><%- title %></h4>
+				<% if(is_visible) { %>
+				Posté le <%- publication_date %>
+				dans <a href="/blog/categories/<%- category_id %>"><%- category_name %></a>
+				<% } else { %>
+				<span class="text-danger">Masqué</span>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-3"><a href="/blog/posts/<%- post_id %>/comments"><%- comments_count %> <%- plural(comments_count, 'commentaire', 'commentaires') %></a></div>
+	<div class="col-xs-3 col-md-2">
+		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/blog/posts/<%- post_id %>" role="button">Détail</a>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a target="_blank" href="<%= url %>">Aperçu</a></li>
+				<li><a href="#"data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

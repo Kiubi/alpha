@@ -1,0 +1,71 @@
+<form>
+
+<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Informations générales</h1>
+	</header>
+	<div class="post-content">
+		<div class="row">
+			<div class="col-xs-6">
+				<div class="form-group has-feedback">
+					<label class="control-label">Page du billet</label>
+					<select class="form-control" data-role="page"></select>
+					<div class="form-control-feedback md-feedback md-select"></div>
+				</div>
+			</div>
+			<div class="col-xs-4 col-xs-offset-2">
+				<div class="form-group">
+					<label class="control-label">Affichage</label>
+					<div class="radio-group">
+						<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
+						<label for="is_visible1" class="visible">Visible</label>
+						<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
+						<label for="is_visible0" class="not-visible">Masqué</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article data-role="type"></article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Groupe du billet</h1>
+	</header>
+	<div class="post-content">
+		<p>Les groupes sont utilisés comme critères d'affichage des billets dans certain widgets de Kiubi et peuvent être utilisés pour organiser le contenu de votre site. Vous pouvez ajouter un seul groupe par billet.</p>
+		<div class="row">
+			<div class="col-xs-8">
+				<div class="form-group">
+					<label class="control-label" for="group">Ajouter un groupe</label>
+					<input class="form-control" id="group" name="group" value="<%- group %>" placeholder="Colonne à droite, Slideshow, Pied de page..." type="text">
+					<!-- <span class="label label-tag label-list ">Colonne à droite<span class="md-icon md-close"></span></span> -->
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="form-group has-feedback">
+					<label class="control-label">Groupes existants</label>
+					<select class="form-control" data-role="group"></select>
+					<div class="form-control-feedback md-feedback md-select"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"> </footer>

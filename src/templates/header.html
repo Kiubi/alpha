@@ -1,0 +1,33 @@
+<% if(actions && actions.length > 0) { %>
+<div class="btn-toolbar pull-right" role="toolbar">
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-action" data-role="default-action"><%- actions[0].title %></button>
+		<% if (actions.length > 1) %>
+		<button type="button" class="btn btn-action dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span></button>
+		<ul class="dropdown-menu dropdown-menu-right" data-role="other-actions">
+			<% _(actions).each(function(action, index){ if(index==0) return; %>
+			<li data-id="<%- index %>"><a href="#"><%- action.title %></a></li>
+			<% }) %>
+		</ul>
+		<% %>
+	</div>
+</div>
+<% } %>
+
+<ol class="breadcrumb">
+	<% _(links).each(function(link){ %>
+ 		<% if (link.href) { %>
+			<li><a href="<%- link.href %>" title="<%- link.title %>"><%- link.title %></a></li>
+		<% } else { %>
+			<li class="active"><%- link.title %></li>
+		<% } %>
+	<% }) %>
+</ol>
+
+<% if(tabs) { %>
+<ul class="nav nav-pills">
+	<% _(tabs).each(function(tab){ %>
+	<li role="presentation" <%= tab.is_active ? 'class="active"' : '' %>><a href="<%- tab.url %>"><%- tab.title %></a></li>
+	<% }) %>
+</ul>
+<% } %>

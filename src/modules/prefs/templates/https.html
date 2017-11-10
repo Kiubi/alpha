@@ -1,0 +1,63 @@
+<form>
+
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Conditions préalables</h1>
+    </header>
+    <div class="post-content">
+      <p>
+        L'accès HTTPS permet de chiffrer et de sécuriser l'intégralité du
+        <a href="https://fr.wikipedia.org/wiki/Application_de_front_office" target="_blank">front-office</a> du site Internet.
+        L'adresse du site Internet changera de HTTP à HTTPS. Exemple : <code>http://www.monsite.com</code> deviendra <code>https://www.monsite.com</code>.
+      </p>
+      <p>
+        Avant d'activer l'accès HTTPS, veuillez noter que :
+      </p>
+      <ul>
+        <li><a href="/domaines">Les noms de domaine associés au site</a>  doivent être correctement configurés sur l'adresse IP indiquée</li>
+        <li>Il faut patienter au moins 5 minutes après l'activation de l'accès HTTPS pour que le site soit pris en charge</li>
+        <li>Le sitemap du site généré automatiquement est mis à jour 24 heures après l'activation du HTTPS</li>
+        <li>Le certificat SSL/TLS utilisé pour l'accès HTTPS n’est pas compatible avec IE8 et précédents sur Windows XP</li>
+      </ul>
+      <p>
+        Les supports, garanties et conditions générales de vente liées au certificat SSL/TLS utilisé par Kiubi sont
+        <a href="https://letsencrypt.org/repository/" target="_blank">celles de Let’s Encrypt</a>.
+        Elles sont par concéquence soumises aux évolutions et modifications effectués par ce dernier.
+      </p>
+      <p>
+        Nous vous conseillons avant toute activation de l'accès HTTPS de
+        <a href="https://aide.kiubi.com/documentation/https-certificat-ssl-tls.html" target="_blank">consulter la documentation en ligne</a> afin de
+        prendre connaissance de l'ensemble des informations nécessaires à la bonne utilisation de cette fonctionnalité.
+      </p>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Accès HTTPS</h1>
+    </header>
+    <div class="post-content">
+      <div class="form-group">
+        <div class="radio-group">
+          <input name="is_enabled" id="is_enabled1" value="1" type="radio">
+          <label for="is_enabled1" class="visible">Activé (recommandé)</label>
+          <input name="is_enabled" id="is_enabled0" value="0" checked="checked" type="radio">
+          <label for="is_enabled0" class="not-visible">Désactivé</label>
+        </div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+</form>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

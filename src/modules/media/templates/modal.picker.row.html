@@ -1,0 +1,23 @@
+<div class="row <%= is_selected ? 'active' : '' %>">
+	<div class="col-xs-10">
+		<div class="media">
+			<div class="media-left">
+				<% if(type == 'image') { %>
+				<div class="media-object md-icon md-image img-default"></div>
+				<div class="media-object"><img alt="<%- name %>" src="<%- convertMediaPath('/media/miniature/' + media_id + '.jpg') %>" /></div>
+				<% } else { %>
+				<div class="md-icon md-file media-object file"></div><span class="file-type"><%- ext %></span>
+				<% } %>
+			</div>
+			<div class="media-body">
+				<h4><%- name %></h4>
+				<%- size %><% if(type == 'image') { %> • <%- width %> x <%- height %>px<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-2">
+		<% if(is_selectable) { %>
+		<a class="btn btn-option pull-right" href="#" role="button" data-role="select">Choisir</a>
+		<% } %>
+	</div>
+</div>

@@ -1,0 +1,63 @@
+<header class="post-header no-border">
+	<h1>Type de billet</h1>
+</header>
+<div class="post-content">
+	<div class="post-group">
+		<div class="form-group has-feedback">
+			<p>Le type de billet détermine l'apparence et le contenu du billet dans la page :</p>
+			<div class="row">
+				<div class="col-xs-6">
+					<select class="form-control" id="type" name="type">
+						<% _(types).each(function(item){ %>
+							<option value="<%- item.type %>" <%= (item.type == type) ? 'selected="selected"':''  %>><%- item.name %></option>
+							<% }) %>
+						</select>
+						<div class="form-control-feedback md-feedback md-select"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<% if (!fields || fields.length == 0) { %>
+	<p><em>Pas d'information complémentaire...</em></p>
+	<% } %>
+	<% _(fields).each(function(field){ %>
+
+	<% switch(field.type){ case 'text': %>
+	<div class="form-group">
+		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+		<input class="form-control" id="<%- field.field %>" name="<%- field.field %>" value="<%- post.get(field.field) %>">
+	</div>
+	<% break; case 'textarea': %>
+	<div class="form-group">
+		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+		<textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" rows="5"><%- post.get(field.field) %></textarea>
+	</div>
+	<% break; case 'wysiwyg': %>
+	<div class="form-group">
+		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+		<textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" data-role="wysiwyg"><%- post.get(field.field) %></textarea>
+	</div>
+	<% break; case 'select': %>
+	<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+	<div class="row">
+		<div class="col-xs-6">
+			<div class="form-group has-feedback">
+				<select id="<%- field.field %>" name="<%- field.field %>" class="form-control">
+					<% _(field.options).each(function(option){ %>
+					<option value="<%- option.value %>" <%= (option.value == post.get(field.field)) ? 'selected="selected"':''  %>><%- option.name %></option>
+					<% }) %>
+				</select>
+				<div class="form-control-feedback md-feedback md-select"></div>
+			</div>
+		</div>
+	</div>
+	<% break; case 'image':case 'file': %>
+	<div data-role="filepicker-<%- field.field %>"></div>
+	<% break;} %>
+
+	<% }) %>
+
+
+</div>
+<footer class="post-footer"></footer>

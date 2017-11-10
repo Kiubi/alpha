@@ -1,0 +1,541 @@
+<div class="alert alert-warning" role="alert">
+  <a href="https://aide.kiubi.com/documentation/Commandes/frais-de-port.html" class="md-icon md-help pull-right" target="_blank"></a>
+  Un transporteur est défini pour une livraison à l'adresse indiquée dans une commande.
+  Les frais de port sont calculés en fonction du <strong>pays</strong> de livraison, par <strong>tranche de poids</strong>.
+</div>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Informations générales</h1>
+  </header>
+  <div class="post-content">
+    <div class="form-group">
+      <label class="control-label required" for="exmemple1">Intitulé du transporteur</label>
+      <input class="form-control" id="exmemple1" placeholder="Intitulé du transporteur tel qu'il apparaîtra dans le choix de la livraison" type="text">
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <div class="form-group">
+          <label class="control-label" for="">Transporteur par défaut</label>
+          <div class="radio-group">
+            <input name="Transporteur" id="Transporteur1" value="option1" checked="checked" type="radio">
+            <label for="Transporteur1">Oui</label>
+            <input name="Transporteur" id="Transporteur0" value="option1" type="radio">
+            <label for="Transporteur0">Non</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="form-group">
+          <label class="control-label" for="">Utilisation</label>
+          <div class="radio-group">
+            <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
+            <label for="affichage1" class="visible">Activé</label>
+            <input name="affichage" id="affichage0" value="option1" type="radio">
+            <label for="affichage0" class="not-visible">Désactivé</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Informations complémentaires</h1>
+  </header>
+  <div class="post-content">
+    <div class="form-group">
+      <label class="control-label" for="exmemple1">Description</label>
+      <textarea class="form-control" rows="5" placeholder="Description du transporteur telle qu'elle apparaîtra dans le choix de la livraison"></textarea>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="form-group">
+          <label class="control-label" for="exmemple1">Montant de commande minimum</label>
+          <div class="input-group"> <span class="input-group-addon" id="basic-addon3">Actif à partir de</span>
+            <input class="form-control" value="300,00" placeholder="1,00">
+            <span class="input-group-addon" id="basic-addon2">€TCC d'achat</span>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-xs-3">
+        <div class="form-group has-feedback">
+          <label class="control-label" for="exmemple3">Taxe</label>
+          <select class="form-control" ic="exmemple3">
+            <option selected="selected">20,00%</option>
+            <option>5,50%</option>
+          </select>
+          <div class="form-control-feedback md-feedback md-select"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Expeditor INET</h1>
+  </header>
+  <div class="post-content">
+    <p>Expeditor INET est un logiciel fourni par La Poste pour optimiser la chaîne de travail et notamment l’édition des étiquettes de colisage.
+      Les commandes utilisant ce transporteur peuvent être inclues dans les exports au format Expeditor INET.
+    </p>
+    <div class="row">
+      <div class="col-xs-4">
+        <div class="form-group">
+          <label class="control-label" for="">Inclure dans l'export</label>
+          <div class="radio-group">
+            <input name="export" id="export1" value="option1" checked="checked" type="radio">
+            <label for="export1">Oui</label>
+            <input name="export" id="export0" value="option1" type="radio">
+            <label for="export0">Non</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-8">
+        <div class="form-group">
+          <label class="control-label" for="">Remise contre signature (si possible)</label>
+          <div class="radio-group">
+            <input name="signature" id="signature1" value="option1" checked="checked" type="radio">
+            <label for="signature1">Oui (Colissimo Expert)</label>
+            <input name="signature" id="signature0" value="option1" type="radio">
+            <label for="signature0">Non (Colissimo Access)</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+  <header class="post-header no-border">
+    <h1>Pays livrables</h1>
+  </header>
+  <div class="post-content post-list">
+    <div class="post-group">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group has-feedback">
+            <label class="control-label" for="exmemple3">Pays concerné</label>
+            <select class="form-control" ic="exmemple3">
+              <optgroup label="Pays livrables"></optgroup>
+              <option value="73" selected="selected">  FRANCE METROPOLITAINE</option>
+              <optgroup label="Frais de port non défini"></optgroup>
+              <option value="3">  AFGHANISTAN</option>
+              <option value="243">  AFRIQUE DU SUD</option>
+              <option value="6">  ALBANIE</option>
+              <option value="60">  ALGÉRIE</option>
+              <option value="55">  ALLEMAGNE</option>
+              <option value="1">  ANDORRE</option>
+              <option value="9">  ANGOLA</option>
+              <option value="5">  ANGUILLA</option>
+              <option value="10">  ANTARCTIQUE</option>
+              <option value="4">  ANTIGUA-ET-BARBUDA</option>
+              <option value="8">  ANTILLES NÉERLANDAISES</option>
+              <option value="189">  ARABIE SAOUDITE</option>
+              <option value="11">  ARGENTINE</option>
+              <option value="7">  ARMÉNIE</option>
+              <option value="15">  ARUBA</option>
+              <option value="14">  AUSTRALIE</option>
+              <option value="13">  AUTRICHE</option>
+              <option value="16">  AZERBAÏDJAN</option>
+              <option value="30">  BAHAMAS</option>
+              <option value="23">  BAHREÏN</option>
+              <option value="19">  BANGLADESH</option>
+              <option value="18">  BARBADE</option>
+              <option value="34">  BÉLARUS</option>
+              <option value="20">  BELGIQUE</option>
+              <option value="35">  BELIZE</option>
+              <option value="25">  BÉNIN</option>
+              <option value="26">  BERMUDES</option>
+              <option value="31">  BHOUTAN</option>
+              <option value="28">  BOLIVIE</option>
+              <option value="17">  BOSNIE-HERZÉGOVINE</option>
+              <option value="33">  BOTSWANA</option>
+              <option value="32">  BOUVET, ÎLE</option>
+              <option value="29">  BRÉSIL</option>
+              <option value="27">  BRUNÉI DARUSSALAM</option>
+              <option value="22">  BULGARIE</option>
+              <option value="21">  BURKINA FASO</option>
+              <option value="24">  BURUNDI</option>
+              <option value="123">  CAÏMANES, ÎLES</option>
+              <option value="116">  CAMBODGE</option>
+              <option value="45">  CAMEROUN</option>
+              <option value="36">  CANADA</option>
+              <option value="51">  CAP-VERT</option>
+              <option value="39">  CENTRAFRICAINE, RÉPUBLIQUE</option>
+              <option value="44">  CHILI</option>
+              <option value="46">  CHINE</option>
+              <option value="52">  CHRISTMAS, ÎLE</option>
+              <option value="53">  CHYPRE</option>
+              <option value="37">  COCOS (KEELING), ÎLES</option>
+              <option value="47">  COLOMBIE</option>
+              <option value="118">  COMORES</option>
+              <option value="40">  CONGO</option>
+              <option value="38">  CONGO, LA RÉPUBLIQUE DÉMOCRATIQUE DU</option>
+              <option value="43">  COOK, ÎLES</option>
+              <option value="121">  CORÉE, RÉPUBLIQUE DE</option>
+              <option value="120">  CORÉE, RÉPUBLIQUE POPULAIRE DÉMOCRATIQUE DE</option>
+              <option value="48">  COSTA RICA</option>
+              <option value="42">  CÔTE D'IVOIRE</option>
+              <option value="97">  CROATIE</option>
+              <option value="50">  CUBA</option>
+              <option value="57">  DANEMARK</option>
+              <option value="56">  DJIBOUTI</option>
+              <option value="59">  DOMINICAINE, RÉPUBLIQUE</option>
+              <option value="58">  DOMINIQUE</option>
+              <option value="63">  ÉGYPTE</option>
+              <option value="205">  EL SALVADOR</option>
+              <option value="2">  ÉMIRATS ARABES UNIS</option>
+              <option value="61">  ÉQUATEUR</option>
+              <option value="65">  ÉRYTHRÉE</option>
+              <option value="66">  ESPAGNE</option>
+              <option value="62">  ESTONIE</option>
+              <option value="228">  ÉTATS-UNIS</option>
+              <option value="67">  ÉTHIOPIE</option>
+              <option value="70">  FALKLAND, ÎLES (MALVINAS)</option>
+              <option value="72">  FÉROÉ, ÎLES</option>
+              <option value="69">  FIDJI</option>
+              <option value="68">  FINLANDE</option>
+              <option value="75">  GABON</option>
+              <option value="84">  GAMBIE</option>
+              <option value="78">  GÉORGIE</option>
+              <option value="89">  GÉORGIE DU SUD ET LES ÎLES SANDWICH DU SUD</option>
+              <option value="81">  GHANA</option>
+              <option value="82">  GIBRALTAR</option>
+              <option value="88">  GRÈCE</option>
+              <option value="77">  GRENADE</option>
+              <option value="83">  GROENLAND</option>
+              <option value="86">  GUADELOUPE</option>
+              <option value="91">  GUAM</option>
+              <option value="90">  GUATEMALA</option>
+              <option value="80">  GUERNESEY</option>
+              <option value="85">  GUINÉE</option>
+              <option value="87">  GUINÉE ÉQUATORIALE</option>
+              <option value="92">  GUINÉE-BISSAU</option>
+              <option value="93">  GUYANA</option>
+              <option value="79">  GUYANE FRANÇAISE</option>
+              <option value="98">  HAÏTI</option>
+              <option value="95">  HEARD, ÎLE ET MCDONALD, ÎLES</option>
+              <option value="96">  HONDURAS</option>
+              <option value="94">  HONG-KONG</option>
+              <option value="99">  HONGRIE</option>
+              <option value="103">  ÎLE DE MAN</option>
+              <option value="227">  ÎLES MINEURES ÉLOIGNÉES DES ÉTATS-UNIS</option>
+              <option value="234">  ÎLES VIERGES BRITANNIQUES</option>
+              <option value="235">  ÎLES VIERGES DES ÉTATS-UNIS</option>
+              <option value="104">  INDE</option>
+              <option value="100">  INDONÉSIE</option>
+              <option value="107">  IRAN, RÉPUBLIQUE ISLAMIQUE D'</option>
+              <option value="106">  IRAQ</option>
+              <option value="101">  IRLANDE</option>
+              <option value="108">  ISLANDE</option>
+              <option value="102">  ISRAËL</option>
+              <option value="109">  ITALIE</option>
+              <option value="111">  JAMAÏQUE</option>
+              <option value="113">  JAPON</option>
+              <option value="110">  JERSEY</option>
+              <option value="112">  JORDANIE</option>
+              <option value="124">  KAZAKHSTAN</option>
+              <option value="114">  KENYA</option>
+              <option value="115">  KIRGHIZISTAN</option>
+              <option value="117">  KIRIBATI</option>
+              <option value="122">  KOWEÏT</option>
+              <option value="125">  LAO, RÉPUBLIQUE DÉMOCRATIQUE POPULAIRE</option>
+              <option value="131">  LESOTHO</option>
+              <option value="134">  LETTONIE</option>
+              <option value="126">  LIBAN</option>
+              <option value="130">  LIBÉRIA</option>
+              <option value="135">  LIBYENNE, JAMAHIRIYA ARABE</option>
+              <option value="128">  LIECHTENSTEIN</option>
+              <option value="132">  LITUANIE</option>
+              <option value="133">  LUXEMBOURG</option>
+              <option value="145">  MACAO</option>
+              <option value="141">  MACÉDOINE, L'EX-RÉPUBLIQUE YOUGOSLAVE DE</option>
+              <option value="139">  MADAGASCAR</option>
+              <option value="155">  MALAISIE</option>
+              <option value="153">  MALAWI</option>
+              <option value="152">  MALDIVES</option>
+              <option value="142">  MALI</option>
+              <option value="150">  MALTE</option>
+              <option value="146">  MARIANNES DU NORD, ÎLES</option>
+              <option value="136">  MAROC</option>
+              <option value="140">  MARSHALL, ÎLES</option>
+              <option value="147">  MARTINIQUE</option>
+              <option value="151">  MAURICE</option>
+              <option value="148">  MAURITANIE</option>
+              <option value="241">  MAYOTTE</option>
+              <option value="154">  MEXIQUE</option>
+              <option value="71">  MICRONÉSIE, ÉTATS FÉDÉRÉS DE</option>
+              <option value="138">  MOLDOVA, RÉPUBLIQUE DE</option>
+              <option value="137">  MONACO</option>
+              <option value="144">  MONGOLIE</option>
+              <option value="247">  MONTÉNÉGRO</option>
+              <option value="149">  MONTSERRAT</option>
+              <option value="156">  MOZAMBIQUE</option>
+              <option value="143">  MYANMAR</option>
+              <option value="157">  NAMIBIE</option>
+              <option value="166">  NAURU</option>
+              <option value="165">  NÉPAL</option>
+              <option value="162">  NICARAGUA</option>
+              <option value="159">  NIGER</option>
+              <option value="161">  NIGÉRIA</option>
+              <option value="167">  NIUÉ</option>
+              <option value="160">  NORFOLK, ÎLE</option>
+              <option value="164">  NORVÈGE</option>
+              <option value="158">  NOUVELLE-CALÉDONIE</option>
+              <option value="168">  NOUVELLE-ZÉLANDE</option>
+              <option value="105">  OCÉAN INDIEN, TERRITOIRE BRITANNIQUE DE L'</option>
+              <option value="169">  OMAN</option>
+              <option value="226">  OUGANDA</option>
+              <option value="230">  OUZBÉKISTAN</option>
+              <option value="175">  PAKISTAN</option>
+              <option value="182">  PALAOS</option>
+              <option value="180">  PALESTINIEN OCCUPÉ, TERRITOIRE</option>
+              <option value="170">  PANAMA</option>
+              <option value="173">  PAPOUASIE-NOUVELLE-GUINÉE</option>
+              <option value="183">  PARAGUAY</option>
+              <option value="163">  PAYS-BAS</option>
+              <option value="171">  PÉROU</option>
+              <option value="174">  PHILIPPINES</option>
+              <option value="178">  PITCAIRN</option>
+              <option value="176">  POLOGNE</option>
+              <option value="172">  POLYNÉSIE FRANÇAISE</option>
+              <option value="179">  PORTO RICO</option>
+              <option value="181">  PORTUGAL</option>
+              <option value="184">  QATAR</option>
+              <option value="185">  RÉUNION</option>
+              <option value="186">  ROUMANIE</option>
+              <option value="76">  ROYAUME-UNI</option>
+              <option value="187">  RUSSIE, FÉDÉRATION DE</option>
+              <option value="188">  RWANDA</option>
+              <option value="64">  SAHARA OCCIDENTAL</option>
+              <option value="248">  SAINT-BARTHÉLEMY</option>
+              <option value="119">  SAINT-KITTS-ET-NEVIS</option>
+              <option value="200">  SAINT-MARIN</option>
+              <option value="249">  SAINT-MARTIN</option>
+              <option value="177">  SAINT-PIERRE-ET-MIQUELON</option>
+              <option value="231">  SAINT-SIÈGE (ÉTAT DE LA CITÉ DU VATICAN)</option>
+              <option value="232">  SAINT-VINCENT-ET-LES GRENADINES</option>
+              <option value="195">  SAINTE-HÉLÈNE</option>
+              <option value="127">  SAINTE-LUCIE</option>
+              <option value="190">  SALOMON, ÎLES</option>
+              <option value="239">  SAMOA</option>
+              <option value="12">  SAMOA AMÉRICAINES</option>
+              <option value="204">  SAO TOMÉ-ET-PRINCIPE</option>
+              <option value="201">  SÉNÉGAL</option>
+              <option value="250">  SERBIE</option>
+              <option value="191">  SEYCHELLES</option>
+              <option value="199">  SIERRA LEONE</option>
+              <option value="194">  SINGAPOUR</option>
+              <option value="198">  SLOVAQUIE</option>
+              <option value="196">  SLOVÉNIE</option>
+              <option value="202">  SOMALIE</option>
+              <option value="192">  SOUDAN</option>
+              <option value="129">  SRI LANKA</option>
+              <option value="193">  SUÈDE</option>
+              <option value="41">  SUISSE</option>
+              <option value="203">  SURINAME</option>
+              <option value="197">  SVALBARD ET ÎLE JAN MAYEN</option>
+              <option value="207">  SWAZILAND</option>
+              <option value="206">  SYRIENNE, RÉPUBLIQUE ARABE</option>
+              <option value="213">  TADJIKISTAN</option>
+              <option value="223">  TAÏWAN, PROVINCE DE CHINE</option>
+              <option value="224">  TANZANIE, RÉPUBLIQUE-UNIE DE</option>
+              <option value="209">  TCHAD</option>
+              <option value="54">  TCHÈQUE, RÉPUBLIQUE</option>
+              <option value="210">  TERRES AUSTRALES FRANÇAISES</option>
+              <option value="212">  THAÏLANDE</option>
+              <option value="215">  TIMOR-LESTE</option>
+              <option value="211">  TOGO</option>
+              <option value="214">  TOKELAU</option>
+              <option value="218">  TONGA</option>
+              <option value="221">  TRINITÉ-ET-TOBAGO</option>
+              <option value="217">  TUNISIE</option>
+              <option value="216">  TURKMÉNISTAN</option>
+              <option value="208">  TURKS ET CAÏQUES, ÎLES</option>
+              <option value="220">  TURQUIE</option>
+              <option value="222">  TUVALU</option>
+              <option value="225">  UKRAINE</option>
+              <option value="229">  URUGUAY</option>
+              <option value="237">  VANUATU</option>
+              <option value="233">  VENEZUELA</option>
+              <option value="236">  VIET NAM</option>
+              <option value="238">  WALLIS ET FUTUNA</option>
+              <option value="240">  YÉMEN</option>
+              <option value="244">  ZAMBIE</option>
+              <option value="245">  ZIMBABWE</option>
+              <option value="246">  ÅLAND, ÎLES</option>
+            </select>
+            <div class="form-control-feedback md-feedback md-select"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="form-group">
+          <label class="control-label" for="exmemple1">Francos de port pour le pays concerné</label>
+          <div class="input-group"> <span class="input-group-addon" id="basic-addon3">Gratuit à partir de</span>
+            <input class="form-control" value="300,00" placeholder="—">
+            <span class="input-group-addon" id="basic-addon2">€TCC d'achat</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="form-group">
+          <label class="control-label" for="exmemple1">Délai de livraison pour le pays concerné</label>
+          <input class="form-control" id="exmemple1" type="text" placeholder="3 jours, 1 semaine...">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4"><label class="control-label" for="exmemple1">Tranche de poids</label></div>
+      <div class="col-xs-3"><label class="control-label" for="exmemple1">Frais du port</label></div>
+    </div>
+    <div class="list-item list-item-form">
+      <div class="row">
+        <div class="col-xs-4">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3">Jusqu'à</span>
+              <input class="form-control" value="300" placeholder="—">
+              <span class="input-group-addon" id="basic-addon2">Kg</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3"></span>
+              <input class="form-control" value="10,00" placeholder="0,00">
+              <span class="input-group-addon" id="basic-addon2">€HT</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3"></span>
+              <input class="form-control" value="12,00" placeholder="0,00">
+              <span class="input-group-addon" id="basic-addon2">€TTC</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2"><a href="#" class="md-icon md-delete pull-right"></a></div>
+      </div>
+    </div>
+    <div class="list-item list-item-form">
+      <div class="row">
+        <div class="col-xs-4">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3">Jusqu'à</span>
+              <input class="form-control" value="300" placeholder="—">
+              <span class="input-group-addon" id="basic-addon2">Kg</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3"></span>
+              <input class="form-control" value="10,00" placeholder="0,00">
+              <span class="input-group-addon" id="basic-addon2">€HT</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3"></span>
+              <input class="form-control" value="12,00" placeholder="0,00">
+              <span class="input-group-addon" id="basic-addon2">€TTC</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2"><a href="#" class="md-icon md-delete pull-right"></a></div>
+      </div>
+    </div>
+    <div class="list-item list-item-form">
+      <div class="row">
+        <div class="col-xs-4">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3">Jusqu'à</span>
+              <input class="form-control" value="300" placeholder="—">
+              <span class="input-group-addon" id="basic-addon2">Kg</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3"></span>
+              <input class="form-control" value="10,00" placeholder="0,00">
+              <span class="input-group-addon" id="basic-addon2">€HT</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3"></span>
+              <input class="form-control" value="12,00" placeholder="0,00">
+              <span class="input-group-addon" id="basic-addon2">€TTC</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2"><a href="#" class="md-icon md-delete pull-right"></a></div>
+      </div>
+    </div>
+    <div class="list-item list-item-form">
+      <div class="row">
+        <div class="col-xs-4">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3">Jusqu'à</span>
+              <input class="form-control" value="" placeholder="—">
+              <span class="input-group-addon" id="basic-addon2">Kg</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3"></span>
+              <input class="form-control" value="" placeholder="0,00">
+              <span class="input-group-addon" id="basic-addon2">€HT</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3"></span>
+              <input class="form-control" value="" placeholder="0,00">
+              <span class="input-group-addon" id="basic-addon2">€TTC</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2"><a href="#" class="md-icon md-delete pull-right"></a></div>
+      </div>
+    </div>
+    <div class="list-item no-hover"><a href="">Ajouter une tranche pour le pays concerné</a></div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <button type="button" class="btn btn-delete">Supprimer</button>
+    <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

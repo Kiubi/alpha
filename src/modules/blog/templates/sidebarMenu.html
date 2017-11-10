@@ -1,0 +1,18 @@
+<h2>Blog</h2>
+<ul class="nav nav-sidebar">
+	<li><a href="/blog"><span class="badge"><%- overview.posts_count %></span>Tous les billets</a></li>
+	<li><a href="/blog/comments">Commentaires</a></li>
+	<li><a href="/blog/links">Blogroll</a></li>
+	<li><a href="/blog/settings">Paramètres</a></li>
+</ul>
+<h2>Catégories</h2>
+<ul class="nav nav-stacked">
+	<% if(is_loaded) { %>
+	<li <%= home.is_visible ? '' :'class="pagetype-visibility-off"' %>><a href="/blog/home"><span class="md-icon"></span><%- home.name %></a></li>
+	<% _.each(categories, function(model) { %>
+	<li <%= model.is_visible ? '' :'class="pagetype-visibility-off"' %>><a href="/blog/categories/<%- model.category_id %>"><span class="md-icon"></span><%- model.name %></a></li>
+	<% }) %>
+
+	<li class="page-add"><a href="#" data-role="category-add"><span class="md-icon"></span>Ajouter une catégorie</a></li>
+	<% } %>
+</ul>

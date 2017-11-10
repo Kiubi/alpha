@@ -1,0 +1,155 @@
+<article class="post-article">
+	<div class="post-content">
+
+		<form>
+
+		<div class="media media-detail">
+			<div class="media-left">
+				<% if(type == 'image') { %>
+				<div class="media-object"><a class="preview" href="<%- thumb.url  %>" target="_blank">
+					<img alt="<%- name %>" src="<%- convertMediaPath('/media/g_vignette/' + media_id + '.jpg') %>"></a>
+				</div>
+				<% } else { %>
+				<div class="md-icon md-file media-object file"></div><span class="file-type"><%- ext %></span>
+				<% } %>
+
+				<p class="media-info">
+					<%- original_name %><br />
+					<%- size %> <br/>
+					<% if(type == 'image') { %>
+					<%- width %> x <%- height %>px<br/>
+					<% } %>
+					Modifié le <%- last_date %>
+				</p>
+			</div>
+			<div class="media-body">
+				<% if(type == 'image') { %>
+				<div class="row">
+					<div class="col-xs-7">
+						<div class="form-group has-feedback">
+							<label class="control-label" for="m_integration_type">Type d'intégration</label>
+							<select class="form-control" id="m_integration_type" name="integration_type">
+								<option <%= integration == 'inline' ? 'selected="selected"' : '' %> value="inline">Insérer l'image</option>
+								<option <%= integration == 'inline' ? '' : 'selected="selected"' %> value="file">Insérer uniquement un lien vers l'image</option>
+							</select>
+							<div class="form-control-feedback md-feedback md-select"></div>
+						</div>
+						<% if(integration == 'inline') { %>
+						<div class="form-group has-feedback">
+							<label class="control-label" for="m_image_variant">Taille de l'image</label>
+							<select class="form-control" id="m_image_variant" name="image_variant">
+								<option value="full" selected="selected">Taille d'origine : <%- width %> x <%- height %>px</option>
+								<option value="g_vignette">Grande vignette : 960 x 960px</option>
+								<option value="vignette">Vignette : 420 x 420px</option>
+								<option value="g_miniature">Grande miniature : 240 x 240px</option>
+								<option value="miniature">Miniature : 120 x 120px</option>
+							</select>
+							<div class="form-control-feedback md-feedback md-select"></div>
+						</div>
+						<div class="form-group has-feedback">
+							<label class="control-label" for="m_image_align">Alignement</label>
+							<select class="form-control" id="m_image_align" name="image_align">
+								<option value="default">Par défaut</option>
+								<option value="left">À gauche</option>
+								<option value="right">À droite</option>
+								<option value="middle">Au milieu</option>
+							</select>
+							<div class="form-control-feedback md-feedback md-select"></div>
+						</div>
+						<% } %>
+					</div>
+				</div>
+				<% if(integration == 'inline') { %>
+				<div class="form-group">
+					<label class="control-label" for="m_alt">Texte alternatif</label>
+					<input class="form-control" id="m_alt" name="alt" value="<%- description %>" placeholder="Contenu de l'attribut alt" type="text">
+				</div>
+				<label class="control-label">Marges</label>
+				<div class="row">
+					<div class="col-xs-3">
+						<div class="form-group has-feedback">
+							<input class="form-control" name="margin_top" placeholder="Haut" type="text">
+							<span class="form-control-feedback md-pixel"></span>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="form-group has-feedback">
+							<input class="form-control" name="margin_right" placeholder="Droite" type="text">
+							<span class="form-control-feedback md-pixel"></span>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="form-group has-feedback">
+							<input class="form-control" name="margin_bottom" placeholder="Bas" type="text">
+							<span class="form-control-feedback md-pixel"></span>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="form-group has-feedback">
+							<input class="form-control" name="margin_left" placeholder="Gauche" type="text">
+							<span class="form-control-feedback md-pixel"></span>
+						</div>
+					</div>
+				</div>
+				<label class="control-label">Taille</label>
+				<div class="row">
+					<div class="col-xs-3">
+						<div class="form-group has-feedback">
+							<input class="form-control" id="image_width" name="image_width" placeholder="Largeur" type="text">
+							<span class="form-control-feedback md-pixel"></span>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="form-group has-feedback">
+							<input class="form-control" id="image_height" name="image_height" placeholder="Hauteur" type="text">
+							<span class="form-control-feedback md-pixel"></span>
+						</div>
+					</div>
+				</div>
+				<% } %>
+				<% } %>
+				<div class="form-group">
+					<label class="control-label" for="m_title">Titre</label>
+					<input class="form-control" id="m_title" name="title" placeholder="Contenu de l'attribut title" type="text">
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="m_class">Class</label>
+					<input class="form-control" id="m_class" name="class" placeholder="Contenu de l'attribut class" type="text">
+				</div>
+				<label class="control-label">Insérer également les informations sur fichier</label>
+				<div class="form-group">
+					<div class="checkbox-inline">
+						<input id="m_xtra_name" name="xtra_name" value="1" type="checkbox">
+						<label for="m_xtra_name"> Nom</label>
+					</div>
+					<div class="checkbox-inline">
+						<input id="m_xtra_file" name="xtra_file" value="1" type="checkbox">
+						<label for="m_xtra_file"> Fichier</label>
+					</div>
+					<div class="checkbox-inline">
+						<input id="m_xtra_weight" name="xtra_weight" value="1" type="checkbox">
+						<label for="m_xtra_weight">Poids</label>
+					</div>
+					<% if(type == 'image') { %>
+					<div class="checkbox-inline">
+						<input id="m_xtra_size" name="xtra_size" value="1" type="checkbox">
+						<label for="m_xtra_size">Taille</label>
+					</div>
+					<% } %>
+					<div class="checkbox-inline">
+						<input id="m_xtra_modification" name="xtra_modification" value="1" type="checkbox">
+						<label for="m_xtra_modification">Date de modification</label>
+					</div>
+					<div class="checkbox-inline">
+						<input id="m_xtra_author" name="xtra_author" value="1" type="checkbox">
+						<label for="m_xtra_author">Auteur</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		</form>
+
+	</div>
+	<footer class="post-footer"></footer>
+</article>

@@ -1,0 +1,15 @@
+var Backbone = require('backbone');
+var Marionette = require('backbone.marionette');
+
+// Configuration
+var Config = require('./models/config');
+
+var Cfg = new Config();
+
+// API URL
+//Cfg.set('api', 'https://api.kiubi.com');
+
+// GA Tracker
+//Cfg.set('ga_tracker', 'UA-XXXXXXXX-X');
+
+module.exports = Cfg;

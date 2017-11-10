@@ -1,0 +1,163 @@
+<form>
+
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Tailles des vignettes et miniatures</h1>
+    </header>
+    <div class="post-content">
+      <p>
+        Quand une image est publiée dans la médiathèque,
+        Kiubi génère automatiquement 4 images supplémentaires de tailles différentes,
+        en plus de l'image d'origine. Ces images peuvent être utilisées
+        dans le contenu ou les templates graphiques du site.
+      </p>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="form-group">
+            <label class="control-label" for="">Taille maximum des grandes vignettes</label>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"></span>
+                  <input class="form-control" name="g_vignette_width" id="g_vignette_width" value="<%- g_vignette_width %>" placeholder="1">
+                  <span class="input-group-addon">pixel de largeur</span>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"></span>
+                  <input class="form-control" name="g_vignette_height" id="g_vignette_height" value="<%- g_vignette_height %>" placeholder="1">
+                  <span class="input-group-addon">pixel de hauteur</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-8">
+          <div class="form-group">
+            <label class="control-label" for="">Taille maximum des vignettes</label>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"></span>
+                  <input class="form-control" name="vignette_width" id="vignette_width" value="<%- vignette_width %>" placeholder="1">
+                  <span class="input-group-addon">pixel de largeur</span>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"></span>
+                  <input class="form-control" name="vignette_height" id="vignette_height" value="<%- vignette_height %>" placeholder="1">
+                  <span class="input-group-addon">pixel de hauteur</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-8">
+          <div class="form-group">
+            <label class="control-label" for="">Taille maximum des grandes miniatures</label>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"></span>
+                  <input class="form-control" name="g_miniature_width" id="g_miniature_width" value="<%- g_miniature_width %>" placeholder="1">
+                  <span class="input-group-addon">pixel de largeur</span>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"></span>
+                  <input class="form-control" name="g_miniature_height" id="g_miniature_height" value="<%- g_miniature_height %>" placeholder="1">
+                  <span class="input-group-addon">pixel de hauteur</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-8">
+          <div class="form-group">
+            <label class="control-label" for="">Taille maximum des miniatures</label>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"></span>
+                  <input class="form-control" name="miniature_width" id="miniature_width" value="<%- miniature_width %>" placeholder="0">
+                  <span class="input-group-addon">pixel de largeur</span>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"></span>
+                  <input class="form-control" name="miniature_height" id="miniature_height" value="<%- miniature_height %>" placeholder="0">
+                  <span class="input-group-addon">pixel de hauteur</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Publier des fichiers volumineux</h1>
+    </header>
+    <div class="post-content">
+      <p>
+        Un compte FTP est disponible pour chaque site.
+        Il permet de publier des fichiers volumineux de plus de 7Mo dans la médiathèque.
+        Les informations ci-dessous servent à configurer un logiciel FTP.
+      </p>
+      <div class="row">
+        <div class="col-xs-3">
+          <label class="control-label" for="">Adresse de l'hôte :</label>
+        </div>
+        <div class="col-xs-9"><p><%- ftp.host %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <label class="control-label" for="">Port :</label>
+        </div>
+        <div class="col-xs-9"><p><%- ftp.port %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <label class="control-label" for="">Nom d'utilisateur :</label>
+        </div>
+        <div class="col-xs-9"><p><%- ftp.login %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <label class="control-label" for="">Mot de passe :</label>
+        </div>
+        <div class="col-xs-9"><p><%- ftp.password %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <label class="control-label" for="">Répertoire racine :</label>
+        </div>
+        <div class="col-xs-9"><p>/mediatheque/</p>
+        </div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+</form>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

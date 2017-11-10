@@ -1,0 +1,34 @@
+<div class="row">
+	<div class="col-xs-6">
+		<div class="media">
+			<div class="media-left">
+				<div class="checkbox-inline">
+					<input id="media_file_<%- media_id %>" name="selection" value="<%- media_id %>" type="checkbox">
+					<label for="media_file_<%- media_id %>"></label>
+				</div>
+			</div>
+			<div class="media-left">
+				<% if(type == 'image') { %>
+				<div class="media-object md-icon md-image img-default"></div>
+				<div class="media-object"><img alt="" src="<%- convertMediaPath('/media/miniature/' + media_id + '.jpg') %>" /></div>
+				<% } else { %>
+				<div class="md-icon md-file media-object file"></div><span class="file-type"><%- ext %></span>
+				<% } %>
+			</div>
+			<div class="media-body">
+				<h4><%- name %></h4>
+				<%- size %><% if(type == 'image') { %> • <%- width %> x <%- height %>px<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-3 no-white-space">Modifié le <%- last_date %></div>
+	<div class="col-xs-3">
+		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/media/files/<%- media_id %>" role="button">Détail</a>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="#">Copier l'adresse</a></li>
+				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

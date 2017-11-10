@@ -1,0 +1,51 @@
+<div class="row" data-role="list">
+	<div class="col-xs-5 col-md-6">
+		<div class="media">
+			<div class="media-left">
+				<div class="checkbox-inline">
+					<input id="catalog_product_<%- product_id %>" name="selection" value="<%- product_id %>" type="checkbox">
+					<label for="catalog_product_<%- product_id %>"></label>
+				</div>
+			</div>
+			<div class="media-left">
+				<div class="media-object md-icon md-image img-default"></div>
+				<% if (main_media_id) { %><div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath('/media/miniature/'+main_media_id) %>" /></div><% } %>
+				<%= is_spotlight ? '<span class="md-icon md-upsell"></span>' : '' %>
+			</div>
+			<div class="media-body">
+				<h4><%- name %></h4>
+				<% if(is_visible) { %>
+				Rangé dans <a href="/catalog/categories/<%- main_category.category_id %>"><%- main_category.name %></a>
+					<% if(sec_categories.length > 0) { %>
+					et <a href="#" data-toggle="popover" data-placement="right" data-trigger="focus" data-container="#content" data-html="true"
+					data-content="<% _.each(sec_categories, function(category) { %><a href=&quot;/catalog/categories/<%- category.category_id %>&quot;><%- category.name %></a><br/><%  });
+						%>">
+						<%- sec_categories.length %> <%= plural(sec_categories.length, 'autre catégorie', 'autres catégories') %></a>
+					<% } %>
+				<% } else { %>
+				<span class="text-danger">Masqué</span>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-2">
+		<% if (is_virtual) { %>
+			<span class="label label-stockin">Téléchargeable</span>
+		<% } else { %>
+			<%= stock == "yes" ? '<span class="label label-stockin">En stock</span>' : '' %>
+			<%= stock == "no" ? '<span class="label label-stockout">Rupture</span>' : '' %>
+			<%= stock == "partial" ? '<span class="label label-tempstockout">Rupture</span>' : '' %>
+		<% } %>
+	</div>
+	<div class="col-xs-2"><span class="price"><%- price_inc_vat_min_label %>TTC<br/><% if (price_inc_vat_min < price_inc_vat_max) { %><%- price_inc_vat_max_label %>TTC<% } %></span>
+	</div>
+	<div class="col-xs-3 col-md-2">
+		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/catalog/products/<%- product_id %>" role="button">Détail</a>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a target="_blank" href="<%- preview %>">Aperçu</a></li>
+				<li><a href="#"data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
