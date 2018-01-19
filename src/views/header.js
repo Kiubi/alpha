@@ -1,7 +1,10 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var _ = require('underscore');
 
 var LoaderTpl = require('../templates/ui/loader.html');
+
+var ControllerChannel = Backbone.Radio.channel('controller');
 
 module.exports = Marionette.View.extend({
 
@@ -53,36 +56,69 @@ module.exports = Marionette.View.extend({
 	},
 
 	events: {
-		'click @ui.defaultAction': 'onDefaultAction',
-		'click @ui.otherActions': 'onOtherAction'
+		'click @ui.defaultAction': 'onActionEvent',
+		'click @ui.otherActions': 'onActionEvent'
 	},
 
-	/**
-	 * Handler on default action
-	 * 
-	 * @param {Event} event
-	 */
-	onDefaultAction: function(event) {
-		if (!this.getOption('actions').length ||
-			!this.getOption('actions')[0].callback) {
-			return;
+	initialize: function() {
+		this.listenTo(ControllerChannel, 'modified:content', _.debounce(this.onModifiedContent, 300));
+		this.listenTo(ControllerChannel, 'saved:content', this.onSavedContent);
+	},
+
+	onModifiedContent: function(event) {
+
+		var refresh = false;
+
+		_.each(this.actions, function(action, index) {
+			if (action.activateOnEvent && action.activateOnEvent == 'modified:content' && !action.isEnabled) {
+				action.isEnabled = true;
+				refresh = true;
+			}
+			if (action.bubbleOnEvent && action.bubbleOnEvent == 'modified:content' && !action.isOnTop) {
+				action.isOnTop = true;
+				refresh = true;
+			}
+		}.bind(this));
+
+		if (refresh) {
+			this.render();
 		}
-		this.onAction(this.getOption('actions')[0].callback);
+	},
+
+	onSavedContent: function(event) {
+
+		var refresh = false;
+
+		_.each(this.actions, function(action, index) {
+			if (action.activateOnEvent && action.activateOnEvent == 'modified:content' && action.isEnabled) {
+				action.isEnabled = false;
+				refresh = true;
+			}
+			if (action.bubbleOnEvent && action.bubbleOnEvent == 'modified:content' && action.isOnTop) {
+				action.isOnTop = false;
+				refresh = true;
+			}
+		}.bind(this));
+
+		if (refresh) {
+			this.render();
+		}
 	},
 
 	/**
 	 * Handler on other action. Use data-id to find which.
-	 * 
+	 *
 	 * @param {Event} event
 	 */
-	onOtherAction: function(event) {
+	onActionEvent: function(event) {
 		var id = Backbone.$(event.currentTarget).data('id');
-		if (!this.getOption('actions') ||
-			id >= this.getOption('actions').length ||
-			!this.getOption('actions')[id].callback) {
+		var action = _.findWhere(this.getOption('actions'), {
+			index: id
+		});
+		if (!action || !action.callback || !action.isEnabled) {
 			return;
 		}
-		this.onAction(this.getOption('actions')[id].callback);
+		this.onAction(action.callback);
 	},
 
 	/**
@@ -116,9 +152,23 @@ module.exports = Marionette.View.extend({
 	 * Expose links and actions for template
 	 */
 	templateContext: function() {
+
+		var sortedActions = [];
+
+		if (this.getOption('actions') && this.getOption('actions').length > 0) {
+			sortedActions = sortedActions.concat(
+				_.filter(this.getOption('actions'), function(action) {
+					return action.isOnTop;
+				}),
+				_.filter(this.getOption('actions'), function(action) {
+					return !action.isOnTop;
+				})
+			);
+		}
+
 		return {
 			links: this.getOption('links'),
-			actions: this.getOption('actions'),
+			actions: sortedActions,
 			tabs: this.getOption('tabs')
 		};
 	},
@@ -138,6 +188,12 @@ module.exports = Marionette.View.extend({
 	 * @param {Array} actions
 	 */
 	setActions: function(actions) {
+		_.each(actions, function(action, index) {
+			action.isEnabled = !(action.activateOnEvent);
+			action.isOnTop = false;
+			action.index = index;
+		});
+
 		this.actions = actions;
 	},
 

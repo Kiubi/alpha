@@ -27,12 +27,17 @@ plugin="[minifyify --map app.js.map --output  ${dest}/app.js.map]";
 watchify -v -d ./src/app.js             \
 	--exclude jquery                    \
 	--exclude jquery.cookie             \
-	--exclude jquery-ui        			\
-	--exclude jquery-ui/draggable	    \
-	--exclude jquery-ui/core	        \
-	--exclude jquery-ui/widget	        \
-	--exclude jquery-ui/mouse	        \
-	--exclude jquery-ui/sortable	    \
+	--exclude jquery-ui/ui/version				\
+	--exclude jquery-ui/ui/ie					\
+	--exclude jquery-ui/ui/scroll-parent		\
+	--exclude jquery-ui/ui/safe-blur			\
+	--exclude jquery-ui/ui/safe-active-element	\
+	--exclude jquery-ui/ui/plugin				\
+	--exclude jquery-ui/ui/data					\
+	--exclude jquery-ui/ui/widget				\
+	--exclude jquery-ui/ui/widgets/mouse		\
+	--exclude jquery-ui/ui/widgets/sortable		\
+	--exclude jquery-ui/ui/widgets/draggable	\
 	--exclude bootstrap                 \
 	--exclude bootstrap-datetimepicker-npm \
 	--exclude chart.js		            \

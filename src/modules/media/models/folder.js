@@ -23,7 +23,8 @@ module.exports = Backbone.Model.extend({
 		folder_key: '',
 		parent_folder_id: 0,
 		is_bookmarked: false,
-		has_restrictions: false
+		has_restrictions: false,
+		restrictions: []
 	}
 
 });

@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var format = require('kiubi/utils/format.js');
+var _ = require('underscore');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 
@@ -14,7 +15,8 @@ var RowView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			convertMediaPath: Session.convertMediaPath.bind(Session),
-			date: format.formatDate(this.model.get('date'))
+			date: format.formatDate(this.model.get('date')),
+			comment2br: _.escape('' + this.model.get('comment')).replace(/(\r\n|\n\r|\r|\n)+/g, '<br />')
 		};
 	},
 
@@ -92,8 +94,10 @@ module.exports = Marionette.View.extend({
 		}));
 	},
 
-	start: function() {
-		this.collection.fetch();
+	start: function(params) {
+		this.collection.fetch({
+			data: params
+		});
 	},
 
 	showComments: function(ids) {

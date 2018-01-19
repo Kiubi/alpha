@@ -14,7 +14,7 @@
         dans le contenu ou les templates graphiques du site.
       </p>
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-7">
           <div class="form-group">
             <label class="control-label" for="">Taille maximum des grandes vignettes</label>
             <div class="row">
@@ -22,20 +22,20 @@
                 <div class="input-group">
                   <span class="input-group-addon"></span>
                   <input class="form-control" name="g_vignette_width" id="g_vignette_width" value="<%- g_vignette_width %>" placeholder="1">
-                  <span class="input-group-addon">pixel de largeur</span>
+                  <span class="input-group-addon">pixels de largeur</span>
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="input-group">
                   <span class="input-group-addon"></span>
                   <input class="form-control" name="g_vignette_height" id="g_vignette_height" value="<%- g_vignette_height %>" placeholder="1">
-                  <span class="input-group-addon">pixel de hauteur</span>
+                  <span class="input-group-addon">pixels de hauteur</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-7">
           <div class="form-group">
             <label class="control-label" for="">Taille maximum des vignettes</label>
             <div class="row">
@@ -43,20 +43,20 @@
                 <div class="input-group">
                   <span class="input-group-addon"></span>
                   <input class="form-control" name="vignette_width" id="vignette_width" value="<%- vignette_width %>" placeholder="1">
-                  <span class="input-group-addon">pixel de largeur</span>
+                  <span class="input-group-addon">pixels de largeur</span>
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="input-group">
                   <span class="input-group-addon"></span>
                   <input class="form-control" name="vignette_height" id="vignette_height" value="<%- vignette_height %>" placeholder="1">
-                  <span class="input-group-addon">pixel de hauteur</span>
+                  <span class="input-group-addon">pixels de hauteur</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-7">
           <div class="form-group">
             <label class="control-label" for="">Taille maximum des grandes miniatures</label>
             <div class="row">
@@ -64,20 +64,20 @@
                 <div class="input-group">
                   <span class="input-group-addon"></span>
                   <input class="form-control" name="g_miniature_width" id="g_miniature_width" value="<%- g_miniature_width %>" placeholder="1">
-                  <span class="input-group-addon">pixel de largeur</span>
+                  <span class="input-group-addon">pixels de largeur</span>
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="input-group">
                   <span class="input-group-addon"></span>
                   <input class="form-control" name="g_miniature_height" id="g_miniature_height" value="<%- g_miniature_height %>" placeholder="1">
-                  <span class="input-group-addon">pixel de hauteur</span>
+                  <span class="input-group-addon">pixels de hauteur</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-7">
           <div class="form-group">
             <label class="control-label" for="">Taille maximum des miniatures</label>
             <div class="row">
@@ -85,14 +85,14 @@
                 <div class="input-group">
                   <span class="input-group-addon"></span>
                   <input class="form-control" name="miniature_width" id="miniature_width" value="<%- miniature_width %>" placeholder="0">
-                  <span class="input-group-addon">pixel de largeur</span>
+                  <span class="input-group-addon">pixels de largeur</span>
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="input-group">
                   <span class="input-group-addon"></span>
                   <input class="form-control" name="miniature_height" id="miniature_height" value="<%- miniature_height %>" placeholder="0">
-                  <span class="input-group-addon">pixel de hauteur</span>
+                  <span class="input-group-addon">pixels de hauteur</span>
                 </div>
               </div>
             </div>
@@ -138,7 +138,7 @@
         <div class="col-xs-3">
           <label class="control-label" for="">Mot de passe :</label>
         </div>
-        <div class="col-xs-9"><p><%- ftp.password %></p>
+        <div class="col-xs-9"><p><span style="display: none" data-role="password-mask"><%- ftp.password %></span><a data-role="password-toggle" href="#">Afficher le mot de passe</a></p>
         </div>
       </div>
       <div class="row">

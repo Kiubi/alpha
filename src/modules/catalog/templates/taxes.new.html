@@ -1,0 +1,41 @@
+<form style="display: none;" data-role="new">
+
+	<div class="list-item">
+
+		<div class="alert alert-danger" data-role="errors" role="alert" style="display: none;"></div>
+
+		<div class="row">
+			<div class="col-xs-2">
+				<div class="form-group has-feedback">
+					<label class="control-label" for="f_<%- tax_id %>_vat_rate">Montant</label>
+					<input class="form-control" id="f_<%- tax_id %>_vat_rate" name="vat_rate" placeholder="0,00"> <span class="form-control-feedback md-percent"></span>
+				</div>
+			</div>
+			<div class="col-xs-4"></div>
+			<div class="col-xs-5">
+				<div class="form-group">
+					<label class="control-label">Taxe par défaut</label>
+					<div class="radio-group">
+						<input name="is_default" id="f_<%- tax_id %>_is_default1" value="1" type="radio">
+						<label for="f_<%- tax_id %>_is_default1" class="">Oui</label>
+						<input name="is_default" id="f_<%- tax_id %>_is_default0" value="0" type="radio" checked="checked">
+						<label for="f_<%- tax_id %>_is_default0" class="">Non</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="btn-toolbar" role="toolbar">
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-cancel" data-role="action" data-action="cancel">Annuler</button>
+			</div>
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-action" data-role="action" data-action="save">Enregistrer</button>
+			</div>
+		</div>
+
+	</div>
+
+</form>
+
+<div class="list-item no-hover"><a href="#" data-role="action" data-action="show">Ajouter une taxe</a></div>

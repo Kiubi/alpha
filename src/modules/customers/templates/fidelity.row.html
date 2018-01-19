@@ -1,0 +1,12 @@
+<div class="row" data-role="list">
+	<div class="col-xs-5">
+		<div class="media">
+			<div class="media-body">
+				<h4><%- qt > 0 ? '+'+qt : qt %> points</h4>
+				Le <%- value_date %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-3"><%- comment %></div>
+	<div class="col-xs-4 text-right"><% if (qt > 0 ) { %>Valide jusqu'au <%- end_date %><% } %></div>
+</div>

@@ -19,7 +19,7 @@ module.exports = Marionette.View.extend({
 
 	regions: {
 		folder: {
-			el: "select[data-role='folder']",
+			el: "div[data-role='folder']",
 			replaceElement: true
 		}
 	},

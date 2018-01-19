@@ -219,17 +219,20 @@ new PrefsRoute();
 // Tracker GA
 if (Cfg.get('ga_tracker')) {
 	var script = document.createElement('script');
-	script.async=1;
-	script.src='https://www.googletagmanager.com/gtag/js?id=' + Cfg.get('ga_tracker');
+	script.async = 1;
+	script.src = 'https://www.googletagmanager.com/gtag/js?id=' + Cfg.get('ga_tracker');
 	var insert = document.getElementsByTagName('script')[0];
-	insert.parentNode.insertBefore(script,insert);
+	insert.parentNode.insertBefore(script, insert);
 
 	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
+
+	function gtag() {
+		dataLayer.push(arguments);
+	}
 	gtag('js', new Date());
 
 	gtag('config', Cfg.get('ga_tracker'));
-	App.on('navigate', function(path){
+	App.on('navigate', function(path) {
 		gtag('config', Cfg.get('ga_tracker'), {
 			'page_path': path
 		});

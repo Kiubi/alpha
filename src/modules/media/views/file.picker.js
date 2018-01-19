@@ -13,6 +13,7 @@ module.exports = Marionette.View.extend({
 
 	fieldname: '',
 	fieldLabel: '',
+	comment: '',
 	type: 'image', // image || file
 	value: '',
 	model: null,
@@ -36,8 +37,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['fieldname', 'value', 'type', 'fieldLabel']);
-
+		this.mergeOptions(options, ['fieldname', 'value', 'type', 'fieldLabel', 'comment']);
 		this.model = new File();
 		if (this.value > 0) {
 			this.model.set('media_id', this.value);
@@ -49,6 +49,7 @@ module.exports = Marionette.View.extend({
 		return {
 			fieldname: this.fieldname,
 			fieldLabel: this.fieldLabel,
+			comment: this.comment,
 			file: this.model.get('media_id') > 0 ? this.model.toJSON() : null,
 			value: this.model.get('media_id')
 		};

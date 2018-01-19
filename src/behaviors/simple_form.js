@@ -6,20 +6,35 @@ var Forms = require('../utils/forms');
 
 var LoaderTpl = require('../templates/ui/loader.html');
 
+var ControllerChannel = Backbone.Radio.channel('controller');
+
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
+
 module.exports = Marionette.Behavior.extend({
 
 	ui: {
 		save: "button[data-role='save']",
 		cancel: "button[data-role='cancel']",
 		delete: "button[data-role='delete']",
-		errors: "div[data-role='errors']"
+		errors: "div[data-role='errors']",
+		form: 'form',
+		radioInputs: 'input[type="radio"]'
 	},
 
 	events: {
 		'click @ui.save': 'onSave',
 		'click @ui.cancel': 'onCancel',
-		'click @ui.delete': 'onDelete'
+		'click @ui.delete': 'onDelete',
+		'input @ui.form': 'onFieldChange',
+		'change @ui.radioInputs': function() {
+			this.getUI('form').trigger('input');
+		} // Fix input event on radio
+		// TODO : wysiwyg
+		// TODO : media picker
+		// TODO : datepicker
 	},
+
+	behaviors: [SelectifyBehavior],
 
 	keyCombos: [],
 
@@ -29,8 +44,11 @@ module.exports = Marionette.Behavior.extend({
 		this.lockSave = false;
 		this.lockDelete = false;
 
-		this.keyListener = Backbone.Radio.channel('app').request(
-			'ctx:keyListener');
+		this.keyListener = Backbone.Radio.channel('app').request('ctx:keyListener');
+	},
+
+	onFieldChange: function() {
+		ControllerChannel.trigger('modified:content');
 	},
 
 	onRender: function() {
@@ -86,6 +104,7 @@ module.exports = Marionette.Behavior.extend({
 		var promise = this.view.onSave();
 
 		if (!promise) {
+			ControllerChannel.trigger('saved:content');
 			this.lockSave = false;
 			return;
 		}
@@ -95,7 +114,9 @@ module.exports = Marionette.Behavior.extend({
 		var old = btn.text();
 		btn.html(LoaderTpl());
 
-		return promise.fail(function(xhr) {
+		return promise.done(function() {
+			ControllerChannel.trigger('saved:content');
+		}).fail(function(xhr) {
 
 			Backbone.$('#content').animate({
 				scrollTop: 0

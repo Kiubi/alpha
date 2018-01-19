@@ -53,16 +53,17 @@ function getHeadersAction(options) {
 		});
 	}
 
+	var saveAction = {
+		title: 'Enregistrer',
+		callback: 'actionSave',
+		activateOnEvent: 'modified:content',
+		bubbleOnEvent: 'modified:content'
+	};
+
 	if (actions.length <= 1) {
-		actions.push({
-			title: 'Enregistrer',
-			callback: 'actionSave'
-		});
+		actions.push(saveAction);
 	} else {
-		actions.splice(1, 0, {
-			title: 'Enregistrer',
-			callback: 'actionSave'
-		});
+		actions.splice(1, 0, saveAction);
 	}
 
 	return actions;
@@ -273,7 +274,11 @@ var CMSController = Controller.extend({
 					this.triggerSidebarMenu('refresh:menus');
 				}
 			}.bind(this));
-			this.listenTo(m, 'destroy', this.actionDeletedMenu);
+			this.listenTo(m, 'destroy', function() {
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/cms');
+				this.triggerSidebarMenu('refresh:menus');
+			});
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: m.get('name')
@@ -286,12 +291,6 @@ var CMSController = Controller.extend({
 				title: 'Menu introuvable'
 			});
 		}.bind(this));
-	},
-
-	actionDeletedMenu: function() {
-		this.navigationController.showOverlay(300);
-		this.navigationController.navigate('/cms');
-		this.triggerSidebarMenu('refresh:menus');
 	},
 
 	actionNewMenu: function() {
@@ -335,12 +334,16 @@ var CMSController = Controller.extend({
 				if (
 					model.hasChanged('name') || model.hasChanged('is_visible') || model.hasChanged('page_type') ||
 					model.hasChanged('menu_id') || model.hasChanged('page_parent_id') || model.hasChanged('after_id') ||
-					model.hasChanged('before_id')
+					model.hasChanged('before_id') || model.hasChanged('has_restrictions')
 				) {
 					this.triggerSidebarMenu('refresh:menus');
 				}
 			}.bind(this));
-			this.listenTo(m, 'destroy', this.actionDeletedMenu); // same action
+			this.listenTo(m, 'destroy', function() {
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/cms');
+				this.triggerSidebarMenu('refresh:menus');
+			});
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: m.get('name')
@@ -584,16 +587,6 @@ var CMSController = Controller.extend({
 
 	actionPreview: function(model) {
 		window.open(model.previewLink);
-	},
-
-	actionSave: function() {
-		// Proxy to content View method onSave
-		var contentView = this.navigationController.getContent();
-		if (!contentView || !contentView.onSave) return;
-
-		var container = {};
-		contentView.triggerMethod('simpleForm:save', container);
-		if (container.promise) return container.promise;
 	},
 
 	/*

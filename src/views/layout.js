@@ -2,8 +2,6 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
-var $ = Backbone.$;
-
 var View = Marionette.View.extend({
 	el: 'body',
 	template: false,
@@ -66,10 +64,10 @@ var View = Marionette.View.extend({
 			var options = {
 				trigger: true
 			};
-			if ($(event.currentTarget).data('preventPushState')) {
+			if (Backbone.$(event.currentTarget).data('preventPushState')) {
 				options.preventPushState = true;
 			}
-			this.trigger('navigate', $(event.currentTarget).attr('href'), options);
+			this.trigger('navigate', Backbone.$(event.currentTarget).attr('href'), options);
 			return false;
 		}
 	}

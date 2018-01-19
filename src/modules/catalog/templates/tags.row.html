@@ -1,0 +1,136 @@
+<div class="row" data-role="list">
+	<div class="col-xs-6">
+		<div class="media">
+			<div class="media-left">
+				<div class="checkbox-inline">
+					<input id="selection_<%- tag_id %>" name="selection" value="<%- tag_id %>" type="checkbox">
+					<label for="selection_<%- tag_id %>"></label>
+				</div>
+			</div>
+			<div class="media-body">
+				<h4><%- name %></h4>
+				<!--Appliqué à <a href="/catalog/categories/3/products">5 produits</a>-->
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-3"></div>
+	<div class="col-xs-3">
+		<!--<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="#" role="button" data-role="action" data-action="edit">Détail</a>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+			</ul>
+		</div>-->
+		<a class="btn btn-option pull-right" href="#" role="button" data-role="action" data-confirm="warning" data-action="delete">Supprimer</a>
+	</div>
+</div>
+
+<form style="display: none;" data-role="edit">
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display: none;"></div>
+
+	<div class="form-group">
+		<label class="control-label required" for="name">Intitulé du tag</label>
+		<p>Changer l'intitulé du tag permet de renommer le tag sur tous les produits auxquels il est associé.</p>
+		<input class="form-control" id="name" name="name" value="<%- name %>" type="text">
+	</div>
+
+	<div class="btn-toolbar" role="toolbar">
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-cancel" data-role="action" data-action="cancel">Annuler</button>
+		</div>
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-action" data-role="action" data-action="save">Enregistrer</button>
+		</div>
+	</div>
+
+</form>
+
+<!--
+	<div class="post-content post-list">
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="media">
+						<div class="media-left">
+							<div class="checkbox-inline">
+								<input id="inlineCheckboxTest11" value="option1" type="checkbox">
+								<label for="inlineCheckboxTest11"></label>
+							</div>
+						</div>
+						<div class="media-body">
+							<h4>Un intitulé d'un tag</h4>
+							Appliqué à <a href="/catalog/categories/3/products">5 produits</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3"><a href="/catalog/categories/3/products" class="hidden">5 produits</a>
+				</div>
+				<div class="col-xs-3">
+					<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="#" role="button">Détail</a>
+						<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a href="#">Supprimer</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="media">
+						<div class="media-left">
+							<div class="checkbox-inline">
+								<input id="inlineCheckboxTest11" value="option1" type="checkbox">
+								<label for="inlineCheckboxTest11"></label>
+							</div>
+						</div>
+						<div class="media-body">
+							<h4>Un intitulé d'un tag</h4>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">Appliqué à <a href="/catalog/categories/3/products">5 produits</a>
+				</div>
+				<div class="col-xs-3">
+					<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="#" role="button">Détail</a>
+						<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a href="#">Supprimer</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="list-item">
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="media">
+						<div class="media-left">
+							<div class="checkbox-inline">
+								<input id="inlineCheckboxTest11" value="option1" type="checkbox">
+								<label for="inlineCheckboxTest11"></label>
+							</div>
+						</div>
+						<div class="media-body">
+							<h4>Un intitulé d'un tag</h4>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3"><a href="/catalog/categories/3/products">5 produits</a>
+				</div>
+				<div class="col-xs-3">
+					<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="#" role="button">Détail</a>
+						<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a href="#">Supprimer</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+-->

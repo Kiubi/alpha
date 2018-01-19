@@ -44,7 +44,8 @@ module.exports = Backbone.Model.extend({
 		target_type: '',
 		target_page: '',
 		target_key: '',
-		url_target: ''
+		url_target: '',
+		restrictions: []
 	},
 
 	/**

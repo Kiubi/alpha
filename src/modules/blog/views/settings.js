@@ -15,7 +15,9 @@ module.exports = Marionette.View.extend({
 		'comments_allowed',
 		'comments_anonymous',
 		'comments_autopublish',
-		'comments_captcha'
+		'comments_captcha',
+		'is_rss_enabled',
+		'rss_post_count'
 	],
 
 	onSave: function() {

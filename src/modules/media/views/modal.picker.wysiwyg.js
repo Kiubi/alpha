@@ -4,10 +4,15 @@ var Marionette = require('backbone.marionette');
 var format = require('kiubi/utils/format.js');
 var Forms = require('kiubi/utils/forms.js');
 
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
+
 var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/modal.picker.wysiwyg.html'),
+
+	behaviors: [SelectifyBehavior],
+
 
 	ui: {
 		'integration_type': '#integration_type'

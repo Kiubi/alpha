@@ -15,12 +15,14 @@
 			<div class="media-body">
 				<h4><%- name %></h4>
 				<% if(is_visible) { %>
+				<% if(main_category) { %>
 				Rangé dans <a href="/catalog/categories/<%- main_category.category_id %>"><%- main_category.name %></a>
+				<% } %>
 					<% if(sec_categories.length > 0) { %>
 					et <a href="#" data-toggle="popover" data-placement="right" data-trigger="focus" data-container="#content" data-html="true"
 					data-content="<% _.each(sec_categories, function(category) { %><a href=&quot;/catalog/categories/<%- category.category_id %>&quot;><%- category.name %></a><br/><%  });
 						%>">
-						<%- sec_categories.length %> <%= plural(sec_categories.length, 'autre catégorie', 'autres catégories') %></a>
+						<%= plural(sec_categories.length, '%d autre catégorie', '%d autres catégories') %></a>
 					<% } %>
 				<% } else { %>
 				<span class="text-danger">Masqué</span>

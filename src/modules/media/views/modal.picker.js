@@ -81,7 +81,7 @@ module.exports = Marionette.View.extend({
 			replaceElement: true
 		},
 		categories: {
-			el: "select[data-role='categories']",
+			el: "div[data-role='categories']",
 			replaceElement: true
 		}
 	},
@@ -96,10 +96,6 @@ module.exports = Marionette.View.extend({
 	currentOrder: '-date',
 
 	events: {
-		"change select[name='categories']": function(event) {
-			this.currentFolder = Backbone.$(event.currentTarget).val();
-			this.updateFilter();
-		},
 		'keyup @ui.term': _.debounce(function(e) {
 			this.currentTerm = this.getUI('term').val();
 			this.updateFilter();
@@ -124,8 +120,7 @@ module.exports = Marionette.View.extend({
 			name: 'categories',
 			// emptyLabel: 'Dossiers',
 			collection: folders,
-			selected: this.model.get('folder_id'),
-			extraClassName: 'select-category'
+			selected: this.model.get('folder_id')
 		}));
 
 		this.showChildView('list', new ListView({
@@ -144,6 +139,11 @@ module.exports = Marionette.View.extend({
 			}.bind(this));
 		}
 
+	},
+
+	onChildviewChange: function(value) {
+		this.currentFolder = value;
+		this.updateFilter();
 	},
 
 	changeOrder: function(event) {

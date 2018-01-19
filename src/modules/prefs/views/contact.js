@@ -1,8 +1,11 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
+var SelectView = require('kiubi/views/ui/select.js');
+
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
+
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/contact.html'),
@@ -10,6 +13,13 @@ module.exports = Marionette.View.extend({
 	service: 'prefs',
 
 	behaviors: [FormBehavior],
+
+	regions: {
+		countries: {
+			el: "div[data-role='countries']",
+			replaceElement: true
+		}
+	},
 
 	fields: [
 		'firstname',
@@ -32,6 +42,22 @@ module.exports = Marionette.View.extend({
 		'company_naf',
 		'company_tva'
 	],
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['model', 'countries']);
+
+
+	},
+
+	onRender: function() {
+		this.showChildView('countries', new SelectView({
+			collection: this.countries,
+			selected: this.model.get('country_id'),
+			name: 'country_id'
+		}));
+
+		this.countries.fetch();
+	},
 
 	onSave: function() {
 		return this.model.save(

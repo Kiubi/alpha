@@ -17,10 +17,9 @@ popd
 echo "Bundle assets"
 echo " - src"
 cp ./src/index.html "./$dest"
-mkdir -p ./$dest/{locales,vendor,assets/css,assets/fonts,assets/img}
+mkdir -p ./$dest/{locales,vendor,assets/css,assets/img}
 cat ./src/assets/css/*.css > "./$dest/assets/css/app.css"
 cp -r ./src/assets/img/* "./$dest/assets/img/"
-cp -r ./src/assets/fonts/* "./$dest/assets/fonts/"
 
 echo " - bootstrap"
 mkdir -p ./$dest/vendor/bootstrap/css
@@ -71,12 +70,17 @@ fi
 browserify -d -p ${minifyify} -o "${output}" \
 	-r jquery                           \
 	-r jquery.cookie                    \
-	-r jquery-ui                        \
-	-r jquery-ui/draggable              \
-	-r jquery-ui/core                   \
-	-r jquery-ui/widget                 \
-	-r jquery-ui/mouse                  \
-	-r jquery-ui/sortable               \
+	-r jquery-ui/ui/version				\
+	-r jquery-ui/ui/ie					\
+	-r jquery-ui/ui/scroll-parent		\
+	-r jquery-ui/ui/safe-blur			\
+	-r jquery-ui/ui/safe-active-element	\
+	-r jquery-ui/ui/plugin				\
+	-r jquery-ui/ui/data				\
+	-r jquery-ui/ui/widget				\
+	-r jquery-ui/ui/widgets/mouse		\
+	-r jquery-ui/ui/widgets/sortable	\
+	-r jquery-ui/ui/widgets/draggable	\
 	-r bootstrap						\
 	-r bootstrap-datetimepicker-npm		\
 	-r chart.js		                    \
@@ -113,12 +117,17 @@ fi
 browserify -d ./src/app.js              \
 	--exclude jquery                    \
 	--exclude jquery.cookie             \
-	--exclude jquery-ui        			\
-	--exclude jquery-ui/draggable	    \
-	--exclude jquery-ui/core	        \
-	--exclude jquery-ui/widget	        \
-	--exclude jquery-ui/mouse	        \
-	--exclude jquery-ui/sortable	    \
+	--exclude jquery-ui/ui/version				\
+	--exclude jquery-ui/ui/ie					\
+	--exclude jquery-ui/ui/scroll-parent		\
+	--exclude jquery-ui/ui/safe-blur			\
+	--exclude jquery-ui/ui/safe-active-element	\
+	--exclude jquery-ui/ui/plugin				\
+	--exclude jquery-ui/ui/data					\
+	--exclude jquery-ui/ui/widget				\
+	--exclude jquery-ui/ui/widgets/mouse		\
+	--exclude jquery-ui/ui/widgets/sortable		\
+	--exclude jquery-ui/ui/widgets/draggable	\
 	--exclude bootstrap                 \
 	--exclude bootstrap-datetimepicker-npm          \
 	--exclude chart.js		            \

@@ -5,7 +5,6 @@ var Controller = require('kiubi/controller.js');
 
 /* Models */
 var Injectcode = require('../prefs/models/meta');
-var Rss = require('./models/rss');
 var Analytics = require('./models/analytics');
 
 /* Views */
@@ -13,7 +12,6 @@ var IndexView = require('./views/index');
 var InjectcodeView = require('./views/injectcode');
 var RedirectionsView = require('./views/redirections');
 var FidelityView = require('./views/fidelity');
-var RssView = require('./views/rss');
 var AnalyticsView = require('./views/analytics');
 var VouchersView = require('./views/vouchers');
 var VoucherView = require('./views/voucher');
@@ -90,23 +88,6 @@ var ModulesController = Controller.extend({
 		this.setHeader({
 			title: 'Points de fidélité'
 		});
-	},
-
-	showRss: function() {
-		var m = new Rss();
-		m.fetch().done(function() {
-			var view = new RssView();
-			view.model = m;
-			this.navigationController.showContent(view);
-			this.setHeader({
-				title: 'Syndication'
-			});
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
 	},
 
 	showAnalytics: function() {
@@ -234,7 +215,6 @@ module.exports = Marionette.AppRouter.extend({
 		/*'modules/injectcode': 'showInjectcode',
 		'modules/redirections': 'showRedirections',
 		'modules/fidelity': 'showFidelity',
-		'modules/rss': 'showRss',
 		'modules/analytics': 'showAnalytics',
 		'modules/vouchers': 'showVouchers',
 		'modules/vouchers/:id': 'showVoucher',

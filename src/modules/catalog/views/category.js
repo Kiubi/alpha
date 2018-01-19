@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
+var FilePickerView = require('kiubi/modules/media/views/file.picker.js');
 
 var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
@@ -21,12 +22,17 @@ module.exports = Marionette.View.extend({
 		layout: {
 			el: "article[data-role='layout']",
 			replaceElement: true
+		},
+		image: {
+			el: "div[data-role='image']",
+			replaceElement: true
 		}
 	},
 
 	fields: [
 		'name',
 		'description',
+		'media_id',
 		'is_visible',
 		'slug',
 		'meta_title',
@@ -55,6 +61,12 @@ module.exports = Marionette.View.extend({
 
 	onRender: function() {
 		this.showChildView('layout', this.layoutSelector);
+		this.showChildView('image', new FilePickerView({
+			fieldname: 'media_id',
+			fieldLabel: 'Illustration',
+			type: 'image',
+			value: this.model.get('media_id') ? this.model.get('media_id') : ''
+		}));
 	},
 
 	onChildviewChangeLayout: function(layout_id) {
@@ -77,9 +89,9 @@ module.exports = Marionette.View.extend({
 	},
 
 	onDelete: function() {
-		return this.model.destroy().done(function() {
-			this.trigger('delete:category');
-		}.bind(this));
+		return this.model.destroy({
+			wait: true
+		});
 	}
 
 });

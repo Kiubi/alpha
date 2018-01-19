@@ -53,20 +53,20 @@ function getHeadersAction(options) {
 
 	if (options.addSave) {
 
+		var saveAction = {
+			title: 'Enregistrer',
+			callback: 'actionSave',
+			activateOnEvent: 'modified:content',
+			bubbleOnEvent: 'modified:content'
+		};
+
 		if (actions.length <= 1) {
-			actions.push({
-				title: 'Enregistrer',
-				callback: 'actionSave'
-			});
+			actions.push(saveAction);
 		} else {
-			actions.splice(1, 0, {
-				title: 'Enregistrer',
-				callback: 'actionSave'
-			});
+			actions.splice(1, 0, saveAction);
 		}
 
 	}
-
 
 	return actions;
 }
@@ -383,20 +383,6 @@ var MediaController = Controller.extend({
 	actionDownloadFile: function(media_id) {
 		// TODO
 		console.log('actionDownloadFile', media_id);
-	},
-
-	/* 
-	 * Others 
-	 */
-
-	actionSave: function() {
-		// Proxy to content View method onSave
-		var contentView = this.navigationController.getContent();
-		if (!contentView || !contentView.onSave) return;
-
-		var container = {};
-		contentView.triggerMethod('simpleForm:save', container);
-		if (container.promise) return container.promise;
 	}
 
 });

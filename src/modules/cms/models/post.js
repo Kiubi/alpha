@@ -30,6 +30,7 @@ module.exports = Backbone.Model.extend({
 		page_id: '',
 		type: '',
 		type_name: '',
+		type_pos: 1,
 		title: '',
 		subtitle: '',
 		group: '',
@@ -92,6 +93,7 @@ module.exports = Backbone.Model.extend({
 				return {
 					type: type.type,
 					name: type.name,
+					position: type.position,
 					fields: type.fields || []
 				};
 			});

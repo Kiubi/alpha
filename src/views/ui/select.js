@@ -2,22 +2,19 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
+
 module.exports = Marionette.View.extend({
 	template: _.template(
-		'<% if(emptyLabel) { %><option value=""><%- emptyLabel %></option><% } %>' +
+		'<select data-style="selectify" name="<%- name %>" data-direction="<%- direction %>"><% if(emptyLabel) { %><option value=""><%- emptyLabel %></option><% } %>' +
 		'<% _(options).each(function(item){ %><% if (item.is_group) { %><optgroup  class="disabled" label="<%= indent2Space(item.indent) %><%- item.label %>"></optgroup><% } else { %>' +
 		'<option value="<%- item.value %>" <%= (item.value == selected) ? \'selected="selected"\' : "" %>><%= indent2Space(item.indent) %><%- item.label %></option><% } %>' +
-		'<% }) %>'
+		'<% }) %></select>'
 	),
-	tagName: 'select',
-	className: 'form-control',
+	tagName: 'div',
+	className: '',
 	extraClassName: '',
-
-	attributes: function() {
-		return {
-			'name': this.getOption('name')
-		};
-	},
+	behaviors: [SelectifyBehavior],
 
 	collectionEvents: {
 		sync: function() {
@@ -25,31 +22,59 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
+	ui: {
+		'select': 'select'
+	},
+
+	direction: 'down', // up OR down
+
 	selected: null,
 	name: '',
 	emptyLabel: '',
 	dataSource: null,
 	datas: null,
 
+	/**
+	 *
+	 * @param {Object} options
+	 * 							{String} selected
+	 * 							{String} name
+	 * 							{Backbone.Collection} collection
+	 * 							{Promise} dataSource
+	 * 							{String} direction	Choose dropdown direction : "up" or "down"
+	 */
 	initialize: function(options) {
-		this.mergeOptions(options, ['selected', 'name', 'collection', 'dataSource']);
+		this.mergeOptions(options, ['selected', 'name', 'collection', 'direction']);
 
 		if (this.getOption('extraClassName')) {
 			this.$el.addClass(this.getOption('extraClassName'));
 		}
 
-		if (this.dataSource) {
-			this.dataSource.done(function(options) {
-				this.datas = options;
-				this.render();
-			}.bind(this));
+		if (this.getOption('dataSource')) {
+			this.load(this.getOption('dataSource'));
 		}
 
-		this.$el.on('change', this.onSelect.bind(this));
+		if (this.collection && this.collection.selectPayload) {
+			this.listenTo(this.collection, 'sync', this.render);
+		}
+	},
+
+	/**
+	 * Load options from a promise
+	 * 
+	 * @param {Promise} promise
+	 */
+	load: function(promise) {
+		this.dataSource = promise;
+		this.dataSource.done(function(options) {
+			this.datas = options;
+			this.render();
+		}.bind(this));
 	},
 
 	onSelect: function(event) {
 		this.selected = Backbone.$(event.currentTarget).val();
+		this.triggerMethod('change', this.selected, this.getOption('name'));
 	},
 
 	getOptionsList: function() {
@@ -64,8 +89,19 @@ module.exports = Marionette.View.extend({
 		return [];
 	},
 
+	onRender: function() {
+		this.getUI('select').on('change', this.onSelect.bind(this));
+		// if selected is not defined, seek first element
+		if (this.selected == null && !this.getOption('emptyLabel')) {
+			var options = this.getOptionsList();
+			if (options.length) this.selected = options[0].value;
+		}
+	},
+
 	templateContext: function() {
 		return {
+			name: this.getOption('name'),
+			direction: this.direction,
 			selected: this.selected,
 			emptyLabel: this.getOption('emptyLabel'),
 			options: this.getOptionsList(),
@@ -81,6 +117,6 @@ module.exports = Marionette.View.extend({
 	},
 
 	onBeforeDestroy: function() {
-		this.$el.off('change');
+		this.getUI('select').off('change');
 	}
 });

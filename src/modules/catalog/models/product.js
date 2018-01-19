@@ -20,6 +20,12 @@ module.exports = Backbone.Model.extend({
 				this.previewLink = response.meta.link.preview;
 			}
 
+			if (response.data.variants) {
+				_.each(response.data.variants, function(variant) {
+					variant.product_id = response.data.product_id;
+				});
+			}
+
 			return response.data;
 		}
 		return response;
@@ -29,10 +35,9 @@ module.exports = Backbone.Model.extend({
 
 		product_id: null,
 		is_spotlight: false,
-		available_date: '',
-		available_date_f: '',
+		available_date: null,
 		is_visible: false,
-		stock: '',
+		stock: 0,
 		view_count: null,
 		is_virtual: false,
 		brand_id: null,
@@ -56,16 +61,12 @@ module.exports = Backbone.Model.extend({
 		price_base_inc_vat: 0.0,
 		price_base_ex_vat_label: '',
 		price_base_inc_vat_label: '',
-		creation_date: '',
-		creation_date_f: '',
-		creation_date_timestamp: null,
-		modification_date: '',
-		modification_date_f: '',
-		modification_date_timestamp: null,
+		creation_date: null,
+		modification_date: null,
 		name: '',
 		description: '',
 		header: '',
-		type: '',
+		type: null,
 		main_media_id: null,
 		slug: '',
 		meta_title: '',
@@ -89,7 +90,50 @@ module.exports = Backbone.Model.extend({
 		text13: '',
 		text14: '',
 		text15: '',
-		categories: []
+		categories: [],
+		variants: [],
+		images: []
+	},
+
+	/**
+	 * Return all post types
+	 *
+	 * @returns {Promise}
+	 */
+	getTypes: function() {
+		return Backbone.ajax({
+			url: 'sites/@site/catalog/products_types',
+			data: {
+				extra_fields: 'structure'
+			}
+		}).then(function(response) {
+			return _.map(response.data, function(type) {
+				return {
+					type: type.type,
+					name: type.name,
+					position: type.position,
+					fields: type.fields || []
+				};
+			});
+		});
+	},
+
+	/**
+	 * Duplicate current product
+	 *
+	 * @return {Promise}
+	 */
+	duplicate: function(attributes) {
+		var that = this;
+		return Backbone.ajax({
+			url: 'sites/@site/catalog/products/' + this.get('product_id'),
+			method: 'POST',
+			data: attributes
+		}).then(function(response) {
+			var copy = that.clone();
+			copy.set(copy.parse(response));
+			return copy;
+		});
 	}
 
 });

@@ -57,16 +57,17 @@ function getHeadersAction(options) {
 
 	if (options.addSave) {
 
+		var saveAction = {
+			title: 'Enregistrer',
+			callback: 'actionSave',
+			activateOnEvent: 'modified:content',
+			bubbleOnEvent: 'modified:content'
+		};
+
 		if (actions.length <= 1) {
-			actions.push({
-				title: 'Enregistrer',
-				callback: 'actionSave'
-			});
+			actions.push(saveAction);
 		} else {
-			actions.splice(1, 0, {
-				title: 'Enregistrer',
-				callback: 'actionSave'
-			});
+			actions.splice(1, 0, saveAction);
 		}
 
 	}
@@ -240,7 +241,10 @@ var BlogController = Controller.extend({
 					}, true);
 				}
 			}.bind(this));
-			this.listenTo(view, 'delete:post', this.actionDeletedPost);
+			this.listenTo(m, 'destroy', function() {
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/blog');
+			});
 			this.navigationController.showContent(view);
 			this.setHeader({
 					title: m.get('title')
@@ -290,11 +294,6 @@ var BlogController = Controller.extend({
 				that.navigationController.showErrorModal(xhr);
 			});
 		});
-	},
-
-	actionDeletedPost: function() {
-		this.navigationController.showOverlay(300);
-		this.navigationController.navigate('/blog');
 	},
 
 	/* 
@@ -380,8 +379,10 @@ var BlogController = Controller.extend({
 		var c = new Comments();
 		var title = 'Tous les commentaires';
 		var tabs = null;
+		var actions = null;
+		var param = {};
 		if (post_id > 0) {
-			c.post_id = post_id;
+			param.post_id = post_id;
 
 			var post = new Post({
 				post_id: post_id
@@ -390,6 +391,9 @@ var BlogController = Controller.extend({
 
 				title = post.get('title');
 				tabs = HeaderTabsPost(post_id, post.get('comments_count'));
+				actions = getHeadersAction({
+					preview: post
+				});
 			});
 
 		} else {
@@ -401,11 +405,11 @@ var BlogController = Controller.extend({
 				collection: c
 			});
 			this.navigationController.showContent(view);
-			view.start();
+			view.start(param);
 			this.setHeader({
 					title: title
 				},
-				null,
+				actions,
 				tabs);
 		}.bind(this)).fail(function() {
 			this.notFound();
@@ -442,7 +446,11 @@ var BlogController = Controller.extend({
 					this.triggerSidebarMenu('refresh:categories');
 				}
 			}.bind(this));
-			this.listenTo(view, 'delete:category', this.actionDeletedCategory);
+			this.listenTo(m, 'destroy', function() {
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/blog/home');
+				this.triggerSidebarMenu('refresh:categories');
+			});
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: m.get('name')
@@ -456,12 +464,6 @@ var BlogController = Controller.extend({
 				title: 'Catégorie introuvable'
 			});
 		}.bind(this));
-	},
-
-	actionDeletedCategory: function() {
-		this.navigationController.showOverlay(300);
-		this.navigationController.navigate('/blog/home');
-		this.triggerSidebarMenu('refresh:categories');
 	},
 
 	actionNewCategory: function() {
@@ -488,16 +490,6 @@ var BlogController = Controller.extend({
 
 	actionPreview: function(model) {
 		window.open(model.previewLink);
-	},
-
-	actionSave: function() {
-		// Proxy to content View method onSave
-		var contentView = this.navigationController.getContent();
-		if (!contentView || !contentView.onSave) return;
-
-		var container = {};
-		contentView.triggerMethod('simpleForm:save', container);
-		if (container.promise) return container.promise;
 	}
 
 });

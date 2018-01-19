@@ -4,8 +4,17 @@ var _string = require('underscore.string');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 
-//var ControllerChannel = Backbone.Radio.channel('controller');
 var Session = Backbone.Radio.channel('app').request('ctx:session');
+
+var HomeRowView = Marionette.View.extend({
+	template: require('../templates/categories.row.home.html'),
+	className: 'list-item',
+	templateContext: function() {
+		return {
+			preview: Session.site.get('domain') + '/catalogue/' // TODO fix custom breadcrum
+		};
+	}
+});
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/categories.row.html'),
@@ -13,9 +22,9 @@ var RowView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			plural: function(nb, singular, plural) {
-				return nb > 1 ? plural : singular;
+				return (nb > 1 ? plural : singular).replace('%d', nb);
 			},
-			preview: Session.site.get('domain') + '/catalogue/' + this.model.get('slug') + '/',
+			preview: Session.site.get('domain') + '/catalogue/' + this.model.get('slug') + '/', // TODO fix custom breadcrum
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			short_desc: _string.prune(_string.stripTags(this.model.get('description')), 120)
 		};
@@ -24,9 +33,7 @@ var RowView = Marionette.View.extend({
 	behaviors: [RowActionsBehavior],
 
 	onActionDelete: function() {
-		return this.model.destroy().done(function() {
-			//ControllerChannel.trigger('refresh:categories');
-		});
+		return this.model.destroy();
 	},
 
 	onSortChange: function(data) {
@@ -34,9 +41,7 @@ var RowView = Marionette.View.extend({
 			data, {
 				patch: true
 			}
-		).done(function() {
-			//ControllerChannel.trigger('refresh:categories');
-		});
+		);
 	}
 
 });
@@ -62,7 +67,9 @@ module.exports = Marionette.View.extend({
 	onRender: function() {
 		this.showChildView('list', new ListView({
 			collection: this.collection,
-			rowView: RowView,
+			rowView: function(model) {
+				return model.get('is_main') ? HomeRowView : RowView;
+			},
 
 			title: 'Liste des catégories',
 			selection: [{
@@ -93,21 +100,15 @@ module.exports = Marionette.View.extend({
 	},
 
 	showCategories: function(ids) {
-		return this.collection.bulkShow(ids).done(function() {
-			//ControllerChannel.trigger('refresh:categories');
-		});
+		return this.collection.bulkShow(ids);
 	},
 
 	hideCategories: function(ids) {
-		return this.collection.bulkHide(ids).done(function() {
-			//ControllerChannel.trigger('refresh:categories');
-		});
+		return this.collection.bulkHide(ids);
 	},
 
 	deleteCategories: function(ids) {
-		return this.collection.bulkDelete(ids).done(function() {
-			//ControllerChannel.trigger('refresh:categories');
-		});
+		return this.collection.bulkDelete(ids);
 	}
 
 });

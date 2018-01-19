@@ -2,7 +2,7 @@
 	<div class="col-xs-5">
 		<div class="media">
 			<div class="media-body">
-				<h4><%- vat_rate_formatted %>%</h4>
+				<h4><%- vat_rate %>%</h4>
 			</div>
 		</div>
 	</div>
@@ -31,7 +31,7 @@
 			<div class="col-xs-4"></div>
 			<div class="col-xs-5">
 				<div class="form-group">
-					<label class="control-label" for="exmemple1">Taxe par défaut</label>
+					<label class="control-label">Taxe par défaut</label>
 					<div class="radio-group">
 						<input name="is_default" id="f_<%- tax_id %>_is_default1" value="1" type="radio" <%= is_default ? 'checked="checked"' : '' %> >
 						<label for="f_<%- tax_id %>_is_default1" class="">Oui</label>

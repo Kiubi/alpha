@@ -16,7 +16,7 @@
         Avant d'activer l'accès HTTPS, veuillez noter que :
       </p>
       <ul>
-        <li><a href="/domaines">Les noms de domaine associés au site</a>  doivent être correctement configurés sur l'adresse IP indiquée</li>
+        <li><a href="/prefs/domains">Les noms de domaine associés au site</a>  doivent être correctement configurés sur l'adresse IP indiquée</li>
         <li>Il faut patienter au moins 5 minutes après l'activation de l'accès HTTPS pour que le site soit pris en charge</li>
         <li>Le sitemap du site généré automatiquement est mis à jour 24 heures après l'activation du HTTPS</li>
         <li>Le certificat SSL/TLS utilisé pour l'accès HTTPS n’est pas compatible avec IE8 et précédents sur Windows XP</li>
@@ -40,14 +40,26 @@
       <h1>Accès HTTPS</h1>
     </header>
     <div class="post-content">
+
       <div class="form-group">
         <div class="radio-group">
-          <input name="is_enabled" id="is_enabled1" value="1" type="radio">
+          <input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= (is_enabled) ? 'checked="checked"' : '' %>>
           <label for="is_enabled1" class="visible">Activé (recommandé)</label>
-          <input name="is_enabled" id="is_enabled0" value="0" checked="checked" type="radio">
+          <input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= (!is_enabled) ? 'checked="checked"' : '' %>>
           <label for="is_enabled0" class="not-visible">Désactivé</label>
         </div>
       </div>
+
+		<% if (is_enabled) { %>
+		<% switch(status) { case 'TODO' : %>
+		La demande d'activation de l'accès HTTPS est en attente de traitement, merci de patienter quelques minutes.
+		<% break; case 'PENDING' : %>
+		La demande d'activation de l'accès HTTPS est en cours en traitement.
+		<% break; case 'ERROR' : %>
+		L'activation HTTPS a échoué, merci de reessayer dans quelques instants.
+		<% brek;} %>
+		<% } %>
+
     </div>
     <footer class="post-footer"></footer>
   </article>

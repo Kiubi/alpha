@@ -1,47 +1,44 @@
 <article class="post-article">
 	<header class="post-header">
-		<h1><%- title %></h1>
+		<h1><%- title %> <span data-role="counter"></span></h1>
 		<div class="form-inline">
-		
+
 			<% if(selection && selection.length) { %>
 			<div class="checkbox-inline">
 				<input id="selection_all" name="selection_all" value="1" type="checkbox">
-				<label for="selection_all"></label>
+				<label for="selection_all"><span class="btn btn-form-control" data-role="select-all">Tout sélectionner</span></label>
 			</div>
-			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-option" data-role="action" data-id="0"><%- selection[0].title %></button>
-				<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span></button>
+			<div class="btn-group hidden" role="group">
+				<button type="button" style="width: 140px" class="form-control form-control-select dropdown-toggle" data-role="bulk-action" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="fake-selected">Plus d'actions</span>
+					<span class="caret"></span>
+			</button>
+
 				<ul class="dropdown-menu">
-					<% _(selection).each(function(item, i){ if(i==0) return; %> 
+					<% _(selection).each(function(item, i){ %>
 						<li><a href="#" data-role="action" data-id="<%- i %>"><%- item.title %></a></li>
 					<% }) %>
 				</ul>
-			</div>
-			<% } %>
-			
-			<span data-role="filters"></span>
-
-			<% if(filterModal) { %>
-			<div class="btn-group">
+			</div><% } %><span data-role="filters"></span><% if(filterModal) { %><div class="btn-group">
 				<button type="button" class="btn btn-icon md-icon md-filter" data-toggle="modal" data-target="<%- filterModal %>"></button>
 			</div>
 			<% } %>
-			
+
 			<% if(order) { %>
 			<div class="btn-group pull-right" role="group" data-role="order">
 				<button type="button" class="btn btn-icon md-icon md-sort dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
 				<ul class="dropdown-menu">
-					<% _(order).each(function(item, index){%> 
+					<% _(order).each(function(item, index){%>
 						<li <%= item.is_active ? 'class="active"' : '' %> data-id="<%- index %>"><a href="#"><%- item.title %></a></li>
 					<% }) %>
 				</ul>
 			</div>
 			<% } %>
-			
+
 		</div>
 	</header>
 	<div data-role="list"></div>
-	<div data-role="loading">
+	<div data-role="loading" style="display:none">
 		<div class="sk-fading-circle">
 		  <div class="sk-circle1 sk-circle"></div>
 		  <div class="sk-circle2 sk-circle"></div>

@@ -13,13 +13,12 @@
 				</div>
 			</div>
 			<div class="col-xs-4">
-				<div class="form-group has-feedback">
+				<div class="form-group">
 					<label class="control-label">Fenêtre cible </label>
-					<select class="form-control" name="url_target">
+					<select name="url_target" data-style="selectify">
 						<option value="_self" <%= url_target == '_self' ? 'selected="selected"' : ''%> >Même fenêtre</option>
 						<option value="_blank" <%= url_target == '_blank' ? 'selected="selected"' : ''%> >Nouvelle fenêtre</option>
 					</select>
-					<div class="form-control-feedback md-feedback md-select"></div>
 				</div>
 			</div>
 		</div>

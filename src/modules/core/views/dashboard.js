@@ -3,10 +3,12 @@ var Marionette = require('backbone.marionette');
 var Chart = require('chart.js');
 
 var TooltipBehavior = require('kiubi/behaviors/tooltip');
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/dashboard.html'),
-	behaviors: [TooltipBehavior],
+	behaviors: [TooltipBehavior, SelectifyBehavior],
+	pageTitle: 'Tableau de bord',
 
 	ui: {
 		'chart': 'canvas[data-role="chart"]'

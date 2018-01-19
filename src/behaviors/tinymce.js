@@ -29,11 +29,11 @@ function removeSign(match, media) {
 	return 'src="/media/' + media + '"';
 }
 
-var tinyMCE = require('tinymce');
+require('tinymce');
+var tinyMCE = window.tinyMCE;
 
 // i18n
 require('kiubi/locales/fr/tinymce.js');
-tinyMCE.ScriptLoader.markDone(tinyMCE.EditorManager.baseURL + '/langs/fr_FR.js');
 
 // Theme
 require('tinymce/themes/modern/theme.js');
@@ -203,7 +203,9 @@ module.exports = Marionette.Behavior.extend({
 		var plugins;
 		var toolbar;
 
-		switch (Backbone.$(target).data('wysiwyg-toolbar')) {
+		var $target = Backbone.$(target);
+
+		switch ($target.data('wysiwyg-toolbar')) {
 			case 'micro':
 				plugins = ['image', 'contextmenu', 'kiubi', 'lists', 'paste', 'link',
 					'charmap', 'code'
@@ -226,7 +228,7 @@ module.exports = Marionette.Behavior.extend({
 
 		return tinyMCE.init({
 			target: target,
-			height: 500,
+			height: $target.data('wysiwyg-height') || 500,
 			skin_url: '/vendor/tinymce/skins/lightgray',
 			language: 'fr_FR',
 			language_url: false,

@@ -9,27 +9,25 @@
 	<div class="post-content">
 		<div class="row">
 			<div class="col-xs-6">
-				<div class="form-group has-feedback">
+				<div class="form-group">
 					<label for="stockout_selling">Vente en cas de rupture de stock</label>
-					<select class="form-control" id="stockout_selling" name="stockout_selling">
+					<select id="stockout_selling" name="stockout_selling" data-style="selectify">
 						<option value="1" <%= stockout_selling ? 'selected="selected"' : '' %>>Autoriser la vente du produit</option>
 						<option value="0" <%= !stockout_selling ? 'selected="selected"' : '' %>>Stopper la vente du produit</option>
 					</select>
-					<div class="form-control-feedback md-feedback md-select"></div>
 				</div>
 			</div>
 			<div class="col-xs-6">
-				<div class="form-group has-feedback">
+				<div class="form-group">
 					<label for="decrement_stock">Retirer un produit du stock</label>
-					<select class="form-control" id="decrement_stock" name="decrement_stock">
+					<select id="decrement_stock" name="decrement_stock" data-style="selectify">
 						<option value="at_payment" <%= decrement_stock == "at_payment" ? 'selected="selected"' : '' %>>Dès qu'il est commandé et payé</option>
 						<option value="never" <%= decrement_stock == "never" ? 'selected="selected"' : '' %>>Jamais</option>
 					</select>
-					<div class="form-control-feedback md-feedback md-select"></div>
 				</div>
 			</div>
 		</div>
-		<label class="control-label" for="exmemple1">Quantité avant rupture de stock</label>
+		<label class="control-label" for="stockout_threshold">Quantité avant rupture de stock</label>
 		<p>Vous pouvez indiquer une quantité minimale d'un produit qui doit rester en stock.
 			À la valeur indiquée et en dessous, le produit est considéré comme étant en rupture de stock.
 		</p>
@@ -37,7 +35,7 @@
 			<div class="col-xs-3">
 				<div class="form-group">
 					<div class="input-group">
-						<span class="input-group-addon"></span><input class="form-control" name="stockout_threshold" value="<%- stockout_threshold %>"><span class="input-group-addon">produit(s)</span>
+						<span class="input-group-addon"></span><input class="form-control" name="stockout_threshold" id="stockout_threshold" value="<%- stockout_threshold %>"><span class="input-group-addon">produit(s)</span>
 					</div>
 				</div>
 			</div>
@@ -48,7 +46,7 @@
 
 <article class="post-article">
 	<header class="post-header">
-		<h1>Numéros de commandes</h1>
+		<h1>Numéros des commandes</h1>
 	</header>
 	<div class="post-content">
 		<p>Vous avez la possibilité de choisir la lettre qui préfixe les numéros des commandes passées sur le site.
@@ -58,8 +56,8 @@
 		<label class="control-label" for="order_prefix">Préfixe des commandes</label>
 		<div class="row">
 			<div class="col-xs-3">
-				<div class="form-group has-feedback">
-					<select class="form-control" id="order_prefix" name="order_prefix">
+				<div class="form-group">
+					<select id="order_prefix" name="order_prefix" data-style="selectify" data-direction="up">
 						<option value="A" <%= order_prefix == "A" ? 'selected="selected"' : '' %>>A</option>
 						<option value="B" <%= order_prefix == "B" ? 'selected="selected"' : '' %>>B</option>
 						<option value="C" <%= order_prefix == "C" ? 'selected="selected"' : '' %>>C</option>
@@ -87,11 +85,32 @@
 						<option value="Y" <%= order_prefix == "Y" ? 'selected="selected"' : '' %>>Y</option>
 						<option value="Z" <%= order_prefix == "Z" ? 'selected="selected"' : '' %>>Z</option>
 					</select>
-					<div class="form-control-feedback md-feedback md-select"></div>
 				</div>
 			</div>
 		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
 
+<article class="post-article">
+	<header class="post-header">
+		<h1>Minimum de commande</h1>
+	</header>
+	<div class="post-content">
+		<p>
+			Le minimum de commande vous permet d'interdir la prise des commandes en-dessous d'un certain montant, frais de port compris.
+			Vous pouvez définir un montant de 0,00€ pour autoriser les commandes gratuites.
+		</p>
+		<label class="control-label" for="stockout_threshold">Montant minimum</label>
+		<div class="row">
+			<div class="col-xs-3">
+				<div class="form-group">
+					<div class="input-group">
+						<span class="input-group-addon"></span><input class="form-control" name="" id="" value="" placeholder="0,00"><span class="input-group-addon">€TTC</span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<footer class="post-footer"></footer>
 </article>

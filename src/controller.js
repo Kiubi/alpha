@@ -124,7 +124,7 @@ module.exports = Marionette.Object.extend({
 	 * Helper to set breadcrum and actions binded to the controler
 	 * 
 	 * @param {Object|Array} breadcrum
-	 * @param {Object} actions
+	 * @param {Array} actions
 	 * @param {Array} tabs
 	 */
 	setHeader: function(breadcrum, actions, tabs) {
@@ -153,6 +153,21 @@ module.exports = Marionette.Object.extend({
 		}
 		this.navigationController.setBreadCrum(bc);
 		if (refresh) this.navigationController.refreshHeader();
+	},
+
+	/**
+	 * Proxy to content View method onSave
+	 *
+	 * @returns {null|Promise}
+	 */
+	actionSave: function() {
+
+		var contentView = this.navigationController.getContent();
+		if (!contentView || !contentView.onSave) return null;
+
+		var container = {};
+		contentView.triggerMethod('simpleForm:save', container);
+		if (container.promise) return container.promise;
 	}
 
 });

@@ -8,28 +8,25 @@
     </header>
     <div class="post-content">
       <div class="form-group">
-        <label class="control-label required" for="UA">Nom du site Internet</label>
+        <label class="control-label required" for="site_title">Nom du site Internet</label>
         <p>
           Donnez un nom explicite au site pour permettre son identification par Kiubi et par les Internautes.
           Ce nom est mentionné dans de nombreux documents : factures, commandes, mentions légales, etc.
         </p>
-        <input id="UA" name="UA" class="form-control" value="" placeholder="">
+        <input id="site_title" name="site_title" class="form-control" value="<%- site.site_title %>" placeholder="">
       </div>
-      <div class="form-group">
-        <label class="control-label" for="exmemple1">Logo du site Internet</label>
-        <p>Le logo peut être utilisé dans tous les templates du site Internet, dans les emails, le bloc-marque et le détail des commandes.
-        </p>
-        <p><a href="#">Accéder à la médiathèque</a><a href="#" class="md-icon md-delete"></a></p>
-      </div>
+
+	  <div data-role="logo"></div>
+
       <div class="form-group">
         <label class="control-label">Accès au site Internet</label>
         <div class="radio">
-          <input name="is_enabled" id="is_enabled1" value="1" type="radio" checked="checked">
-          <label for="is_enabled1" class="visible">Le site est ouvert, ses pages sont publiquement accessibles</label>
+          <input name="is_site_open" id="is_site_open1" value="1" type="radio" <%= site.is_site_open ? 'checked="checked"' : '' %>>
+          <label for="is_site_open1" class="visible">Le site est ouvert, ses pages sont publiquement accessibles</label>
         </div>
         <div class="radio">
-          <input name="is_enabled" id="is_enabled0" value="0" type="radio">
-          <label for="is_enabled0" class="not-visible">Le site est fermé, aucune page n'est accessible sauf pour les utilisateurs de la console d'administration</label>
+          <input name="is_site_open" id="is_site_open0" value="0" type="radio" <%= !site.is_site_open ? 'checked="checked"' : '' %>>
+          <label for="is_site_open0" class="not-visible">Le site est fermé, aucune page n'est accessible sauf pour les utilisateurs de la console d'administration</label>
         </div>
       </div>
     </div>
@@ -50,39 +47,48 @@
           <div class="form-group">
             <label class="control-label">Vente en ligne</label>
             <div class="radio-group">
-              <input name="is_enabled1" id="is_enabled11" value="1" type="radio" checked="checked">
-              <label for="is_enabled11" class="visible">Activée</label>
-              <input name="is_enabled1" id="is_enabled01" value="0" type="radio">
-              <label for="is_enabled01" class="not-visible">Désactivée</label>
+              <input name="is_checkout_enabled" id="is_checkout_enabled1" value="1" type="radio" <%= site.is_checkout_enabled ? 'checked="checked"' : '' %>>
+              <label for="is_checkout_enabled1" class="visible">Activée</label>
+              <input name="is_checkout_enabled" id="is_checkout_enabled0" value="0" type="radio" <%= !site.is_checkout_enabled ? 'checked="checked"' : '' %>>
+              <label for="is_checkout_enabled0" class="not-visible">Désactivée</label>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label">Catalogue</label>
             <div class="radio-group">
-              <input name="is_enabled2" id="is_enabled12" value="1" type="radio" checked="checked">
-              <label for="is_enabled12" class="visible">Activé</label>
-              <input name="is_enabled2" id="is_enabled02" value="0" type="radio">
-              <label for="is_enabled02" class="not-visible">Désactivé</label>
+              <input name="is_catalog_enabled" id="is_catalog_enabled1" value="1" type="radio" <%= site.is_catalog_enabled ? 'checked="checked"' : '' %>>
+              <label for="is_catalog_enabled1" class="visible">Activé</label>
+              <input name="is_catalog_enabled" id="is_catalog_enabled0" value="0" type="radio" <%= !site.is_catalog_enabled ? 'checked="checked"' : '' %>>
+              <label for="is_catalog_enabled0" class="not-visible">Désactivé</label>
             </div>
           </div>
+		  <div class="form-group">
+		  <label class="control-label">API Front-office</label>
+		    <div class="radio-group">
+			  <input name="is_api_enabled" id="is_api_enabled1" value="1" type="radio" <%= site.is_api_enabled ? 'checked="checked"' : '' %>>
+			  <label for="is_api_enabled1" class="visible">Activée</label>
+			  <input name="is_api_enabled" id="is_api_enabled0" value="0" type="radio" <%= !site.is_api_enabled ? 'checked="checked"' : '' %>>
+			  <label for="is_api_enabled0" class="not-visible">Désactivée</label>
+		    </div>
+		  </div>
         </div>
         <div class="col-xs-5">
           <div class="form-group">
             <label class="control-label">Blog</label>
             <div class="radio-group">
-              <input name="is_enabled3" id="is_enabled13" value="1" type="radio" checked="checked">
-              <label for="is_enabled13" class="visible">Activé</label>
-              <input name="is_enabled3" id="is_enabled03" value="0" type="radio">
-              <label for="is_enabled03" class="not-visible">Désactivé</label>
+              <input name="is_blog_enabled" id="is_blog_enabled1" value="1" type="radio" <%= site.is_blog_enabled ? 'checked="checked"' : '' %>>
+              <label for="is_blog_enabled1" class="visible">Activé</label>
+              <input name="is_blog_enabled" id="is_blog_enabled0" value="0" type="radio" <%= !site.is_blog_enabled ? 'checked="checked"' : '' %>>
+              <label for="is_blog_enabled0" class="not-visible">Désactivé</label>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label">Page de contact</label>
             <div class="radio-group">
-              <input name="is_enabled4" id="is_enabled14" value="1" type="radio" checked="checked">
-              <label for="is_enabled14" class="visible">Activée</label>
-              <input name="is_enabled4" id="is_enabled04" value="0" type="radio">
-              <label for="is_enabled04" class="not-visible">Désactivée</label>
+              <input name="is_contact_enabled" id="is_contact_enabled1" value="1" type="radio" <%= site.is_contact_enabled ? 'checked="checked"' : '' %>>
+              <label for="is_contact_enabled1" class="visible">Activée</label>
+              <input name="is_contact_enabled" id="is_contact_enabled0" value="0" type="radio" <%= !site.is_contact_enabled ? 'checked="checked"' : '' %>>
+              <label for="is_contact_enabled0" class="not-visible">Désactivée</label>
             </div>
           </div>
         </div>
@@ -101,12 +107,12 @@
         en ajoutant une demande d'identification directement avant la page d'accueil.
       </p>
       <div class="form-group">
-        <label class="control-label" for="UA">Identifiant</label>
-        <input id="UA" name="UA" class="form-control" value="" placeholder="Si le mot de passe est renseigné, cet identifiant sera demandé pour accéder au site">
+        <label class="control-label" for="front_login">Identifiant</label>
+        <input id="front_login" name="front_login" class="form-control" value="<%- site.front_login %>" placeholder="Si le mot de passe est renseigné, cet identifiant sera demandé pour accéder au site">
       </div>
       <div class="form-group">
-        <label class="control-label" for="UA">Mot de passe</label>
-        <input id="UA" name="UA" class="form-control" value="" placeholder="Si l'identifiant est renseigné, ce mot de passe sera demandé pour accéder au site">
+        <label class="control-label" for="front_password">Mot de passe</label>
+        <input id="front_password" name="front_password" class="form-control" value="<%- site.front_password %>" placeholder="Si l'identifiant est renseigné, ce mot de passe sera demandé pour accéder au site">
       </div>
     </div>
     <footer class="post-footer"></footer>
@@ -122,22 +128,22 @@
         Il est composé du nom de la marque ou de la société, de sa signature (ou slogan) ainsi que du logo.
       </p>
       <div class="form-group">
-        <label class="control-label" for="UA">Nom de la marque</label>
-        <input id="UA" name="UA" class="form-control" value="" placeholder="Le nom est généralement affichée dans la zone d'entête du site">
+        <label class="control-label" for="site_excerpt">Nom de la marque</label>
+        <input id="site_excerpt" name="site_excerpt" class="form-control" value="<%- theme.site_excerpt %>" placeholder="Le nom est généralement affichée dans la zone d'entête du site">
       </div>
       <div class="form-group">
-        <label class="control-label" for="UA">Signature de la marque</label>
-        <input id="UA" name="UA" class="form-control" value="" placeholder="La signature est généralement affichée en dessous du nom">
+        <label class="control-label" for="site_description">Signature de la marque</label>
+        <input id="site_description" name="site_description" class="form-control" value="<%- theme.site_description %>" placeholder="La signature est généralement affichée en dessous du nom">
       </div>
       <div class="row">
         <div class="col-xs-4">
           <div class="form-group">
             <label class="control-label">Afficher le nom</label>
             <div class="radio-group">
-              <input name="is_enabled34" id="is_enabled134" value="1" type="radio" checked="checked">
-              <label for="is_enabled134" class="">Oui</label>
-              <input name="is_enabled34" id="is_enabled034" value="0" type="radio">
-              <label for="is_enabled034" class="">Non</label>
+              <input name="is_excerpt_visible" id="is_excerpt_visible1" value="1" type="radio" <%= theme.is_excerpt_visible ? 'checked="checked"' : '' %>>
+              <label for="is_excerpt_visible1" class="">Oui</label>
+              <input name="is_excerpt_visible" id="is_excerpt_visible0" value="0" type="radio" <%= !theme.is_excerpt_visible ? 'checked="checked"' : '' %>>
+              <label for="is_excerpt_visible0" class="">Non</label>
             </div>
           </div>
         </div>
@@ -145,10 +151,10 @@
           <div class="form-group">
             <label class="control-label">Afficher la signature</label>
             <div class="radio-group">
-              <input name="is_enabled35" id="is_enabled135" value="1" type="radio" checked="checked">
-              <label for="is_enabled135" class="">Oui</label>
-              <input name="is_enabled35" id="is_enabled035" value="0" type="radio">
-              <label for="is_enabled035" class="">Non</label>
+              <input name="is_description_visible" id="is_description_visible1" value="1" type="radio" <%= theme.is_description_visible ? 'checked="checked"' : '' %>>
+              <label for="is_description_visible1" class="">Oui</label>
+              <input name="is_description_visible" id="is_description_visible0" value="0" type="radio" <%= !theme.is_description_visible ? 'checked="checked"' : '' %>>
+              <label for="is_description_visible0" class="">Non</label>
             </div>
           </div>
         </div>
@@ -156,10 +162,10 @@
           <div class="form-group">
             <label class="control-label">Afficher le logo</label>
             <div class="radio-group">
-              <input name="is_enabled36" id="is_enabled136" value="1" type="radio" checked="checked">
-              <label for="is_enabled136" class="">Oui</label>
-              <input name="is_enabled36" id="is_enabled036" value="0" type="radio">
-              <label for="is_enabled036" class="">Non</label>
+              <input name="is_logo_visible" id="is_logo_visible1" value="1" type="radio" <%= theme.is_logo_visible ? 'checked="checked"' : '' %>>
+              <label for="is_logo_visible1" class="">Oui</label>
+              <input name="is_logo_visible" id="is_logo_visible0" value="0" type="radio" <%= !theme.is_logo_visible ? 'checked="checked"' : '' %>>
+              <label for="is_logo_visible0" class="">Non</label>
             </div>
           </div>
         </div>
@@ -178,45 +184,31 @@
         Une redirection 301 est alors mise en place automatiquement vers la nouvelle adresse.
       </p>
       <div class="row">
-        <div class="col-xs-3"><label class="control-label" for="exmemple1">Nom du service</label></div>
-        <div class="col-xs-8"><label class="control-label" for="exmemple1">Adresse du répertoire</label></div>
+        <div class="col-xs-3"><label class="control-label">Nom du service</label></div>
+        <div class="col-xs-8"><label class="control-label">Adresse du répertoire</label></div>
       </div>
-      <div class="list-item list-item-form">
-        <div class="row">
-          <div class="col-xs-3">
-            <div class="form-group">
-              <input class="form-control" value="Blog" placeholder="Blog">
-            </div>
-          </div>
-          <div class="col-xs-9">
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon" id="basic-addon3"><%- domain %>/</span>
-                <input class="form-control" value="blog" placeholder="blog">
-                <span class="input-group-addon" id="basic-addon2">/</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="list-item list-item-form">
-        <div class="row">
-          <div class="col-xs-3">
-            <div class="form-group">
-              <input class="form-control" value="Catalogue" placeholder="Catalogue">
-            </div>
-          </div>
-          <div class="col-xs-9">
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon" id="basic-addon3"><%- domain %>/</span>
-                <input class="form-control" value="catalogue" placeholder="catalogue">
-                <span class="input-group-addon" id="basic-addon2">/</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+		<% _.each(site.breadcrumb, function(service, default_path){ %>
+		<div class="list-item list-item-form">
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<input name="breadcrumb[<%- default_path %>][name]" class="form-control" value="<%- service.name %>" placeholder="<%- service.default_name %>">
+					</div>
+				</div>
+				<div class="col-xs-9">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon3"><%- domain %>/</span>
+							<input name="breadcrumb[<%- default_path %>][path]" class="form-control" value="<%- service.path %>" placeholder="<%- default_path %>">
+							<span class="input-group-addon" id="basic-addon2">/</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<% }); %>
+
     </div>
     <footer class="post-footer"></footer>
   </article>

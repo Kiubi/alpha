@@ -1,11 +1,8 @@
 <% _(filters).each(function(item, index){ %>
-<div class="form-group has-feedback">
-	<select data-id="<%- index %>" class="form-control <%- item.selectExtraClassname ? item.selectExtraClassname : '' %>">
+	<select data-id="<%- index %>" class="<%- item.selectExtraClassname ? item.selectExtraClassname : '' %>" data-style="selectify">
 		<option value=""><%- item.title %></option>
 		<% _(item.collection.selectPayload()).each(function(option){%>
 		<option value="<%- option.value %>" <%= option.value == item.selected ? 'selected="selected"' : '' %>><%= indent2Space(option.indent || 0) %><%- option.label %></option>
 		<%}) %>
 	</select>
-	<div class="form-control-feedback md-feedback md-select"></div>
-</div>
 <% }) %>

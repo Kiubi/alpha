@@ -13,6 +13,7 @@ var LayoutsView = require('./views/layouts');
 var LayoutView = require('./views/layout');
 
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 
 /* Actions */
 function getHeadersAction(options) {
@@ -56,7 +57,7 @@ var SidebarMenuView = Marionette.View.extend({
 var SidebarMenuLayoutView = Marionette.View.extend({
 	template: require('./templates/sidebarMenuLayout.html'),
 	service: 'layout',
-	behaviors: [ActiveLinksBehaviors],
+	behaviors: [ActiveLinksBehaviors, SelectifyBehavior],
 
 	tree: [],
 	models: [],
@@ -96,9 +97,7 @@ var SidebarMenuLayoutView = Marionette.View.extend({
 		this.folder_id = 0;
 		this.category_id = 0;
 
-		this.listenTo(ControllerChannel, 'refresh:widgets', function(widgets, models,
-			builder) {
-			// console.log('refresh:widgets', widgets);
+		this.listenTo(ControllerChannel, 'refresh:widgets', function(widgets, models, builder) {
 			this.tree = widgets;
 			this.models = models;
 			this.builder = builder;
@@ -209,10 +208,8 @@ var AppearanceController = Controller.extend({
 					model: m,
 					layout_id: id
 				});
-				this.listenTo(m, 'change', function(model) {
-					if (model.hasChanged('name')) {
-						this.setBreadCrum(buildBreadCrum(model), true);
-					}
+				this.listenTo(view, 'change:name', function(model) {
+					this.setBreadCrum(buildBreadCrum(model), true);
 				}.bind(this));
 				this.navigationController.showContent(view);
 				this.setHeader(buildBreadCrum(m), getHeadersAction());
@@ -242,17 +239,15 @@ var AppearanceController = Controller.extend({
 					model: m,
 					apply: apply
 				});
-				this.listenTo(m, 'change', function(model) {
-					if (model.hasChanged('name')) {
-						this.setBreadCrum([{
-								title: m.get('type').name,
-								href: '/appearance/layouts/' + m.get('type').page
-							},
-							{
-								title: model.get('name')
-							}
-						], true);
-					}
+				this.listenTo(view, 'change:name', function(model) {
+					this.setBreadCrum([{
+							title: m.get('type').name,
+							href: '/appearance/layouts/' + m.get('type').page
+						},
+						{
+							title: model.get('name')
+						}
+					], true);
 				}.bind(this));
 				this.navigationController.showContent(view);
 				this.setHeader([{
@@ -270,16 +265,6 @@ var AppearanceController = Controller.extend({
 					title: 'Mise en page introuvable'
 				});
 			}.bind(this));
-	},
-
-	actionSave: function() {
-		// Proxy to content View method onSave
-		var contentView = this.navigationController.getContent();
-		if (!contentView || !contentView.onSave) return;
-
-		var container = {};
-		contentView.triggerMethod('simpleForm:save', container);
-		if (container.promise) return container.promise;
 	}
 
 });

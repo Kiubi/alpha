@@ -1,70 +1,30 @@
+<form>
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
 <article class="post-article">
 	<header class="post-header">
 		<h1>Informations générales</h1>
 	</header>
 	<div class="post-content">
 		<div class="form-group">
-			<label class="control-label required" for="exmemple1">Intitulé de la page d'accueil</label>
-			<input class="form-control" id="exmemple1" placeholder="Intitulé de l'accueil tel qu'il apparaîtra dans le menu" type="text">
+			<label class="control-label required" for="name">Intitulé de la page d'accueil</label>
+			<input class="form-control" id="name" name="name"  placeholder="Intitulé de l'accueil tel qu'il apparaîtra dans le menu" type="text" value="<%- name %>">
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="">Affichage</label>
+			<label class="control-label">Affichage</label>
 			<div class="radio-group">
-				<input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
-				<label for="affichage1" class="visible">Visible</label>
-				<input name="affichage" id="affichage0" value="option1" type="radio">
-				<label for="affichage0" class="not-visible">Masqué</label>
+				<input name="is_visible" id="is_visible1" value="1" <% if(is_visible) { %> checked="checked"<% } %> type="radio">
+				<label for="is_visible1" class="visible">Visible</label>
+				<input name="is_visible" id="is_visible0" value="0" <% if(!is_visible) { %> checked="checked"<% } %> type="radio">
+				<label for="is_visible0" class="not-visible">Masqué</label>
 			</div>
 		</div>
 	</div>
 	<footer class="post-footer"></footer>
 </article>
 
-<article class="post-article">
-	<header class="post-header no-border">
-		<h1>Mise en page</h1>
-	</header>
-	<div class="post-content post-group templates">
-		<div class="media">
-			<div class="media-left"><a href="#">
-				<table class="template">
-					<tbody><tr>
-						<td colspan="2"></td>
-					</tr>
-					<tr>
-						<td colspan="2"></td>
-					</tr>
-					<tr>
-						<td style="width: 33%;"></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td colspan="2"></td>
-					</tr>
-				</tbody></table></a>
-			</div>
-			<div class="media-body">
-				<div class="form-group has-feedback">
-					<p>La mise en page choisie détermine l'apparence de cette page :</p>
-					<div class="row">
-						<div class=" col-xs-5">
-							<select class="form-control" ic="exmemple3">
-								<option>Page de contenu</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-							<div class="form-control-feedback md-feedback md-select"></div>
-						</div>
-					</div>
-				</div>
-				<p><a href="#">Modifier cette mise en page</a><br><a href="#">Créer une nouvelle mise en page</a></p>
-			</div>
-		</div>
-	</div>
-	<footer class="post-footer"></footer>
-</article>
+<article data-role="layout"></article>
 
 <article class="post-article">
 	<header class="post-header"><a href="#seo" class="pull-right" data-toggle="collapse"
@@ -72,36 +32,37 @@
 		<h1>Référencement</h1>
 	</header>
 	<div class="post-content">
-		<div class="form-group"><span class="letter-counter">123</span>
-			<label class="control-label" for="exmemple2">Titre de la page</label>
-			<input class="form-control" id="exmemple2" placeholder="Contenu de la balise &lt;title&gt; qui remplacera celle définie par défaut" type="text">
+		<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+			<label class="control-label" for="meta_title">Titre de la page</label>
+			<input class="form-control" id="meta_title" name="meta_title" value="<%- meta_title %>" placeholder="Contenu de la balise &lt;title&gt; qui remplacera celle définie par défaut" type="text">
 		</div>
-		<div class="form-group"><span class="letter-counter">123</span>
-			<label class="control-label" for="exmemple1">Description de la page</label>
-			<textarea class="form-control" rows="5" placeholder="Contenu de la balise &lt;meta description&gt; qui remplacera celle définie par défaut"></textarea>
+		<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+			<label class="control-label" for="meta_description">Description de la page</label>
+			<textarea class="form-control" id="meta_description" name="meta_description" rows="5" placeholder="Contenu de la balise &lt;meta description&gt; qui remplacera celle définie par défaut"><%- meta_description %></textarea>
 		</div>
 		<div class="collapse" id="seo">
-			<div class="form-group"><span class="letter-counter">123</span>
-				<label class="control-label" for="exmemple1">Mots clés de la page</label>
-				<textarea class="form-control" rows="5" placeholder="Contenu de la balise &lt;meta keywords&gt; qui remplacera celle définie par défaut"></textarea>
+			<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+				<label class="control-label" for="meta_keywords">Mots clés de la page</label>
+				<textarea class="form-control" id="meta_keywords" name="meta_keywords" rows="5" placeholder="Contenu de la balise &lt;meta keywords&gt; qui remplacera celle définie par défaut"><%- meta_keywords %></textarea>
 			</div>
 			<div class="form-group">
-				<label class="control-label" for="exmemple1">Code avant <code>&lt;/head&gt;</code></label>
-				<textarea class="form-control" rows="5" placeholder="Code placé avant la balise &lt;/head&gt; qui remplacera celui défini par défaut"></textarea>
+				<label class="control-label" for="js_head">Code avant <code>&lt;/head&gt;</code></label>
+				<textarea class="form-control" id="js_head" name="js_head" rows="5" placeholder="Code placé avant la balise &lt;/head&gt; qui remplacera celui défini par défaut"><%- js_head %></textarea>
 			</div>
 			<div class="form-group">
-				<label class="control-label" for="exmemple1">Code avant <code>&lt;/body&gt;</code></label>
-				<textarea class="form-control" rows="5" placeholder="Code placé avant la balise &lt;/body&gt; qui remplacera celui défini par défaut"></textarea>
+				<label class="control-label" for="js_body">Code avant <code>&lt;/body&gt;</code></label>
+				<textarea class="form-control" id="js_body" name="js_body" rows="5" placeholder="Code placé avant la balise &lt;/body&gt; qui remplacera celui défini par défaut"><%- js_body %></textarea>
 			</div>
 		</div>
 	</div>
 	<footer class="post-footer"></footer>
 </article>
 
+</form>
+
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-delete">Supprimer</button>
-		<button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

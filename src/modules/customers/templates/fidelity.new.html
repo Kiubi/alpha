@@ -1,0 +1,51 @@
+<div class="list-item no-hover">Total des points : <span data-role="sum"></span></div>
+
+<form style="display: none;" data-role="new">
+
+	<div class="list-item">
+
+		<div class="alert alert-danger" data-role="errors" role="alert" style="display: none;"></div>
+
+		<div class="row">
+
+			<div class="col-xs-3">
+				<div class="form-group">
+					<label class="control-label" for="operation">Quantité</label>
+					<select id="operation" name="operation" data-style="selectify">
+						<option value="add" selected="selected">Ajouter</option>
+						<option value="sub">Retirer</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-xs-3">
+				<div class="form-group">
+					<label class="control-label required">&nbsp;</label>
+					<div class="input-group">
+						<span class="input-group-addon"></span>
+						<input class="form-control" id="qt" name="qt" value="" placeholder="0">
+						<span class="input-group-addon">point(s)</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label required" for="comment">Commentaire</label>
+			<input class="form-control" id="comment" name="comment" type="text">
+		</div>
+
+		<div class="btn-toolbar" role="toolbar">
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-cancel" data-role="action" data-action="cancel">Annuler</button>
+			</div>
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-action" data-role="action" data-action="save">Enregistrer</button>
+			</div>
+		</div>
+
+	</div>
+
+</form>
+
+<div class="list-item no-hover"><a href="#" data-role="action" data-action="show">Ajouter/Retirer des points</a></div>

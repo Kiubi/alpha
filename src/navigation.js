@@ -14,6 +14,27 @@ var OverlayView = Marionette.View.extend({
 });
 
 /**
+ *
+ * @param {Marionette.view} view
+ * @returns {String}
+ */
+function getPageTitle(view) {
+	var Session = Backbone.Radio.channel('app').request('ctx:session');
+	if (!Session) return 'Kiubi';
+
+	var service;
+	if (view.pageTitle) {
+		service = '  •  ' + view.pageTitle;
+	} else if (view.service) {
+		service = '  •  ' + view.service[0].toUpperCase() + view.service.slice(1);
+	} else {
+		service = '';
+	}
+
+	return 'ALPHA • ' + Session.site.get('name') + service + ' • Kiubi';
+}
+
+/**
  * Navigation Controller
  */
 module.exports = Marionette.Object.extend({
@@ -252,6 +273,7 @@ module.exports = Marionette.Object.extend({
 	 */
 	showContent: function(view) {
 		this.layoutView.showChildView('content', view);
+		document.title = getPageTitle(view);
 	},
 
 	/**

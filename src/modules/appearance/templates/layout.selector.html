@@ -7,16 +7,15 @@
 			<a href="/appearance/layouts/<%- page %>/<%- layout_id %>"><%= structure %></a>
 		</div>
 		<div class="media-body">
-			<div class="form-group has-feedback">
+			<div class="form-group">
 				<p>La mise en page choisie détermine l'apparence de cette page :</p>
 				<div class="row">
 					<div class="col-xs-7">
-						<select class="form-control">
+						<select data-style="selectify">
 							<% _(layouts).each(function(item){%>
 							<option value="<%- item.layout_id %>" <%= layout_id == item.layout_id ? 'selected="selected"' : '' %>><%- item.name %></option>
 							<% }) %>
 						</select>
-						<div class="form-control-feedback md-feedback md-select"></div>
 					</div>
 				</div>
 			</div>

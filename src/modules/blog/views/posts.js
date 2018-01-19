@@ -12,7 +12,7 @@ var RowView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			plural: function(nb, singular, plural) {
-				return nb > 1 ? plural : singular;
+				return (nb > 1 ? plural : singular).replace('%d', nb);
 			},
 			publication_date: format.formatDate(this.model.get('publication_date')),
 			convertMediaPath: Session.convertMediaPath.bind(Session)
@@ -77,7 +77,7 @@ module.exports = Marionette.View.extend({
 			}],
 			filters: [{
 				selectExtraClassname: 'select-category',
-				title: 'Catégories',
+				title: 'Toutes les catégories',
 				collection: this.getOption('categories'),
 				selected: this.collection.category_id
 			}]

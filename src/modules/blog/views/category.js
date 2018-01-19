@@ -76,9 +76,9 @@ module.exports = Marionette.View.extend({
 	},
 
 	onDelete: function() {
-		return this.model.destroy().done(function() {
-			this.trigger('delete:category');
-		}.bind(this));
+		return this.model.destroy({
+			wait: true
+		});
 	}
 
 });

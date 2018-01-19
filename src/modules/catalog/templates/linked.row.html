@@ -1,0 +1,36 @@
+<div class="row" data-role="list">
+	<div class="col-xs-7">
+		<div class="media">
+			<div class="media-left">
+				<div class="media-object md-icon md-image img-default"></div>
+				<% if (main_media_id) { %><div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath('/media/miniature/'+main_media_id) %>" /></div><% } %>
+				<%= is_spotlight ? '<span class="md-icon md-upsell"></span>' : '' %>
+			</div>
+			<div class="media-body">
+				<h4><%- name %></h4>
+				<% if(is_visible) { %>
+				<% if(main_category) { %>
+				Rangé dans <a href="/catalog/categories/<%- main_category.category_id %>"><%- main_category.name %></a>
+				<% } %>
+				<% if(sec_categories.length > 0) { %>
+				et <a href="#" data-toggle="popover" data-placement="right" data-trigger="focus" data-container="#content" data-html="true"
+					  data-content="<% _.each(sec_categories, function(category) { %><a href=&quot;/catalog/categories/<%- category.category_id %>&quot;><%- category.name %></a><br/><%  });
+						%>">
+				<%= plural(sec_categories.length, '%d autre catégorie', '%d autres catégories') %></a>
+				<% } %>
+				<% } else { %>
+				<span class="text-danger">Masqué</span>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-2">
+		<select name="link" data-style="selectify">
+			<option value="atob" <%= link == 'atob' ? 'selected="selected"' : '' %>>A &rarr; B</option>
+			<option value="btoa" <%= link == 'btoa' ? 'selected="selected"' : '' %>>B &rarr; A</option>
+			<option value="both" <%= link == 'both' ? 'selected="selected"' : '' %>>A &#8644; B</option>
+		</select>
+	</div>
+
+	<div class="col-xs-3"><a href="#" data-role="action" data-action="delete" class="md-icon md-delete pull-right"></a></div>
+</div>

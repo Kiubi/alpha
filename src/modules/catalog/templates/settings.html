@@ -14,9 +14,9 @@
 		</p>
 		<div class="row">
 			<div class="col-xs-4">
-				<div class="form-group has-feedback">
+				<div class="form-group">
 					<label class="control-label" for="currency">Préfixe des commandes</label>
-					<select class="form-control" id="currency" name="currency">
+					<select class="form-control" id="currency" name="currency" data-style="selectify">
 						<option value="EUR" <%= currency == "EUR" ? 'selected="selected"' : '' %>>Euro (EUR)</option>
 						<option value="CHF" <%= currency == "CHF" ? 'selected="selected"' : '' %>>Franc suisse (CHF)</option>
 						<option value="CAD" <%= currency == "CAD" ? 'selected="selected"' : '' %>>Dollar canadien (CAD)</option>
@@ -24,7 +24,6 @@
 						<option value="AUD" <%= currency == "AUD" ? 'selected="selected"' : '' %>>Dollar australien (AUD)</option>
 						<option value="GBP" <%= currency == "GBP" ? 'selected="selected"' : '' %>>Livre sterling (GBP)</option>
 					</select>
-					<div class="form-control-feedback md-feedback md-select"></div>
 				</div>
 			</div>
 		</div>

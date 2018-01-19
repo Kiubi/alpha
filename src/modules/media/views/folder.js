@@ -2,9 +2,12 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var SelectView = require('kiubi/views/ui/select.js');
+var RestrictionsView = require('kiubi/modules/customers/views/restrictions');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
+
+var Restrictions = require('kiubi/modules/customers/models/restrictions');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/folder.html'),
@@ -15,7 +18,11 @@ module.exports = Marionette.View.extend({
 
 	regions: {
 		folder: {
-			el: "select[data-role='folder']",
+			el: "div[data-role='folder']",
+			replaceElement: true
+		},
+		restrictions: {
+			el: "div[data-role='restrictions']",
 			replaceElement: true
 		}
 	},
@@ -36,12 +43,28 @@ module.exports = Marionette.View.extend({
 				selected: this.model.get('parent_folder_id'),
 				name: 'parent_folder_id'
 			}));
+			this.showChildView('restrictions', new RestrictionsView({
+				restrictions: this.model.get('restrictions')
+			}));
 		}
 	},
 
 	onSave: function() {
+
+		var data = Forms.extractFields(this.fields, this);
+
+		if (this.model.get('parent_folder_id') > 0) {
+			var r = this.getChildView('restrictions').getRestrictions();
+			var collection = new Restrictions();
+			collection.setType('media/folders', this.model.get('folder_id'));
+			collection.set('customer_id', r.customers);
+			collection.set('group_id', r.groups);
+			collection.save();
+			data.has_restrictions = (r.customers.length + r.groups.length) > 0; // Trick to update sidebar
+		}
+
 		return this.model.save(
-			Forms.extractFields(this.fields, this), {
+			data, {
 				patch: true,
 				wait: true
 			}
@@ -60,7 +83,10 @@ module.exports = Marionette.View.extend({
 	onDelete: function() {
 		return this.model.destroy({
 			wait: true
-		});
+		}).fail(function(xhr) {
+			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+			navigationController.showErrorModal(xhr);
+		}.bind(this));
 	}
 
 });

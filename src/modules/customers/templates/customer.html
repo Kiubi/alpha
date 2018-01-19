@@ -1,103 +1,110 @@
-<article class="post-article">
-  <header class="post-header">
-    <h1>Informations personnelles</h1>
-  </header>
-  <div class="post-content">
-    <div class="media media-detail">
-      <div class="media-left">
-        <div class="media-object md-icon md-face img-default img-circle img-avatar"></div>
-        <div class="media-object img-circle img-avatar">
-          <img alt="Un intitulé d'un truc" src="http://pausegeek.fr/img/news/2016/10/the-lego-batman-movie-poster-001-2017.jpg"></a>
-        </div><br/>
-        <div class="form-group"><input id="exampleInputFile" type="file"></div>
-        <p class="media-info">Format : gif, jpeg ou png<br/>Taille : 120 x 120px minimum</p>
-      </div>
-      <div class="media-body">
-        <div class="row">
-          <div class="col-xs-6">
+<form>
 
-            <div class="input-group-select">
-              <label class="control-label required" for="exmemple1">Nom</label>
-              <div class="form-group has-feedback">
-                <select class="form-control" ic="exmemple3" style="">
-                  <option selected="selected">M</option>
-                  <option>Mme</option>
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Informations personnelles</h1>
+    </header>
+    <div class="post-content">
+      <div class="row media-detail">
+        <div class="col-xs-4">
+          <div class="media-object md-icon md-face img-default img-circle img-avatar center-block"></div>
+          <div class="media-object img-circle img-avatar center-block">
+            <img alt="Un intitulé d'un truc" src="<%- convertMediaPath(avatar_url) %>&<%- render_counter %>"></a>
+          </div><br/>
+			<div class="form-group">
+				<input id="avatar" name="avatar" type="file">
+			</div>
+          <p class="media-info">Format : gif, jpeg ou png<br/>Taille : 120 x 120px minimum</p>
+        </div>
+        <div class="col-xs-8">
+          <label class="control-label required" for="lastname">Nom</label>
+          <div class="row">
+            <div class="col-xs-3">
+              <div class="form-group">
+                <select name="gender" data-style="selectify">
+                  <option value="M" <%= gender != 'F' ? selected="selected" : '' %>>M</option>
+                  <option value="F" <%= gender == 'F' ? selected="selected" : '' %>>Mme</option>
                 </select>
-                <div class="form-control-feedback md-feedback md-select"></div>
-              </div>
-              <div class="input-group">
-                <input class="form-control" id="exmemple1" type="text">
               </div>
             </div>
-
-          </div>
-          <div class="col-xs-6">
-            <div class="form-group">
-              <label class="control-label required" for="exmemple1">Prénom</label>
-              <input class="form-control" id="exmemple1" type="text">
+            <div class="col-xs-9">
+              <div class="form-group">
+                <input class="form-control" id="lastname" name="lastname" value="<%- lastname %>" type="text">
+              </div>
             </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="">Accès</label>
-          <div class="radio-group">
-            <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
-            <label for="affichage1" class="visible">Autorisé</label>
-            <input name="affichage" id="affichage0" value="option1" type="radio">
-            <label for="affichage0" class="not-visible">Bloqué</label>
+          <div class="form-group">
+            <label class="control-label required" for="firstname">Prénom</label>
+            <input class="form-control" id="firstname" name="firstname" value="<%- firstname %>" type="text">
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label required" for="exmemple1">Email</label>
-          <input class="form-control" id="exmemple1" type="text" placeholder="Utilisé pour se connecter au site">
-        </div>
-        <div class="form-group">
-          <label class="control-label required" for="exmemple1">Mot de passe</label>
-          <input class="form-control" id="exmemple1" type="text" placeholder="Utilisé pour se connecter au site">
-        </div>
-        <div class="row">
-          <div class="col-xs-6">
-            <div class="form-group">
-              <label class="control-label" for="exmemple1">Pseudo</label>
-              <input class="form-control" id="exmemple1" type="text" placeholder="S'affiche à la place du nom">
-            </div>
-          </div>
-          <div class="col-xs-6">
-            <div class="form-group">
-              <label class="control-label" for="exmemple1">Site Web</label>
-              <input class="form-control" id="exmemple1" type="text" placeholder="https://www.site-web.com/">
-            </div>
-          </div>
-        </div>
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple3">Groupe extranet</label>
-          <p>
-            Un membre peut faire partie d'un groupe de l'<a href="#">extranet</a>
-            ce qui lui permettra d'accéder à certaines pages et fichiers du site disposant d'un accès restrint.
-          </p>
           <div class="row">
             <div class="col-xs-6">
-              <select class="form-control" ic="exmemple3">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
-              <div class="form-control-feedback md-feedback md-select"></div>
+             <div class="form-group">
+               <label class="control-label">Accès</label>
+               <div class="radio-group">
+                 <input name="is_enabled" id="is_enabled1" value="1" <%= (is_enabled) ? 'checked="checked"' : '' %> type="radio">
+                 <label for="is_enabled1" class="visible">Autorisé</label>
+                 <input name="is_enabled" id="is_enabled0" value="0" <%= (!is_enabled) ? 'checked="checked"' : '' %> type="radio">
+                 <label for="is_enabled0" class="not-visible">Bloqué</label>
+               </div>
+             </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="form-group">
+                <label class="control-label">Numéro client</label>
+                <p><%- number %></p>
+              </div>
+            </div>
+		  </div>
+		  <div class="form-group">
+            <label class="control-label required" for="email">Email</label>
+            <input class="form-control" id="email" name="email" value="<%- email %>" type="text" placeholder="Utilisé pour se connecter au site">
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="password">Mot de passe</label>
+            <a data-role="show-password" href="#" class="form-control-static">Modifier le mot de passe</a>
+            <input class="form-control" style="display: none;" id="password" name="password" type="password" placeholder="Modifier le mot de passe utilisé pour se connecter au site">
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <div class="form-group">
+                <label class="control-label" for="nickname">Pseudo</label>
+                <input class="form-control" id="nickname" name="nickname" value="<%- nickname %>" type="text" placeholder="S'affiche à la place du nom">
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="form-group">
+                <label class="control-label" for="website">Site Web</label>
+                <input class="form-control" id="website" name="website" value="<%- website %>" type="text" placeholder="https://www.site-web.com/">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Groupe extranet</label>
+            <p>
+              Un membre peut faire partie d'un groupe de l'<a href="/customers/groups">extranet</a>
+              ce qui lui permettra d'accéder à certaines pages et fichiers du site disposant d'un accès restrint.
+            </p>
+            <div class="row">
+              <div class="col-xs-6">
+                <div data-role="groups"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <footer class="post-footer"></footer>
-</article>
+    <footer class="post-footer"></footer>
+  </article>
+
+</form>
 
 <div class="save">
   <div class="btn-toolbar" role="toolbar">
-    <button type="button" class="btn btn-delete">Supprimer</button>
-    <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
+    <button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
+    <button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
   </div>
 </div>
 

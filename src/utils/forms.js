@@ -4,18 +4,34 @@ var serialize = require('form-serialize');
 
 /**
  * Extract fields values from a View form.
- * Fields beginning with is_ are casted to boolean
- * 
+ *
  * @param {Array} fields
  * @param {Marionette.View} view
+ * @param {String} selector
+ * @returns {Object}
+ * @see  extractFieldsFromEl
+ */
+function extractFields(fields, view, selector) {
+	if (!selector) selector = 'form';
+	return extractFieldsFromSelector(fields, Backbone.$(selector, view.el));
+}
+
+/**
+ * Extract fields values from a View form.
+ * Fields beginning with is_ are casted to boolean
+ *
+ * @param {Array} fields
+ * @param {jQuery} $forms
  * @returns {Object}
  */
-function extractFields(fields, view) {
+function extractFieldsFromSelector(fields, $forms) {
 
-	var all = serialize(Backbone.$('form', view.el).get(0), {
-		hash: true,
-		empty: true
-	});
+	var all = _.reduce($forms, function(acc, form) {
+		return _.extend(acc, serialize(form, {
+			hash: true,
+			empty: true
+		}));
+	}, {});
 
 	var whitelist = _.pick(all, fields); // whitelist
 	return _.mapObject(whitelist, function(e, i) {
@@ -72,8 +88,7 @@ function displayErrors(xhr, $errorEl, el) {
 function clearErrors($errorEl, el) {
 
 	$errorEl.hide();
-	Backbone.$("input, textarea, select", el).parents(".form-group").removeClass(
-		'has-error');
+	Backbone.$("input, textarea, select", el).parents(".form-group").removeClass('has-error');
 
 }
 

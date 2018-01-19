@@ -3,16 +3,15 @@
 </header>
 <div class="post-content">
 	<div class="post-group">
-		<div class="form-group has-feedback">
+		<div class="form-group">
 			<p>Le type de billet détermine si des informations complémentaires peuvent être ajoutées au billet :</p>
 			<div class="row">
 				<div class="col-xs-6">
-					<select class="form-control" id="type" name="type">
+					<select id="type" name="type" data-style="selectify">
 						<% _(types).each(function(item){ %>
 							<option value="<%- item.type %>" <%= (item.type == type) ? 'selected="selected"':''  %>><%- item.name %></option>
 							<% }) %>
 						</select>
-						<div class="form-control-feedback md-feedback md-select"></div>
 					</div>
 				</div>
 			</div>
@@ -42,13 +41,12 @@
 		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
 		<div class="row">
 			<div class="col-xs-6">
-				<div class="form-group has-feedback">
-					<select id="<%- field.field %>" name="<%- field.field %>" class="form-control">
+				<div class="form-group">
+					<select id="<%- field.field %>" name="<%- field.field %>" data-style="selectify">
 						<% _(field.options).each(function(option){ %>
 						<option value="<%- option.value %>" <%= (option.value == post.get(field.field)) ? 'selected="selected"':''  %>><%- option.name %></option>
 						<% }) %>
 					</select>
-					<div class="form-control-feedback md-feedback md-select"></div>
 				</div>
 			</div>
 		</div>

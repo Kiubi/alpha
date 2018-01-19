@@ -9,7 +9,10 @@ var FilePickerView = require('kiubi/modules/media/views/file.picker.js');
 var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
+
 var Forms = require('kiubi/utils/forms.js');
+var format = require('kiubi/utils/format');
 var Datepicker = require('kiubi/behaviors/datepicker.js');
 
 var Session = Backbone.Radio.channel('app').request('ctx:session');
@@ -34,7 +37,7 @@ var TypeSelectorView = Marionette.View.extend({
 		}
 	},
 
-	behaviors: [WysiwygBehavior],
+	behaviors: [WysiwygBehavior, SelectifyBehavior],
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['type', 'typesSource', 'post']);
@@ -148,7 +151,7 @@ module.exports = Marionette.View.extend({
 			replaceElement: true
 		},
 		categories: {
-			el: "select[data-role='categories']",
+			el: "div[data-role='categories']",
 			replaceElement: true
 		},
 		type: {
@@ -163,7 +166,8 @@ module.exports = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
-			domain: Session.site.get('domain')
+			domain: Session.site.get('domain'),
+			publication_date: format.formatDateTime(this.model.get('publication_date'))
 		};
 	},
 
@@ -218,9 +222,9 @@ module.exports = Marionette.View.extend({
 	},
 
 	onDelete: function() {
-		return this.model.destroy().done(function() {
-			this.trigger('delete:post');
-		}.bind(this));
+		return this.model.destroy({
+			wait: true
+		});
 	}
 
 });

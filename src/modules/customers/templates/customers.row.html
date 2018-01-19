@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-xs-5">
+		<div class="media">
+			<div class="media-left">
+				<div class="checkbox-inline">
+					<input id="customer_<%- customer_id %>" name="selection" value="<%- customer_id %>" type="checkbox">
+					<label for="customer_<%- customer_id %>"></label>
+				</div>
+			</div>
+			<div class="media-left">
+				<div class="media-object md-icon md-face img-default img-circle img-avatar"></div>
+				<div class="media-object img-circle img-avatar">
+					<img alt="" src="<%= convertMediaPath(avatar_thumb_url) %>">
+				</div>
+			</div>
+			<div class="media-body">
+				<h4><%- firstname %> <%- lastname %></h4>
+				<% if (!is_enabled) { %>
+				<span class="text-danger">Bloqué</span>
+				<% } else { %>
+				<!-- Connecté le 25/08/2016 -->
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-2 col-md-3"><!-- <a href="/checkout/orders/123123">#C1703201</a><br/>Colmar (68)--> </div>
+	<div class="col-xs-3 col-md-2"><%- plural(order_count, '%d commande', '%d commandes') %><% if(order_count > 0) { %><br/><%- order_revenues_label %><% } %></div>
+	<div class="col-xs-2"><a class="btn btn-option pull-right" href="/customers/<%- customer_id %>" role="button">Détail</a></div>
+</div>

@@ -11,6 +11,18 @@ module.exports = Marionette.View.extend({
 
 	behaviors: [FormBehavior],
 
+	ui: {
+		'pwdBtn': 'a[data-role="password-toggle"]',
+		'pwdMask': 'span[data-role="password-mask"]'
+	},
+
+	events: {
+		'click @ui.pwdBtn': function() {
+			this.getUI('pwdBtn').hide();
+			this.getUI('pwdMask').show();
+		}
+	},
+
 	fields: [
 		'g_vignette_width',
 		'g_vignette_height',

@@ -1,15 +1,14 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+require('kiubi/utils/proxy.jquery-ui.js');
 
 var ControllerChannel = Backbone.Radio.channel('controller');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var Forms = require('kiubi/utils/forms.js');
 var Layout = require('../models/layout');
-
-require('jquery-ui/sortable');
-require('jquery-ui/draggable');
 
 var tplZone = require('../templates/layout.zone.html');
 var tplBloc = require('../templates/layout.bloc.html');
@@ -84,6 +83,7 @@ function buildWidget(widget) {
 	return tplWidget({
 		widget_id: widget.widget_id,
 		name: widget.name,
+		type: widget.type,
 		description: widget.desc,
 		color: color
 	});
@@ -120,6 +120,8 @@ function makePosition($widget, $cell) {
 var ModalView = Marionette.View.extend({
 	template: require('../templates/layout.modal.html'),
 
+	behaviors: [SelectifyBehavior],
+
 	initialize: function(options) {
 		this.mergeOptions(options, ['widget']);
 	},
@@ -132,7 +134,6 @@ var ModalView = Marionette.View.extend({
 
 	getValues: function() {
 		var values = Forms.extractFields(_.keys(this.widget.settings), this);
-
 		var settings = (this.widget.settings);
 
 		_.each(values, function(value, key) {
@@ -149,6 +150,11 @@ var ModalView = Marionette.View.extend({
 				if (select && select.selectedIndex == 0) {
 					delete values[key];
 				}
+			}
+
+			// keys with _id can have string values, like : pagelibre_id
+			if (settings[key].ctl == 2 && Number.isNaN(value)) {
+				values[key] = Backbone.$('select[name="' + key + '"]', this.el).val();
 			}
 
 		}.bind(this));
@@ -178,6 +184,8 @@ module.exports = Marionette.View.extend({
 		'click @ui.removeWidget': 'removeWidget',
 		'click @ui.configureWidget': 'openWidgetConfiguration'
 	},
+
+	willTriggerChangeName: false,
 
 	initialize: function(options) {
 
@@ -225,6 +233,7 @@ module.exports = Marionette.View.extend({
 
 					return Backbone.$(buildWidget({
 						widget_id: 0,
+						type: widget.type,
 						name: widget.name,
 						desc: widget.desc || '',
 						main_category: widget.main_category
@@ -422,8 +431,13 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChangeName: function(name) {
+		if (name != this.model.get('name')) {
+			this.willTriggerChangeName = true;
+		}
 		// Name will be updated on onSave
-		this.model.set('name', name);
+		this.model.set('name', name, {
+			silent: true
+		});
 	},
 
 	//----- ACTIONS ----- //
@@ -506,7 +520,7 @@ module.exports = Marionette.View.extend({
 				}
 
 				// Widget form the sidebar
-				if (ui.item.data('role') != 'widget') {
+				if (ui.item.data('widget') == 0) {
 
 					var type = ui.item.data('type');
 					var widget = view.widgets.find(function(widget) {
@@ -517,6 +531,7 @@ module.exports = Marionette.View.extend({
 					var $widget = Backbone.$(buildWidget({
 						widget_id: 0, // Widget doesn't have an id yet
 						name: widget.name,
+						type: widget.type,
 						desc: widget.desc || '',
 						main_category: widget.main_category
 					}));
@@ -570,6 +585,8 @@ module.exports = Marionette.View.extend({
 				if (!this.layout_id) {
 					this.layout_id = m.get('layout_id');
 				}
+				if (this.willTriggerChangeName) this.trigger('change:name', this.model);
+				this.willTriggerChangeName = false;
 			}.bind(this)).fail(function(xhr) {
 				navigationController.showErrorModal(xhr);
 			});

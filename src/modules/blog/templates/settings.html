@@ -60,6 +60,33 @@
 	<footer class="post-footer"></footer>
 </article>
 
+<article class="post-article">
+	<header class="post-header">
+		<h1>Syndication</h1>
+	</header>
+	<div class="post-content">
+		<p>En activant la syndication, les internautes vont pouvoir s’abonner aux flux RSS et/ou Atom du blog.</p>
+		<div class="form-group">
+			<label class="control-label">Utilisation</label>
+			<div class="radio-group">
+				<input name="is_rss_enabled" id="is_rss_enabled1" value="1" <%= is_rss_enabled ? 'checked="checked"' : '' %> type="radio">
+				<label for="is_rss_enabled1" class="visible">Activé</label>
+				<input name="is_rss_enabled" id="is_rss_enabled0" value="0" <%= !is_rss_enabled ? 'checked="checked"' : '' %> type="radio">
+				<label for="is_rss_enabled0" class="not-visible">Désactivé</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="rss_post_count">Nombre de billets inclus dans le flux</label>
+			<div class="row">
+				<div class="col-xs-2">
+					<input id="rss_post_count" name="rss_post_count" class="form-control" value="<%- rss_post_count %>" placeholder="max. 15">
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
 </form>
 
 <div class="save">

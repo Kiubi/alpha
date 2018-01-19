@@ -6,14 +6,21 @@ var Controller = require('kiubi/controller.js');
 /* Models */
 var Catalog = require('./models/catalog');
 var Category = require('./models/category');
+var Home = require('./models/home');
 var Categories = require('./models/categories');
+var Brands = require('./models/brands');
+var Tags = require('./models/tags');
+var Product = require('./models/product');
 var Products = require('./models/products');
+var Variants = require('./models/variants');
+var VariantsNames = require('./models/variants_names');
+var Images = require('./models/images');
 var Comments = require('./models/comments');
 var Taxes = require('./models/taxes');
+var Linked = require('./models/linked');
 var Settings = require('./models/settings');
 
 /* Views */
-var IndexView = require('./views/index');
 var ProductView = require('./views/product');
 var HomeView = require('./views/home');
 var CategoryView = require('./views/category');
@@ -24,6 +31,8 @@ var LinkedView = require('./views/linked');
 var SettingsView = require('./views/settings');
 var TaxesView = require('./views/taxes');
 var TagsView = require('./views/tags');
+var BrandsView = require('./views/brands');
+var VariantsView = require('./views/variants');
 
 /* Actions */
 function getHeadersAction(options) {
@@ -31,35 +40,47 @@ function getHeadersAction(options) {
 	options = options || {};
 	var actions = [];
 
-	/*if (options.addSave) {
-		actions.push({
-			title: 'Enregistrer',
-			callback: 'actionSave'
-		});
-	}
-
-	if (options.addComments) {
-		actions.push({
-			title: 'Rédiger un commentaire',
-			callback: 'actionNewComment'
-		});
-	}
 
 	actions = actions.concat(
 		[{
-			title: 'Rédiger un billet',
-			callback: 'actionNewPost'
+			title: 'Ajouter un produit',
+			callback: 'actionNewProduct'
 		}, {
 			title: 'Ajouter une catégorie',
 			callback: 'actionNewCategory'
 		}]
 	);
+
+	if (options.duplicateProduct) {
+		actions.push({
+			title: 'Dupliquer le produit',
+			callback: ['actionDuplicateProduct', options.duplicateProduct] // product_id
+		});
+	}
+
 	if (options.preview) {
 		actions.push({
 			title: 'Aperçu',
 			callback: ['actionPreview', options.preview]
 		});
-	}*/
+	}
+
+	if (options.addSave) {
+
+		var saveAction = {
+			title: 'Enregistrer',
+			callback: 'actionSave',
+			activateOnEvent: 'modified:content',
+			bubbleOnEvent: 'modified:content'
+		};
+
+		if (actions.length <= 1) {
+			actions.push(saveAction);
+		} else {
+			actions.splice(1, 0, saveAction);
+		}
+
+	}
 
 	return actions;
 }
@@ -75,20 +96,37 @@ function HeaderTabscategory(category_id, nb) {
 	}];
 }
 
-/* Tabs  */
 function HeaderTabsProduct(product_id, nb) {
 	return [{
-		title: 'Détail du produit',
-		url: '/catalog/products/' + product_id
+			title: 'Détail du produit',
+			url: '/catalog/products/' + product_id
+		}, {
+			title: 'Évaluations',
+			url: '/catalog/products/' + product_id + '/comments'
+		},
+		{
+			title: 'Produits associés',
+			url: '/catalog/products/' + product_id + '/linked'
+		}
+	];
+}
+
+function HeaderTagsTabs() {
+	return [{
+		title: 'Variantes',
+		url: '/catalog/variants'
 	}, {
-		title: 'Evaluations (' + nb + ')',
-		url: '/catalog/products/' + product_id + '/comments'
+		title: 'Tags',
+		url: '/catalog/tags'
+	}, {
+		title: 'Marques',
+		url: '/catalog/brands'
 	}];
 }
 
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
-	template: require('kiubi/templates/sidebarMenu.empty.html'),
+	template: require('./templates/sidebarMenu.html'),
 	service: 'catalog',
 	behaviors: [ActiveLinksBehaviors],
 
@@ -127,20 +165,6 @@ var CatalogController = Controller.extend({
 		href: '/catalog'
 	}],
 
-	showIndex: function() {
-
-		this.navigationController.underConstruction();
-		return;
-
-		console.log('CatalogController, showIndex');
-
-
-		this.navigationController.showContent(new IndexView());
-		this.setHeader({
-			title: 'Tous les produits'
-		});
-	},
-
 	/*
 	 * Products
 	 */
@@ -159,7 +183,7 @@ var CatalogController = Controller.extend({
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: 'Tous les produits'
-			});
+			}, getHeadersAction());
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
@@ -169,25 +193,130 @@ var CatalogController = Controller.extend({
 	},
 
 	showProduct: function(id) {
-		console.log('CatalogController, showProduct', id);
 
-
-		this.navigationController.showContent(new ProductView());
-		this.setHeader({
-			title: 'Produit ' + id
+		var t = new Taxes();
+		var m = new Product({
+			product_id: id
 		});
+		Backbone.$.when(t.fetch(), m.fetch({
+			data: {
+				extra_fields: 'texts,variants,price_label,images'
+			}
+		})).done(function() {
+			var variants = new Variants();
+			variants.product_id = m.get('product_id');
+			var i = new Images();
+			i.product_id = m.get('product_id');
+			var view = new ProductView({
+				model: m,
+				typesSource: m.getTypes(),
+				categories: new Categories(),
+				brands: new Brands(),
+				tags: new Tags(),
+				variants: variants,
+				taxes: t,
+				images: i
+			});
+			this.listenTo(m, 'change', function(model) {
+				if (model.hasChanged('name')) {
+					this.setBreadCrum({
+						title: model.get('name')
+					}, true);
+				}
+			}.bind(this));
+			this.listenTo(m, 'destroy', function() {
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/catalog');
+			});
+			this.navigationController.showContent(view);
+			this.setHeader({
+				title: m.get('name')
+			}, getHeadersAction({
+				preview: m,
+				addSave: true,
+				duplicateProduct: id
+			}), HeaderTabsProduct(id));
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Produit introuvable'
+			});
+		}.bind(this));
+	},
+
+	actionNewProduct: function() {
+
+		var m = new Product({
+			name: 'Intitulé par défaut',
+			slug: 'intitule-par-defaut',
+			is_visible: false
+		});
+
+		return m.save().done(function() {
+			this.navigationController.showOverlay(300);
+			this.navigationController.navigate('/catalog/products/' + m.get('product_id'));
+			//ControllerChannel.trigger('refresh:categories');
+		}.bind(this)).fail(function(xhr) {
+			this.navigationController.showErrorModal(xhr);
+		}.bind(this));
 
 	},
 
-	showHome: function() {
-		console.log('CatalogController, showHome');
-
-
-		this.navigationController.showContent(new HomeView());
-		this.setHeader({
-			title: 'Accueil du catalogue'
+	actionDuplicateProduct: function(product_id) {
+		var m = new Product({
+			product_id: product_id
 		});
 
+		var navigationController = this.navigationController;
+
+		return m.fetch().then(
+			function() {
+				m.duplicate({
+					name: 'Copie de ' + m.get('name')
+				}).done(function(duplicate) {
+					navigationController.showOverlay(300);
+					navigationController.navigate('/catalog/products/' + duplicate.get('product_id'));
+					//ControllerChannel.trigger('refresh:categories');
+				}).fail(function(xhr) {
+					navigationController.showErrorModal(xhr);
+				});
+			},
+			function(xhr) {
+				navigationController.showErrorModal(xhr);
+			}
+		);
+
+	},
+
+	showLinked: function(id) {
+
+		var m = new Product({
+			product_id: id
+		});
+
+		m.fetch().done(function() {
+
+			var c = new Linked();
+			c.product_id = id;
+			var view = new LinkedView({
+				collection: c,
+				products: new Products()
+			});
+			view.start();
+
+			this.navigationController.showContent(view);
+			this.setHeader({
+				title: 'Produits associés'
+			}, getHeadersAction({
+				duplicateProduct: id
+			}), HeaderTabsProduct(id));
+
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Produit introuvable'
+			});
+		}.bind(this));
 	},
 
 	/*
@@ -213,12 +342,16 @@ var CatalogController = Controller.extend({
 					//ControllerChannel.trigger('refresh:categories');
 				}
 			}.bind(this));
-			this.listenTo(view, 'delete:category', this.actionDeletedCategory);
+			this.listenTo(m, 'destroy', function() {
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/catalog');
+				//ControllerChannel.trigger('refresh:categories');
+			});
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: m.get('name')
 			}, getHeadersAction({
-				preview: m.previewLink,
+				preview: m,
 				addSave: true
 			}), HeaderTabscategory(id, m.get('product_count')));
 		}.bind(this)).fail(function() {
@@ -227,12 +360,6 @@ var CatalogController = Controller.extend({
 				title: 'Catégorie introuvable'
 			});
 		}.bind(this));
-	},
-
-	actionDeletedCategory: function() {
-		this.navigationController.showOverlay(300);
-		this.navigationController.navigate('/catalog');
-		//ControllerChannel.trigger('refresh:categories');
 	},
 
 	actionNewCategory: function() {
@@ -251,6 +378,36 @@ var CatalogController = Controller.extend({
 			this.navigationController.showErrorModal(xhr);
 		}.bind(this));
 
+	},
+
+	showHome: function() {
+
+		var m = new Home();
+		m.fetch().done(function() {
+			var view = new HomeView({
+				model: m
+			});
+
+			this.listenTo(m, 'change', function(model) {
+				if (model.hasChanged('name')) {
+					this.setBreadCrum({
+						title: model.get('name')
+					}, true);
+				}
+			}.bind(this));
+			this.navigationController.showContent(view);
+			this.setHeader({
+				title: m.get('name')
+			}, getHeadersAction({
+				preview: m,
+				addSave: true
+			}));
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Accueil du catalogue introuvable'
+			});
+		}.bind(this));
 	},
 
 	/*
@@ -273,7 +430,7 @@ var CatalogController = Controller.extend({
 			this.notFound();
 			this.setHeader({
 				title: 'Catégories introuvables'
-			});
+			}, getHeadersAction());
 		}.bind(this));
 	},
 
@@ -287,7 +444,11 @@ var CatalogController = Controller.extend({
 		var c = new Comments();
 		var title = 'Toutes les évaluations';
 		var tabs = null;
+		var actions = {
+			addComments: true
+		};
 		if (product_id > 0) {
+
 			c.product_id = product_id;
 
 			var product = new Product({
@@ -295,10 +456,10 @@ var CatalogController = Controller.extend({
 			});
 			promise = product.fetch().done(function() {
 
-				title = product.get('title');
+				title = product.get('name');
 				tabs = HeaderTabsProduct(product_id, product.get('comments_count'));
 			});
-
+			actions.duplicateProduct = product_id;
 		} else {
 			promise = Backbone.$.Deferred().resolve();
 		}
@@ -312,9 +473,7 @@ var CatalogController = Controller.extend({
 			this.setHeader({
 					title: title
 				},
-				getHeadersAction({
-					addComments: true
-				}),
+				getHeadersAction(actions),
 				tabs);
 		}.bind(this)).fail(function() {
 			this.notFound();
@@ -325,7 +484,7 @@ var CatalogController = Controller.extend({
 	},
 
 	actionNewComment: function() {
-
+		// TODO
 	},
 
 
@@ -342,7 +501,9 @@ var CatalogController = Controller.extend({
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: 'Paramètres du catalogue'
-			});
+			}, getHeadersAction({
+				addSave: true
+			}));
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
@@ -364,35 +525,67 @@ var CatalogController = Controller.extend({
 				model: m
 			});
 			this.navigationController.showContent(view);
-			/*view.start();*/
 			this.setHeader({
 				title: 'Gestion des taxes'
-			});
+			}, getHeadersAction({
+				addSave: true
+			}));
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
 				title: 'Gestion des taxes introuvables'
-			});
+			}, getHeadersAction());
 		}.bind(this));
 	},
 
-	showLinked: function() {
-		console.log('CheckoutController, showLinked');
-
-		this.navigationController.showContent(new LinkedView());
-		this.setHeader({
-			title: 'Produits associés'
-		});
-	},
-
 	showTags: function() {
-		console.log('CatalogController, showTags');
 
+		var view = new TagsView({
+			collection: new Tags()
+		});
 
-		this.navigationController.showContent(new TagsView());
+		this.navigationController.showContent(view);
+		view.start();
+
 		this.setHeader({
 			title: 'Tous les tags'
+		}, null, HeaderTagsTabs());
+	},
+
+	showBrands: function() {
+
+		var view = new BrandsView({
+			collection: new Brands()
 		});
+
+		this.navigationController.showContent(view);
+		view.start();
+
+		this.setHeader({
+			title: 'Toutes les marques'
+		}, null, HeaderTagsTabs());
+	},
+
+	showVariants: function() {
+
+		var view = new VariantsView({
+			collection: new VariantsNames()
+		});
+
+		this.navigationController.showContent(view);
+		view.start();
+
+		this.setHeader({
+			title: 'Toutes les variantes'
+		}, null, HeaderTagsTabs());
+	},
+
+	/*
+	 * Others
+	 */
+
+	actionPreview: function(model) {
+		window.open(model.previewLink);
 	}
 
 });
@@ -400,9 +593,7 @@ var CatalogController = Controller.extend({
 module.exports = Marionette.AppRouter.extend({
 	controller: new CatalogController(),
 	appRoutes: {
-		'catalog': 'showIndex',
-		'catalog/comments': 'showIndex',
-		/*'catalog': 'showProducts',
+		'catalog': 'showProducts',
 		'catalog/home': 'showHome',
 		'catalog/products/:id': 'showProduct',
 		'catalog/products/:id/comments': 'showComments',
@@ -413,7 +604,9 @@ module.exports = Marionette.AppRouter.extend({
 		'catalog/comments': 'showComments',
 		'catalog/settings': 'showSettings',
 		'catalog/taxes': 'showTaxes',
-		'catalog/tags': 'showTags'*/
+		'catalog/tags': 'showTags',
+		'catalog/brands': 'showBrands',
+		'catalog/variants': 'showVariants'
 	},
 
 	onRoute: function(name, path, args) {

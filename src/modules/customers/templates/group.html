@@ -1,225 +1,119 @@
-<article class="post-article">
-  <header class="post-header">
-    <h1>Informations générales</h1>
-  </header>
-  <div class="post-content">
-    <div class="form-group">
-      <label class="control-label required" for="exmemple1">Intitulé du groupe</label>
-      <input class="form-control" id="exmemple1" placeholder="Intitulé permettant d'identifier le groupe" type="text">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="">Accès</label>
-      <div class="radio-group">
-        <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
-        <label for="affichage1" class="visible">Autorisé</label>
-        <input name="affichage" id="affichage0" value="option1" type="radio">
-        <label for="affichage0" class="not-visible">Bloqué</label>
-      </div>
-    </div>
-  </div>
-  <footer class="post-footer"></footer>
-</article>
+<form>
 
-<article class="post-article">
-  <header class="post-header">
-    <h1>Redirection automatique</h1>
-  </header>
-  <div class="post-content">
-    <p>A la connection au site, les membres du groupe sont automatiquement redirigés vers une page du site, sauf s'ils s'y connectent à partir du tunel de commande.
-		</p>
-		<div class="row">
-			<div class="col-xs-3">
-				<div class="form-group has-feedback">
-					<label class="control-label" for="exmemple3">Vers quel service ?</label>
-					<select class="form-control" ic="exmemple3">
-						<option>Site Web</option>
-						<option>Blog</option>
-						<option>Contact</option>
-						<option selected="selected">Membres</option>
-						<option>Catalogue</option>
-					</select>
-					<div class="form-control-feedback md-feedback md-select"></div>
-				</div>
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Informations générales</h1>
+		</header>
+		<div class="post-content">
+			<div class="form-group">
+				<label class="control-label required" for="name">Intitulé du groupe</label>
+				<input class="form-control" id="name" name="name" value="<%- name %>"
+					   placeholder="Intitulé permettant d'identifier le groupe" type="text">
 			</div>
-			<div class="col-xs-6">
-				<div class="form-group has-feedback">
-					<label class="control-label" for="exmemple3">Vers quelle page ?</label>
-					<select class="form-control" ic="exmemple3">
-						<option>Identification</option>
-            <option>Inscription</option>
-            <option selected="selected">Gestion : Compte</option>
-            <option>Gestion : Info personnelles</option>
-            <option>Gestion : Mot de passe</option>
-            <option>Gestion : Identité web</option>
-            <option>Gestion : Avatar</option>
-            <option>Gestion : Abonnements</option>
-					</select>
-					<div class="form-control-feedback md-feedback md-select"></div>
+			<div class="form-group">
+				<label class="control-label">Accès</label>
+
+				<div class="radio-group">
+					<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
+					<label for="is_enabled1" class="visible">Autorisé</label>
+					<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
+					<label for="is_enabled0" class="not-visible">Bloqué</label>
 				</div>
 			</div>
 		</div>
-  </div>
-  <footer class="post-footer"></footer>
-</article>
+		<footer class="post-footer"></footer>
+	</article>
 
-<article class="post-article">
-  <header class="post-header">
-    <h1>Remise sur tous les produits</h1>
-  </header>
-  <div class="post-content">
-    <p>Une remise en pourcentage sur l'ensemble des produits du catalogue peut être
-      appliquée automatiquement pour tous les membres du groupe extranet.
-      Cette remise change directement l'affichage du prix des produits dans le catalogue et dans le panier d'achat.
-    </p>
-    <div class="row">
-      <div class="col-xs-3">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple2">Remise appliquée</label>
-          <input class="form-control" id="exmemple2" placeholder="0,00" value="15,00">
-          <span class="form-control-feedback md-percent"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer class="post-footer"></footer>
-</article>
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Redirection automatique</h1>
+		</header>
+		<div class="post-content">
+			<p>A la connection au site, les membres du groupe sont automatiquement redirigés vers une page du site, sauf
+				s'ils s'y connectent à partir du tunel de commande.
+			</p>
 
-<article class="post-article">
-  <header class="post-header">
-    <h1>Remises par catégories</h1>
-  </header>
-  <div class="post-content post-list">
-    <p>
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label">Vers quel service ?</label>
 
-En complément de la remise sur tous les produits, des remises par catégories de produits
-peuvent être définies pour tous les membres de ce groupe extranet.
-<strong>Ces remises remplacent la remise</strong> sur tous les produits pour les catégories sélectionnées.
-Pour en savoir plus sur l'ordre d'application des remises,
-<a href="https://aide.kiubi.com/documentation/marketing-et-referencement/remises-catalogue-b2b.html" target="_blank">
-  consultez l'aide en ligne</a>.
-    </p>
-    <div class="row">
-      <div class="col-xs-3"><label class="control-label" for="">Remise appliquée</label>
-      </div>
-      <div class="col-xs-4"><label class="control-label" for="">Catégorie concernée</label>
-      </div>
-    </div>
-    <div class="list-item list-item-form">
-      <div class="row">
-        <div class="col-xs-3">
-          <div class="form-group has-feedback">
-            <input class="form-control" id="exmemple2" placeholder="0,00" value="5,00%">
-            <span class="form-control-feedback md-percent"></span>
-          </div>
-        </div>
-        <div class="col-xs-6">
-          <div class="form-group has-feedback">
-            <select class="form-control" ic="exmemple3">
-              <option value="151" selected="selected">1 Kg acheté = 1 Kg offert</option>
-              <option value="6">Amandes &amp; douceurs</option>
-              <option value="7">Pains d'épices</option>
-              <option value="12">Meringues à la française</option>
-              <option value="47">Macarons fins</option>
-              <option value="19">Macarons de Riquewihr</option>
-              <option value="26">Gâteaux de Noël "Bredele"</option>
-              <option value="20">Gâteaux d'Alsace</option>
-              <option value="30">Chocolat &amp; Confiserie</option>
-              <option value="32">Biscuits Sablés fins</option>
-              <option value="33">Coffrets cadeaux et &lt;br /&gt;Boîtes...</option>
-              <option value="212">Notre Sélection &lt;br /&gt; Fête des ...</option>
-              <option value="382">Au pied du Sapin</option>
-              <option value="392">Fleurs de Pâques</option>
-              <option value="402">Fête des mères</option>
-              <option value="412">Le goût du bonheur</option>
-              <option value="422">Les Trésors de Noël</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-        <div class="col-xs-3"><a href="#" class="md-icon md-delete pull-right"></a></div>
-      </div>
-    </div>
-    <div class="list-item list-item-form">
-      <div class="row">
-        <div class="col-xs-3">
-          <div class="form-group has-feedback">
-            <input class="form-control" id="exmemple2" placeholder="0,00" value="5,00%">
-            <span class="form-control-feedback md-percent"></span>
-          </div>
-        </div>
-        <div class="col-xs-6">
-          <div class="form-group has-feedback">
-            <select class="form-control" ic="exmemple3">
-              <option value="151">1 Kg acheté = 1 Kg offert</option>
-              <option value="6" selected="selected">Amandes &amp; douceurs</option>
-              <option value="7">Pains d'épices</option>
-              <option value="12">Meringues à la française</option>
-              <option value="47">Macarons fins</option>
-              <option value="19">Macarons de Riquewihr</option>
-              <option value="26">Gâteaux de Noël "Bredele"</option>
-              <option value="20">Gâteaux d'Alsace</option>
-              <option value="30">Chocolat &amp; Confiserie</option>
-              <option value="32">Biscuits Sablés fins</option>
-              <option value="33">Coffrets cadeaux et &lt;br /&gt;Boîtes...</option>
-              <option value="212">Notre Sélection &lt;br /&gt; Fête des ...</option>
-              <option value="382">Au pied du Sapin</option>
-              <option value="392">Fleurs de Pâques</option>
-              <option value="402">Fête des mères</option>
-              <option value="412">Le goût du bonheur</option>
-              <option value="422">Les Trésors de Noël</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-        <div class="col-xs-3"><a href="#" class="md-icon md-delete pull-right"></a></div>
-      </div>
-    </div>
-    <div class="list-item list-item-form">
-      <div class="row">
-        <div class="col-xs-3">
-          <div class="form-group has-feedback">
-            <input class="form-control" id="exmemple2" placeholder="0,00" value="5,00%">
-            <span class="form-control-feedback md-percent"></span>
-          </div>
-        </div>
-        <div class="col-xs-6">
-          <div class="form-group has-feedback">
-            <select class="form-control" ic="exmemple3">
-              <option value="151">1 Kg acheté = 1 Kg offert</option>
-              <option value="6">Amandes &amp; douceurs</option>
-              <option value="7" selected="selected">Pains d'épices</option>
-              <option value="12">Meringues à la française</option>
-              <option value="47">Macarons fins</option>
-              <option value="19">Macarons de Riquewihr</option>
-              <option value="26">Gâteaux de Noël "Bredele"</option>
-              <option value="20">Gâteaux d'Alsace</option>
-              <option value="30">Chocolat &amp; Confiserie</option>
-              <option value="32">Biscuits Sablés fins</option>
-              <option value="33">Coffrets cadeaux et &lt;br /&gt;Boîtes...</option>
-              <option value="212">Notre Sélection &lt;br /&gt; Fête des ...</option>
-              <option value="382">Au pied du Sapin</option>
-              <option value="392">Fleurs de Pâques</option>
-              <option value="402">Fête des mères</option>
-              <option value="412">Le goût du bonheur</option>
-              <option value="422">Les Trésors de Noël</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-        <div class="col-xs-3"><a href="#" class="md-icon md-delete pull-right"></a></div>
-      </div>
-    </div>
+						<div data-role="type"></div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label">Vers quelle page ?</label>
 
-    <div class="list-item no-hover"><a href="">Ajouter une remise</a></div>
-  </div>
-  <footer class="post-footer"></footer>
-</article>
+						<div data-role="page"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Remise sur tous les produits</h1>
+		</header>
+		<div class="post-content">
+			<p>Une remise en pourcentage sur l'ensemble des produits du catalogue peut être
+				appliquée automatiquement pour tous les membres du groupe extranet.
+				Cette remise change directement l'affichage du prix des produits dans le catalogue et dans le panier
+				d'achat.
+			</p>
+
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="discount">Remise appliquée</label>
+						<input class="form-control" id="discount" name="discount" placeholder="0,00" value="<%- discount %>">
+						<span class="form-control-feedback md-percent"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Remises par catégories</h1>
+		</header>
+		<div class="post-content post-list">
+			<p>
+				En complément de la remise sur tous les produits, des remises par catégories de produits
+				peuvent être définies pour tous les membres de ce groupe extranet.
+				<strong>Ces remises remplacent la remise</strong> sur tous les produits pour les catégories
+				sélectionnées.
+				Pour en savoir plus sur l'ordre d'application des remises,
+				<a href="https://aide.kiubi.com/documentation/marketing-et-referencement/remises-catalogue-b2b.html" target="_blank">consultez l'aide en ligne</a>.
+			</p>
+
+			<div class="row">
+				<div class="col-xs-3"><label class="control-label" for="">Remise appliquée</label>
+				</div>
+				<div class="col-xs-4"><label class="control-label" for="">Catégorie concernée</label>
+				</div>
+			</div>
+
+			<div data-role="discounts"></div>
+
+			<div class="list-item no-hover"><a href="#" data-role="discount-add">Ajouter une remise</a></div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+</form>
 
 <div class="save">
-  <div class="btn-toolbar" role="toolbar">
-    <button type="button" class="btn btn-delete">Supprimer</button>
-    <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
-  </div>
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+	</div>
 </div>
 
-<footer class="footer"> </footer>
+<footer class="footer"></footer>

@@ -42,8 +42,7 @@ module.exports = Marionette.Behavior.extend({
 
 		var confirm = btn.data('confirm');
 		if (confirm) {
-			if (!btn.parent().hasClass("confirm-" +
-					confirm)) {
+			if (!btn.parent().hasClass("confirm-" + confirm)) {
 				event.preventDefault();
 				btn.data('title', btn.text());
 				btn.parent().addClass("confirm-" + confirm);

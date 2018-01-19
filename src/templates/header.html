@@ -1,12 +1,12 @@
 <% if(actions && actions.length > 0) { %>
 <div class="btn-toolbar pull-right" role="toolbar">
 	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-action" data-role="default-action"><%- actions[0].title %></button>
+		<button data-id="<%- actions[0].index %>" type="button" class="btn btn-action <%= !actions[0].isEnabled ? 'disabled' : '' %>" data-role="default-action"><%- actions[0].title %></button>
 		<% if (actions.length > 1) %>
 		<button type="button" class="btn btn-action dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span></button>
 		<ul class="dropdown-menu dropdown-menu-right" data-role="other-actions">
 			<% _(actions).each(function(action, index){ if(index==0) return; %>
-			<li data-id="<%- index %>"><a href="#"><%- action.title %></a></li>
+			<li data-id="<%- action.index %>" class="<%= !action.isEnabled ? 'disabled' : '' %>"><a href="#"><%- action.title %></a></li>
 			<% }) %>
 		</ul>
 		<% %>

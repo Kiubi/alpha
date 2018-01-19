@@ -14,7 +14,7 @@ var RowView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			plural: function(nb, singular, plural) {
-				return nb > 1 ? plural : singular;
+				return (nb > 1 ? plural : singular).replace('%d', nb);
 			},
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			preview: Session.site.get('domain') + '/catalogue/' + this.model.get('slug') + '.html',
@@ -81,7 +81,7 @@ module.exports = Marionette.View.extend({
 					extra_fields: 'price_label'
 				}
 			}],
-			filterModal: '#filterscatalog',
+			//filterModal: '#filterscatalog',
 			selection: [{
 				title: 'Afficher',
 				callback: this.showProducts.bind(this)

@@ -17,10 +17,10 @@ module.exports = Backbone.Model.extend({
 	},
 
 	defaults: {
-		allow_registration: 0,
-		allow_login: 0,
+		allow_registration: false,
+		allow_login: false,
 		validation: 'captcha',
-		default_group_id: '',
+		default_group_id: null,
 		terms: ''
 	}
 

@@ -18,9 +18,9 @@ var RowView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			plural: function(nb, singular, plural) {
-				return nb > 1 ? plural : singular;
+				return (nb > 1 ? plural : singular).replace('%d', nb);
 			},
-			preview: Session.site.get('domain') + '/blog/' + this.model.get('slug') + '/'
+			preview: Session.site.get('domain') + '/blog/' + this.model.get('slug') + '/' // TODO fix custom breadcrum
 		};
 	},
 

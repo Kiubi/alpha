@@ -24,7 +24,11 @@ module.exports = Backbone.Model.extend({
 		is_enabled: false,
 		target_type: '',
 		target_page: '',
-		target_key: ''
+		target_key: '',
+
+		// extra_fields : target
+		target_name: '',
+		target_service: ''
 	}
 
 });

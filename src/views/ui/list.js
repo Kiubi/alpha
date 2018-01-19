@@ -1,9 +1,10 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
-require('jquery-ui/sortable');
+require('kiubi/utils/proxy.jquery-ui.js');
 
 var InfiniteScrollBehavior = require('kiubi/behaviors/infinite_scroll.js');
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 
 var LoaderTpl = require('kiubi/templates/ui/loader.html');
 
@@ -12,6 +13,8 @@ var FiltersView = Marionette.View.extend({
 
 	tagName: 'div',
 	className: 'btn-group',
+
+	behaviors: [SelectifyBehavior],
 
 	templateContext: function() {
 		return {
@@ -163,14 +166,18 @@ module.exports = Marionette.View.extend({
 		'loading': "div[data-role='loading']",
 		'select': '#selection_all',
 		'action': '[data-role="action"]',
-		'action-main': '[data-role="action"][data-id="0"]'
+		'action-main': '[data-role="bulk-action"]',
+		'row-select': 'input[name="selection"]',
+		'select-all': '[data-role="select-all"]',
+		'counter': '[data-role="counter"]'
 	},
 
 	events: {
 		'click @ui.order': 'changeOrder',
 		'click @ui.select': 'selectAll',
 		'click @ui.action': 'onAction',
-		'hidden.bs.dropdown .btn-group': 'onHiddenDropDown'
+		'hidden.bs.dropdown .btn-group': 'onHiddenDropDown',
+		'click @ui.row-select': 'selectRow'
 	},
 
 	/**
@@ -205,6 +212,7 @@ module.exports = Marionette.View.extend({
 
 		this.listenTo(this.getOption('collection'), 'request', this.onCollectionRequest);
 		this.listenTo(this.getOption('collection'), 'sync', this.onCollectionSync);
+		this.listenTo(this.getOption('collection'), 'sync update', this.selectRow);
 	},
 
 	onCollectionRequest: function(event, xhr, options) {
@@ -228,7 +236,8 @@ module.exports = Marionette.View.extend({
 	onRender: function() {
 		this.showChildView('list', new ListView({
 			collection: this.collection,
-			childView: this.rowView
+			childView: this.rowView,
+			childViewOptions: this.getOption('childViewOptions')
 		}));
 		if (this.getOption('filters').length > 0) {
 			this.showChildView('filters', new FiltersView({
@@ -236,14 +245,56 @@ module.exports = Marionette.View.extend({
 			}));
 		}
 		if (this.newRowView != null) {
-			this.showChildView('new', new this.newRowView({
+
+			var options = _.extend({
 				collection: this.collection
-			}));
+			}, this.getOption('childViewOptions'));
+
+			this.showChildView('new', new this.newRowView(options));
+		}
+	},
+
+	/**
+	 * Update counter text
+	 *
+	 * @param {String} text
+	 */
+	setCounterText: function(text) {
+		this.getUI('counter').text(text);
+	},
+
+	selectRow: function() {
+
+		var checked = Backbone.$('input[name="selection"]:checked', this.el).length;
+		var total = Backbone.$('input[name="selection"]', this.el).length;
+
+		// Affichage du bouton d'actions groupées et compteur de sélection
+		if (checked > 0) {
+			this.getUI('action-main').parent().removeClass('hidden');
+			this.getUI('select-all').addClass('hidden');
+			this.setCounterText(' : ' + checked + (checked > 1 ? ' sélectionnés' : ' sélectionné'));
+		} else {
+			this.getUI('action-main').parent().addClass('hidden');
+			this.getUI('select-all').removeClass('hidden');
+			this.setCounterText('');
+		}
+
+		// Etat du checkbox principal
+		if (total == 0 || checked == 0) {
+			this.getUI('select').prop('checked', false);
+			this.getUI('select').removeClass('partiel');
+		} else if (total == checked) {
+			this.getUI('select').prop('checked', true);
+			this.getUI('select').removeClass('partiel');
+		} else {
+			this.getUI('select').prop('checked', false);
+			this.getUI('select').addClass('partiel');
 		}
 	},
 
 	selectAll: function(event) {
 		Backbone.$('input[name="selection"]', this.el).prop('checked', event.currentTarget.checked).change();
+		this.selectRow();
 	},
 
 	onAction: function(event) {
@@ -296,9 +347,9 @@ module.exports = Marionette.View.extend({
 			return;
 		}
 
-		var mainBtn = this.getUI('action-main');
+		var mainBtn = this.getUI('action-main').find('span:first-of-type');
 		mainBtn.data('title', mainBtn.text());
-		mainBtn.addClass('btn-load');
+		mainBtn.addClass('btn-load btn-load-inverse');
 		mainBtn.html(LoaderTpl());
 
 		promise.then(function() {
@@ -308,7 +359,7 @@ module.exports = Marionette.View.extend({
 				btn.text(btn.data('title'));
 			}
 			mainBtn.text(mainBtn.data('title'));
-			mainBtn.removeClass('btn-load');
+			mainBtn.removeClass('btn-load btn-load-inverse');
 		}.bind(this));
 	},
 

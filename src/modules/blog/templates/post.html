@@ -13,16 +13,15 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-4">
-					<div class="form-group has-feedback">
+					<div class="form-group">
 						<label class="control-label">Catégorie</label>
-						<select data-role="categories"></select>
-						<div class="form-control-feedback md-feedback md-select"></div>
+						<div data-role="categories"></div>
 					</div>
 				</div>
 				<div class="col-xs-4">
 					<div class="form-group has-feedback">
 						<label class="control-label" for="publication_date">Date de publication</label>
-						<input data-role="datetimepicker" class="form-control" id="publication_date" name="publication_date" value="<%- publication_date  %>" placeholder="jj/mm/aaaa à hh:mm" type="text">
+						<input data-role="datetimepicker" class="form-control" id="publication_date" name="publication_date" value="<%- publication_date %>" placeholder="jj/mm/aaaa hh:mm:ss" type="text">
 						<span class="form-control-feedback md-feedback md-date"></span>
 					</div>
 				</div>
@@ -30,10 +29,10 @@
 					<div class="form-group">
 						<label class="control-label">Affichage</label>
 						<div class="radio-group">
-							<input name="is_visible" id="affichage1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
-							<label for="affichage1" class="visible">Visible</label>
-							<input name="is_visible" id="affichage0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
-							<label for="affichage0" class="not-visible">Masqué</label>
+							<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
+							<label for="is_visible1" class="visible">Visible</label>
+							<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
+							<label for="is_visible0" class="not-visible">Masqué</label>
 						</div>
 					</div>
 				</div>
@@ -53,7 +52,7 @@
 			<div class="form-group">
 				<label class="control-label" for="header">Chapô</label>
 				<p>Le chapô sert d'introduction au billet et s'affiche généralement à la place du contenu dans une liste de billets. </p>
-				<textarea class="form-control" id="header" name="header" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro"><%- header %></textarea>
+				<textarea class="form-control" id="header" name="header" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro" data-wysiwyg-height="350"><%- header %></textarea>
 			</div>
 			<div class="form-group">
 				<label class="control-label" for="content">Contenu</label>  <p>Le contenu s'affiche généralement après le chapô dans le détail d'un billet.</p>
@@ -63,7 +62,7 @@
 				<!--<div class="col-xs-6">
 					<div class="form-group has-feedback">
 						<label class="control-label" for="author">Auteur</label>
-						<select class="form-control" id="author" name="author">
+						<select id="author" name="author" data-style="selectify">
 							<option>Marc BEYER</option>
 							<option>1</option>
 							<option>2</option>
@@ -71,7 +70,6 @@
 							<option>4</option>
 							<option>5</option>
 						</select>
-						<div class="form-control-feedback md-feedback md-select"></div>
 					</div>
 				</div>-->
 				<div class="col-xs-4">

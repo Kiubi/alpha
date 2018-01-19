@@ -31,14 +31,13 @@
 					</div>
 				</div>
 				<div class="col-xs-4">
-					<div class="form-group has-feedback">
+					<div class="form-group">
 						<label class="control-label" for="validation">Validation de compte</label>
-						<select class="form-control" id="validation" name="validation">
+						<select id="validation" name="validation" data-style="selectify">
 							<option value="email" <%= validation == "email" ? 'selected="selected"' : '' %>>Par confirmation email</option>
 							<option value="captcha" <%= validation == "captcha" ? 'selected="selected"' : '' %>>Par catpcha</option>
 							<option value="auto" <%= validation == "auto" ? 'selected="selected"' : '' %>>Pas de validation</option>
 						</select>
-						<div class="form-control-feedback md-feedback md-select"></div>
 					</div>
 				</div>
 			</div>
@@ -56,23 +55,10 @@
 				<div class="col-xs-4">
 					<div class="form-group has-feedback">
 						<label class="control-label" for="">Groupe extranet par défaut</label>
-						<select data-role="groups"></select>
-						<div class="form-control-feedback md-feedback md-select"></div>
-					</div>
-				</div>
-				<div class="col-xs-offset-2 col-xs-4">
-					<div class="form-group">
-						<label class="control-label" for="">Utilisation de l'extranet </label>
-						<div class="radio-group">
-							<input name="captcha" id="captcha1" value="option1" checked="checked" type="radio">
-							<label for="captcha1" class="visible">Activé</label>
-							<input name="captcha" id="captcha0" value="option1" type="radio">
-							<label for="captcha0" class="not-visible">Désactivé</label>
-						</div>
+						<div data-role="groups"></div>
 					</div>
 				</div>
 			</div>
-
 		</div>
 		<footer class="post-footer"></footer>
 	</article>

@@ -11,24 +11,23 @@
 			<label class="control-label required" for="name">Intitulé de la page</label>
 			<input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Intitulé de la page tel qu'il apparaîtra dans le menu" type="text">
 		</div>
+
+
 		<div class="row">
-			<% if(!is_home) { %>
-			<div class="col-xs-4">
-				<div class="form-group has-feedback">
-					<label class="control-label" for="">Page parente</label>
-					<select data-role="parent"></select>
-					<div class="form-control-feedback md-feedback md-select"></div>
+            <% if(!is_home) { %>
+
+			<div class="col-xs-6">
+
+				<div class="form-group">
+					<label class="control-label" for="name">Page parente</label>
+					<div data-role="parent"></div>
 				</div>
+
 			</div>
-			<div class="col-xs-4">
-				<div class="form-group has-feedback">
-					<label class="control-label">Position dans le menu</label>
-					<select class="form-control" name="position"></select>
-					<div class="form-control-feedback md-feedback md-select"></div>
-				</div>
-			</div>
-			<% } %>
-			<div class="col-xs-4">
+
+            <% } %>
+
+			<div class="col-xs-4 col-xs-offset-2">
 				<div class="form-group">
 					<label class="control-label">Affichage</label>
 					<div class="radio-group">
@@ -51,17 +50,16 @@
 	</header>
 	<div class="post-content">
 		<div class="post-group">
-			<div class="form-group has-feedback">
+			<div class="form-group">
 				<p>Le type de la page détermine son mode d'affichage dans le menu et la nature de son contenu :</p>
 				<div class="row">
 					<div class="col-xs-6">
-						<select class="form-control" name="page_type">
+						<select name="page_type" data-style="selectify">
 							<option <%= page_type == 'page' ? 'selected="selected"' : '' %> value="page">Page de contenu libre</option>
 							<option <%= page_type == 'lien_int' ? 'selected="selected"' : '' %> value="internal_link">Lien interne vers une autre page</option>
 							<option <%= page_type == 'lien_ext' ? 'selected="selected"' : '' %> value="external_link">Lien externe vers une adresse web</option>
 							<option <%= page_type == 'separateur' ? 'selected="selected"' : '' %> value="separator">Séparateur sans lien ni contenu</option>
 						</select>
-						<div class="form-control-feedback md-feedback md-select"></div>
 					</div>
 				</div>
 			</div>

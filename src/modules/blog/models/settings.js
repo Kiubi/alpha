@@ -21,7 +21,9 @@ module.exports = Backbone.Model.extend({
 		comments_allowed: false,
 		comments_captcha: false,
 		comments_anonymous: false,
-		comments_autopublish: false
+		comments_autopublish: false,
+		is_rss_enabled: false,
+		rss_post_count: 0
 	}
 
 });

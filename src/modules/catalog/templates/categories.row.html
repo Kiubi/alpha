@@ -1,38 +1,4 @@
-	<div class="row">
-
-	<% if (is_main) { %>
-	<div class="col-xs-6 col-md-7">
-		<div class="media">
-			<div class="media-left">
-				<div style="width: 18px"></div>
-			</div>
-			<div class="media-left">
-				<div class="media-object md-icon md-product img-default catalog-home"></div>
-			</div>
-			<div class="media-left">
-				<div style="width: 25px"></div>
-			</div>
-			<div class="media-body">
-				<h4><%- name %></h4>
-				<% if(!is_visible) { %>
-				<span class="text-danger">Masquée</span>
-				<% } else { %>
-				La page d'accueil du catalogue peut être modifiée mais ne peut pas être déplacée ou supprimée
-				<% } %>
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-offset-3 col-xs-3 col-md-2">
-		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/catalog/categories/<%- category_id %>" role="button">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="<%- preview %>" target="_blank">Aperçu</a></li>
-			</ul>
-		</div>
-	</div>
-
-<% } else { %>
-
+<div class="row">
 	<div class="col-xs-6 col-md-7">
 		<div class="media">
 			<div class="media-left">
@@ -43,9 +9,12 @@
 			</div>
 			<div class="media-left">
 				<div class="media-object md-icon md-image img-default"></div>
-				<% if (media_id) { %><div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath('/media/miniature/'+media_id) %>" /></div><% } %>
+				<% if (media_id) { %>
+				<div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath('/media/miniature/'+media_id) %>"/>
+				</div>
+				<% } %>
 			</div>
-			<div class="media-left"><a href="#" class="md-icon md-drag btn-drag"></a> </div>
+			<div class="media-left"><a href="#" class="md-icon md-drag btn-drag"></a></div>
 			<div class="media-body">
 				<h4><%- name %></h4>
 				<% if(!is_visible) { %>
@@ -53,20 +22,18 @@
 				<% } else { %>
 				<%- short_desc %>
 				<% } %>
-		</div>
+			</div>
 		</div>
 	</div>
-	<div class="col-xs-3"><a href="/catalog/categories/<%- category_id %>/products"><%- product_count %> <%= plural(product_count, 'produit en vente', 'produits en vente') %></a></div>
+	<div class="col-xs-3"><a href="/catalog/categories/<%- category_id %>/products"><%= plural(product_count, '%d produit en vente', '%d produits en vente') %></a></div>
 	<div class="col-xs-3 col-md-2">
-		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/catalog/categories/<%- category_id %>" role="button">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
+		<div class="btn-group pull-right" role="group"><a class="btn btn-option" href="/catalog/categories/<%- category_id %>" role="button">Détail</a>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span> <span class="sr-only">Menu</span></button>
 			<ul class="dropdown-menu dropdown-menu-right">
 				<li><a href="<%- preview %>" target="_blank">Aperçu</a></li>
 				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
 			</ul>
 		</div>
 	</div>
-
-	<% } %>
 
 </div>

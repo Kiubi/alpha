@@ -1,0 +1,32 @@
+<div class="row">
+	<div class="col-xs-6 col-md-7">
+		<div class="media">
+			<div class="media-left">
+				<div style="width: 18px"></div>
+			</div>
+			<div class="media-left">
+				<div class="media-object md-icon md-product img-default catalog-home"></div>
+			</div>
+			<div class="media-left">
+				<div style="width: 25px"></div>
+			</div>
+			<div class="media-body">
+				<h4><%- name %></h4>
+				<% if(!is_visible) { %>
+				<span class="text-danger">Masquée</span>
+				<% } else { %>
+				La page d'accueil du catalogue peut être modifiée mais ne peut pas être déplacée ou supprimée
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-offset-3 col-xs-3 col-md-2">
+		<div class="btn-group pull-right" role="group"><a class="btn btn-option" href="/catalog/home" role="button">Détail</a>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span> <span class="sr-only">Menu</span></button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="<%- preview %>" target="_blank">Aperçu</a></li>
+			</ul>
+		</div>
+	</div>
+
+</div>

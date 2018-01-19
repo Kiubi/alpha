@@ -1,6 +1,8 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
+
 var Layouts = require('../models/layouts');
 var Builder = require('../models/builder');
 
@@ -8,6 +10,7 @@ module.exports = Marionette.View.extend({
 	template: require('../templates/layout.selector.html'),
 	tagName: 'article',
 	className: 'post-article',
+	behaviors: [SelectifyBehavior],
 
 	ui: {
 		'select': "select",
@@ -41,8 +44,8 @@ module.exports = Marionette.View.extend({
 	},
 
 	/**
-	 * Get HTML structure of the layout 
-	 * 
+	 * Get HTML structure of the layout
+	 *
 	 * @param {int} layout_id
 	 * @returns {String}	HTML table
 	 */

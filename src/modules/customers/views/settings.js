@@ -22,7 +22,7 @@ module.exports = Marionette.View.extend({
 
 	regions: {
 		groups: {
-			el: "select[data-role='groups']",
+			el: "div[data-role='groups']",
 			replaceElement: true
 		}
 	},
@@ -35,14 +35,21 @@ module.exports = Marionette.View.extend({
 		this.showChildView('groups', new SelectView({
 			collection: this.groups,
 			selected: this.model.get('default_group_id'),
-			name: 'default_group_id'
+			name: 'default_group_id',
+			emptyLabel: 'Aucun groupe'
 		}));
 	},
 
 	onSave: function() {
+
+		var data = Forms.extractFields(this.fields, this);
+		data.allow_registration = (data.allow_registration == '1'); // manual boolean casting
+		data.allow_login = (data.allow_login == '1'); // manual boolean casting
+
 		return this.model.save(
-			Forms.extractFields(this.fields, this), {
-				patch: true
+			data, {
+				patch: true,
+				wait: true
 			}
 		);
 	}

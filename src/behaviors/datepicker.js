@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var _ = require('underscore');
 
 var DatePicker = require('bootstrap-datetimepicker-npm');
 DatePicker(Backbone.$); // register DatePicker as a jquery module
@@ -7,16 +8,18 @@ DatePicker(Backbone.$); // register DatePicker as a jquery module
 module.exports = Marionette.Behavior.extend({
 
 	ui: {
-		inputs: "input[data-role='datetimepicker']"
+		inputsDate: "input[data-role='datepicker']",
+		inputsDateTime: "input[data-role='datetimepicker']"
 	},
 
 	onRender: function() {
-		this.getUI('inputs').datetimepicker({
-			format: "YYYY-MM-DD HH:mm:ss",
+
+		var options = {
+			//	format: "YYYY-MM-DD HH:mm:ss",
 			showTodayButton: true,
 			widgetPositioning: {
 				horizontal: 'auto',
-				vertical: 'bottom',
+				vertical: 'bottom'
 			},
 			icons: {
 				time: 'md-icon md-time',
@@ -30,7 +33,7 @@ module.exports = Marionette.Behavior.extend({
 				close: 'md-icon md-close'
 			},
 			tooltips: {
-				today: 'Ajourd\'hui',
+				today: 'Aujourd\'hui',
 				clear: 'Recommencer',
 				close: 'Fermer',
 				selectMonth: 'Choisir un mois',
@@ -56,14 +59,22 @@ module.exports = Marionette.Behavior.extend({
 				togglePeriod: 'Changer de période',
 				selectTime: 'Choisir l\'heure'
 			}
-		});
+		};
+
+		this.getUI('inputsDate').datetimepicker(_.extend({
+			format: 'DD/MM/YYYY'
+		}, options));
+		this.getUI('inputsDateTime').datetimepicker(_.extend({
+			format: 'DD/MM/YYYY HH:mm:ss'
+		}, options));
 	},
 
 	/**
 	 * Clean up
 	 */
 	onBeforeDestroy: function() {
-		this.getUI('inputs').data("DateTimePicker").destroy();
+		if (this.getUI('inputsDate').length) this.getUI('inputsDate').data("DateTimePicker").destroy();
+		if (this.getUI('inputsDateTime').length) this.getUI('inputsDateTime').data("DateTimePicker").destroy();
 	}
 
 });

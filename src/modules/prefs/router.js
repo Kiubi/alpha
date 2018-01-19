@@ -4,10 +4,15 @@ var Marionette = require('backbone.marionette');
 var Controller = require('kiubi/controller.js');
 
 /* Models */
+var Site = require('./models/site');
+var Theme = require('./models/theme');
 var Contact = require('./models/contact');
 var Medias = require('./models/medias');
 var Ftp = require('./models/ftp');
 var Meta = require('./models/meta');
+var Countries = require('kiubi/models/countries');
+var Domains = require('kiubi/models/domains');
+var Https = require('./models/https');
 
 /* Views */
 var IndexView = require('./views/index');
@@ -22,7 +27,7 @@ var ShortcutView = require('./views/shortcut');
 
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
-	template: require('kiubi/templates/sidebarMenu.empty.html'),
+	template: require('./templates/sidebarMenu.html'),
 	service: 'prefs',
 	behaviors: [ActiveLinksBehaviors]
 });
@@ -39,28 +44,47 @@ var PrefsController = Controller.extend({
 
 	showIndex: function() {
 
-		this.navigationController.underConstruction();
-		return;
+		var s = new Site();
+		var t = new Theme();
 
-		console.log('PrefsController, showIndex');
-
-		this.navigationController.showContent(new IndexView());
-		this.setHeader({
-			title: 'Préférences Générales'
+		Backbone.$.when(
+			s.fetch(),
+			t.fetch()
+		).done(function() {
+			var view = new IndexView({
+				site: s,
+				theme: t
+			});
+			this.navigationController.showContent(view);
+			this.setHeader({
+				title: 'Préférences Générales'
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}]);
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Paramètres introuvables'
+			}.bind(this));
 		});
 	},
 
 	showContact: function() {
-		console.log('PrefsController, showContact');
 
 		var m = new Contact();
 		m.fetch().done(function() {
-			var view = new ContactView();
-			view.model = m;
+			var view = new ContactView({
+				model: m,
+				countries: new Countries()
+			});
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: 'Coordonnées du site Internet'
-			});
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}]);
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
@@ -70,30 +94,40 @@ var PrefsController = Controller.extend({
 	},
 
 	showHttps: function() {
-		console.log('PrefsController, showHttps');
 
-		this.navigationController.showContent(new HttpsView());
-		this.setHeader({
-			title: 'Certificat SSL/TLS et accès HTTPS'
-		});
+		var m = new Https();
+		m.fetch().done(function() {
+			this.navigationController.showContent(new HttpsView({
+				model: m
+			}));
+			this.setHeader({
+				title: 'Certificat SSL/TLS et accès HTTPS'
+			});
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Paramètres introuvables'
+			});
+		}.bind(this));
 	},
 
 	showMedias: function() {
+
 		var m = new Medias();
 		var f = new Ftp();
-		m.fetch().
-		then(function() {
-			return f.fetch();
-		}).
-		done(function() {
+
+		Backbone.$.when(m.fetch(), f.fetch()).done(function() {
 			var view = new MediasView({
+				model: m,
 				ftp: f
 			});
-			view.model = m;
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: 'Paramètres de la médiathèque'
-			});
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}]);
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
@@ -103,6 +137,7 @@ var PrefsController = Controller.extend({
 	},
 
 	showMeta: function() {
+
 		var m = new Meta();
 		m.fetch().done(function() {
 			var view = new MetaView();
@@ -110,7 +145,10 @@ var PrefsController = Controller.extend({
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: 'Balises metas par défaut'
-			});
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}]);
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
@@ -120,9 +158,12 @@ var PrefsController = Controller.extend({
 	},
 
 	showDomains: function() {
-		console.log('PrefsController, showDomains');
 
-		this.navigationController.showContent(new DomainsView());
+		var view = new DomainsView({
+			collection: new Domains()
+		});
+		this.navigationController.showContent(view);
+		view.start();
 		this.setHeader({
 			title: 'Noms de domaine'
 		});
@@ -147,8 +188,6 @@ var PrefsController = Controller.extend({
 	},
 
 	showShortcut: function() {
-		console.log('CustomersController, showShortcut');
-
 		this.navigationController.showContent(new ShortcutView());
 		this.setHeader({
 			title: 'Raccourcis clavier'
@@ -161,14 +200,14 @@ module.exports = Marionette.AppRouter.extend({
 	controller: new PrefsController(),
 	appRoutes: {
 		'prefs': 'showIndex',
-		/*'prefs/contact': 'showContact',
+		'prefs/contact': 'showContact',
 		'prefs/https': 'showHttps',
 		'prefs/medias': 'showMedias',
 		'prefs/meta': 'showMeta',
 		'prefs/domains': 'showDomains',
 		'prefs/users': 'showUsers',
 		'prefs/users/:id': 'showUser',
-		'prefs/shortcut': 'showShortcut'*/
+		'prefs/shortcut': 'showShortcut'
 	},
 
 	onRoute: function(name, path, args) {

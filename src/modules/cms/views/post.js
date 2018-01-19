@@ -6,6 +6,7 @@ var SelectView = require('kiubi/views/ui/select.js');
 var FilePickerView = require('kiubi/modules/media/views/file.picker.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var Forms = require('kiubi/utils/forms.js');
 
 var TypeSelectorView = Marionette.View.extend({
@@ -13,7 +14,7 @@ var TypeSelectorView = Marionette.View.extend({
 	className: 'post-article',
 	tagName: 'article',
 
-	behaviors: [WysiwygBehavior],
+	behaviors: [WysiwygBehavior, SelectifyBehavior],
 
 	ui: {
 		'select': "select[name='type']"
@@ -128,7 +129,7 @@ module.exports = Marionette.View.extend({
 
 	regions: {
 		page: {
-			el: 'select[data-role="page"]',
+			el: 'div[data-role="page"]',
 			replaceElement: true
 		},
 		type: {
@@ -136,20 +137,12 @@ module.exports = Marionette.View.extend({
 			replaceElement: true
 		},
 		group: {
-			el: 'select[data-role="group"]',
+			el: 'div[data-role="group"]',
 			replaceElement: true
 		}
 	},
 
 	menus: null,
-
-	ui: {
-		'group_list': "select[name='group_list']"
-	},
-
-	events: {
-		'change @ui.group_list': 'selectGroup'
-	},
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'page', 'menus', 'typesSource']);
@@ -183,9 +176,16 @@ module.exports = Marionette.View.extend({
 
 		this.showChildView('group', new SelectView({
 			dataSource: this.model.getGroups(),
-			emptyLabel: ' ',
-			name: 'group_list'
+			emptyLabel: '&nbsp;',
+			name: 'group_list',
+			direction: 'up'
 		}));
+	},
+
+	onChildviewChange: function(value, field) {
+		if (field == 'group_list') {
+			this.selectGroup(value);
+		}
 	},
 
 	onPageChange: function() {
@@ -196,9 +196,9 @@ module.exports = Marionette.View.extend({
 		this.page.fetch();
 	},
 
-	selectGroup: function(event) {
-		if (Backbone.$(event.currentTarget).val() !== '') {
-			Backbone.$('input[name="group"]').val(Backbone.$(event.currentTarget).val());
+	selectGroup: function(value) {
+		if (value !== '') {
+			Backbone.$('input[name="group"]').val(value);
 		}
 	},
 

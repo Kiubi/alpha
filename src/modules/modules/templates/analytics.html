@@ -34,24 +34,22 @@
       </div>
       <div class="row">
         <div class="col-xs-6">
-          <div class="form-group has-feedback">
+          <div class="form-group">
             <label for="type" class="control-label">Type de Tracker</label>
-            <select class="form-control" id="type" name="type">
+            <select id="type" name="type" data-style="selectify">
               <option value="Universel" <%= type == "Universel" ? 'selected="selected"' : '' %>>Tracking universel (recommandé)</option>
               <option value="Asynchrone" <%= type == "Asynchrone" ? 'selected="selected"' : '' %>>Tracking web asynchrone</option>
               <option value="Synchrone" <%= type == "Synchrone" ? 'selected="selected"' : '' %>>Tracking web standard</option>
             </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
           </div>
         </div>
         <div class="col-xs-6">
-          <div class="form-group has-feedback">
+          <div class="form-group">
             <label for="target" class="control-label">Position du tracker</label>
-            <select class="form-control" id="target" name="target">
+            <select id="target" name="target" data-style="selectify">
               <option value="body" <%= target == "body" ? 'selected="selected"' : '' %>>Avant la balise &lt;/body&gt; (recommandé)</option>
               <option value="head" <%= target == "head" ? 'selected="selected"' : '' %>>Avant la balise &lt;/head&gt;</option>
             </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
           </div>
         </div>
       </div>

@@ -63,6 +63,7 @@ module.exports = Backbone.Model.extend({
 				return {
 					type: type.type,
 					name: type.name,
+					position: type.position,
 					fields: type.fields || []
 				};
 			});

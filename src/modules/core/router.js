@@ -26,7 +26,8 @@ var DefaultController = Controller.extend({
 	notFound: function() {
 		if (this.navigationController.getSidebarMenuService() == null) {
 			this.navigationController.hideSidebarMenu();
-			this.navigationController.setBreadCrum([{
+
+			this.setHeader([{
 					title: 'Kiubi',
 					href: '/'
 				},
@@ -34,8 +35,6 @@ var DefaultController = Controller.extend({
 					title: 'Page non disponible'
 				}
 			]);
-			this.navigationController.setHeaderActions(null);
-			this.navigationController.refreshHeader();
 		}
 
 		this.navigationController.showContent(new NotFoundView());
@@ -111,16 +110,15 @@ var DefaultController = Controller.extend({
 		});
 
 		this.navigationController.showContent(view);
-		this.navigationController.setBreadCrum([{
+
+		this.setHeader([{
 				title: 'Tableau de bord',
 				href: '/'
 			},
 			{
-				title: 'Dashboard'
+				title: 'Bienvenue sur Kiubi'
 			}
 		]);
-		this.navigationController.setHeaderActions(null);
-		this.navigationController.refreshHeader();
 	}
 });
 
