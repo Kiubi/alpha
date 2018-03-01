@@ -217,11 +217,9 @@ module.exports = Marionette.Object.extend({
 	 *
 	 */
 	showSidebarMenu: function() {
-		var view = new SidebarMenuView();
-		view.model = this.application.session.site;
-		view.listenTo(view.model, 'change:site', view.render);
-
-		this.layoutView.showChildView('sidebarMenu', view);
+		this.layoutView.showChildView('sidebarMenu', new SidebarMenuView({
+			model: this.application.session.site
+		}));
 	},
 
 	/**

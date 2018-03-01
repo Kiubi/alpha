@@ -7,6 +7,62 @@ var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 var Session = Backbone.Radio.channel('app').request('ctx:session');
 var Forms = require('kiubi/utils/forms.js');
 
+
+var NewRowView = Marionette.View.extend({
+	template: require('../templates/comments.new.html'),
+	className: 'post-content post-list',
+
+	behaviors: [RowActionsBehavior],
+
+	ui: {
+		'form': 'form[data-role="new"]',
+		'errors': 'div[data-role="errors"]'
+	},
+
+	initialize: function(options) {
+		this.mergeOptions(options);
+	},
+
+	templateContext: function() {
+		return {
+			comment_id: 'new'
+		};
+	},
+
+	clearFields: function() {
+		Backbone.$('textarea').val('');
+	},
+
+	onActionCancel: function() {
+		this.getUI('form').hide();
+		Forms.clearErrors(this.getUI('errors'), this.el);
+		this.clearFields();
+	},
+
+	onActionSave: function() {
+		Forms.clearErrors(this.getUI('errors'), this.el);
+
+		var data = Forms.extractFields(['is_visible', 'comment'], this);
+		data.post_id = this.getOption('post_id');
+
+		var m = new this.collection.model();
+		return m.save(data)
+			.done(function() {
+				this.getUI('form').hide();
+				this.collection.add(m);
+				this.clearFields();
+			}.bind(this))
+			.fail(function(xhr) {
+				Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+			}.bind(this));
+	},
+
+	onActionShow: function() {
+		this.getUI('form').show();
+	}
+
+});
+
 var RowView = Marionette.View.extend({
 	template: require('../templates/comments.row.html'),
 	className: 'list-item',
@@ -61,8 +117,10 @@ module.exports = Marionette.View.extend({
 	className: 'container',
 	service: 'blog',
 
+	enableAddComment: false,
+
 	initialize: function(options) {
-		this.mergeOptions(options, ['collection']);
+		this.mergeOptions(options, ['collection', 'enableAddComment']);
 	},
 
 	regions: {
@@ -76,6 +134,8 @@ module.exports = Marionette.View.extend({
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
+			newRowView: this.enableAddComment ? NewRowView : null,
+			childViewOptions: this.getOption('childViewOptions'),
 
 			title: 'Liste des commentaires',
 			selection: [{

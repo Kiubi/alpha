@@ -101,7 +101,7 @@ function HeaderTabsProduct(product_id, nb) {
 			title: 'Détail du produit',
 			url: '/catalog/products/' + product_id
 		}, {
-			title: 'Évaluations',
+			title: 'Évaluations (' + nb + ')',
 			url: '/catalog/products/' + product_id + '/comments'
 		},
 		{
@@ -235,7 +235,7 @@ var CatalogController = Controller.extend({
 				preview: m,
 				addSave: true,
 				duplicateProduct: id
-			}), HeaderTabsProduct(id));
+			}), HeaderTabsProduct(id, m.get('comments_count')));
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
@@ -306,10 +306,10 @@ var CatalogController = Controller.extend({
 
 			this.navigationController.showContent(view);
 			this.setHeader({
-				title: 'Produits associés'
+				title: m.get('name')
 			}, getHeadersAction({
 				duplicateProduct: id
-			}), HeaderTabsProduct(id));
+			}), HeaderTabsProduct(id, m.get('comments_count')));
 
 		}.bind(this)).fail(function() {
 			this.notFound();
@@ -482,11 +482,6 @@ var CatalogController = Controller.extend({
 			});
 		}.bind(this));
 	},
-
-	actionNewComment: function() {
-		// TODO
-	},
-
 
 	/*
 	 * Settings

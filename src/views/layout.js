@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var View = Marionette.View.extend({
 	el: 'body',
-	template: false,
+	template: _.noop,
 	regions: {
 		header: "header",
 		sidebar: "#sidebar",

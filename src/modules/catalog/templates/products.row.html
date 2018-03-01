@@ -1,5 +1,5 @@
 <div class="row" data-role="list">
-	<div class="col-xs-5 col-md-6">
+	<div class="col-xs-6 col-md-7">
 		<div class="media">
 			<div class="media-left">
 				<div class="checkbox-inline">
@@ -10,7 +10,7 @@
 			<div class="media-left">
 				<div class="media-object md-icon md-image img-default"></div>
 				<% if (main_media_id) { %><div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath('/media/miniature/'+main_media_id) %>" /></div><% } %>
-				<%= is_spotlight ? '<span class="md-icon md-upsell"></span>' : '' %>
+				<%= is_spotlight ? '<div class="corner-color is-spotlight"><div class="corner-color-content"></div></div>' : '' %>
 			</div>
 			<div class="media-body">
 				<h4><%- name %></h4>
@@ -39,7 +39,7 @@
 			<%= stock == "partial" ? '<span class="label label-tempstockout">Rupture</span>' : '' %>
 		<% } %>
 	</div>
-	<div class="col-xs-2"><span class="price"><%- price_inc_vat_min_label %>TTC<br/><% if (price_inc_vat_min < price_inc_vat_max) { %><%- price_inc_vat_max_label %>TTC<% } %></span>
+	<div class="col-xs-1"><span class="price"><%- price_inc_vat_min_label %>TTC<br/><% if (price_inc_vat_min < price_inc_vat_max) { %><%- price_inc_vat_max_label %>TTC<% } %></span>
 	</div>
 	<div class="col-xs-3 col-md-2">
 		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/catalog/products/<%- product_id %>" role="button">Détail</a>

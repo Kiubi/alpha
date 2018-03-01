@@ -5,7 +5,7 @@ var Builder = require('../models/builder');
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/layouts.row.html'),
-	className: 'col-xs-12 col-sm-12 col-lg-6',
+	className: 'col-xs-12',
 
 	ui: {
 		'duplicate': '[data-role="duplicate"]',

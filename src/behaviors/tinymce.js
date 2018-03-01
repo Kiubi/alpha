@@ -50,6 +50,7 @@ require('tinymce/plugins/colorpicker/plugin.js');
 require('tinymce/plugins/fullscreen/plugin.js');
 require('tinymce/plugins/image/plugin.js');
 require('tinymce/plugins/contextmenu/plugin.js');
+require('tinymce/plugins/media/plugin.js');
 // Plugins Mediathèque
 tinyMCE.PluginManager.add('kiubi', function(editor, url) {
 	// Add a button that opens a window
@@ -167,7 +168,7 @@ function settingToHTML(file, settings) {
 
 module.exports = Marionette.Behavior.extend({
 
-	defaults: {
+	options: {
 		selector: 'textarea[data-role="wysiwyg"]'
 	},
 
@@ -204,31 +205,32 @@ module.exports = Marionette.Behavior.extend({
 		var toolbar;
 
 		var $target = Backbone.$(target);
-
+		var adjusted_height = $target.height(); // Will remove toolbar height to match base textarea height
 		switch ($target.data('wysiwyg-toolbar')) {
 			case 'micro':
-				plugins = ['image', 'contextmenu', 'kiubi', 'lists', 'paste', 'link',
-					'charmap', 'code'
-				];
+				plugins = ['image', 'contextmenu', 'kiubi', 'lists', 'paste', 'link', 'charmap', 'code'];
 				toolbar =
 					'bold italic underline strikethrough | numlist bullist | pastetext | link unlink | kiubi_media charmap removeformat | code';
+				adjusted_height -= 68;
 				break;
 
 			default:
-				plugins = ['image', 'contextmenu', 'kiubi', 'lists', 'paste', 'textcolor',
-					'colorpicker', 'link', 'anchor', 'table', 'charmap',
-					'code'
+				plugins = ['image', 'contextmenu', 'kiubi', 'media', 'lists', 'paste', 'textcolor',
+					'colorpicker', 'link', 'anchor', 'table', 'charmap', 'code'
 				];
 				toolbar = [
-					'formatselect fontsizeselect | pastetext | undo redo | link unlink anchor | kiubi_media table | charmap',
+					'formatselect fontsizeselect | pastetext | undo redo | link unlink anchor | kiubi_media media table | charmap removeformat',
 					'bold italic underline strikethrough | subscript superscript | alignleft aligncenter alignright alignjustify | forecolor backcolor | numlist bullist | outdent indent | fullscreen code'
 				];
+				adjusted_height -= 102;
 				break;
 		}
+		
+		var that = this;
 
 		return tinyMCE.init({
 			target: target,
-			height: $target.data('wysiwyg-height') || 500,
+			height: adjusted_height,
 			skin_url: '/vendor/tinymce/skins/lightgray',
 			language: 'fr_FR',
 			language_url: false,
@@ -236,7 +238,7 @@ module.exports = Marionette.Behavior.extend({
 			menu: {},
 			custom_undo_redo_levels: 20,
 			forced_root_block: false, // Beware, potential breaking
-			block_formats: 'Normal=p;Titre 1=h1;Titre 2=h2;Titre 3=h3;Titre 4=h4;Titre 5=h5;Titre 6=h6;Preformatted=pre;Normal (DIV)=div',
+			block_formats: 'Paragraphe=p;Titre 1=h1;Titre 2=h2;Titre 3=h3;Titre 4=h4;Titre 5=h5;Titre 6=h6;Preformatted=pre;Normal (SPAN)=span;Normal (DIV)=div',
 			plugins: plugins,
 			toolbar: toolbar,
 			fontsize_formats: '8px 10px 12px 14px 18px 24px 36px',
@@ -244,6 +246,13 @@ module.exports = Marionette.Behavior.extend({
 			link_list: {
 				types: this.link_types.bind(this),
 				pages: this.link_pages.bind(this)
+			},
+			extended_valid_elements: 'style[type],script[language|type|src],span[*]',
+			valid_children: "+body[style], +div[style], +span[*]",
+			init_instance_callback: function (editor) {
+				editor.on('Change', function (e) {
+					that.view.triggerMethod('field:change');
+				});
 			}
 		});
 	},
@@ -286,7 +295,7 @@ module.exports = Marionette.Behavior.extend({
 		this.editorList = [];
 	},
 
-	onBeforeDetach: function() {
+	onBeforeDestroy: function() {
 		this.clearAllWysiwyg();
 	},
 
@@ -324,8 +333,7 @@ module.exports = Marionette.Behavior.extend({
 			this.switchToPublish(editor, view.currentFolder);
 		});
 
-		var navigationController = Backbone.Radio.channel('app').request(
-			'ctx:navigationController');
+		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 		navigationController.showInModal(contentView, {
 			title: 'Médiathèque',
 			modalClass: 'mediatheque modal-right',
@@ -350,8 +358,7 @@ module.exports = Marionette.Behavior.extend({
 			editor.insertContent(settingToHTML(file, settings));
 		});
 
-		var navigationController = Backbone.Radio.channel('app').request(
-			'ctx:navigationController');
+		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 		navigationController.showInModal(contentView, {
 			title: file.get('name'),
 			modalClass: 'mediatheque modal-right',
@@ -380,8 +387,7 @@ module.exports = Marionette.Behavior.extend({
 			this.onUploadedFiles(editor, collection);
 		});
 
-		var navigationController = Backbone.Radio.channel('app').request(
-			'ctx:navigationController');
+		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 
 		navigationController.showInModal(contentView, {
 			title: 'Médiathèque',
@@ -403,8 +409,7 @@ module.exports = Marionette.Behavior.extend({
 			return model.uploadProgression.status == 'done';
 		});
 
-		var navigationController = Backbone.Radio.channel('app').request(
-			'ctx:navigationController');
+		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 
 		if (!uploadedList) {
 			navigationController.hideModal();

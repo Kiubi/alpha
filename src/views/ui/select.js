@@ -7,8 +7,8 @@ var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 module.exports = Marionette.View.extend({
 	template: _.template(
 		'<select data-style="selectify" name="<%- name %>" data-direction="<%- direction %>"><% if(emptyLabel) { %><option value=""><%- emptyLabel %></option><% } %>' +
-		'<% _(options).each(function(item){ %><% if (item.is_group) { %><optgroup  class="disabled" label="<%= indent2Space(item.indent) %><%- item.label %>"></optgroup><% } else { %>' +
-		'<option value="<%- item.value %>" <%= (item.value == selected) ? \'selected="selected"\' : "" %>><%= indent2Space(item.indent) %><%- item.label %></option><% } %>' +
+		'<% _(options).each(function(item){ %><% if (item.is_group) { %><optgroup data-indent="<%= item.indent %>" label="<%- item.label %>"></optgroup><% } else { %>' +
+		'<option data-indent="<%= item.indent %>" value="<%- item.value %>" <%= (item.value == selected) ? \'selected="selected"\' : "" %>><%- item.label %></option><% } %>' +
 		'<% }) %></select>'
 	),
 	tagName: 'div',
@@ -61,7 +61,7 @@ module.exports = Marionette.View.extend({
 
 	/**
 	 * Load options from a promise
-	 * 
+	 *
 	 * @param {Promise} promise
 	 */
 	load: function(promise) {
@@ -105,14 +105,6 @@ module.exports = Marionette.View.extend({
 			selected: this.selected,
 			emptyLabel: this.getOption('emptyLabel'),
 			options: this.getOptionsList(),
-			indent2Space: function(indent) {
-				if (indent == 0) return '';
-				var str = '';
-				for (var i = 0; i < indent; i++) {
-					str += '&nbsp;&nbsp;';
-				}
-				return str;
-			}
 		};
 	},
 

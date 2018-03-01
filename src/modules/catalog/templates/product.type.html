@@ -35,7 +35,7 @@
 		<% break; case 'wysiwyg': %>
 		<div class="form-group">
 			<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
-			<textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" data-role="wysiwyg"><%- product.get(field.field) %></textarea>
+			<textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" data-role="wysiwyg" rows="21"><%- product.get(field.field) %></textarea>
 		</div>
 		<% break; case 'select': %>
 		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>

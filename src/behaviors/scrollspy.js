@@ -3,7 +3,7 @@ var Marionette = require('backbone.marionette');
 
 module.exports = Marionette.Behavior.extend({
 
-	defaults: {
+	options: {
 		target: '#nav-spy'
 	},
 

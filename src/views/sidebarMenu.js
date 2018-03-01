@@ -36,6 +36,19 @@ module.exports = Marionette.View.extend({
 		};
 	},
 
+	initialize: function(options) {
+		this.mergeOptions(options, ['model']);
+		this.listenTo(this.model, 'change', this.onSessionChange);
+	},
+
+	onSessionChange: function(model) {
+		if (model.hasChanged('domain') || model.hasChanged('name')) {
+			var view = this.detachChildView('detail');
+			this.render();
+			if (view) this.showChildView('detail', view);
+		}
+	},
+
 	onRender: function() {
 		this.getUI('input-search').on('keyup', _.debounce(this.onChange.bind(this), 300));
 	},

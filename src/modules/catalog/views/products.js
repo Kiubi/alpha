@@ -64,21 +64,21 @@ module.exports = Marionette.View.extend({
 				is_active: true,
 				data: {
 					sort: 'name',
-					extra_fields: 'price_label'
+					extra_fields: 'price_label,categories'
 				}
 			}, {
 				title: 'Prix minimum',
 				is_active: false,
 				data: {
 					sort: 'price_min',
-					extra_fields: 'price_label'
+					extra_fields: 'price_label,categories'
 				}
 			}, {
 				title: 'Prix maximum',
 				is_active: false,
 				data: {
 					sort: '-price_max',
-					extra_fields: 'price_label'
+					extra_fields: 'price_label,categories'
 				}
 			}],
 			//filterModal: '#filterscatalog',

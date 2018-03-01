@@ -1,4 +1,7 @@
 var Backbone = require('backbone');
+var CollectionUtils = require('kiubi/utils/collections.js');
+
+
 
 module.exports = Backbone.Collection.extend({
 	url: 'sites/@site/media/folders',
@@ -41,8 +44,6 @@ module.exports = Backbone.Collection.extend({
 
 	selectPayload: function() {
 		var collector = [];
-		var filter = this.selectPayloadFilter;
-
 		var tree = {};
 
 		this.each(function(folder) {
@@ -63,6 +64,49 @@ module.exports = Backbone.Collection.extend({
 		});
 
 		return collector;
+	},
+
+	/**
+	 *
+	 * @param {Number} selected
+	 * @returns {Promise} Promised {Backbone.Collection}
+	 */
+	promisedSelect: function(selected) {
+
+		var that = this;
+
+		return this.fetch({
+			data: {
+				extra_fields: 'recursive'
+			}
+		}).then(function() {
+
+			var c = new CollectionUtils.SelectCollection();
+			var collector = [];
+			var tree = {};
+
+			that.each(function(model) {
+				var indent = 1;
+				if (model.get('parent_folder_id') > 0) {
+					indent = 1 + tree['p' + model.get('parent_folder_id')];
+				}
+
+				tree['p' + model.get('folder_id')] = indent;
+
+				var item = {
+					'value': model.get('folder_id'),
+					'label': model.get('name'),
+					'indent': indent,
+					'selected': selected && model.get('folder_id') == selected
+				};
+
+				collector.push(item);
+			});
+
+			c.add(collector);
+
+			return c;
+		});
 	}
 
 });

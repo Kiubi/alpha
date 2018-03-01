@@ -36,7 +36,6 @@ function selectify(selector, customOptions) {
 			'-mask"><button type="button" class="form-control form-control-select ' + o.btnStyle + ' ' + o.btnSize +
 			' dropdown-toggle" data-toggle="dropdown"><span class="fake-selected">' + getLabel($("option:selected", _select)) +
 			'</span><span class="caret"></span></button><ul class="dropdown-menu dropdown-control"></ul></div>');
-
 		var select_mask = _select.prev('.fake-select-mask');
 		var select_index = _select.prop('selectedIndex');
 
@@ -44,10 +43,13 @@ function selectify(selector, customOptions) {
 		var option_index = 0;
 		_select.find('option, optgroup').each(function() {
 			var li;
+			var indent = Backbone.$(this).data('indent');
 			if (this.tagName == 'OPTGROUP') { // this.class == disabled
-				li = '<li class="dropdown-header">' + this.label + '</li>';
+				li = '<li ' + (indent != undefined ? 'class="page-level-' + indent + '"' : '') + '><span class="disabled">' +
+					this.label + '</span></li>';
 			} else {
-				li = '<li class="' + (option_index == select_index ? 'active' : '') + '"><a data-index="' + this.index +
+				li = '<li class="' + (indent != undefined ? 'page-level-' + indent + ' ' : '') + (option_index == select_index ?
+						'active' : '') + '"><a data-index="' + this.index +
 					'" href="#">' + $(this).text() + '</a></li>';
 				option_index++;
 			}

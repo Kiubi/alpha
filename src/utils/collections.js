@@ -21,4 +21,18 @@ function bulkAction(collection, action, ids) {
 	}, Backbone.$.Deferred().resolve());
 }
 
+var Option = Backbone.Model.extend({
+	defaults: {
+		label: '',
+		value: null,
+		indent: 0,
+		selected: false
+	}
+});
+
+var SelectCollection = Backbone.Collection.extend({
+	model: Option
+});
+
 module.exports.bulkAction = bulkAction;
+module.exports.SelectCollection = SelectCollection;

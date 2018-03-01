@@ -26,6 +26,7 @@ var Comment = Backbone.Model.extend({
 		is_visible: false,
 		author: '',
 		email: '',
+		website: '',
 		post_id: 0,
 		post_title: '',
 		customer_id: null,

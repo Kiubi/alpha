@@ -34,7 +34,7 @@
 
 		<div class="form-group">
 			<label class="control-label" for="description">Description</label>
-			<textarea class="form-control" id="description" name="description" placeholder="Placeholder du contenu" data-role="wysiwyg"><%- description %></textarea>
+			<textarea class="form-control" id="description" name="description" placeholder="Placeholder du contenu" rows="21" data-role="wysiwyg"><%- description %></textarea>
 		</div>
 </div>
 <footer class="post-footer"></footer>
@@ -43,8 +43,11 @@
 <article data-role="layout"></article>
 
 <article class="post-article">
-	<header class="post-header"><a href="#seo" class="pull-right" data-toggle="collapse"
-		aria-expanded="false" aria-controls="seo">Afficher plus d'options</a>
+	<header class="post-header">
+		<a href="#seo" class="pull-right collapsed" data-toggle="collapse"
+		aria-expanded="false" aria-controls="seo">
+		Afficher <span class="more">plus</span> <span class="less">moins</span> d'options
+		</a>
 		<h1>Référencement</h1>
 	</header>
 	<div class="post-content">

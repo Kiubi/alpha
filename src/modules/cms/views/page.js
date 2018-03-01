@@ -212,7 +212,7 @@ var InternalLinkView = Marionette.View.extend({
 					var value = target.is_linkable ? target.target_page + '@@' + target.target_key : null;
 					var indent = 0;
 					if (target.depth && target.depth > 0) {
-						indent += target.depth - 1;
+						indent += target.depth;
 					}
 
 					return {
@@ -371,14 +371,6 @@ var ParentView = Marionette.View.extend({
 			label: this.pageTitle(this.selected),
 			selected: this.selected,
 			options: this.collection.parentList(this.current),
-			indent2Space: function(indent) {
-				if (indent == 0) return '';
-				var str = '';
-				for (var i = 0; i < indent; i++) {
-					str += '&nbsp;&nbsp;';
-				}
-				return str;
-			}
 		};
 	}
 });

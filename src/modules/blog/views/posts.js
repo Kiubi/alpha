@@ -78,8 +78,7 @@ module.exports = Marionette.View.extend({
 			filters: [{
 				selectExtraClassname: 'select-category',
 				title: 'Toutes les catégories',
-				collection: this.getOption('categories'),
-				selected: this.collection.category_id
+				collectionPromise: this.getOption('categories').promisedSelect(this.collection.category_id)
 			}]
 		}));
 	},

@@ -46,6 +46,11 @@ module.exports = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['site', 'theme']);
+
+		this.listenTo(this.site, 'sync', function(model) {
+			// Update current session
+			Session.site.set('name', model.get('site_title'));
+		}.bind(this));
 	},
 
 	onRender: function() {

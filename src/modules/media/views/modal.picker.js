@@ -64,6 +64,11 @@ var ListView = Marionette.CollectionView.extend({
 		}, childViewOptions);
 		// create the child view instance
 		return new ChildViewClass(options);
+	},
+
+	// Proxy to parent view
+	onChildviewSelectFile: function(model) {
+		this.triggerMethod('select:file', model);
 	}
 
 });
@@ -141,8 +146,10 @@ module.exports = Marionette.View.extend({
 
 	},
 
-	onChildviewChange: function(value) {
+	onChildviewChange: function(value, view) {
 		this.currentFolder = value;
+		this.getUI('term').val('');
+		this.currentTerm = '';
 		this.updateFilter();
 	},
 
@@ -158,7 +165,9 @@ module.exports = Marionette.View.extend({
 	},
 
 	updateFilter: function() {
-		this.fetchFiles(this.currentFolder, this.currentTerm, this.currentOrder);
+		// ignore folder if there is a term
+		this.fetchFiles(this.currentTerm == '' || this.currentTerm == null ? this.currentFolder : null, this.currentTerm,
+			this.currentOrder);
 	},
 
 	fetchFiles: function(folder_id, term, sort) {

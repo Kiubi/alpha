@@ -95,7 +95,7 @@ module.exports = Marionette.Behavior.extend({
 
 	initialize: function(options) {
 		if (this.view.getOption('model')) {
-			this.view.getOption('model').bind('change', this.view.render);
+			this.view.listenTo(this.view.getOption('model'), 'sync', this.view.render);
 		}
 	},
 

@@ -145,8 +145,11 @@ var RowView = Marionette.View.extend({
 				}), function(model) {
 					if (this.model != model) {
 						model.set('is_main', false);
+						model.trigger('sync'); // trigger sync to trigger rowView render
 					}
 				}.bind(this));
+				// Main domain has changed, refetch site to get the definitive main domain with scheme
+				Session.site.fetch();
 			}.bind(this))
 			.fail(function(xhr) {
 				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');

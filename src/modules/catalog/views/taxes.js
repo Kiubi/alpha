@@ -129,14 +129,21 @@ module.exports = Marionette.View.extend({
 				// onchange event due to collection fetch
 				return;
 			}
-
-			if (model.hasChanged('is_default')) this.collection.fetch();
+			if (model.hasChanged('is_default')) {
+				this.collection.fetch({
+					reset: true
+				});
+			}
 		});
 		this.listenTo(this.collection, 'add', function(model, options) {
-			if (model.hasChanged('tax_id') && model.get('is_default')) this.collection.fetch();
+			if (model.hasChanged('tax_id') && model.get('is_default')) this.collection.fetch({
+				reset: true
+			});
 		});
 		this.listenTo(this.collection, 'remove', function(model, options) {
-			if (model.get('is_default')) this.collection.fetch();
+			if (model.get('is_default')) this.collection.fetch({
+				reset: true
+			});
 		});
 	},
 

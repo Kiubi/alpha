@@ -52,11 +52,11 @@
 			<div class="form-group">
 				<label class="control-label" for="header">Chapô</label>
 				<p>Le chapô sert d'introduction au billet et s'affiche généralement à la place du contenu dans une liste de billets. </p>
-				<textarea class="form-control" id="header" name="header" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro" data-wysiwyg-height="350"><%- header %></textarea>
+				<textarea class="form-control" id="header" name="header" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- header %></textarea>
 			</div>
 			<div class="form-group">
 				<label class="control-label" for="content">Contenu</label>  <p>Le contenu s'affiche généralement après le chapô dans le détail d'un billet.</p>
-				<textarea class="form-control" id="content" name="content" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg"><%- content %></textarea>
+				<textarea class="form-control" id="content" name="content" placeholder="Placeholder du contenu" data-role="wysiwyg" rows="21"><%- content %></textarea>
 			</div>
 			<div class="row">
 				<!--<div class="col-xs-6">
@@ -93,8 +93,11 @@
 	<article data-role="layout"></article>
 
 	<article class="post-article">
-		<header class="post-header"><a href="#seo" class="pull-right" data-toggle="collapse"
-			aria-expanded="false" aria-controls="seo">Afficher plus d'options</a>
+		<header class="post-header">
+			<a href="#seo" class="pull-right collapsed" data-toggle="collapse"
+			aria-expanded="false" aria-controls="seo">
+			Afficher <span class="more">plus</span> <span class="less">moins</span> d'options
+			</a>
 			<h1>Référencement</h1>
 		</header>
 		<div class="post-content">

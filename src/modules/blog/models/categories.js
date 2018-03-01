@@ -21,6 +21,39 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
+	 * @param {Number} selected
+	 * @returns {Promise} Promised {Backbone.Collection}
+	 */
+	promisedSelect: function(selected) {
+
+		var that = this;
+
+		return this.fetch({
+			data: {
+				extra_fields: 'recursive'
+			}
+		}).then(function() {
+
+			var c = new CollectionUtils.SelectCollection();
+			var collector = [];
+
+			that.each(function(model) {
+				collector.push({
+					'value': model.get('category_id'),
+					'label': model.get('name'),
+					'indent': 0,
+					'selected': selected && model.get('category_id') == selected
+				});
+			});
+
+			c.add(collector);
+
+			return c;
+		});
+	},
+
+	/**
+	 *
 	 * @param {Integer[]} ids
 	 * @returns {Promise}
 	 */

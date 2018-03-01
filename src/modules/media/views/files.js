@@ -33,7 +33,7 @@ module.exports = Marionette.View.extend({
 	service: 'media',
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['collection']);
+		this.mergeOptions(options, ['collection', 'folders']);
 		this.collection.fetch({
 			data: {
 				sort: '-date'
@@ -112,8 +112,7 @@ module.exports = Marionette.View.extend({
 			filters: [{
 				selectExtraClassname: 'select-category',
 				title: 'Destination',
-				collection: this.getOption('folders'),
-				selected: null //this.collection.folder_id
+				collectionPromise: this.folders.promisedSelect(this.collection.folder_id)
 			}]
 		}));
 	},

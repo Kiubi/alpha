@@ -19,7 +19,7 @@
  		<% if (link.href) { %>
 			<li><a href="<%- link.href %>" title="<%- link.title %>"><%- link.title %></a></li>
 		<% } else { %>
-			<li class="active"><%- link.title %></li>
+			<li class="active" title="<%- link.title %>"><%- link.title %></li>
 		<% } %>
 	<% }) %>
 </ol>

@@ -5,6 +5,18 @@ module.exports = Backbone.Model.extend({
 	urlRoot: 'sites',
 	idAttribute: 'code_site',
 
+	parse: function(response) {
+		if (response.data) {
+			if (_.isNumber(response.data)) {
+				return {
+					site_id: response.data
+				};
+			}
+			return response.data;
+		}
+		return response;
+	},
+
 	defaults: {
 		code_site: '',
 		domain: '',

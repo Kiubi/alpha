@@ -180,6 +180,14 @@ module.exports = Marionette.View.extend({
 			apply: this.model.get('post_id'),
 			applyName: this.model.get('title')
 		});
+
+		this.listenTo(this.model, 'change', this.render);
+	},
+
+	onBeforeRender: function() {
+		if (this.layoutSelector.isAttached()) {
+			this.detachChildView('layout');
+		}
 	},
 
 	onRender: function() {

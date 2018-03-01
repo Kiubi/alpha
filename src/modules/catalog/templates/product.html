@@ -82,12 +82,12 @@
 			<div class="form-group">
 				<label class="control-label" for="header">Chapô</label>
 				<p>Le chapô sert de description courte au produit et s'affiche généralement à la place du contenu dans une liste de produit. </p>
-				<textarea id="header" name="header" class="form-control" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro" data-wysiwyg-height="350"><%- header %></textarea>
+				<textarea id="header" name="header" class="form-control" rows="14" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro"><%- header %></textarea>
 			</div>
 			<div class="form-group">
 				<label class="control-label" for="description">Description</label>
 				<p>La description s'affiche généralement dans le détail d'un produit.</p>
-				<textarea id="description" name="description" class="form-control" rows="5" placeholder="Placeholder du contenu" data-role="wysiwyg"><%- description %></textarea>
+				<textarea id="description" name="description" class="form-control" rows="21" placeholder="Placeholder du contenu" data-role="wysiwyg"><%- description %></textarea>
 			</div>
 		</div>
 		<footer class="post-footer"></footer>
@@ -139,8 +139,11 @@
 	<article data-role="layout"></article>
 
 	<article class="post-article">
-		<header class="post-header"><a href="#seo" class="pull-right" data-toggle="collapse"
-			aria-expanded="false" aria-controls="seo">Afficher plus d'options</a>
+		<header class="post-header">
+			<a href="#seo" class="pull-right collapsed" data-toggle="collapse"
+			aria-expanded="false" aria-controls="seo">
+			Afficher <span class="more">plus</span> <span class="less">moins</span> d'options
+			</a>
 			<h1>Référencement</h1>
 		</header>
 		<div class="post-content">

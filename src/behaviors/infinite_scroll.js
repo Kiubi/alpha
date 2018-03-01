@@ -1,25 +1,31 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var _ = require('underscore');
 
 module.exports = Marionette.Behavior.extend({
 
-	defaults: {
+	options: {
 		renderThreshold: 50,
 		scrollThreshold: 250,
 		contentEl: '#content'
 	},
 
+	callback: null,
+	$scroll: null,
+
 	initialize: function() {
-		if (this.view.getOption('scrollThreshold')) this.options.scrollThreshold =
-			this.view.getOption('scrollThreshold');
+		if (this.view.getOption('scrollThreshold')) this.options.scrollThreshold = this.view.getOption('scrollThreshold');
+
+		this.callback = _.debounce(this.scrollHandler, 150).bind(this);
+		this.$scroll = Backbone.$(this.options.contentEl); // global scope
 	},
 
 	onAttach: function() {
-		Backbone.$(this.options.contentEl).bind("scroll", this, this.scrollHandler);
+		this.$scroll.bind("scroll", this, this.callback);
 	},
 
 	onDestroy: function() {
-		Backbone.$(this.options.contentEl).unbind("scroll", this.scrollHandler);
+		this.$scroll.unbind("scroll", this.callback);
 	},
 
 	/**
@@ -59,24 +65,19 @@ module.exports = Marionette.Behavior.extend({
 	 * @param {Event} event
 	 */
 	scrollHandler: function(event) {
-		var behavior = event.data;
-
-		var scrollHeight = (Backbone.$(behavior.options.contentEl).scrollTop() +
-			Backbone.$(behavior.options.contentEl).height());
-		var threshold = (Backbone.$(behavior.options.contentEl + ' div').height() -
-			behavior.options.scrollThreshold);
+		var scrollHeight = this.$scroll.scrollTop() + this.$scroll.height();
+		var threshold = (Backbone.$(this.options.contentEl + ' div').height() - this.options.scrollThreshold);
 
 		if (scrollHeight < threshold) return;
 
-		behavior.collectionFetchNextPage();
+		this.collectionFetchNextPage();
 	},
 
 	/**
 	 * Fetch next page if content child is smaller than content
 	 */
 	onDomRefresh: function() {
-		if (Backbone.$(this.options.contentEl + ' div').height() - this.options.renderThreshold <
-			Backbone.$(this.options.contentEl).height()) {
+		if (Backbone.$(this.options.contentEl + ' div').height() - this.options.renderThreshold < this.$scroll.height()) {
 			this.collectionFetchNextPage();
 		}
 	}

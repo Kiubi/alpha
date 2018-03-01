@@ -16,9 +16,28 @@ var FiltersView = Marionette.View.extend({
 
 	behaviors: [SelectifyBehavior],
 
+	events: {
+		'change select': 'onSelectChange'
+	},
+
+	filters: [],
+
+	initialize: function(options) {
+
+		this.mergeOptions(options, ['filters']);
+		var that = this;
+
+		_.each(this.filters, function(filter, index) {
+			filter.collectionPromise.done(function(collection) {
+				that.filters[index].collection = collection;
+				that.render();
+			});
+		});
+	},
+
 	templateContext: function() {
 		return {
-			filters: this.getOption('filters'),
+			filters: this.filters,
 			indent2Space: function(indent) {
 				if (indent == 0) return '';
 				var str = '';
@@ -30,34 +49,14 @@ var FiltersView = Marionette.View.extend({
 		};
 	},
 
-	events: {
-		'change select': 'onSelectChange'
-	},
-
-	initialize: function(options) {
-
-		this.mergeOptions(options);
-
-		_.each(this.getOption('filters'), function(filter) {
-			// Rerender on collection fetch
-			this.listenTo(filter.collection, 'sync', this.onCollectionSync);
-			if (filter.collection.length == 0) filter.collection.fetch();
-		}.bind(this));
-	},
-
-	onCollectionSync: function() {
-		this.render();
-	},
-
 	onSelectChange: function(event) {
 		var $select = Backbone.$(event.currentTarget, this.el);
 
-		if ($select.data('id') > this.getOption('filters').length) {
+		if ($select.data('id') > this.filters.length) {
 			return;
 		}
 
-		var filter = this.getOption('filters')[$select.data('id')];
-
+		var filter = this.filters[$select.data('id')];
 		this.triggerMethod('filter:change', {
 			index: $select.data('id'),
 			value: $select.val()

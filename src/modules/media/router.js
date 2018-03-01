@@ -185,17 +185,10 @@ var MediaController = Controller.extend({
 
 		var collection = new Files();
 		collection.folder_id = folder_id;
-		var folders = new Folders();
-		folders.fetch({
-			data: {
-				extra_fields: 'recursive'
-			}
-		});
 		m.fetch().done(function() {
 				this.navigationController.showContent(new FilesView({
-					folder: m,
 					collection: collection,
-					folders: folders
+					folders: new Folders()
 				}));
 				this.setHeader({
 					title: m.get('name')

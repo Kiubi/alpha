@@ -9,6 +9,7 @@ var LoaderTpl = require('../templates/ui/loader.html');
 var ControllerChannel = Backbone.Radio.channel('controller');
 
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
+var ScrollFixBehavior = require('kiubi/behaviors/scroll_fix.js');
 
 module.exports = Marionette.Behavior.extend({
 
@@ -29,12 +30,11 @@ module.exports = Marionette.Behavior.extend({
 		'change @ui.radioInputs': function() {
 			this.getUI('form').trigger('input');
 		} // Fix input event on radio
-		// TODO : wysiwyg
 		// TODO : media picker
 		// TODO : datepicker
 	},
 
-	behaviors: [SelectifyBehavior],
+	behaviors: [SelectifyBehavior, ScrollFixBehavior],
 
 	keyCombos: [],
 
@@ -82,7 +82,10 @@ module.exports = Marionette.Behavior.extend({
 
 	onSave: function(event) {
 
+		this.view.trigger('freeze:scroll');
+
 		if (!this.view.onSave) {
+			this.view.trigger('unfreeze:scroll');
 			return;
 		}
 
@@ -106,6 +109,7 @@ module.exports = Marionette.Behavior.extend({
 		if (!promise) {
 			ControllerChannel.trigger('saved:content');
 			this.lockSave = false;
+			this.view.trigger('unfreeze:scroll');
 			return;
 		}
 
@@ -131,6 +135,7 @@ module.exports = Marionette.Behavior.extend({
 			setTimeout(function() {
 				if (btn) btn.text(old);
 			}, 2000);
+			this.view.trigger('unfreeze:scroll');
 		}.bind(this));
 	},
 

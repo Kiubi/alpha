@@ -1,39 +1,53 @@
-<div class="media">
+<div class="item-templates-list">
+	<% if(is_default) { %>
+	<div class="corner-color template-default right"><div class="corner-color-content"></div></div>
+	<% } else { %>
+	<div class="corner-color template-variant right"><div class="corner-color-content"></div></div>
+	<% } %>
+	<div class="media">
 	<div class="media-left">
-		<a href="/appearance/layouts/<%- page %>/<%- layout_id %>"><%= structure %></a>
+		<a href="/appearance/layouts/<%- page %>/<%- layout_id %>">
+			<div><span class="md-icon md-edit"></span></div>
+			<%= structure %>
+		</a>
+
 	</div>
 	<div class="media-body">
-		<h4><%- name %>
-			<% if(is_default) { %>
-			<span class="label label-default">Par défaut</span>
-			<% } else { %>
-			<span class="label label-variation">Variante</span>
-			<% } %>
+		<h4>
+			<%- name %>
 		</h4>
-		<p><span class="data-label">Service</span> <%- service %> <span class="data-label-breadcrumb"><%- page_title %></span><br>
-			<!-- <span class="data-label">Appliqué à</span> <a href="#"><%- usage_count %> pages</a><br> -->
-			<span class="data-label">Template</span> <%- model.name %><br>
-			<span class="data-label">Répertoire</span> <%- model.id %><br>
-		</p>
+		<div class="flex-row">
+			<div class="flex-col-1"><span class="data-label">Appliqué à</span></div>
+			<div class="flex-col-2"><a href="#">
+				<%- usage_count %> pages</a></div>
+		</div>
+
+		<div class="flex-row">
+			<div class="flex-col-1"><span class="data-label">Template</span></div>
+			<div class="flex-col-2"><%- model.name %></div>
+		</div>
+
+		<div class="flex-row">
+			<div class="flex-col-1"><span class="data-label">Répertoire</span></div>
+			<div class="flex-col-2"><em><%- model.id %></em></div>
+		</div>
 
 		<div class="btn-toolbar pull-right" role="toolbar">
 
-		<% if (is_multi_layouts) { %>
-		<div class="btn-group" role="duplicate">
-			<a class="btn btn-bis" data-role="duplicate" href="#" role="button">Dupliquer</a>
-		</div>
-		<% } %>
+			<% if (is_multi_layouts) { %>
+			 		<% if(is_default) { %>
+			 			<a class="btn btn-option" data-role="duplicate" href="#" role="button">Dupliquer</a>
+			 		<% } else { %>
+			 			<div class="btn-group" role="edit"><a class="btn btn-option" data-role="duplicate" href="#" role="button">Dupliquer</a>
+			 				<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+			 				<ul class="dropdown-menu dropdown-menu-right">
+			 					<li><a data-role="delete" href="#">Supprimer</a></li>
+			 				</ul>
+			 			</div>
+			 		<% } %>
+			<% } %>
 
-		<% if(is_default) { %>
-			<a class="btn btn-option" href="/appearance/layouts/<%- page %>/<%- layout_id %>" role="button">Modifier</a>
-		<% } else { %>
-			<div class="btn-group" role="edit"><a class="btn btn-option" href="/appearance/layouts/<%- page %>/<%- layout_id %>" role="button">Modifier</a>
-				<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
-				<ul class="dropdown-menu dropdown-menu-right">
-					<li><a data-role="delete" href="#">Supprimer</a></li>
-				</ul>
-			</div>
-		<% } %>
 		</div>
 	</div>
+</div>
 </div>

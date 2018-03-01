@@ -757,6 +757,24 @@ module.exports = Marionette.View.extend({
 			apply: this.model.get('product_id'),
 			applyName: this.model.get('name')
 		});
+
+		this.variantsView = new ListView({
+			collection: this.variants,
+			rowView: VariantRowView,
+			newRowView: NewVariantRowView,
+			title: 'Variantes',
+			childViewOptions: {
+				taxes: this.taxes,
+				images: this.images,
+				names: new VariantsNames()
+			}
+		});
+
+		this.imagesView = new ImagesView({
+			collection: this.images
+		});
+
+		this.listenTo(this.model, 'change', this.render);
 	},
 
 	templateContext: function() {
@@ -765,6 +783,19 @@ module.exports = Marionette.View.extend({
 			available_date: format.formatDateTime(this.model.get('available_date')),
 			extra_shipping: format.formatFloat(this.model.get('extra_shipping'))
 		};
+	},
+
+	onBeforeRender: function() {
+		if (this.layoutSelector.isAttached()) {
+			this.detachChildView('layout');
+		}
+		if (this.variantsView.isAttached()) {
+			this.detachChildView('variants');
+		}
+		if (this.imagesView.isAttached()) {
+			this.detachChildView('images');
+		}
+
 	},
 
 	onRender: function() {
@@ -781,23 +812,11 @@ module.exports = Marionette.View.extend({
 		_.each(images, function(image) {
 			image.product_id = that.model.get('product_id'); // images fetched with extra_fields doesn't have a product id
 		});
-		this.images.add(images);
-		this.showChildView('images', new ImagesView({
-			collection: this.images
-		}));
+		this.images.set(images);
+		this.showChildView('images', this.imagesView);
 
-		this.showChildView('variants', new ListView({
-			collection: this.variants,
-			rowView: VariantRowView,
-			newRowView: NewVariantRowView,
-			title: 'Variantes',
-			childViewOptions: {
-				taxes: this.taxes,
-				images: this.images,
-				names: new VariantsNames()
-			}
-		}));
-		this.variants.add(this.model.get('variants'));
+		this.showChildView('variants', this.variantsView);
+		this.variants.set(this.model.get('variants'));
 
 		// Categories
 		var main_category = _.find(this.model.get('categories'), function(c) {

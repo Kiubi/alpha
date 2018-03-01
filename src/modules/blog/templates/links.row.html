@@ -10,7 +10,11 @@
 			<div class="media-left"><a href="#" class="md-icon md-drag btn-drag"></a></div>
 			<div class="media-body">
 				<h4><%- name %></h4>
+				<% if(is_enabled) { %>
 				<%- description %>
+				<% } else { %>
+				<span class="text-danger">Masqué</span>
+				<% } %>
 			</div>
 		</div>
 	</div>
@@ -58,4 +62,3 @@
 		</div>
 	</div>
 </form>
-

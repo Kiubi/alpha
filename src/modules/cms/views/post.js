@@ -167,8 +167,7 @@ module.exports = Marionette.View.extend({
 			}
 		});
 		this.menus.selectPayloadFilter = function(item, page) {
-			if (page == null) return false;
-			if (page.page_type != 'page') {
+			if (page == null || page.page_type != 'page') {
 				item.is_group = true;
 			}
 			return item;

@@ -32,13 +32,6 @@ function getHeadersAction(options) {
 	options = options || {};
 	var actions = [];
 
-	if (options.addComments) {
-		actions.push({
-			title: 'Rédiger un commentaire',
-			callback: 'actionNewComment'
-		});
-	}
-
 	actions = actions.concat(
 		[{
 			title: 'Rédiger un billet',
@@ -402,7 +395,9 @@ var BlogController = Controller.extend({
 
 		promise.done(function() {
 			var view = new CommentsView({
-				collection: c
+				collection: c,
+				enableAddComment: (post_id > 0),
+				childViewOptions: param
 			});
 			this.navigationController.showContent(view);
 			view.start(param);
@@ -417,10 +412,6 @@ var BlogController = Controller.extend({
 				title: 'Billet introuvable'
 			});
 		}.bind(this));
-	},
-
-	actionNewComment: function() {
-
 	},
 
 	/* 
