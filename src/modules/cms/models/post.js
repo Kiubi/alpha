@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
 module.exports = Backbone.Model.extend({
 	urlRoot: 'sites/@site/cms/posts',
@@ -97,6 +98,37 @@ module.exports = Backbone.Model.extend({
 					fields: type.fields || []
 				};
 			});
+		});
+	},
+
+	/**
+	 *
+	 * @param {Number} selected
+	 * @returns {Promise} Promised {Backbone.Collection}
+	 */
+	promisedTypes: function(selected) {
+
+		return Backbone.ajax({
+			url: 'sites/@site/cms/posts_types'
+		}).then(function(response) {
+
+			var c = new CollectionUtils.SelectCollection();
+			var collector = [];
+
+			if (response.data) {
+				_.each(response.data, function(type) {
+					collector.push({
+						'value': type.type,
+						'label': type.name,
+						'indent': null,
+						'selected': selected && type.type == selected
+					});
+				});
+			}
+
+			c.add(collector);
+
+			return c;
 		});
 	},
 

@@ -15,7 +15,9 @@ function formatGroup(data, index) {
 }
 
 var TagView = Marionette.View.extend({
-	template: _.template('<%- name %><span data-role="delete" class="md-icon md-close"></span>'),
+	template: _.template(
+		'<span class="label-content" title="<%- name %>"><%- name %></span><span data-role="delete" class="md-icon md-close"></span>'
+	),
 
 	className: 'label label-extranet label-list',
 	tagName: 'span',

@@ -1,194 +1,208 @@
-<article class="post-article">
-  <header class="post-header">
-    <h1>Informations générales</h1>
-  </header>
-  <div class="post-content">
-    <div class="form-group">
-      <label class="control-label required" for="exmemple1">Code de réduction</label>
-      <p>Le code doit comprendre 3 caractères minimum, lettres ou chiffres, sans espace, sans caractères spéciaux.</p>
-      <input class="form-control" id="exmemple1" placeholder="BON-1213, PROMO-NOEL, TOPCLIENT, ..." type="text">
-    </div>
-    <div class="row">
-      <div class="col-xs-4">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple2">Début de validité</label>
-          <input class="form-control" id="exmemple2" placeholder="jj/mm/aaaa à hh:mm" type="text">
-          <span class="form-control-feedback md-feedback md-date"></span>
-        </div>
-      </div>
-      <div class="col-xs-4">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple2">Fin de validité</label>
-          <input class="form-control" id="exmemple2" placeholder="jj/mm/aaaa à hh:mm" type="text">
-          <span class="form-control-feedback md-feedback md-date"></span>
-        </div>
-      </div>
-      <div class="col-xs-4">
-        <div class="form-group">
-          <label class="control-label" for="">Utilisation</label>
-          <div class="radio-group">
-            <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
-            <label for="affichage1" class="visible">Activé</label>
-            <input name="affichage" id="affichage0" value="option1" type="radio">
-            <label for="affichage0" class="not-visible">Désactivé</label>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer class="post-footer"></footer>
-</article>
+<form>
 
-<article class="post-article">
-  <header class="post-header">
-    <h1>Paramères du bon de réduction</h1>
-  </header>
-  <div class="post-content">
-    <div class="row">
-      <div class="col-xs-4">
-        <div class="form-group">
-          <label class="control-label" for="exmemple1">Montant de la réduction</label>
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon3"></span>
-            <input class="form-control" value="5" placeholder="0,00">
-            <span class="input-group-addon" id="basic-addon2">€TTC</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="exmemple1">Montant des frais de port</label>
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon3"></span>
-            <input class="form-control" value="5" placeholder="Frais de port gratuits">
-            <span class="input-group-addon" id="basic-addon2">€TTC</span>
-          </div>
-        </div>
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple1">Montant de la réduction</label>
-          <input class="form-control" value="5" placeholder="0">
-          <span class="form-control-feedback md-percent"></span>
-        </div>
-      </div>
-      <div class="col-xs-6">
-        <div class="form-group">
-          <label class="control-label" for="exmemple1">Seuil de validité</label>
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon3">À partir de</span>
-            <input class="form-control" value="5" placeholder="0">
-            <span class="input-group-addon" id="basic-addon2">€TTC d'achats</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-4">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple3">Limite d'utilisations</label>
-          <select class="form-control" ic="exmemple3">
-            <option selected="selected">Limiter le nombre d'utilisations</option>
-            <option>Utilisation illimitée</option>
-          </select>
-          <div class="form-control-feedback md-feedback md-select"></div>
-        </div>
-      </div>
-      <div class="col-xs-4">
-        <div class="form-group">
-          <label class="control-label" for="exmemple1">Utilisations maximum</label>
-          <input class="form-control" value="5" placeholder="0">
-        </div>
-      </div>
-      <div class="col-xs-4">
-        <div class="form-group">
-          <label class="control-label" for="exmemple1">Nombre d'utilisations</label>
-          <p class="form-control-static">12</p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-4">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple3">Utilisations par membre</label>
-          <select class="form-control" ic="exmemple3">
-            <option selected="selected">Limiter le nombre d'utilisation</option>
-            <option>Utilisation illimitée</option>
-          </select>
-          <div class="form-control-feedback md-feedback md-select"></div>
-        </div>
-      </div>
-      <div class="col-xs-4">
-        <div class="form-group">
-          <label class="control-label" for="exmemple1">Utilisations par membre</label>
-          <input class="form-control" value="5" placeholder="0">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-4">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple3">Applicable au transporteur</label>
-          <select class="form-control" ic="exmemple3">
-            <option value="1" selected="selected"> Colissimo </option>
-            <option value="21"> Copie de Colissimo </option>
-            <option value="31"> La Poste - So Colissimo </option>
-            <option value="32"> Livraison de proximité </option>
-            <option value="42"> test </option>
-          </select>
-          <div class="form-control-feedback md-feedback md-select"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer class="post-footer"></footer>
-</article>
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
 
-<article class="post-article">
-  <header class="post-header">
-    <h1>Réserver le bon de réduction</h1>
-  </header>
-  <div class="post-content">
-    <p>Vous pouvez réserver un bon de réduction à un ensemble de membres, de groupes extranet, de produits et de catégories de produits.
-      Les conditions d'utilisation du bon ainsi que le montant de la remise ne s'appliqueront que sur ces ensembles.
-    </p>
-    <div class="row">
-      <div class="col-xs-6">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple1">Membres ou groupes extranet à <span class="text-success">inclure</span></label>
-          <input class="form-control" id="exmemple1" placeholder="Recherche des membres ou groupes extranet" type="text"><span class="form-control-feedback md-feedback md-search"></span>
-          <span class="label label-extranet label-list ">Groupe : Clients<span class="md-icon md-close"></span></span>
-        </div>
-      </div>
-      <div class="col-xs-6">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple1">Membres ou groupes extranet à <span class="text-danger">exclure</span></label>
-          <input class="form-control" id="exmemple1" placeholder="Recherche des membres ou groupes extranet" type="text"><span class="form-control-feedback md-feedback md-search"></span>
-          <span class="label label-extranet label-list ">Marc BEYER<span class="md-icon md-close"></span></span>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-6">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple1">Produits ou catégories de produits à <span class="text-success">inclure</span></label>
-          <input class="form-control" id="exmemple1" placeholder="Recherche des produits ou catégories de produits" type="text"><span class="form-control-feedback md-feedback md-search"></span>
-          <span class="label label-tag label-list ">Catégorie : MacBook<span class="md-icon md-close"></span></span>
-        </div>
-      </div>
-      <div class="col-xs-6">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple1">Produits ou catégories de produits à <span class="text-danger">exclure</span></label>
-          <input class="form-control" id="exmemple1" placeholder="Recherche des produits ou catégories de produits" type="text"><span class="form-control-feedback md-feedback md-search"></span>
-          <span class="label label-tag label-list ">MacBook Pro<span class="md-icon md-close"></span></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer class="post-footer"></footer>
-</article>
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Informations générales</h1>
+		</header>
+		<div class="post-content">
+			<div class="form-group">
+				<label class="control-label required" for="code">Code de réduction</label>
+
+				<p>Le code doit comprendre 3 caractères minimum, lettres ou chiffres, sans espace, sans caractères
+					spéciaux.</p>
+				<input class="form-control" id="code" name="code" value="<%- code %>" placeholder="BON-1213, PROMO-NOEL, TOPCLIENT, ..." type="text">
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="start_date">Début de validité</label>
+						<input data-role="datepicker" class="form-control" id="start_date" name="start_date" value="<%- start_date %>" placeholder="jj/mm/aaaa" type="text">
+						<span class="form-control-feedback md-feedback md-date"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="end_date">Fin de validité</label>
+						<input data-role="datepicker" class="form-control" id="end_date" name="end_date" value="<%- end_date %>" placeholder="jj/mm/aaaa" type="text">
+						<span class="form-control-feedback md-feedback md-date"></span>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="">Utilisation</label>
+
+						<div class="radio-group">
+							<input name="is_enabled" id="is_enabled1" value="1" <%= is_enabled ? 'checked="checked"' : '' %> type="radio">
+							<label for="is_enabled1" class="visible">Activé</label>
+							<input name="is_enabled" id="is_enabled0" value="0" <%= !is_enabled ? 'checked="checked"' : '' %> type="radio">
+							<label for="is_enabled0" class="not-visible">Désactivé</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Paramères du bon de réduction</h1>
+		</header>
+		<div class="post-content">
+			<div class="row">
+				<div class="col-xs-4">
+
+					<% if(type == 'shipping') { %>
+					<div class="form-group">
+						<label class="control-label" for="value">Montant des frais de port</label>
+
+						<div class="input-group">
+							<span class="input-group-addon"></span>
+							<input class="form-control" id="value" name="value" value="<%- value %>" placeholder="Frais de port gratuits">
+							<span class="input-group-addon">€TTC</span>
+						</div>
+					</div>
+					<% } else if(type == 'amount') { %>
+					<div class="form-group">
+						<label class="control-label" for="value">Montant de la réduction</label>
+
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon3"></span>
+							<input class="form-control" id="value" name="value" value="<%- value %>" placeholder="0,00">
+							<span class="input-group-addon" id="basic-addon2">€TTC</span>
+						</div>
+					</div>
+					<% } else if(type == 'percent') { %>
+					<div class="form-group has-feedback">
+						<label class="control-label" for="value">Montant de la réduction</label>
+
+						<input class="form-control" id="value" name="value" value="<%- value %>" placeholder="0">
+						<span class="form-control-feedback md-percent"></span>
+					</div>
+					<% } %>
+
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="threshold">Seuil de validité</label>
+
+						<div class="input-group">
+							<span class="input-group-addon">À partir de</span>
+							<input class="form-control" id="threshold" name="threshold" value="<%- threshold %>" placeholder="0">
+							<span class="input-group-addon">€TTC d'achats</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="is_stock_unlimited">Limite d'utilisations</label>
+						<select id="is_stock_unlimited" name="is_stock_unlimited" data-style="selectify">
+							<option value="0" <%= !is_stock_unlimited ? 'selected="selected"' : '' %>>Limiter l'utilisation</option>
+							<option value="1" <%= is_stock_unlimited ? 'selected="selected"' : '' %>>Utilisation illimitée</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-xs-4" data-role="stock" style="<%= is_stock_unlimited ? 'display: none' : '' %>">
+					<div class="form-group">
+						<label class="control-label" for="stock">Utilisations maximum</label>
+						<input class="form-control" id="stock" name="stock" value="<%- stock %>" placeholder="0">
+					</div>
+				</div>
+				<div class="col-xs-4" data-role="stock" style="<%= is_stock_unlimited ? 'display: none' : '' %>">
+					<div class="form-group">
+						<label class="control-label">Nombre d'utilisations</label>
+						<p class="form-control-static"><%- used %></p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="is_quota_unlimited">Utilisations par membre</label>
+						<select id="is_quota_unlimited" name="is_quota_unlimited" data-style="selectify">
+							<option value="0" <%= !is_quota_unlimited ? 'selected="selected"' : '' %>>Limiter l'utilisation</option>
+							<option value="1" <%= is_quota_unlimited ? 'selected="selected"' : '' %>>Utilisation illimitée</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-xs-4" data-role="quota" style="<%= is_quota_unlimited ? 'display: none' : '' %>">
+					<div class="form-group">
+						<label class="control-label" for="quota">Utilisations par membre</label>
+						<input class="form-control" id="quota" name="quota" value="<%- quota %>" placeholder="0">
+					</div>
+				</div>
+			</div>
+			<% if(type == 'shipping') { %>
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="control-label" for="carrier_id">Applicable au transporteur</label>
+						<div data-role="carriers"></div>
+					</div>
+				</div>
+			</div>
+			<% } %>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Réserver le bon de réduction</h1>
+		</header>
+		<div class="post-content">
+			<p>Vous pouvez réserver un bon de réduction à un ensemble de membres, de groupes extranet, de produits et de
+				catégories de produits.
+				Les conditions d'utilisation du bon ainsi que le montant de la remise ne s'appliqueront que sur ces
+				ensembles.
+			</p>
+
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="allowed_customers">Membres ou groupes extranet à <span class="text-success">inclure</span></label>
+						<div data-role="allowed_customers"></div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="denied_customers">Membres ou groupes extranet à <span class="text-danger">exclure</span></label>
+						<div data-role="denied_customers"></div>
+					</div>
+				</div>
+			</div>
+
+			<% if(type != 'shipping') { %>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="allowed_products">Produits ou catégories de produits à <span class="text-success">inclure</span></label>
+						<div data-role="allowed_products"></div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group has-feedback">
+						<label class="control-label" for="denied_products">Produits ou catégories de produits à <span class="text-danger">exclure</span></label>
+						<div data-role="denied_products"></div>
+					</div>
+				</div>
+			</div>
+			<% } %>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+</form>
 
 <div class="save">
-  <div class="btn-toolbar" role="toolbar">
-    <button type="button" class="btn btn-cancel">Retour</button>
-    <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
-  </div>
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+	</div>
 </div>
 
-<footer class="footer"> </footer>
+<footer class="footer"></footer>

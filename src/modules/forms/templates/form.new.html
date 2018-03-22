@@ -1,0 +1,98 @@
+<form style="display: none;" data-role="new">
+
+	<div class="list-item">
+
+		<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="form-group">
+					<label class="control-label">Affichage</label>
+
+					<div class="radio-group">
+						<input name="is_enabled" id="f_is_enabled1" value="1" type="radio" checked="checked">
+						<label for="f_is_enabled1" class="visible">Visible</label>
+						<input name="is_enabled" id="f_is_enabled0" value="0" type="radio">
+						<label for="f_is_enabled0" class="not-visible">Masqué</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4" data-role="inputs">
+				<div class="form-group">
+					<label class="control-label">Champ à renseigner</label>
+
+					<div class="radio-group">
+						<input name="is_required" id="f_is_required1" value="1" type="radio" checked="checked">
+						<label for="f_is_required1" class="">Obligatoire</label>
+						<input name="is_required" id="f_is_required0" value="0" type="radio">
+						<label for="f_is_required0" class="">Facultatif</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4" data-role="inputs">
+				<div class="form-group">
+					<label class="control-label">Ajouter au sujet</label>
+
+					<div class="radio-group">
+						<input name="is_in_subject" id="f_is_in_subject1" value="1" type="radio">
+						<label for="f_is_in_subject1" class="">Oui</label>
+						<input name="is_in_subject" id="f_is_in_subject0" value="0" checked="checked" type="radio">
+						<label for="f_is_in_subject0" class="">Non</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label required" for="name">Label du champ</label>
+			<input class="form-control" id="name" name="name"
+				   placeholder="Label du champ tel qu'il apparaitra dans le formulaire" type="text">
+		</div>
+		<div class="form-group" data-role="inputs">
+			<label class="control-label" for="help">Aide à la saisie</label>
+			<input class="form-control" id="help" name="help"
+				   placeholder="Courte description pour aider à correctement renseigner le champ" type="text">
+		</div>
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="form-group">
+					<label class="control-label" for="type">Type de champ</label>
+					<select name="type" id="type" data-style="selectify">
+						<% _.each(typeList, function(t){ %>
+						<option value="<%- t.type %>"><%- t.label %></option>
+						<% }) %>
+					</select>
+				</div>
+			</div>
+			<div class="col-xs-4" data-role="email">
+
+				<div class="form-group">
+					<label class="control-label">Email de l'expéditeur</label>
+
+					<div class="radio-group">
+						<input name="use_for_exp" id="f_use_for_exp1" value="1" type="radio" checked="checked">
+						<label for="f_use_for_exp1" class="visible">Oui</label>
+						<input name="use_for_exp" id="f_use_for_exp0" value="0" type="radio">
+						<label for="f_use_for_exp0" class="not-visible">Non</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group" data-role="values">
+			<label class="control-label required" for="values">Liste des valeurs</label>
+			<input class="form-control" id="values" name="values" placeholder="Valeur 1, Valeur 2, Valeur 3, ..." type="text">
+		</div>
+
+		<div class="btn-toolbar" role="toolbar">
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-cancel" data-role="action" data-action="cancel">Annuler</button>
+			</div>
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-action" data-role="action" data-action="save">Enregistrer</button>
+			</div>
+		</div>
+
+	</div>
+
+</form>
+
+<div class="list-item no-hover"><a href="#" data-role="action" data-action="show">Ajouter un champ</a></div>

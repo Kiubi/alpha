@@ -113,7 +113,7 @@ module.exports = Marionette.View.extend({
 					return {
 						value: value,
 						label: target.name,
-						indent: indent,
+						indent: type == 'cms' ? indent : null,
 						is_group: !target.is_linkable
 					};
 				});

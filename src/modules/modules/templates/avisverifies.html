@@ -1,98 +1,86 @@
 <form>
 
-  <div class="alert alert-warning" role="alert">
-    <a href="https://aide.kiubi.com/documentation/avis-verifies.html" class="md-icon md-help pull-right" target="_blank"></a>
-    Avis Vérifiés est une solution spécialisée dans la récolte des avis clients.
-    Pour bénéficier de ses fonctionnalités, vous devez au préalable vous
-    <a href="https://www.avis-verifies.com/" target="_blank" >ouvrir un compte sur le site d'Avis Vérifiés</a>.
-  </div>
+	<div class="alert alert-warning" role="alert">
+		<a href="https://aide.kiubi.com/documentation/avis-verifies.html" class="md-icon md-help pull-right" target="_blank"></a>
+		Avis Vérifiés est une solution spécialisée dans la récolte des avis clients.
+		Pour bénéficier de ses fonctionnalités, vous devez au préalable vous
+		<a href="https://www.avis-verifies.com/" target="_blank">ouvrir un compte sur le site d'Avis Vérifiés</a>.
+	</div>
 
-  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
 
-  <article class="post-article">
-    <header class="post-header">
-      <h1>Configuration de Avis Vérifiés</h1>
-    </header>
-    <div class="post-content">
-      <div class="form-group">
-        <label class="control-label required" for="UA">Identifiant Site Web</label>
-        <input id="UA" name="UA" class="form-control" value="" placeholder="">
-      </div>
-      <div class="form-group">
-        <label class="control-label required" for="UA">Clé secrète</label>
-        <input id="UA" name="UA" class="form-control" value="" placeholder="">
-      </div>
-      <div class="form-group">
-        <label class="control-label">Utilisation</label>
-        <div class="radio-group">
-          <input name="is_enabled" id="is_enabled1" value="1" type="radio" checked="checked">
-          <label for="is_enabled1" class="visible">Activé</label>
-          <input name="is_enabled" id="is_enabled0" value="0" type="radio">
-          <label for="is_enabled0" class="not-visible">Désactivé</label>
-        </div>
-      </div>
-      <div class="form-group has-feedback">
-        <label class="control-label" for="exmemple3">Pays</label>
-        <div class="row">
-          <div class="col-xs-6">
-            <select class="form-control" ic="exmemple3">
-              <option value="FR" selected="selected">www.avis-verifies.com</option>
-              <option value="ES">www.opiniones-verificadas.com</option>
-              <option value="DE">www.echte-bewertungen.com</option>
-              <option value="IT">www.recensioni-verificate.com</option>
-              <option value="NL">www.echte-beoordelingen.com</option>
-              <option value="UK">www.verified-reviews.co.uk</option>
-              <option value="US">www.verified-reviews.com</option>
-              <option value="BR">www.opinioes-verificadas.com.br</option>
-              <option value="PT">www.opinioes-verificadas.com</option>
-              <option value="CO">www.opiniones-verificadas.com.co</option>
-              <option value="PL">www.prawdziwe-opinie.com</option>
-              <option value="PE">www.opiniones-verificadas.pe</option>
-              <option value="CL">www.cl.opiniones-verificadas.com</option>
-              <option value="AU">www.au.verified-reviews.com</option>
-              <option value="NZ">www.verified-reviews.co.nz</option>
-              <option value="MX">www.opiniones-verificadas.com.mx</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group has-feedback">
-        <label class="control-label" for="exmemple3">Avis récoltés</label>
-        <div class="row">
-          <div class="col-xs-6">
-            <select class="form-control" ic="exmemple3">
-              <option value="" selected="selected">Commandes uniquement</option>
-              <option value="">Commandes et produits</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="exmemple1">Délai d'attente avant demande d'avis</label>
-      <div class="row">
-        <div class="col-xs-3">
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon3"></span>
-            <input class="form-control" value="5" placeholder="0">
-            <span class="input-group-addon" id="basic-addon2">jours</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer class="post-footer"></footer>
-</article>
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Configuration de Avis Vérifiés</h1>
+		</header>
+		<div class="post-content">
+			<div class="form-group">
+				<label class="control-label required" for="id">Identifiant Site Web</label>
+				<input id="id" name="id" class="form-control" value="<%- id %>" placeholder="">
+			</div>
+			<div class="form-group">
+				<label class="control-label required" for="secret">Clé secrète</label>
+				<input id="secret" name="secret" class="form-control" value="<%- secret %>" placeholder="">
+			</div>
+			<div class="form-group">
+				<label class="control-label">Utilisation</label>
+
+				<div class="radio-group">
+					<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
+					<label for="is_enabled1" class="visible">Activé</label>
+					<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
+					<label for="is_enabled0" class="not-visible">Désactivé</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="plateform">Pays</label>
+
+				<div class="row">
+					<div class="col-xs-6">
+						<select data-style="selectify" id="plateform" name="plateform">
+							<% _.each(allPlatforms, function(label, value){ %>
+							<option value="<%- value %>" <%= value == plateform ? 'selected="selected"' : '' %>><%- label %></option>
+							<% }) %>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="form-group has-feedback">
+				<label class="control-label" for="is_sending_products">Avis récoltés</label>
+
+				<div class="row">
+					<div class="col-xs-6">
+						<select data-style="selectify" id="is_sending_products" name="is_sending_products">
+							<option value="0" <%= !is_sending_products ? 'selected="selected"' : '' %>>Commandes uniquement</option>
+							<option value="1" <%= is_sending_products ? 'selected="selected"' : '' %>>Commandes et produits</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="offset">Délai d'attente avant demande d'avis</label>
+
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="input-group">
+						<span class="input-group-addon"></span>
+						<input class="form-control" id="offset" name="offset" value="<%- offset %>" placeholder="0">
+						<span class="input-group-addon">jours</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
 
 </form>
 
 <div class="save">
-  <div class="btn-toolbar" role="toolbar">
-    <a class="btn btn-cancel" href="/modules">Retour</a>
-    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
-  </div>
+	<div class="btn-toolbar" role="toolbar">
+		<a class="btn btn-cancel" href="/modules">Retour</a>
+		<button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+	</div>
 </div>
 
-<footer class="footer"> </footer>
+<footer class="footer"></footer>

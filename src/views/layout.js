@@ -56,10 +56,13 @@ var View = Marionette.View.extend({
 		}
 	},
 
-	// on attache à chaque lien de la navbar un event handler permettant de
-	// naviguer en pushState dans l'application
+	// Enable navigation by pushState
 	events: {
 		'click a[href^=\\/]': function(event) {
+
+			// skip pushstate for target="_blank" links
+			if (event.currentTarget.getAttribute("target") == '_blank') return;
+
 			event.preventDefault();
 			var options = {
 				trigger: true

@@ -1,59 +1,77 @@
 <form>
 
-  <div class="alert alert-warning" role="alert">
-    <a href="https://aide.kiubi.com/documentation/Marketing-et-referencement/export-comparateurs-prix-lengow.html" class="md-icon md-help pull-right" target="_blank"></a>
-    Lengow est une solution permettant d’optimiser la visibilité et la rentabilité des sites marchands,
-    que ce soit sur les comparateurs de prix, les places de marché, les plateformes d’affiliation ou les réseaux sociaux.
-    Pour bénéficier de ses fonctionnalités, vous devez au préalable vous
-    <a href="https://www.lengow.com" target="_blank" >ouvrir un compte sur le site de Lengow</a>.
+	<div class="alert alert-warning" role="alert">
+		<a href="https://aide.kiubi.com/documentation/Marketing-et-referencement/export-comparateurs-prix-lengow.html" class="md-icon md-help pull-right" target="_blank"></a>
+		Lengow est une solution permettant d’optimiser la visibilité et la rentabilité des sites marchands,
+		que ce soit sur les comparateurs de prix, les places de marché, les plateformes d’affiliation ou les réseaux
+		sociaux.
+		Pour bénéficier de ses fonctionnalités, vous devez au préalable vous
+		<a href="https://www.lengow.com" target="_blank">ouvrir un compte sur le site de Lengow</a>.
 
-  </div>
+	</div>
 
-  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
 
-  <article class="post-article">
-    <header class="post-header">
-      <h1>Configuration de Lengow</h1>
-    </header>
-    <div class="post-content">
-      <div class="form-group">
-        <label class="control-label required" for="UA">Id client Lengow</label>
-        <p>Ce numéro est fourni par Lengow, vous pouvez retrouver cet ID en haut de chaque page de leur solution.</p>
-        <input id="UA" name="UA" class="form-control" value="" placeholder="">
-      </div>
-      <div class="form-group">
-        <label class="control-label">Utilisation</label>
-        <div class="radio-group">
-          <input name="is_enabled" id="is_enabled1" value="1" type="radio" checked="checked">
-          <label for="is_enabled1" class="visible">Activé</label>
-          <input name="is_enabled" id="is_enabled0" value="0" type="radio">
-          <label for="is_enabled0" class="not-visible">Désactivé</label>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label">Adresse de l'export à communiquer à Lengow</label>
-        <p class="form-control-static">L'adresse est disponible 24 heures après l'activation du module.</p>
-        <p>Dernier export créé le 29/08/2017 à 03h04.</p>
-        <p class="form-control-static lead"><a href="http://maquettes.kiubi-web.com/exports/lengow/bdface01cc95.csv">http://maquettes.kiubi-web.com/exports/lengow/bdface01cc95.csv</a></p>
-      </div>
-      <div class="form-group has-feedback">
-        <label class="control-label required" for="exmemple1">Catégories à inclure dans l'export</label>
-        <input class="form-control" id="exmemple1" placeholder="Recherche des catégories de produits" type="text"><span class="form-control-feedback md-feedback md-search"></span>
-        <span class="label label-tag label-list ">Catégorie 1<span class="md-icon md-close"></span></span>
-        <span class="label label-tag label-list ">Catégorie 2<span class="md-icon md-close"></span></span>
-        <span class="label label-tag label-list ">Catégorie 3<span class="md-icon md-close"></span></span>
-      </div>
-    </div>
-    <footer class="post-footer"></footer>
-  </article>
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Configuration de Lengow</h1>
+		</header>
+		<div class="post-content">
+			<div class="form-group">
+				<label class="control-label required" for="id">Id client Lengow</label>
+
+				<p>Ce numéro est fourni par Lengow, vous pouvez retrouver cet ID en haut de chaque page de leur
+					solution.</p>
+				<input id="id" name="id" class="form-control" value="<%- id %>" placeholder="">
+			</div>
+			<div class="form-group">
+				<label class="control-label">Tracker de conversion</label>
+
+				<div class="radio-group">
+					<input name="is_tracker_enabled" id="is_tracker_enabled1" value="1" type="radio" <%= is_tracker_enabled ? 'checked="checked"' : '' %>>
+					<label for="is_tracker_enabled1" class="visible">Activé</label>
+					<input name="is_tracker_enabled" id="is_tracker_enabled0" value="0" type="radio" <%= !is_tracker_enabled ? 'checked="checked"' : '' %>>
+					<label for="is_tracker_enabled0" class="not-visible">Désactivé</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Flux d'export</label>
+
+				<div class="radio-group">
+					<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
+					<label for="is_enabled1" class="visible">Activé</label>
+					<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
+					<label for="is_enabled0" class="not-visible">Désactivé</label>
+				</div>
+			</div>
+			<% if(is_enabled) { %>
+			<div class="form-group">
+				<label class="control-label">Adresse de l'export à communiquer à Lengow</label>
+
+				<% if (export_url) { %>
+					<p>Dernier export créé le <%- last_export %>.</p>
+					<p class="form-control-static lead"><a href="<%- export_url %>"><%- export_url %></a></p>
+				<% } else { %>
+					<p class="form-control-static">L'adresse est disponible 24 heures après l'activation du module.</p>
+				<% } %>
+
+			</div>
+			<% } %>
+			<div class="form-group has-feedback">
+				<label class="control-label required" for="categories">Catégories à inclure dans l'export</label>
+				<div data-role="categories"></div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
 
 </form>
 
 <div class="save">
-  <div class="btn-toolbar" role="toolbar">
-    <a class="btn btn-cancel" href="/modules">Retour</a>
-    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
-  </div>
+	<div class="btn-toolbar" role="toolbar">
+		<a class="btn btn-cancel" href="/modules">Retour</a>
+		<button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+	</div>
 </div>
 
-<footer class="footer"> </footer>
+<footer class="footer"></footer>

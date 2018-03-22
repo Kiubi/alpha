@@ -159,7 +159,6 @@ module.exports = Marionette.Behavior.extend({
 		var promise = this.view.onCancel();
 
 		if (!promise) {
-			Backbone.history.history.back();
 			return;
 		}
 
@@ -218,6 +217,18 @@ module.exports = Marionette.Behavior.extend({
 			btn.removeClass('btn-load');
 			btn.text(btn.data('label'));
 		}.bind(this));
+	},
+
+	/**
+	 * PROXY child view events for Meta+S keycombo and change detection
+	 */
+
+	onChildviewFieldChange: function() {
+		this.view.triggerMethod('field:change');
+	},
+
+	onChildviewSave: function() {
+		this.view.triggerMethod('save');
 	}
 
 });

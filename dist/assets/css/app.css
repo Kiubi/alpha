@@ -1,5 +1,4 @@
 
-
 /* ------------------------------------
 Polices
 -------------------------------------*/
@@ -262,16 +261,22 @@ alert
 	background-color: #337ab7;
 }
 
-.alert .alert-link {
-	font-weight: 700;
+.alert-success {
+	color: #fff;
+	background-color: #6EC33D;
 }
 
-.alert-info .alert-link {
+.alert-info .alert-link,
+.alert-success .alert-link,
+.alert-danger .alert-link {
+	font-weight: 400;
 	color: #fff;
+	text-decoration: underline;
 }
 
 .alert-warning .alert-link {
 	color: #8a6d3b;
+	font-weight: 700;
 }
 
 .alert .md-help {
@@ -343,6 +348,11 @@ header
 	min-width: 145px;
 }
 
+.header .rating {
+	top: 2px;
+	margin-left: 5px;
+}
+
 /* ------------------------------------
 sidebar
 -------------------------------------*/
@@ -358,26 +368,26 @@ sidebar
 	font-size:  13px;
 	color: #D9D9D9;
 	background: #363636 url(/assets/img/bg_sidebar.png) fixed;
-	overflow: hidden;
 	z-index: 1002;
 }
 
 .sidebar h1 {
-	display: inline-block;
-	max-width: 195px;
-	height: 20px;
 	margin: 0;
 	font-weight: 600;
 	font-size: 16px;
 	color: #fff;
+}
+
+.sidebar h1 a span:first-child {
+	display: inline-block;
+	position: relative;
+	float: left;
+	max-width: 195px;
+	height: 20px;
+	color: #fff;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	/*	text-transform: lowercase;*/
-}
-
-.sidebar h1:first-letter {
-	/*	text-transform: uppercase;*/
 }
 
 .sidebar h2 {
@@ -418,17 +428,11 @@ sidebar
 	line-height: inherit;
 }
 
-.sidebar a.md-launch {
-	top: -3px;
+.sidebar span.md-launch {
+	top: 1px;
 	margin: 0 0 0 5px;
 	font-size: 16px !important;
 	color: #979797;
-}
-
-.sidebar a.md-launch:hover {
-	font-size: 18px !important;
-	-webkit-transition: all 0.2s ease 0s;
-	transition: all 0.2s ease 0s;
 }
 
 .sidebar a {
@@ -494,6 +498,10 @@ sidebar
 sidebar-main
 -------------------------------------*/
 
+.sidebar-main {
+	overflow: hidden;
+}
+
 .sidebar-main .nav-stacked > li > a:hover {
 	margin-right: 5px;
 	background-color: rgba(255, 255, 255, 0.05);
@@ -527,7 +535,7 @@ sidebar-menu
 
 .sidebar-header {
 	position: fixed;
-	width: 275px;
+	width: 280px;
 	top: 0;
 	padding: 25px 25px 20px 30px;
 	background: #3b3b3b url(/assets/img/bg_sidebar_menu_chrome_hack.png) fixed;
@@ -874,11 +882,15 @@ toggle-site
 -------------------------------------*/
 
 .toggle-site > a {
+	display: block;
+	margin-top: 8px;
 	color: #fff;
 }
 
 .toggle-site .btn-content {
 	display: inline-block;
+	position: relative;
+	float: left;
 	max-width: 200px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -886,15 +898,22 @@ toggle-site
 }
 
 .toggle-site .caret {
-	margin-top: -14px !important;
+	position: relative;
+	display: inline-block;
+	top: -1px;
 	font-size: 20px;
 }
 
 .toggle-site .dropdown-menu {
-	position: fixed;
-	margin: 80px 0 30px 210px;
-	top: 0;
+	margin-left: -10px;
 	width: 320px;
+}
+
+.toggle-site .dropdown-menu > li > a {
+	max-width: 320px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /* ------------------------------------
@@ -902,7 +921,7 @@ sidebar-search
 -------------------------------------*/
 
 .form-group.sidebar-search {
-	margin: 13px 0 -3px 0;
+	margin: 20px 0 -3px 0;
 }
 
 .sidebar-search .form-control {
@@ -1082,10 +1101,6 @@ sidebar collapse
 		left: 70px;
 	}
 
-	.toggle-site .dropdown-menu {
-		margin-left: 95px;
-	}
-
 	.user .media-body {
 		display:  none;
 	}
@@ -1130,6 +1145,7 @@ body.closed
 .closed .sidebar-menu {
 	opacity: 0.5;
 	transform: translate(-295px,0) scale(0.95);
+	overflow: hidden;
 }
 
 .closed .main {
@@ -1146,6 +1162,10 @@ body.closed
 
 .closed .bt-closed::before {
 	content: 'chevron_right';
+}
+
+.closed .toggle-site .dropdown-menu {
+	visibility: hidden;
 }
 
 @media (max-width: 1280px) {
@@ -1438,27 +1458,14 @@ btn (boutons)
 .btn-image img {
 	width: 60px;
 	height: 60px;
-	border: 5px solid #FFF;
+	border: 2px solid #fff;
 	opacity: 0.5;
-}
-
-.btn-image img:hover {
-	border-color: #6ec33d;
 }
 
 .btn-drag {
 	padding: 0 12px 0 0;
 	letter-spacing: -15px;
 	cursor: move;
-}
-
-.btn-bulk-action .caret {
-  display: inline-block;
-  margin: -3px -10px 0 5px;
-}
-
-.btn-group.open .btn-bulk-action.dropdown-toggle {
-  background-color: #868686;
 }
 
 .btn-form-control {
@@ -1507,7 +1514,8 @@ btn (boutons)
 }
 
 .list-item:hover .btn-option:first-child,
-.list-item .open .btn-option:first-child  {
+.list-item .open .btn-option:first-child,
+.list-item.visible-btn .btn-option:first-child {
 	visibility: visible;
 }
 
@@ -1683,11 +1691,8 @@ dropdown-menu (menu deliant)
 	color: #979797;
 }
 
+.dropdown-menu > li > a,
 .dropdown-content {
-	padding: 10px 20px;
-}
-
-.dropdown-menu > li > a {
 	color: #363636;
 	padding: 10px 20px;
 	font-weight: 500;
@@ -1803,12 +1808,6 @@ dropdown-menu (menu deliant)
   padding: 10px 20px;
 }
 
-.dropdown-menu > li > a,
-.dropdown-menu > li > .disabled {
-	position: relative;
-  padding-right: 70px;
-}
-
 .dropdown-menu .active a {
   padding-right: 20px;
 }
@@ -1835,6 +1834,12 @@ dropdown-menu (menu deliant)
 
 .dropdown-menu :hover .page-position {
   display: inline-block;
+}
+
+.dropdown-menu > li[class*="page-level-"] > a,
+.dropdown-menu > li[class*="page-level-"] > .disabled {
+	position: relative;
+  padding-right: 70px;
 }
 
 .dropdown-menu .page-level-0 > a,
@@ -1899,6 +1904,7 @@ label
 
 .label {
 	display: inline-block;
+	max-width: 100%;
 	padding: 0 10px;
 	height: 28px;
 	font-size: 10px;
@@ -1908,6 +1914,16 @@ label
 	line-height: 28px;
 	border-radius: 4px;
 	text-transform: uppercase;
+}
+
+.label-content {
+	float: left;
+	width: 100%;
+	padding-right: 15px;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 h4 .label {
@@ -1982,7 +1998,7 @@ h4 .label {
 
 .label .md-icon.md-close {
 	top: 2px;
-	left: 2px;
+	margin-left: -10px;
 	font-size: 13px;
 	font-weight: 700;
 	cursor: pointer;
@@ -2123,17 +2139,27 @@ post-article
 	margin-bottom: 20px;
 }
 
-.post-header .form-inline > * ~ .btn-group,
-.post-header .form-inline > * ~ .form-group {
+.post-header .form-inline .btn-group,
+.post-header .form-inline .form-group {
 	margin-left: 13px;
+}
+
+.post-header .form-inline .btn-group .form-group,
+.post-header .form-inline > .btn-group:first-child,
+.post-header .form-inline > .form-group:first-child {
+	margin-left: 0;
 }
 
 .post-header .btn-option {
 	min-width: 160px;
 }
 
+.post-header .btn-bulk-action {
+	width: 140px;
+}
+
 .post-header .form-control-select {
-	width: 200px;
+	max-width: 200px;
 }
 
 .post-header .checkbox-inline {
@@ -2540,12 +2566,19 @@ post-picture
 	opacity: 1;
 }
 
-.post-picture .md-delete {
-	position: absolute;
-	padding: 3px 3px 3px 6px;
-	bottom: 25px;
-	right: 5px;
-	background-color: #FFF;
+.post-picture .si-overlay {
+	margin-bottom: -120px;
+	min-width: 120px;
+	height: 120px;
+}
+
+.post-picture .ui-sortable-helper img {
+	display: block;
+	box-shadow: 0 9px 15px 0px rgba(0, 0, 0, 0.15);
+}
+
+.post-picture .ui-sortable-helper .btn-si {
+	display: none;
 }
 
 /* ------------------------------------
@@ -2791,6 +2824,7 @@ answers
 	bottom: 0;
 	right: 20px;
 	left: 40px;
+	min-width: 765px;
 	overflow: hidden;
 }
 
@@ -2813,7 +2847,7 @@ answers
 }
 
 .answers-list h4 {
-	display: inline-block;
+	display: inline;
 	margin-right: 5px
 }
 
@@ -2850,26 +2884,22 @@ answers
 	color: #363636;
 }
 
-.answers-list .read::before {
+.answers-list .read {
+	position: absolute;
 	display: inline-block;
-	float: right;
+	right: 10px;
+	top: 5px;
 	content: '';
-	margin-top: 5px;
 	width: 10px;
 	height: 10px;
 	border: 1px solid #a8d6ff;
 	border-radius: 10px;
+	cursor: pointer;
 }
 
-.answers-list .not-read::before {
-	display: inline-block;
-	float: right;
-	content: '';
-	margin-top: 5px;
-	width: 10px;
-	height: 10px;
+.answers-list .not-read {
+	border: none;
 	background-color: #337ab7;
-	border-radius: 10px;
 }
 
 .answer-detail {
@@ -3027,26 +3057,29 @@ select::-ms-expand {
 }
 
 .form-control-select {
+	position: relative;
 	cursor: pointer;
 }
 
 .form-control-select .fake-selected {
   display: inline-block;
-  width: calc(100% - 20px);
+	float: left;
+	padding-right: 20px;
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .form-control-select .caret {
-  float: right;
-  margin-right: -8px;
+	position: absolute;
+	right: 5px;
   color: #B3B3B3;
   border: none;
 }
 
 .form-control-select .md-cancel {
-  margin: 1px -6px 0 0;
+  margin: 1px 0 0 0;
   font-size: 20px;
   cursor: pointer;
 }
@@ -3684,40 +3717,10 @@ templates
 	overflow: visible;
 }
 
-.templates .media-left a > div {
-	position: relative;
+.templates .si-overlay {
 	margin-bottom: -150px;
-	width: 100%;
 	min-width: 135px;
 	height: 150px;
-	opacity: 0;
-	border: 0px solid #6ec33d;
-	transition: all 0.1s ease 0s;
-}
-
-.templates .media-left a:hover > div {
-	visibility: visible;
-	border: 2px solid #6ec33d;
-}
-
-.templates .media-left a:hover * {
-	opacity: 1;
-}
-
-.templates .media-left .md-edit {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	padding: 3px 3px 3px 6px;
-	color: #fff;
-	background-color: #6ec33d;
-	opacity: 0;
-	transition: all 0.1s ease 0s;
-}
-
-.templates .media-left a:hover .md-edit {
-	right: 4px;
-	bottom: 4px;
 }
 
 /* ------------------------------------
@@ -4011,6 +4014,12 @@ widget
 	display: none;
 }
 
+.widget.ui-sortable-helper {
+	box-shadow: 0 18px 30px 0px rgba(0, 0, 0, 0.15);
+	-webkit-animation: draganim 0.3s linear;
+	animation: draganim 0.3s linear;
+}
+
 .widget .icon-toolbar a.md-icon {
 	margin: 0 5px;
 }
@@ -4276,6 +4285,53 @@ dashboard
 	right: -3px;
 	top: 5px;
 	content: '/';
+}
+
+/* ------------------------------------
+si-overlay
+-------------------------------------*/
+
+.si-overlay {
+	position: relative;
+	width: 100%;
+	opacity: 0;
+	border: 0px solid #6ec33d;
+	transition: all 0.1s ease 0s;
+}
+
+.si-overlay .btn-si {
+	padding: 3px 3px 3px 6px;
+	color: #fff;
+	background-color: #6ec33d;
+}
+
+.si-overlay .btn-si.md-delete:hover {
+	color: #fff !important;
+	background-color: #e85500 !important;
+}
+
+*:hover > .si-overlay {
+	visibility: visible;
+	border: 2px solid #6ec33d;
+}
+
+*:hover > .si-overlay,
+*:hover > .si-overlay .btn-si {
+	opacity: 1;
+}
+
+.si-overlay .btn-si {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	opacity: 0;
+	cursor: pointer;
+	transition: all 0.1s ease 0s;
+}
+
+*:hover > .si-overlay .btn-si {
+	right: 4px;
+	bottom: 4px;
 }
 
 /* ------------------------------------
@@ -4659,25 +4715,6 @@ login
 }
 
 /* ------------------------------------
-loader
--------------------------------------*/
-
-.loader {
-	position: fixed;
-	top: 0;
-	height: 3px;
-	width: 100%;
-	margin: 0;
-	border-radius: 0;
-	z-index: 10000;
-}
-
-.loader .progress-bar {
-	background-color: #6ec33d;
-	box-shadow: none;
-}
-
-/* ------------------------------------
 ux-placeholder
 -------------------------------------*/
 
@@ -4827,31 +4864,50 @@ overlay
 	z-index: 10001;
 }
 
-.overlay .sk-fading-circle {
-  margin: 0 auto;
+.overlay .loader {
+	position: relative;
+	top: 50%;
+	margin: 0 auto;
   width: 50px;
   height: 50px;
-  position: relative;
-	top: 50%;
 	margin-top: -25px;
 }
 
-.sk-fading-circle {
+/* ------------------------------------
+loader
+-------------------------------------*/
+
+/*.loader {
+	position: fixed;
+	top: 0;
+	height: 3px;
+	width: 100%;
+	margin: 0;
+	border-radius: 0;
+	z-index: 10000;
+}
+
+.loader .progress-bar {
+	background-color: #6ec33d;
+	box-shadow: none;
+}*/
+
+.loader {
+	position: relative;
   margin: 100px auto;
   width: 40px;
   height: 40px;
-  position: relative;
 }
 
-.sk-fading-circle .sk-circle {
-  width: 100%;
+.loader .loader-circle {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
   height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
 }
 
-.sk-fading-circle .sk-circle:before {
+.loader .loader-circle:before {
   content: '';
   display: block;
   margin: 0 auto;
@@ -4859,136 +4915,136 @@ overlay
   height: 15%;
   background-color: #333;
   border-radius: 100%;
-  -webkit-animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
-          animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
+  -webkit-animation: loader-circleFadeDelay 1.2s infinite ease-in-out both;
+          animation: loader-circleFadeDelay 1.2s infinite ease-in-out both;
 }
 
-.sk-fading-circle .sk-circle2 {
+.loader .loader-circle2 {
   -webkit-transform: rotate(30deg);
       -ms-transform: rotate(30deg);
           transform: rotate(30deg);
 }
-.sk-fading-circle .sk-circle3 {
+.loader .loader-circle3 {
   -webkit-transform: rotate(60deg);
       -ms-transform: rotate(60deg);
           transform: rotate(60deg);
 }
-.sk-fading-circle .sk-circle4 {
+.loader .loader-circle4 {
   -webkit-transform: rotate(90deg);
       -ms-transform: rotate(90deg);
           transform: rotate(90deg);
 }
-.sk-fading-circle .sk-circle5 {
+.loader .loader-circle5 {
   -webkit-transform: rotate(120deg);
       -ms-transform: rotate(120deg);
           transform: rotate(120deg);
 }
-.sk-fading-circle .sk-circle6 {
+.loader .loader-circle6 {
   -webkit-transform: rotate(150deg);
       -ms-transform: rotate(150deg);
           transform: rotate(150deg);
 }
-.sk-fading-circle .sk-circle7 {
+.loader .loader-circle7 {
   -webkit-transform: rotate(180deg);
       -ms-transform: rotate(180deg);
           transform: rotate(180deg);
 }
-.sk-fading-circle .sk-circle8 {
+.loader .loader-circle8 {
   -webkit-transform: rotate(210deg);
       -ms-transform: rotate(210deg);
           transform: rotate(210deg);
 }
-.sk-fading-circle .sk-circle9 {
+.loader .loader-circle9 {
   -webkit-transform: rotate(240deg);
       -ms-transform: rotate(240deg);
           transform: rotate(240deg);
 }
-.sk-fading-circle .sk-circle10 {
+.loader .loader-circle10 {
   -webkit-transform: rotate(270deg);
       -ms-transform: rotate(270deg);
           transform: rotate(270deg);
 }
-.sk-fading-circle .sk-circle11 {
+.loader .loader-circle11 {
   -webkit-transform: rotate(300deg);
       -ms-transform: rotate(300deg);
           transform: rotate(300deg);
 }
-.sk-fading-circle .sk-circle12 {
+.loader .loader-circle12 {
   -webkit-transform: rotate(330deg);
       -ms-transform: rotate(330deg);
           transform: rotate(330deg);
 }
-.sk-fading-circle .sk-circle2:before {
+.loader .loader-circle2:before {
   -webkit-animation-delay: -1.1s;
           animation-delay: -1.1s;
 }
-.sk-fading-circle .sk-circle3:before {
+.loader .loader-circle3:before {
   -webkit-animation-delay: -1s;
           animation-delay: -1s;
 }
-.sk-fading-circle .sk-circle4:before {
+.loader .loader-circle4:before {
   -webkit-animation-delay: -0.9s;
           animation-delay: -0.9s;
 }
-.sk-fading-circle .sk-circle5:before {
+.loader .loader-circle5:before {
   -webkit-animation-delay: -0.8s;
           animation-delay: -0.8s;
 }
-.sk-fading-circle .sk-circle6:before {
+.loader .loader-circle6:before {
   -webkit-animation-delay: -0.7s;
           animation-delay: -0.7s;
 }
-.sk-fading-circle .sk-circle7:before {
+.loader .loader-circle7:before {
   -webkit-animation-delay: -0.6s;
           animation-delay: -0.6s;
 }
-.sk-fading-circle .sk-circle8:before {
+.loader .loader-circle8:before {
   -webkit-animation-delay: -0.5s;
           animation-delay: -0.5s;
 }
-.sk-fading-circle .sk-circle9:before {
+.loader .loader-circle9:before {
   -webkit-animation-delay: -0.4s;
           animation-delay: -0.4s;
 }
-.sk-fading-circle .sk-circle10:before {
+.loader .loader-circle10:before {
   -webkit-animation-delay: -0.3s;
           animation-delay: -0.3s;
 }
-.sk-fading-circle .sk-circle11:before {
+.loader .loader-circle11:before {
   -webkit-animation-delay: -0.2s;
           animation-delay: -0.2s;
 }
-.sk-fading-circle .sk-circle12:before {
+.loader .loader-circle12:before {
   -webkit-animation-delay: -0.1s;
           animation-delay: -0.1s;
 }
 
-@-webkit-keyframes sk-circleFadeDelay {
+@-webkit-keyframes loader-circleFadeDelay {
   0%, 39%, 100% { opacity: 0; }
   40% { opacity: 1; }
 }
 
-@keyframes sk-circleFadeDelay {
+@keyframes loader-circleFadeDelay {
   0%, 39%, 100% { opacity: 0; }
   40% { opacity: 1; }
 }
 
-.btn-load .sk-circle:before {
+.btn-load .loader-circle:before {
   background-color: #FFF;
 }
 
-.btn-load-inverse .sk-circle:before {
+.btn-load-inverse .loader-circle:before {
   background-color: #000;
 }
 
-.btn-load .sk-fading-circle {
+.btn-load .loader {
   margin: 0 auto;
   width: 24px;
   height: 24px;
   position: relative;
 }
 
-.btn-option.btn-load .sk-fading-circle {
+.btn-option.btn-load .loader {
 	width: 18px;
   height: 18px;
 }
@@ -5105,6 +5161,7 @@ icones
 
 .md-launch::before {
 	content: "launch";
+	display: inline-block;
 }
 
 .md-drag::before {

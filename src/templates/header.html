@@ -27,7 +27,14 @@
 <% if(tabs) { %>
 <ul class="nav nav-pills">
 	<% _(tabs).each(function(tab){ %>
-	<li role="presentation" <%= tab.is_active ? 'class="active"' : '' %>><a href="<%- tab.url %>"><%- tab.title %></a></li>
+	<li role="presentation" <%= tab.is_active ? 'class="active"' : '' %>>
+		<a href="<%- tab.url %>">
+		<%- tab.title %>
+		<% if(tab.icon) { %>
+		<span class="md-icon <%- tab.icon %>"></span>
+		<% } %>
+	</a>
+</li>
 	<% }) %>
 </ul>
 <% } %>

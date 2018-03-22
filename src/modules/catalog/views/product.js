@@ -467,8 +467,8 @@ var VariantRowView = Marionette.View.extend({
 
 var ImageRowView = Marionette.View.extend({
 	template: _.template(
-		'<img alt="<%- name %>" src="<%- convertMediaPath(\'/media/vignette/\' + media_id + \'.jpg\') %>">' +
-		'<a href="#" data-role="delete-image" class="md-icon md-delete"></a>'),
+		'<div class="si-overlay"><span data-role="delete-image" class="md-icon md-delete btn-si"></span></div>' +
+		'<img alt="<%- name %>" src="<%- convertMediaPath(\'/media/vignette/\' + media_id + \'.jpg\') %>">'),
 	className: 'btn btn-image', // + active
 	tagName: 'label',
 

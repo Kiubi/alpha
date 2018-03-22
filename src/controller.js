@@ -168,6 +168,26 @@ module.exports = Marionette.Object.extend({
 		var container = {};
 		contentView.triggerMethod('simpleForm:save', container);
 		if (container.promise) return container.promise;
+	},
+
+	/**
+	 * Parse a query string. Only expected params are returned.
+	 * 
+	 * @param {String} queryString
+	 * @param {Object} expected
+	 * @returns {Object}
+	 */
+	parseQueryString: function(queryString, expected) {
+		if (!_.isString(queryString)) return expected;
+		queryString = queryString.substring(queryString.indexOf('?') + 1);
+		var queryParts = decodeURI(queryString).split(/&/g);
+		_.each(queryParts, function(val) {
+			var parts = val.split('=');
+			if (parts.length >= 1 && expected.hasOwnProperty(parts[0])) {
+				expected[parts[0]] = (parts.length == 2) ? parts[1] : null;
+			}
+		});
+		return expected;
 	}
 
 });

@@ -91,24 +91,24 @@ function HeaderTabscategory(category_id, nb) {
 		title: 'Détail de la catégorie',
 		url: '/catalog/categories/' + category_id
 	}, {
-		title: 'Produits disponibles (' + nb + ')',
+		title: nb + ' ' + (nb > 1 ? 'produits en vente' : 'produit en vente'),
 		url: '/catalog/categories/' + category_id + '/products'
 	}];
 }
 
-function HeaderTabsProduct(product_id, nb) {
+function HeaderTabsProduct(product_id, nb, rate) {
+
 	return [{
-			title: 'Détail du produit',
-			url: '/catalog/products/' + product_id
-		}, {
-			title: 'Évaluations (' + nb + ')',
-			url: '/catalog/products/' + product_id + '/comments'
-		},
-		{
-			title: 'Produits associés',
-			url: '/catalog/products/' + product_id + '/linked'
-		}
-	];
+		title: 'Détail du produit',
+		url: '/catalog/products/' + product_id
+	}, {
+		title: 'Produits associés',
+		url: '/catalog/products/' + product_id + '/linked'
+	}, {
+		title: nb + ' ' + (nb > 1 ? 'évaluations' : 'évaluation'),
+		url: '/catalog/products/' + product_id + '/comments',
+		icon: (rate ? 'rating md-rating-' + Math.round(rate) : '')
+	}];
 }
 
 function HeaderTagsTabs() {
@@ -169,27 +169,38 @@ var CatalogController = Controller.extend({
 	 * Products
 	 */
 
-	showProducts: function() {
+	showProducts: function(category_id) {
 
-		var m = new Products();
-		m.fetch({
-			data: {
-				extra_fields: 'price_label,categories'
-			}
-		}).done(function() {
-			var view = new ProductsView({
-				collection: m
+		var promise, m;
+		category_id = parseInt(category_id);
+		if (category_id) {
+			m = new Category({
+				category_id: category_id
 			});
-			this.navigationController.showContent(view);
-			this.setHeader({
-				title: 'Tous les produits'
-			}, getHeadersAction());
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Produits introuvables'
-			});
-		}.bind(this));
+			promise = m.fetch();
+		} else {
+			promise = Backbone.$.Deferred().resolve();
+		}
+
+		promise.done(function() {
+				var c = new Products();
+				var view = new ProductsView({
+					collection: c,
+					category_id: category_id ? category_id : null
+				});
+				this.navigationController.showContent(view);
+				view.start();
+				this.setHeader({
+					title: category_id ? m.get('name') : 'Tous les produits'
+				}, getHeadersAction(), category_id ? HeaderTabscategory(category_id, m.get('product_count')) : null);
+
+			}.bind(this))
+			.fail(function() {
+				this.notFound();
+				this.setHeader({
+					title: 'Catégorie introuvable'
+				});
+			}.bind(this));
 	},
 
 	showProduct: function(id) {
@@ -235,7 +246,7 @@ var CatalogController = Controller.extend({
 				preview: m,
 				addSave: true,
 				duplicateProduct: id
-			}), HeaderTabsProduct(id, m.get('comments_count')));
+			}), HeaderTabsProduct(id, m.get('comments_count'), m.get('rate')));
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
@@ -309,7 +320,7 @@ var CatalogController = Controller.extend({
 				title: m.get('name')
 			}, getHeadersAction({
 				duplicateProduct: id
-			}), HeaderTabsProduct(id, m.get('comments_count')));
+			}), HeaderTabsProduct(id, m.get('comments_count'), m.get('rate')));
 
 		}.bind(this)).fail(function() {
 			this.notFound();
@@ -457,7 +468,7 @@ var CatalogController = Controller.extend({
 			promise = product.fetch().done(function() {
 
 				title = product.get('name');
-				tabs = HeaderTabsProduct(product_id, product.get('comments_count'));
+				tabs = HeaderTabsProduct(product_id, product.get('comments_count'), product.get('rate'));
 			});
 			actions.duplicateProduct = product_id;
 		} else {

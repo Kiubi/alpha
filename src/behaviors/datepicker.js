@@ -12,6 +12,13 @@ module.exports = Marionette.Behavior.extend({
 		inputsDateTime: "input[data-role='datetimepicker']"
 	},
 
+	events: {
+		'dp.change @ui.inputsDate': 'onChange',
+		'dp.change @ui.inputsDateTime': 'onChange'
+	},
+
+	loaded: false,
+
 	onRender: function() {
 
 		var options = {
@@ -67,6 +74,12 @@ module.exports = Marionette.Behavior.extend({
 		this.getUI('inputsDateTime').datetimepicker(_.extend({
 			format: 'DD/MM/YYYY HH:mm:ss'
 		}, options));
+		this.loaded = true;
+	},
+
+	onChange: function(event) {
+		if (!this.loaded) return;
+		this.view.triggerMethod('field:change');
 	},
 
 	/**

@@ -2,6 +2,14 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+function contentHeight(selector) {
+	return Backbone.$(selector + ' > div')
+		.toArray()
+		.reduce(function(accumulator, el) {
+			return Backbone.$(el).outerHeight(true) + accumulator;
+		}, 0);
+}
+
 module.exports = Marionette.Behavior.extend({
 
 	options: {
@@ -14,13 +22,18 @@ module.exports = Marionette.Behavior.extend({
 	$scroll: null,
 
 	initialize: function() {
-		if (this.view.getOption('scrollThreshold')) this.options.scrollThreshold = this.view.getOption('scrollThreshold');
+		if (this.view.getOption('scrollThreshold') != undefined) {
+			this.options.scrollThreshold = this.view.getOption('scrollThreshold');
+		}
+		if (this.view.getOption('scrollContentEl')) {
+			this.options.contentEl = this.view.getOption('scrollContentEl');
+		}
 
 		this.callback = _.debounce(this.scrollHandler, 150).bind(this);
-		this.$scroll = Backbone.$(this.options.contentEl); // global scope
 	},
 
 	onAttach: function() {
+		this.$scroll = Backbone.$(this.options.contentEl); // global scope
 		this.$scroll.bind("scroll", this, this.callback);
 	},
 
@@ -66,18 +79,18 @@ module.exports = Marionette.Behavior.extend({
 	 */
 	scrollHandler: function(event) {
 		var scrollHeight = this.$scroll.scrollTop() + this.$scroll.height();
-		var threshold = (Backbone.$(this.options.contentEl + ' div').height() - this.options.scrollThreshold);
+		var threshold = contentHeight(this.options.contentEl) - this.options.scrollThreshold;
 
 		if (scrollHeight < threshold) return;
 
 		this.collectionFetchNextPage();
 	},
 
-	/**
-	 * Fetch next page if content child is smaller than content
-	 */
 	onDomRefresh: function() {
-		if (Backbone.$(this.options.contentEl + ' div').height() - this.options.renderThreshold < this.$scroll.height()) {
+		if (!this.$scroll) return;
+
+		// Fetch next page if content child is smaller than content
+		if (contentHeight(this.options.contentEl) - this.options.renderThreshold < this.$scroll.height()) {
 			this.collectionFetchNextPage();
 		}
 	}

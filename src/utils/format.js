@@ -26,6 +26,17 @@ function formatDateTime(string_date) {
 }
 
 /**
+ * Format a datetime from kiubi API
+ *
+ * @param {String} string_date
+ * @returns {String}
+ */
+function formatLongDateTime(string_date) {
+	if (string_date == '') return string_date;
+	return moment(string_date, 'YYYY-MM-DD HH:mm:ss').format('DD MMM YYYY [à] HH[h]mm');
+}
+
+/**
  * Byte size for humans
  * 
  * @param {int} bytes
@@ -78,6 +89,7 @@ function unformatFloat(amount) {
 
 module.exports.formatDate = formatDate;
 module.exports.formatDateTime = formatDateTime;
+module.exports.formatLongDateTime = formatLongDateTime;
 module.exports.formatBytes = formatBytes;
 module.exports.formatFloat = formatFloat;
 module.exports.unformatFloat = unformatFloat;

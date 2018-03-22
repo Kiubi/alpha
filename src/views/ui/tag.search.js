@@ -3,7 +3,9 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
 var TagView = Marionette.View.extend({
-	template: _.template('<%- label %><span data-role="delete" class="md-icon md-close"></span>'),
+	template: _.template(
+		'<span class="label-content" title="<%- label %>"><%- label %></span><span data-role="delete" class="md-icon md-close"></span>'
+	),
 
 	className: 'label label-tag label-list',
 	tagName: 'span',
@@ -69,6 +71,7 @@ module.exports = Marionette.View.extend({
 	suggestions: null,
 
 	searchPlaceholder: 'Rechercher',
+	inputName: '',
 
 	evtSuffix: '',
 	eventName: function(base) {
@@ -77,7 +80,7 @@ module.exports = Marionette.View.extend({
 
 	initialize: function(options) {
 
-		this.mergeOptions(options, ['evtSuffix']);
+		this.mergeOptions(options, ['evtSuffix', 'searchPlaceholder', 'inputName']);
 
 		this.collection = new Backbone.Collection();
 		this.collection.model = Backbone.Model.extend({
@@ -109,6 +112,7 @@ module.exports = Marionette.View.extend({
 
 		return {
 			'searchPlaceholder': this.searchPlaceholder,
+			'inputName': this.inputName
 		};
 
 	},

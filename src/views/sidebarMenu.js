@@ -20,6 +20,12 @@ module.exports = Marionette.View.extend({
 		'hide.bs.dropdown': function(event) {
 			this.emptyList();
 			this.getUI('input-search').val('');
+		},
+		'shown.bs.dropdown': function(event) {
+			this.getUI('site-search').one(Backbone.$.support.transition.end,
+				function() {
+					this.getUI('input-search').focus();
+				}.bind(this));
 		}
 	},
 
@@ -58,10 +64,11 @@ module.exports = Marionette.View.extend({
 			var list = '';
 			if (result.length > 0) {
 				list = _.reduce(result, function(memo, site) {
-					return memo + '<li><a href="#" data-site="' + site.code_site + '">' + site.domain + '</a></li>';
+					return memo + '<li><a href="#" title="' + site.domain + '" data-site="' + site.code_site + '">' + site.domain +
+						'</a></li>';
 				}, '<li role="separator" class="divider"></li>');
 			} else {
-				list = '<li role="separator" class="divider"></li><li><a href="#">-- Aucun résultat --</a></li>';
+				list = '<li role="separator" class="divider"></li><li class="dropdown-content">-- Aucun résultat --</li>';
 			}
 			this.emptyList().append(list);
 			this.getUI('input-search').focus();

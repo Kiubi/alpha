@@ -3,17 +3,48 @@ var Marionette = require('backbone.marionette');
 
 var Controller = require('kiubi/controller.js');
 
-var IndexView = require('./views/index');
-var ResponsesView = require('./views/responses');
+var Forms = require('./models/forms');
+var Fields = require('./models/fields');
+var Responses = require('./models/responses');
+
+var FormsView = require('./views/forms');
+var InboxView = require('./views/inbox');
 var FormView = require('./views/form');
-var FormSettingsView = require('./views/form.settings');
+var SettingsView = require('./views/settings');
 
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
-	template: require('kiubi/templates/sidebarMenu.empty.html'),
+	template: require('./templates/sidebarMenu.html'),
 	service: 'forms',
-	behaviors: [ActiveLinksBehaviors]
+	behaviors: [ActiveLinksBehaviors],
+
+	initialize: function(options) {
+		this.forms = new Forms();
+		this.listenTo(this.forms, 'sync', this.render);
+		this.forms.fetch();
+	},
+
+	templateContext: function() {
+		var c = this.forms.reduce(function(memo, model) {
+			return memo + model.get('replies_unread_count')
+		}, 0);
+
+		return {
+			unread_count: c
+		};
+	}
 });
+
+/* Tabs  */
+function HeaderTabsForm(form_id) {
+	return [{
+		title: 'Détail du formulaire',
+		url: '/forms/' + form_id
+	}, {
+		title: 'Paramètres',
+		url: '/forms/' + form_id + '/settings'
+	}];
+}
 
 var FormsController = Controller.extend({
 
@@ -25,44 +56,121 @@ var FormsController = Controller.extend({
 		href: '/forms'
 	}],
 
-	showIndex: function() {
+	showInbox: function(queryString) {
 
-		this.navigationController.underConstruction();
-		return;
-
-		console.log('FormsController, showIndex');
-
-		this.navigationController.showContent(new IndexView());
-		this.setHeader({
-			title: 'Tous les formulaires'
+		var qs = this.parseQueryString(queryString, {
+			'id': null,
+			'u': null // [null,1] => all, only unread
 		});
-	},
 
-	showResponses: function() {
-		console.log('FormsController, showResponses');
-
-		this.navigationController.showContent(new ResponsesView());
+		var view = new InboxView({
+			collection: new Responses(),
+			forms: new Forms(),
+			filters: qs
+		});
+		this.navigationController.showContent(view);
+		view.start();
 		this.setHeader({
 			title: 'Boite de réception'
 		});
 	},
 
-	showForm: function(id) {
-		console.log('FormsController, showForm', id);
+	showForms: function() {
 
-		this.navigationController.showContent(new FormView());
-		this.setHeader({
-			title: 'Détail du formulaire ' + id
+		var view = new FormsView({
+			collection: new Forms()
 		});
+		this.navigationController.showContent(view);
+		view.start();
+
+		this.setHeader({
+			title: 'Tous les formulaires'
+		}, [{
+			title: 'Ajouter un formulaire',
+			callback: 'actionNewForm'
+		}]);
 	},
 
-	showFormSettings: function(id) {
-		console.log('FormsController, showFormSettings', id);
+	actionNewForm: function() {
 
-		this.navigationController.showContent(new FormSettingsView());
-		this.setHeader({
-			title: 'Paramètres du formulaire ' + id
+		var c = new Forms();
+		var m = new c.model({
+			name: 'Intitulé par défaut',
+			is_visible: false
 		});
+
+		return m.save().done(function() {
+			this.navigationController.showOverlay(300);
+			this.navigationController.navigate('/forms/' + m.get('form_id'));
+		}.bind(this)).fail(function(xhr) {
+			this.navigationController.showErrorModal(xhr);
+		}.bind(this));
+	},
+
+	showForm: function(id) {
+		var c = new Forms();
+		var m = new c.model({
+			form_id: id
+		});
+
+		m.fetch().done(function() {
+			var fields = new Fields();
+			fields.form_id = id;
+			fields.fetch();
+			var view = new FormView({
+				model: m,
+				fields: fields
+			});
+			this.listenTo(m, 'change', function(model) {
+				if (model.hasChanged('name')) {
+					this.setBreadCrum({
+						title: model.get('name')
+					}, true);
+				}
+			}.bind(this));
+			this.listenTo(m, 'destroy', function() {
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/forms');
+			});
+			this.navigationController.showContent(view);
+			this.setHeader({
+				title: m.get('name')
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}], HeaderTabsForm(id));
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Formulaire introuvable'
+			});
+		}.bind(this));
+	},
+
+	showSettings: function(id) {
+		var c = new Forms();
+		var m = new c.model({
+			form_id: id
+		});
+
+		m.fetch().done(function() {
+			var view = new SettingsView({
+				model: m
+			});
+
+			this.navigationController.showContent(view);
+			this.setHeader({
+				title: m.get('name')
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}], HeaderTabsForm(id));
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Formulaire introuvable'
+			});
+		}.bind(this));
 	}
 
 });
@@ -70,11 +178,10 @@ var FormsController = Controller.extend({
 module.exports = Marionette.AppRouter.extend({
 	controller: new FormsController(),
 	appRoutes: {
-		'forms': 'showIndex',
-		'forms/responses': 'showIndex',
-		/*'forms/responses': 'showResponses',
+		'forms/inbox': 'showInbox',
+		'forms': 'showForms',
 		'forms/:id': 'showForm',
-		'forms/:id/settings': 'showFormSettings'*/
+		'forms/:id/settings': 'showSettings'
 	},
 
 	onRoute: function(name, path, args) {

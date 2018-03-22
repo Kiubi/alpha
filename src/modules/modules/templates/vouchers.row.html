@@ -1,0 +1,38 @@
+<div class="row">
+	<div class="col-xs-4 col-md-6">
+		<div class="media">
+			<div class="media-left">
+				<div class="checkbox-inline">
+					<input id="voucher_<%- voucher_id %>" name="selection" value="<%- voucher_id %>" type="checkbox">
+					<label for="voucher_<%- voucher_id %>"></label>
+				</div>
+			</div>
+			<div class="media-body">
+				<h4><%- code %></h4>
+				<% if(type == 'shipping') { %>
+				Frais de port à <%- value_label %><% if(threshold > 0) { %> • À partir de <%- threshold_label %> d'achat <% } %>
+				<% } else if(type == 'amount') { %>
+				<%- value_label %> de remise • À partir de <%- threshold_label %> d'achat
+				<% } else if(type == 'percent') { %>
+				<%- value_label %> de remise<% if(threshold > 0) { %> • À partir de <%- threshold_label %> d'achat <% } %>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-8 col-md-6">
+		<div class="row">
+			<div class="col-xs-3">
+				<% if(is_enabled) { %>
+				<span class="label label-enable">Activé</span>
+				<% } else { %>
+				<span class="label label-disable">Désactivé</span>
+				<% }%>
+			</div>
+			<div class="col-xs-3 no-white-space">
+				<% if(is_stock_unlimited) { %>Illimité<% } else { %><%= plural(used, '%d utilisé', '%d utilisés') %> <% } %>
+			</div>
+			<div class="col-xs-3 no-white-space">Du <%- start_date %><br/>Au <%- end_date %> </div>
+			<div class="col-xs-3"><a class="btn btn-option pull-right" href="/modules/vouchers/<%- voucher_id %>" role="button">Détail</a></div>
+		</div>
+	</div>
+</div>

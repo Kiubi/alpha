@@ -225,7 +225,7 @@ module.exports = Marionette.Behavior.extend({
 				adjusted_height -= 102;
 				break;
 		}
-		
+
 		var that = this;
 
 		return tinyMCE.init({
@@ -249,9 +249,16 @@ module.exports = Marionette.Behavior.extend({
 			},
 			extended_valid_elements: 'style[type],script[language|type|src],span[*]',
 			valid_children: "+body[style], +div[style], +span[*]",
-			init_instance_callback: function (editor) {
-				editor.on('Change', function (e) {
+			init_instance_callback: function(editor) {
+				editor.on('Change', function(e) {
 					that.view.triggerMethod('field:change');
+				});
+				editor.on('KeyDown', function(e) {
+					if (e.key == 's' && e.metaKey) {
+						e.preventDefault();
+						that.view.triggerMethod('save');
+						return false;
+					}
 				});
 			}
 		});

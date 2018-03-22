@@ -70,11 +70,12 @@ function getHeadersAction(options) {
 
 /* Tabs  */
 function HeaderTabsPost(post_id, nb) {
+
 	return [{
 		title: 'Détail du billet',
 		url: '/blog/posts/' + post_id
 	}, {
-		title: 'Commentaires (' + nb + ')',
+		title: nb + ' ' + (nb > 1 ? 'commentaires' : 'commentaire'),
 		url: '/blog/posts/' + post_id + '/comments'
 	}];
 }
@@ -84,7 +85,7 @@ function HeaderTabscategory(category_id, nb) {
 		title: 'Détail de la catégorie',
 		url: '/blog/categories/' + category_id
 	}, {
-		title: 'Billets postés (' + nb + ')',
+		title: nb + ' ' + (nb > 1 ? 'billets postés' : 'billet posté'),
 		url: '/blog/categories/' + category_id + '/posts'
 	}];
 }
@@ -165,8 +166,8 @@ var BlogController = Controller.extend({
 		href: '/blog'
 	}],
 
-	/* 
-	 * Posts 
+	/*
+	 * Posts
 	 */
 
 	showPosts: function(category_id) {
@@ -289,8 +290,8 @@ var BlogController = Controller.extend({
 		});
 	},
 
-	/* 
-	 * Home 
+	/*
+	 * Home
 	 */
 
 	showHome: function() {
@@ -320,8 +321,8 @@ var BlogController = Controller.extend({
 		}.bind(this));
 	},
 
-	/* 
-	 * Settings 
+	/*
+	 * Settings
 	 */
 
 	showSettings: function() {
@@ -344,8 +345,8 @@ var BlogController = Controller.extend({
 		}.bind(this));
 	},
 
-	/* 
-	 * Links 
+	/*
+	 * Links
 	 */
 
 	showLinks: function() {
@@ -361,8 +362,8 @@ var BlogController = Controller.extend({
 
 	},
 
-	/* 
-	 * Comments 
+	/*
+	 * Comments
 	 */
 
 	showComments: function(post_id) {
@@ -414,8 +415,8 @@ var BlogController = Controller.extend({
 		}.bind(this));
 	},
 
-	/* 
-	 * Categories 
+	/*
+	 * Categories
 	 */
 
 	showCategory: function(id) {
@@ -475,8 +476,8 @@ var BlogController = Controller.extend({
 
 	},
 
-	/* 
-	 * Others 
+	/*
+	 * Others
 	 */
 
 	actionPreview: function(model) {

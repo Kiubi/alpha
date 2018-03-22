@@ -1,4 +1,4 @@
-<% _(filters).each(function(filter, index){ %>
+<% _(filters).each(function(filter, index){ %><div class="btn-group">
 	<select data-id="<%- index %>" class="<%- filter.selectExtraClassname ? filter.selectExtraClassname : '' %>" data-style="selectify">
 		<option value=""><%- filter.title %></option>
 		<% if(filter.collection) { %>
@@ -7,4 +7,4 @@
 		<%}) %>
 		<% } %>
 	</select>
-<% }) %>
+</div><% }) %>

@@ -31,8 +31,8 @@ module.exports = Backbone.Model.extend({
 	},
 
 	defaults: {
-		customer_id: null,
-		group_id: null
+		//customer_id: null,
+		//group_id: null
 	}
 
 });

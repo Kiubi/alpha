@@ -1,4 +1,4 @@
-<article class="post-article">
+<article class="post-article <%- extraClassname %>">
 	<header class="post-header">
 		<h1><%- title %> <span data-role="counter"></span></h1>
 		<div class="form-inline">
@@ -9,17 +9,17 @@
 				<label for="selection_all"><span class="btn btn-form-control" data-role="select-all">Tout sélectionner</span></label>
 			</div>
 			<div class="btn-group hidden" role="group">
-				<button type="button" style="width: 140px" class="form-control form-control-select dropdown-toggle" data-role="bulk-action" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<span class="fake-selected">Plus d'actions</span>
-					<span class="caret"></span>
+				<div class="dropdown">
+				<button type="button" class="form-control form-control-select dropdown-toggle btn-bulk-action" data-role="bulk-action" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="fake-selected">Plus d'actions</span><span class="caret"></span>
 			</button>
-
 				<ul class="dropdown-menu">
 					<% _(selection).each(function(item, i){ %>
 						<li><a href="#" data-role="action" data-id="<%- i %>"><%- item.title %></a></li>
 					<% }) %>
 				</ul>
-			</div><% } %><span data-role="filters"></span><% if(filterModal) { %><div class="btn-group">
+			</div>
+		</div><% } %><span data-role="filters"></span><% if(filterModal) { %><div class="btn-group">
 				<button type="button" class="btn btn-icon md-icon md-filter" data-toggle="modal" data-target="<%- filterModal %>"></button>
 			</div>
 			<% } %>
@@ -38,20 +38,22 @@
 		</div>
 	</header>
 	<div data-role="list"></div>
+	<div data-role="detail"></div>
+
 	<div data-role="loading" style="display:none">
-		<div class="sk-fading-circle">
-		  <div class="sk-circle1 sk-circle"></div>
-		  <div class="sk-circle2 sk-circle"></div>
-		  <div class="sk-circle3 sk-circle"></div>
-		  <div class="sk-circle4 sk-circle"></div>
-		  <div class="sk-circle5 sk-circle"></div>
-		  <div class="sk-circle6 sk-circle"></div>
-		  <div class="sk-circle7 sk-circle"></div>
-		  <div class="sk-circle8 sk-circle"></div>
-		  <div class="sk-circle9 sk-circle"></div>
-		  <div class="sk-circle10 sk-circle"></div>
-		  <div class="sk-circle11 sk-circle"></div>
-		  <div class="sk-circle12 sk-circle"></div>
+		<div class="loader">
+		  <div class="loader-circle1 loader-circle"></div>
+		  <div class="loader-circle2 loader-circle"></div>
+		  <div class="loader-circle3 loader-circle"></div>
+		  <div class="loader-circle4 loader-circle"></div>
+		  <div class="loader-circle5 loader-circle"></div>
+		  <div class="loader-circle6 loader-circle"></div>
+		  <div class="loader-circle7 loader-circle"></div>
+		  <div class="loader-circle8 loader-circle"></div>
+		  <div class="loader-circle9 loader-circle"></div>
+		  <div class="loader-circle10 loader-circle"></div>
+		  <div class="loader-circle11 loader-circle"></div>
+		  <div class="loader-circle12 loader-circle"></div>
 		</div>
 	</div>
 	<div data-role="new"></div>

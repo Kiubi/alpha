@@ -1,0 +1,20 @@
+<% if(response_id) { %>
+    <div class="answer-header">
+      <p>Le <%- creation_date %></p>
+      <H1>#<%- response_id %> - <%- subject %></H1> Réponse à <a href="/forms/<%- form_id %>"><%- form_name %></a>
+    </div>
+
+	<% _.each(fields, function(field){ %>
+	<div class="form-group">
+		<label class="control-label"><%- field.name %></label>
+		<p><%= nl2br(field.value) %></p>
+	</div>
+	<% }) %>
+
+    <div class="form-group">
+      <label class="control-label">IP | Host</label>
+      <p><%- ip %> | <%- reverse_host %></p>
+    </div>
+<% } else { %>
+	
+<% } %>

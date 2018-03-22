@@ -1,8 +1,13 @@
 <div class="sidebar-header">
 
-	<h1 title="<%- name %>"><%- name %></h1>
+	<h1 title="Voir le site : <%- name %>">
+		<a href="<%- domain %>" target="_blank">
+		<span><%- name %></span>
+		<span class="md-icon md-launch"></span>
+	</a>
+	</h1>
 
-	<a href="<%- domain %>" class="md-icon md-launch" target="_blank"></a>
+
 	<div class="dropdown toggle-site">
 		<a href="javascript:;" class="dropdown-toggle" id="toggle-site" role="button"
 		data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="<%- domain %>">

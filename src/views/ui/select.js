@@ -8,7 +8,7 @@ module.exports = Marionette.View.extend({
 	template: _.template(
 		'<select data-style="selectify" name="<%- name %>" data-direction="<%- direction %>"><% if(emptyLabel) { %><option value=""><%- emptyLabel %></option><% } %>' +
 		'<% _(options).each(function(item){ %><% if (item.is_group) { %><optgroup data-indent="<%= item.indent %>" label="<%- item.label %>"></optgroup><% } else { %>' +
-		'<option data-indent="<%= item.indent %>" value="<%- item.value %>" <%= (item.value == selected) ? \'selected="selected"\' : "" %>><%- item.label %></option><% } %>' +
+		'<option data-indent="<%= item.indent %>" value="<%- item.value %>" <%= (item.selected || item.value == selected) ? \'selected="selected"\' : "" %>><%- item.label %></option><% } %>' +
 		'<% }) %></select>'
 	),
 	tagName: 'div',
@@ -54,6 +54,10 @@ module.exports = Marionette.View.extend({
 			this.load(this.getOption('dataSource'));
 		}
 
+		if (this.getOption('collectionPromise')) {
+			this.loadCollection(this.getOption('collectionPromise'));
+		}
+
 		if (this.collection && this.collection.selectPayload) {
 			this.listenTo(this.collection, 'sync', this.render);
 		}
@@ -68,6 +72,25 @@ module.exports = Marionette.View.extend({
 		this.dataSource = promise;
 		this.dataSource.done(function(options) {
 			this.datas = options;
+			this.render();
+		}.bind(this));
+	},
+
+	/**
+	 * Load options from a promised collection
+	 *
+	 * @param {Promise} promise
+	 */
+	loadCollection: function(promise) {
+		this.dataSource = promise;
+		this.dataSource.done(function(collection) {
+			this.datas = collection.toJSON();
+			var selected = collection.findWhere({
+				'selected': true
+			});
+			if (selected) {
+				this.selected = selected.get('value');
+			}
 			this.render();
 		}.bind(this));
 	},
@@ -104,7 +127,7 @@ module.exports = Marionette.View.extend({
 			direction: this.direction,
 			selected: this.selected,
 			emptyLabel: this.getOption('emptyLabel'),
-			options: this.getOptionsList(),
+			options: this.getOptionsList()
 		};
 	},
 

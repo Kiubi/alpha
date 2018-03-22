@@ -20,7 +20,7 @@
 				<% if(!is_visible) { %>
 				<span class="text-danger">Masqué</span>
 				<% } else { %>
-				<%- short_desc %>
+					<%= short_desc ? short_desc : 'La catégorie n\'a pas de description' %>
 				<% } %>
 			</div>
 		</div>

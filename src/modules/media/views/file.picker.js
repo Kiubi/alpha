@@ -36,13 +36,23 @@ module.exports = Marionette.View.extend({
 		'change': 'render'
 	},
 
+	loaded: false,
+
 	initialize: function(options) {
 		this.mergeOptions(options, ['fieldname', 'value', 'type', 'fieldLabel', 'comment']);
 		this.model = new File();
+
 		if (this.value > 0) {
 			this.model.set('media_id', this.value);
-			this.model.fetch();
+			this.model.fetch().done(function() {
+				this.loaded = true;
+			}.bind(this));
+		} else {
+			this.loaded = true;
 		}
+		this.listenTo(this.model, 'change', function() {
+			if (this.loaded) this.triggerMethod('field:change');
+		}.bind(this));
 	},
 
 	templateContext: function() {
@@ -65,8 +75,7 @@ module.exports = Marionette.View.extend({
 
 		this.listenTo(contentView, 'action:modal', this.switchToPublish);
 
-		var navigationController = Backbone.Radio.channel('app').request(
-			'ctx:navigationController');
+		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 		navigationController.showInModal(contentView, {
 			title: 'Médiathèque',
 			modalClass: 'mediatheque modal-right',
@@ -91,8 +100,7 @@ module.exports = Marionette.View.extend({
 
 		this.listenTo(contentView, 'uploaded:files', this.onUploadedFiles);
 
-		var navigationController = Backbone.Radio.channel('app').request(
-			'ctx:navigationController');
+		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 
 		navigationController.showInModal(contentView, {
 			title: 'Médiathèque',
@@ -117,8 +125,7 @@ module.exports = Marionette.View.extend({
 			this.model.set(uploadedList.toJSON());
 		}
 
-		var navigationController = Backbone.Radio.channel('app').request(
-			'ctx:navigationController');
+		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 		navigationController.hideModal();
 	}
 

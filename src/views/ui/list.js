@@ -11,8 +11,8 @@ var LoaderTpl = require('kiubi/templates/ui/loader.html');
 var FiltersView = Marionette.View.extend({
 	template: require('kiubi/templates/ui/list.filters.html'),
 
-	tagName: 'div',
-	className: 'btn-group',
+	tagName: 'span',
+	className: '',
 
 	behaviors: [SelectifyBehavior],
 
@@ -28,6 +28,7 @@ var FiltersView = Marionette.View.extend({
 		var that = this;
 
 		_.each(this.filters, function(filter, index) {
+			if (!filter.collectionPromise) return;
 			filter.collectionPromise.done(function(collection) {
 				that.filters[index].collection = collection;
 				that.render();
@@ -56,7 +57,7 @@ var FiltersView = Marionette.View.extend({
 			return;
 		}
 
-		var filter = this.filters[$select.data('id')];
+		// var filter = this.filters[$select.data('id')];
 		this.triggerMethod('filter:change', {
 			index: $select.data('id'),
 			value: $select.val()
@@ -72,7 +73,9 @@ var NoChildrenView = Marionette.View.extend({
 });
 
 var ListView = Marionette.CollectionView.extend({
-	className: 'post-content post-list',
+	className: function() {
+		return 'post-content post-list ' + this.getOption('extraListClassname');
+	},
 	emptyView: NoChildrenView,
 
 	events: {
@@ -105,6 +108,7 @@ var ListView = Marionette.CollectionView.extend({
 		}
 
 		rowView.triggerMethod('sort:change', data);
+		this.triggerMethod('sort:change', data);
 
 		return true; // NEED to return true
 	}
@@ -117,6 +121,11 @@ module.exports = Marionette.View.extend({
 	regions: {
 		list: {
 			el: "div[data-role='list']",
+			replaceElement: true
+		},
+
+		detail: {
+			el: "div[data-role='detail']",
 			replaceElement: true
 		},
 
@@ -159,6 +168,7 @@ module.exports = Marionette.View.extend({
 
 	// Setup for InfiniteScrollBehavior
 	scrollThreshold: null,
+	scrollContentEl: null,
 
 	ui: {
 		'order': '[data-role="order"] li',
@@ -228,16 +238,23 @@ module.exports = Marionette.View.extend({
 			title: this.getOption('title'),
 			order: this.getOption('order'),
 			filterModal: this.getOption('filterModal'),
-			selection: this.getOption('selection')
+			selection: this.getOption('selection'),
+			extraClassname: this.getOption('extraClassname')
 		};
 	},
 
 	onRender: function() {
+
+		var childViewOptions = _.extend({
+			proxy: this
+		}, this.getOption('childViewOptions'));
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			childView: this.rowView,
-			childViewOptions: this.getOption('childViewOptions')
+			childViewOptions: childViewOptions,
+			extraListClassname: this.getOption('extraListClassname')
 		}));
+
 		if (this.getOption('filters').length > 0) {
 			this.showChildView('filters', new FiltersView({
 				filters: this.getOption('filters')
@@ -246,10 +263,14 @@ module.exports = Marionette.View.extend({
 		if (this.newRowView != null) {
 
 			var options = _.extend({
+				proxy: this,
 				collection: this.collection
 			}, this.getOption('childViewOptions'));
 
 			this.showChildView('new', new this.newRowView(options));
+		}
+		if (this.getOption('detailView')) {
+			this.showChildView('detail', this.getOption('detailView'));
 		}
 	},
 
@@ -269,11 +290,11 @@ module.exports = Marionette.View.extend({
 
 		// Affichage du bouton d'actions groupées et compteur de sélection
 		if (checked > 0) {
-			this.getUI('action-main').parent().removeClass('hidden');
+			this.getUI('action-main').parent().parent().removeClass('hidden');
 			this.getUI('select-all').addClass('hidden');
 			this.setCounterText(' : ' + checked + (checked > 1 ? ' sélectionnés' : ' sélectionné'));
 		} else {
-			this.getUI('action-main').parent().addClass('hidden');
+			this.getUI('action-main').parent().parent().addClass('hidden');
 			this.getUI('select-all').removeClass('hidden');
 			this.setCounterText('');
 		}
@@ -393,6 +414,10 @@ module.exports = Marionette.View.extend({
 
 		// Pass to parent view !
 		this.triggerMethod('sort:change', data);
+	},
+
+	getChildren: function() {
+		return this.getChildView('list').children;
 	}
 
 });

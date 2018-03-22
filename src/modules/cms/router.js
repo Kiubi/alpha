@@ -542,7 +542,6 @@ var CMSController = Controller.extend({
 		var that = this;
 
 		var post = new Post({
-			title: 'Intitulé par défaut',
 			is_visible: false,
 			page_id: page_id
 		});

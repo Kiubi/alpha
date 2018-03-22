@@ -25,7 +25,7 @@ module.exports = Backbone.Model.extend({
 	},
 
 	/**
-	 * 
+	 *
 	 * @param term
 	 * @returns {*}
 	 */
@@ -36,7 +36,8 @@ module.exports = Backbone.Model.extend({
 		return Backbone.ajax({
 			url: 'sites.json',
 			data: {
-				term: term
+				term: term,
+				limit: 5
 			}
 		}).then(function(response) {
 			return _.filter(response.data, function(site) {

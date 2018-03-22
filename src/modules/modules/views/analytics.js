@@ -22,7 +22,8 @@ module.exports = Marionette.View.extend({
 	onSave: function() {
 		return this.model.save(
 			Forms.extractFields(this.fields, this), {
-				patch: true
+				patch: true,
+				wait: true
 			}
 		);
 	}

@@ -41,8 +41,10 @@ module.exports = Marionette.View.extend({
 	className: 'container-fluid',
 	service: 'catalog',
 
+	category_id: null,
+
 	initialize: function(options) {
-		this.mergeOptions(options, ['collection']);
+		this.mergeOptions(options, ['collection', 'category_id']);
 	},
 
 	regions: {
@@ -64,6 +66,7 @@ module.exports = Marionette.View.extend({
 				is_active: true,
 				data: {
 					sort: 'name',
+					category_id: this.category_id,
 					extra_fields: 'price_label,categories'
 				}
 			}, {
@@ -71,6 +74,7 @@ module.exports = Marionette.View.extend({
 				is_active: false,
 				data: {
 					sort: 'price_min',
+					category_id: this.category_id,
 					extra_fields: 'price_label,categories'
 				}
 			}, {
@@ -78,6 +82,7 @@ module.exports = Marionette.View.extend({
 				is_active: false,
 				data: {
 					sort: '-price_max',
+					category_id: this.category_id,
 					extra_fields: 'price_label,categories'
 				}
 			}],
@@ -104,7 +109,13 @@ module.exports = Marionette.View.extend({
 	},
 
 	start: function() {
-		this.collection.fetch();
+		var data = {
+			extra_fields: 'price_label,categories'
+		};
+		if (this.category_id) data.category_id = this.category_id;
+		this.collection.fetch({
+			data: data
+		});
 	},
 
 	showProducts: function(ids) {
@@ -117,9 +128,9 @@ module.exports = Marionette.View.extend({
 
 	deleteProducts: function(ids) {
 		return this.collection.bulkDelete(ids);
-	},
+	}
 
-	onChildviewFilterChange: function(filter) {
+	/*onChildviewFilterChange: function(filter) {
 		// Only one filter, so assume it is the category filter
 		if (filter.value) {
 			if (this.collection.category_id == filter.value) return;
@@ -129,6 +140,6 @@ module.exports = Marionette.View.extend({
 			this.collection.category_id = null;
 		}
 		this.collection.fetch();
-	}
+	}*/
 
 });

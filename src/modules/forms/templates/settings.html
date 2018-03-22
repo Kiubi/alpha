@@ -1,0 +1,84 @@
+<form>
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Paramètres généraux</h1>
+		</header>
+		<div class="post-content">
+			<p>À chaque nouvelle réponse au formulaire, une copie peut être envoyée par email à plusieurs
+				destinataires de votre choix ainsi qu'à l'expéditeur de la réponse, si ce dernier a renseigné une
+				adresse email valide.
+			</p>
+
+			<div class="form-group">
+				<label class="control-label" for="recipient">Destinataires</label>
+
+				<p>Saisissez les emails des destinataires, séparés par des virgules, qui seront en copie des nouvelles
+					réponses.</p>
+				<input class="form-control" id="recipient" name="recipient" value="<%- recipient %>" placeholder="Emails des destinataires séparés par des virgules" type="text">
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="">Envoyer une copie à l'expéditeur (si possible)</label>
+
+				<div class="radio-group">
+					<input name="copy_to_sender" id="copy_to_sender1" value="1" type="radio" <%= copy_to_sender ? 'checked="checked" ' : '' %>>
+					<label for="copy_to_sender1" class="">Oui</label>
+					<input name="copy_to_sender" id="copy_to_sender0" value="0" type="radio" <%= !copy_to_sender ? 'checked="checked" ' : '' %>>
+					<label for="copy_to_sender0" class="">Non</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="subject">Sujet de l'email</label>
+				<input class="form-control" id="subject" name="subject" value="<%- subject %>" placeholder="Sujet de l'email lors d'une nouvelle réponse" type="text">
+			</div>
+			<div class="form-group">
+				<label class="control-label required" for="message">Message de confirmation</label>
+
+				<p>Le message de confirmation s'affiche une fois le formulaire validé.</p>
+				<textarea class="form-control" id="message" name="message" placeholder="" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- message %></textarea>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Identifiant API Front-office</label>
+
+				<p><%- form_key %></p>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Captcha</h1>
+		</header>
+		<div class="post-content">
+			<p>
+				Le "captcha" est une sorte d'anti-spam pour se prémunir contre l'usage
+				abusif des formulaires : un champ de validation requiert de l'internaute
+				qu'il réponde à une question aléatoirement posée pour valider le formulaire.
+			</p>
+
+			<div class="form-group">
+				<label class="control-label" for="">Utilisation du captcha</label>
+
+				<div class="radio-group">
+					<input name="use_captcha" id="use_captcha1" value="1" type="radio" <%= use_captcha ? 'checked="checked" ' : '' %>>
+					<label for="use_captcha1" class="visible">Activé</label>
+					<input name="use_captcha" id="use_captcha0" value="0" type="radio" <%= !use_captcha ? 'checked="checked" ' : '' %>>
+					<label for="use_captcha0" class="not-visible">Désactivé</label>
+				</div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"></footer>

@@ -224,11 +224,9 @@ var AppearanceController = Controller.extend({
 
 	showDraft: function(id, args) {
 
-		var apply = null;
-		if (args) {
-			var match = args.match(/^apply=([0-9]+)/);
-			if (match) apply = parseInt(match[1]);
-		}
+		var qs = this.parseQueryString(args, {
+			apply: null
+		});
 
 		var m = new Builder({
 			draft_id: id
@@ -237,7 +235,7 @@ var AppearanceController = Controller.extend({
 		m.fetch().done(function() {
 				var view = new LayoutView({
 					model: m,
-					apply: apply
+					apply: qs.apply
 				});
 				this.listenTo(view, 'change:name', function(model) {
 					this.setBreadCrum([{

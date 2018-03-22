@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
 
-	url: 'sites/@site/prefs/customers',
+	url: 'sites/@site/prefs/lengow',
 
 	parse: function(response) {
 		if ('data' in response) {
@@ -17,7 +17,12 @@ module.exports = Backbone.Model.extend({
 	},
 
 	defaults: {
-		// TODO
+		"is_enabled": false,
+		"categories": [],
+		"id": "",
+		"is_tracker_enabled": false,
+		"export_url": "",
+		"last_export": ""
 	}
 
 });
