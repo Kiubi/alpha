@@ -1,24 +1,77 @@
 <h2>Modules</h2>
-<ul class="nav nav-sidebar">
-	<li><a href="/forms/inbox">Dismoi?</a></li>
-	<li><a href="/modules/vouchers">Bons de réduction</a></li>
-	<li><a href="/modules/fidelity">Points de fidélité</a></li>
-	<li><a href="/modules/redirections">Redirections 301</a></li>
-	<li><a href="/modules/injectcode">Injection de code</a></li>
-	<li><a href="/modules/subscribers">Abonnés à la newsletter</a></li>
-	<li><a href="/modules/backups">Gestion des sauvegardes</a></li>
+<ul class="nav nav-sidebar flex-column">
+	<% if(has_scope_modules) { %>
+	<li class="nav-item"><a class="nav-link" href="/forms/inbox">Dismoi?</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Dismoi?</span></li>
+	<% } %>
+	<% if(has_scope_checkout && has_feature_checkout) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/vouchers">Bons de réduction</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Bons de réduction</span></li>
+	<% } %>
+	<% if(has_scope_modules && has_feature_fidelity) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/fidelity">Points de fidélité</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Points de fidélité</span></li>
+	<% } %>
+	<% if(has_scope_seo) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/redirections">Redirections 301</a></li>
+	<li class="nav-item"><a class="nav-link" href="/modules/injectcode">Injection de code</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Redirections 301</span></li>
+	<li class="nav-item"><span class="nav-link disabled">Injection de code</span></li>
+	<% } %>
+	<% if(has_scope_marketing) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/subscribers">Abonnés à la newsletter</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Abonnés à la newsletter</span></li>
+	<% } %>
+	<% if(has_scope_backup) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/backups">Gestion des sauvegardes</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Gestion des sauvegardes</span></li>
+	<% } %>
 </ul>
 <h2>Imports</h2>
-<ul class="nav nav-sidebar">
-	<li><a href="/modules/import/posts">Dans le Site Web</a></li>
-	<li><a href="/modules/import/products">Dans le Catalogue</a></li>
-	<li><a href="/modules/import/wordpress">Depuis WordPress</a></li>
+<ul class="nav nav-sidebar flex-column">
+	<% if(has_scope_cms) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/import/posts">Dans le Site Web</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Dans le Site Web</span></li>
+	<% } %>
+	<% if(has_scope_catalog && has_feature_catalog) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/import/products">Dans le Catalogue</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Dans le Catalogue</span></li>
+	<% } %>
+	<% if(has_scope_blog) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/import/wordpress">Depuis WordPress</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Depuis WordPress</span></li>
+	<% } %>
 </ul>
 <h2>Services tiers</h2>
-<ul class="nav nav-sidebar">
-	<li><a href="/modules/analytics">Google Analytics</a></li>
-	<li><a href="/modules/merchantcenter">Google Merchant Center</a></li>
-	<li><a href="/modules/lengow">Lengow</a></li>
-	<li><a href="/modules/iadvize">iAdvize</a></li>
-	<li><a href="/modules/avisverifies">Avis Verifiés</a></li>
+<ul class="nav nav-sidebar flex-column">
+	<% if(has_scope_modules) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/analytics">Google Analytics</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Google Analytics</span></li>
+	<% } %>
+	<% if(has_scope_marketing && has_feature_checkout) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/merchantcenter">Google Merchant Center</a></li>
+	<li class="nav-item"><a class="nav-link" href="/modules/lengow">Lengow</a></li>
+	<li class="nav-item"><a class="nav-link" href="/modules/iadvize">iAdvize</a></li>
+	<li class="nav-item"><a class="nav-link" href="/modules/avisverifies">Avis Verifiés</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Google Merchant Center</span></li>
+	<li class="nav-item"><span class="nav-link disabled">Lengow</span></li>
+	<li class="nav-item"><span class="nav-link disabled">iAdvize</span></li>
+	<li class="nav-item"><span class="nav-link disabled">Avis Verifiés</span></li>
+	<% } %>
+</ul>
+<h2>API</h2>
+<ul class="nav nav-sidebar flex-column">
+	<li class="nav-item"><a class="nav-link" href="https://aide.kiubi.com/api-front-office.html" target="_blank">API Front-Office</a></li>
+	<li class="nav-item"><a class="nav-link" href="https://aide.kiubi.com/api-developers.html" target="_blank">API Developers</a></li>
 </ul>

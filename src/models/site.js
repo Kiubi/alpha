@@ -21,7 +21,9 @@ module.exports = Backbone.Model.extend({
 		code_site: '',
 		domain: '',
 		backoffice: '',
-		name: ''
+		name: '',
+		scopes: [], // extra_fields = scopes
+		features: [] // extra_fields = features
 	},
 
 	/**

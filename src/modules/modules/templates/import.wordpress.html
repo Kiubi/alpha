@@ -54,24 +54,24 @@
 					Kiubi. Vous devez utiliser un des deux sources, au choix :</p>
 
 				<div class="form-group">
-					<label class="control-label" for="file">Source 1 : fichier XML d'export du site WordPress (recommandé)</label>
-					<input name="file" id="file" type="file">
+					<label>Source 1 : fichier XML d'export du site WordPress (recommandé)</label>
+					<div data-role="file"></div>
 				</div>
 				<hr/>
 				<div class="form-group">
-					<label class="control-label" for="url">Source 2 : accéder directement au site WordPress</label>
+					<label for="url">Source 2 : accéder directement au site WordPress</label>
 					<input class="form-control" id="url" name="url" value="" placeholder="Adresse du site WordPress de la forme https://www.mon-site-wordpress.com" type="text">
 				</div>
 				<div class="row">
-					<div class="col-xs-6">
+					<div class="col-6">
 						<div class="form-group">
-							<label class="control-label" for="login">Identifiant administrateur</label>
+							<label for="login">Identifiant administrateur</label>
 							<input class="form-control" id="login" name="login" value="" placeholder="" type="text">
 						</div>
 					</div>
-					<div class="col-xs-6">
+					<div class="col-6">
 						<div class="form-group">
-							<label class="control-label" for="password">Mot de passe administrateur</label>
+							<label for="password">Mot de passe administrateur</label>
 							<input class="form-control" id="password" name="password" value="" placeholder="" type="password">
 						</div>
 					</div>
@@ -88,9 +88,9 @@
 			<div class="post-content">
 
 				<div class="form-group">
-					<label class="control-label">Importer les médias</label>
+					<label>Importer les médias</label>
 
-					<div class="radio-group">
+					<div class="form-check">
 						<input name="import_media" id="import_media1" value="1" type="radio" checked="checked">
 						<label for="import_media1" class="">Oui</label>
 						<input name="import_media" id="import_media0" value="0" type="radio">
@@ -98,9 +98,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label">Importer les pages</label>
+					<label>Importer les pages</label>
 
-					<div class="radio-group">
+					<div class="form-check">
 						<input name="import_pages" id="import_pages1" value="1" type="radio" checked="checked">
 						<label for="import_pages1" class="">Oui</label>
 						<input name="import_pages" id="import_pages0" value="0" type="radio">
@@ -108,24 +108,24 @@
 					</div>
 				</div>
 				<!--<div class="form-group has-feedback">
-					<label for="type" class="control-label">Correspondance avec l'auteur</label>
+					<label for="type" >Correspondance avec l'auteur</label>
 
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-6">
 							<select class="form-control" id="type" name="type">
 								<option value="post_simple">Marc BEYER</option>
 								<option value="post_img_left">Sébastien BRAUN</option>
 							</select>
 
-							<div class="form-control-feedback md-feedback md-select"></div>
+							<div class="md-feedback md-select"></div>
 						</div>
 					</div>
 				</div>-->
 				<div class="form-group">
-					<label for="type" class="control-label">Type de billet par défaut</label>
+					<label for="type" >Type de billet par défaut</label>
 
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-6">
 
 							<div data-role="type"></div>
 
@@ -133,10 +133,10 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="type" class="control-label">Correspondance de la taille des images miniatures</label>
+					<label for="type" >Correspondance de la taille des images miniatures</label>
 
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-6">
 							<select class="form-control" id="thumbnail" name="thumbnail" data-style="selectify">
 								<option value="miniature">Miniature</option>
 								<option value="g_miniature" selected="selected">Grande miniature</option>
@@ -147,10 +147,10 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="medium" class="control-label">Correspondance de la taille des images moyennes</label>
+					<label for="medium" >Correspondance de la taille des images moyennes</label>
 
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-6">
 							<select class="form-control" id="medium" name="medium" data-style="selectify">
 								<option value="miniature">Miniature</option>
 								<option value="g_miniature">Grande miniature</option>
@@ -161,10 +161,10 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="large" class="control-label">Correspondance de la taille des grandes images</label>
+					<label for="large" >Correspondance de la taille des grandes images</label>
 
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-6">
 							<select class="form-control" id="large" name="large" data-style="selectify" data-direction="up">
 								<option value="miniature">Miniature</option>
 								<option value="g_miniature">Grande miniature</option>
@@ -183,7 +183,7 @@
 
 	<div class="save">
 		<div class="btn-toolbar" role="toolbar">
-			<button type="button" class="btn btn-action pull-right" data-role="save">Importer</button>
+			<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Importer</button>
 		</div>
 	</div>
 
@@ -227,9 +227,9 @@
 
 	<div class="save">
 		<div class="btn-toolbar" role="toolbar">
-			<button type="button" class="btn btn-cancel" data-role="cancel">Retour</button>
+			<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel">Retour</button>
 			<% if(!report.errors || report.errors.length == 0) { %>
-			<button type="button" class="btn btn-action pull-right" data-role="save">Importer</button>
+			<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Importer</button>
 			<% } %>
 		</div>
 	</div>
@@ -253,7 +253,7 @@
 
 	<div class="save">
 		<div class="btn-toolbar" role="toolbar">
-			<button type="button" class="btn btn-cancel" data-role="cancel">Retour</button>
+			<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel">Retour</button>
 		</div>
 	</div>
 

@@ -1,13 +1,23 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
+var format = require('kiubi/utils/format');
 
 var Voucher = Backbone.Model.extend({
 
 	urlRoot: 'sites/@site/checkout/vouchers',
 	idAttribute: 'voucher_id',
 
+	meta: {},
+
 	parse: function(response) {
+		this.meta = {};
+		if ('meta' in response && response.meta.base_price) {
+			this.meta = {
+				'base_price': response.meta.base_price,
+				'currency': response.meta.currency
+			};
+		}
 		if ('data' in response) {
 			if (response.data === null) return {};
 			if (_.isNumber(response.data)) {

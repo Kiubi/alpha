@@ -2,7 +2,6 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
-var File = require('kiubi/modules/media/models/file.js');
 var Files = require('kiubi/modules/media/models/files.js');
 
 var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
@@ -30,7 +29,7 @@ module.exports = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['type']);
-		this.model = new File();
+		this.model = new(new Files()).model();
 	},
 
 	proxySelection: function() {
@@ -38,6 +37,10 @@ module.exports = Marionette.View.extend({
 	},
 
 	select: function() {
+		this.model.clear({
+			silent: true
+		});
+
 		var collection = new Files();
 		var contentView = new SelectModalView({
 			type: this.type,

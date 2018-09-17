@@ -8,20 +8,32 @@
     </header>
     <div class="post-content">
       <div class="row media-detail">
-        <div class="col-xs-4">
-          <div class="media-object md-icon md-face img-default img-circle img-avatar center-block"></div>
-          <div class="media-object img-circle img-avatar center-block">
+        <div class="col-4 customer-avatar">
+          <div class="media-object md-icon md-face img-default rounded-circle mx-auto img-avatar center-block"></div>
+          <div class="media-object rounded-circle mx-auto img-avatar center-block">
             <img alt="Un intitulé d'un truc" src="<%- convertMediaPath(avatar_url) %>&<%- render_counter %>"></a>
           </div><br/>
-			<div class="form-group">
-				<input id="avatar" name="avatar" type="file">
-			</div>
+				<div data-role="file"></div>
           <p class="media-info">Format : gif, jpeg ou png<br/>Taille : 120 x 120px minimum</p>
         </div>
-        <div class="col-xs-8">
-          <label class="control-label required" for="lastname">Nom</label>
+        <div class="col-7 offset-1">
           <div class="row">
-            <div class="col-xs-3">
+            <div class="col-6">
+              <div class="form-group">
+                <label>Inscription</label>
+                <p class="form-control-static"><%- creation_date %></p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label>Numéro client</label>
+                <p class="form-control-static">#<%- number %></p>
+              </div>
+            </div>
+            <div class="col-12">
+            <label class="required" for="lastname">Nom</label>
+          </div>
+            <div class="col-3">
               <div class="form-group">
                 <select name="gender" data-style="selectify">
                   <option value="M" <%= gender != 'F' ? selected="selected" : '' %>>M</option>
@@ -29,21 +41,21 @@
                 </select>
               </div>
             </div>
-            <div class="col-xs-9">
+            <div class="col-9">
               <div class="form-group">
                 <input class="form-control" id="lastname" name="lastname" value="<%- lastname %>" type="text">
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label required" for="firstname">Prénom</label>
+            <label class="required" for="firstname">Prénom</label>
             <input class="form-control" id="firstname" name="firstname" value="<%- firstname %>" type="text">
           </div>
           <div class="row">
-            <div class="col-xs-6">
+            <div class="col-6">
              <div class="form-group">
-               <label class="control-label">Accès</label>
-               <div class="radio-group">
+               <label>Accès</label>
+               <div class="form-check">
                  <input name="is_enabled" id="is_enabled1" value="1" <%= (is_enabled) ? 'checked="checked"' : '' %> type="radio">
                  <label for="is_enabled1" class="visible">Autorisé</label>
                  <input name="is_enabled" id="is_enabled0" value="0" <%= (!is_enabled) ? 'checked="checked"' : '' %> type="radio">
@@ -51,44 +63,38 @@
                </div>
              </div>
             </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">Numéro client</label>
-                <p class="form-control-static"><%- number %></p>
-              </div>
-            </div>
 		  </div>
 		  <div class="form-group">
-            <label class="control-label required" for="email">Email</label>
+            <label class="required" for="email">Email</label>
             <input class="form-control" id="email" name="email" value="<%- email %>" type="text" placeholder="Utilisé pour se connecter au site">
           </div>
           <div class="form-group">
-            <label class="control-label" for="password">Mot de passe</label>
+            <label for="password">Mot de passe</label>
             <a data-role="show-password" href="#" class="form-control-static">Modifier le mot de passe</a>
             <input class="form-control" style="display: none;" id="password" name="password" type="password" placeholder="Modifier le mot de passe utilisé pour se connecter au site">
           </div>
           <div class="row">
-            <div class="col-xs-6">
+            <div class="col-6">
               <div class="form-group">
-                <label class="control-label" for="nickname">Pseudo</label>
+                <label for="nickname">Pseudo</label>
                 <input class="form-control" id="nickname" name="nickname" value="<%- nickname %>" type="text" placeholder="S'affiche à la place du nom">
               </div>
             </div>
-            <div class="col-xs-6">
+            <div class="col-6">
               <div class="form-group">
-                <label class="control-label" for="website">Site Web</label>
+                <label for="website">Site Web</label>
                 <input class="form-control" id="website" name="website" value="<%- website %>" type="text" placeholder="https://www.site-web.com/">
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label">Groupe extranet</label>
+            <label>Groupe extranet</label>
             <p>
               Un membre peut faire partie d'un groupe de l'<a href="/customers/groups">extranet</a>
               ce qui lui permettra d'accéder à certaines pages et fichiers du site disposant d'un accès restrint et de bénéficier des remises appliquées au groupe.
             </p>
             <div class="row">
-              <div class="col-xs-6">
+              <div class="col-6">
                 <div data-role="groups"></div>
               </div>
             </div>
@@ -103,8 +109,8 @@
 
 <div class="save">
   <div class="btn-toolbar" role="toolbar">
-    <button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
-    <button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+    <button type="button" class="btn btn-lg btn btn-danger btn-delete" data-role="delete">Supprimer</button>
+    <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
   </div>
 </div>
 

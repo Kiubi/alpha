@@ -18,7 +18,7 @@
 <div id="widgets_pool">
 <% _.each(widgets, function(widget){ %>
 <div class="widget" data-type="<%- widget.type %>">
-	<a href="#" class="md-icon md-drag btn-drag pull-left"></a>
+	<a href="#" class="md-icon md-drag btn-drag"></a>
 	<h4 class="widget-title"><%- widget.name %></h4>
 </div>
 <% }) %>
@@ -26,13 +26,13 @@
 <% } %>
 <h2>Template appliqué</h2>
 <div class="form-group">
-	<select data-role="select-model" data-direction="up" data-style="selectify">
+	<select data-role="select-model" data-style="selectify">
 		<% _.each(models, function(model){ %><option value="<%- model.id %>" <%= model.id == current_model ? 'selected="selected"' : '' %>><%- model.name %></option><% }) %>
 	</select>
 </div>
 
 <h2>Intitulé</h2>
 <div class="form-group has-feedback">
-	<input class="form-control" data-role="name" placeholder="Intitulé par défaut" value="<%- name %>" type="text">
-	<span class="form-control-feedback md-feedback md-edit"></span>
+	<input class="form-control form-control-sidebar" data-role="name" placeholder="Intitulé par défaut" value="<%- name %>" type="text">
+	<span class="md-feedback md-edit"></span>
 </div>

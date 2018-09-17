@@ -8,21 +8,21 @@
 		</header>
 		<div class="post-content">
 			<div class="form-group">
-				<label class="control-label required" for="name">Intitulé du produit</label>
+				<label class="required" for="name">Intitulé du produit</label>
 				<input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Intitulé du produit tel qu'il apparaîtra dans le catalogue" type="text">
 			</div>
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group has-feedback">
-						<label class="control-label" for="available_date">Date de disponibilité</label>
+						<label for="available_date">Date de disponibilité</label>
 						<input data-role="datepicker" class="form-control" id="available_date" name="available_date" value="<%- available_date %>" placeholder="jj/mm/aaaa" type="text">
-						<span class="form-control-feedback md-feedback md-date"></span>
+						<span class="md-feedback md-date"></span>
 					</div>
 				</div>
-				<div class="col-xs-4 col-xs-offset-4">
+				<div class="col-4 offset-4">
 					<div class="form-group">
-						<label class="control-label">Affichage</label>
-						<div class="radio-group">
+						<label>Affichage</label>
+						<div class="form-check">
 							<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
 							<label for="is_visible1" class="visible">Visible</label>
 							<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
@@ -41,31 +41,31 @@
 		</header>
 		<div class="post-content">
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="form-group">
-						<label class="control-label" for="primary-categ">Catégorie principale</label>
+						<label for="primary-categ">Catégorie principale</label>
 						<div data-role='primary-categ'>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="form-group">
-						<label class="control-label" for="is_spotlight">Produit vedette</label>
+						<label for="is_spotlight">Produit vedette</label>
 						<select class="form-control" name="is_spotlight" id="is_spotlight" data-style="selectify">
 							<option value="0" <%= is_spotlight ? 'selected="selected"' : '' %>>Aucune mise en avant du produit</option>
 							<option value="1" <%= is_spotlight ? 'selected="selected"' : '' %>>Produit mis en avant en tête de listing</option>
 						</select>
 					</div>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="form-group has-feedback">
-						<label class="control-label" for="exmemple1">Catégories secondaires</label>
+						<label for="exmemple1">Catégories secondaires</label>
 						<div data-role="other-categ"></div>
 					</div>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="form-group has-feedback">
-						<label class="control-label" for="tags">Tags</label>
+						<label for="tags">Tags</label>
 						<div data-role='tags'></div>
 					</div>
 				</div>
@@ -80,13 +80,11 @@
 		</header>
 		<div class="post-content">
 			<div class="form-group">
-				<label class="control-label" for="header">Chapô</label>
-				<p>Le chapô sert de description courte au produit et s'affiche généralement à la place du contenu dans une liste de produit. </p>
+				<label for="header">Chapô</label>
 				<textarea id="header" name="header" class="form-control" rows="14" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro"><%- header %></textarea>
 			</div>
 			<div class="form-group">
-				<label class="control-label" for="description">Description</label>
-				<p>La description s'affiche généralement dans le détail d'un produit.</p>
+				<label for="description">Description</label>
 				<textarea id="description" name="description" class="form-control" rows="21" placeholder="Placeholder du contenu" data-role="wysiwyg"><%- description %></textarea>
 			</div>
 		</div>
@@ -109,23 +107,23 @@
 		</header>
 		<div class="post-content">
 			<div class="row">
-				<div class="col-xs-6">
-					<label class="control-label" for="extra_shipping">Frais de port additionels</label>
+				<div class="col-6">
+					<label for="extra_shipping">Frais de port additionels</label>
 					<p>Les frais de port additionels sont ajoutés au montant total HT des frais de port. La TVA appliquée est celle du tansporteur choisit au moment de la commande.</p>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-6">
 							<div class="form-group">
 								<div class="input-group">
-									<span class="input-group-addon"></span>
+									<div class="input-group-prepend"><span class="input-group-text"></span></div>
 									<input id="extra_shipping" name="extra_shipping" value="<%- extra_shipping %>" class="form-control" placeholder="0,00">
-									<span class="input-group-addon">€</span>
+									<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-6">
-					<label class="control-label" for="brand_id">Marque</label>
+				<div class="col-6">
+					<label for="brand_id">Marque</label>
 					<p>Préciser la marque du produit peut être nécessaire pour l'utilisation de certains services comme Google Merchant Center.</p>
 					<div class="form-group">
 						<div data-role='brand'></div>
@@ -138,60 +136,14 @@
 
 	<article data-role="layout"></article>
 
-	<article class="post-article">
-		<header class="post-header">
-			<a href="#seo" class="pull-right collapsed" data-toggle="collapse"
-			aria-expanded="false" aria-controls="seo">
-			Afficher <span class="more">plus</span> <span class="less">moins</span> d'options
-			</a>
-			<h1>Référencement</h1>
-		</header>
-		<div class="post-content">
-			<div class="form-group">
-				<label class="control-label required" for="slug">Adresse de la page</label>
-				<div class="input-group"> <span class="input-group-addon"><%- domain %>/catalogue/</span>
-					<input class="form-control" id="slug" name="slug" value="<%- slug %>">
-					<span class="input-group-addon"></span>
-				</div>
-			</div>
-			<!-- <div class="form-group">
-			<div class="checkbox">
-			<input id="checkbox1" value="" type="checkbox">
-			<label for="checkbox1">Créer une redirection vers la nouvelle adresse</label>
-		</div>
-	</div> -->
-	<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
-		<label class="control-label" for="meta_title">Titre de la page</label>
-		<input class="form-control" id="meta_title" name="meta_title" value="<%- meta_title %>" placeholder="Contenu de la balise &lt;title&gt; qui remplacera celle définie par défaut" type="text">
-	</div>
-	<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
-		<label class="control-label" for="meta_description">Description de la page</label>
-		<textarea class="form-control" id="meta_description" name="meta_description" rows="5" placeholder="Contenu de la balise &lt;meta description&gt; qui remplacera celle définie par défaut"><%- meta_description %></textarea>
-	</div>
-	<div class="collapse" id="seo">
-		<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
-			<label class="control-label" for="meta_keywords">Mots clés de la page</label>
-			<textarea class="form-control" id="meta_keywords" name="meta_keywords" rows="5" placeholder="Contenu de la balise &lt;meta keywords&gt; qui remplacera celle définie par défaut"><%- meta_keywords %></textarea>
-		</div>
-		<div class="form-group">
-			<label class="control-label" for="js_head">Code avant <code>&lt;/head&gt;</code></label>
-			<textarea class="form-control" id="js_head" name="js_head" rows="5" placeholder="Code placé avant la balise &lt;/head&gt; qui remplacera celui défini par défaut"><%- js_head %></textarea>
-		</div>
-		<div class="form-group">
-			<label class="control-label" for="js_body">Code avant <code>&lt;/body&gt;</code></label>
-			<textarea class="form-control" id="js_body" name="js_body" rows="5" placeholder="Code placé avant la balise &lt;/body&gt; qui remplacera celui défini par défaut"><%- js_body %></textarea>
-		</div>
-	</div>
-</div>
-<footer class="post-footer"></footer>
-</article>
+	<article data-role="seo"></article>
 
 </form>
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn btn-danger btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

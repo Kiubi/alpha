@@ -12,14 +12,19 @@ module.exports = Marionette.View.extend({
 	ui: {
 		'drop': '.dropdown',
 		'sel': '.dropdown li[data-role="selection"]',
-		'lixtra': '.dropdown li[data-role="xtra"]'
+		'lixtra': '.dropdown li[data-role="xtra"]',
+		'input': 'input',
+		'footer': '.dropdown a[data-role="footer"]'
 	},
 
 	events: {
 		'keyup @ui.drop input': _.debounce(function(event) {
-			this.term = Backbone.$(event.currentTarget).val();
-			this.triggerMethod(this.eventName('input'), this.term, this);
+			this.triggerInput(event.key == "Enter");
 		}, 300),
+
+		'mousedown @ui.input': function(event) {
+			this.triggerInput(false);
+		},
 
 		'click @ui.sel': function(event) {
 			var index = parseInt(Backbone.$(event.currentTarget).data('index'));
@@ -33,10 +38,27 @@ module.exports = Marionette.View.extend({
 			var eventName = Backbone.$(event.currentTarget).data('event');
 
 			this.triggerMethod(this.eventName(eventName), this.term, this);
+		},
+
+		'click @ui.footer': function(event) {
+			var $a = Backbone.$(event.currentTarget);
+			var footerid = $a.data('footerid');
+
+			event.stopPropagation();
+
+			$a.siblings().removeClass('active');
+			$a.addClass('active');
+
+			_.each(this.footer, function(icon) {
+				icon.isActive = (icon.id == footerid);
+			});
+
+			this.triggerMethod(this.eventName('select:footer'), footerid, this);
 		}
 	},
 
 	suggestions: null,
+	term: null,
 
 	searchPlaceholder: 'Rechercher',
 	noResultsLabel: '-- Aucun résultat --',
@@ -48,8 +70,8 @@ module.exports = Marionette.View.extend({
 
 	initialize: function(options) {
 
-		this.mergeOptions(options, ['evtSuffix', 'current', 'name']);
-
+		this.mergeOptions(options, ['evtSuffix', 'current', 'name', 'footer']);
+		this.term = null;
 	},
 
 	templateContext: function() {
@@ -57,36 +79,91 @@ module.exports = Marionette.View.extend({
 		return {
 			'name': this.name,
 			'current': this.current,
-			'searchPlaceholder': this.searchPlaceholder
+			'searchPlaceholder': this.searchPlaceholder,
+			'extraDropdownClassname': this.getOption('extraDropdownClassname'),
+			'extraDropdownMenuClassname': this.getOption('extraDropdownMenuClassname'),
+			'extraInputClassname': this.getOption('extraInputClassname')
 		};
 
 	},
 
-	showResults: function(results, xtra) {
+	triggerInput: function(force) {
+		if (this.getUI('input').val() === this.term && !force) return;
+
+		this.term = this.getUI('input').val();
+		this.triggerMethod(this.eventName('input'), this.term, this);
+	},
+
+	showResults: function(results, options) {
 		this.suggestions = results;
 
 		var list = '';
 		if (results.length > 0) {
 			list = _.reduce(results, function(acc, result, index) {
-				return acc + '<li data-role="selection" data-index="' + index + '"><a href="#">' + result.label + '</a></li>';
+
+				if (result.is_header) {
+					return acc + '<li class="dropdown-header">' + result.label + '</li>'; // TODO escape ?
+				}
+
+				var icon = result.icon ? '<span class="md-icon ' + result.icon + '"></span>' : '';
+
+				if (result.href) {
+					return acc + '<li><a class="dropdown-item" href="' + result.href + '">' +
+						icon + result.label + '</a></li>'; // TODO escape ?
+				} else {
+					return acc + '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' +
+						icon + result.label + '</a></li>'; // TODO escape ?
+				}
+
 			}, '');
 		} else if (this.emptyLabel) {
-			list = '<li><a href="#">' + this.noResultsLabel + '</a></li>';
+			list = '<li><a class="dropdown-item" href="#">' + this.noResultsLabel + '</a></li>';
 		}
 
-		if (xtra) {
-			xtra = _.extend({
+		if (options.xtra) {
+			options.xtra = _.extend({
 				title: 'Ajouter',
 				iconClass: 'md-add-outline',
 				eventName: 'xtra'
-			}, xtra);
+			}, options.xtra);
 
-			list += '<li role="separator" class="divider"></li><li data-role="xtra" data-event="' + xtra.eventName +
-				'"><a href="#">' + xtra.title + '<span class="md-icon ' + xtra.iconClass + '"></span></a></li>';
+			list += '<li class="dropdown-divider"></li><li data-role="xtra" data-event="' + options.xtra.eventName +
+				'"><a class="dropdown-item" href="#">' + options.xtra.title + '<span class="md-icon ' + options.xtra.iconClass +
+				'"></span></a></li>';
+		}
+
+		list = '<li><ul class="dropdown-control list-unstyled m-0">' + list + '</ul></li>';
+
+		if (this.footer && this.footer.length > 0) {
+
+			if (options.activeFooter) {
+				_.each(this.footer, function(icon) {
+					icon.isActive = (icon.id == options.activeFooter);
+				});
+			}
+
+			var footer = _.reduce(this.footer, function(acc, icon) {
+
+				return acc + '<a class="dropdown-item ' + (icon.isActive ? 'active' : '') +
+					'" href="#" data-role="footer" data-footerid="' + icon.id + '" title="' + icon.label +
+					'"><span class="md-icon ' + icon.icon + '"></span></a>';
+
+			}, '<li class="dropdown-divider"></li><li class="dropdown-footer d-flex">');
+
+			footer += '</li>';
+			list += footer;
 		}
 
 		this.getUI('drop').children('ul').html(list);
-		this.getUI('drop').addClass('open'); // Force opening
+		this.getUI('drop').addClass('show'); // Force opening
+		this.getUI('drop').children('.dropdown-menu').addClass('show'); // Force opening
+
+	},
+
+	getActiveFooter: function() {
+		return _.findWhere(this.footer, {
+			isActive: true
+		});
 	}
 
 });

@@ -1,25 +1,21 @@
-<div class="row">
-	<div class="col-xs-6">
-		<div class="media">
-			<div class="media-left">
-				<div class="checkbox-inline">
-					<input id="subscriber_<%- subscriber_id %>" name="selection" value="<%- subscriber_id %>" type="checkbox">
-					<label for="subscriber_<%- subscriber_id %>"></label>
-				</div>
-			</div>
-			<div class="media-body">
+<div class="row no-gutters align-items-center">
+	<div class="col-auto">
+			<input id="subscriber_<%- subscriber_id %>" name="selection" value="<%- subscriber_id %>" type="checkbox">
+			<label for="subscriber_<%- subscriber_id %>"></label>
+		</div>
+		<div class="col item-body">
 				<h4><%- email %></h4>
 			</div>
-		</div>
-	</div>
-	<div class="col-xs-2">
-		<% if (is_registered) { %>
-			<span class="label label-enable">Inscrit</span>
-			<% } else { %>
-				<span class="label label-disable">Désinscrit</span>
-				<% } %>
-			</div>
-			<div class="col-xs-4 text-right no-white-space">
-				Inscrit le <%- subscription_date %>
-			</div>
-		</div>
+			<div class="col-3">
+				<% if (is_registered) { %>
+					<span class="badge badge-success">Abonné</span>
+					<% } else { %>
+						<span class="badge badge-danger">Désabonné</span>
+						<% } %>
+					</div>
+					<div class="col-4">
+						<span title="Date d'inscription">
+						<i class="md-icon md-submit-date"></i><%- subscription_date %></span>
+					</div>
+
+				</div>

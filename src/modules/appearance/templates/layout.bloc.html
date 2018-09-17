@@ -1,7 +1,7 @@
-<div class="dropzone" data-role="bloc" data-bloc="<%- bloc.bloc_id %>"><a href="#" data-role="removeBloc" class="md-icon md-close pull-right"></a>
+<div class="dropzone" data-role="bloc" data-bloc="<%- bloc.bloc_id %>"><a href="#" data-role="removeBloc" class="md-icon md-close float-right"></a>
 	<div class="row">
 		<% _.each(cells, function(cell, i){ %>
-		<div class="col-xs-<%- sizes[i] %> ui-sortable" data-cell="<%- cell.cell_id %>"><%= cell.content %></div>
+		<div class="col-<%- sizes[i] %> ui-sortable" data-cell="<%- cell.cell_id %>"><%= cell.content %></div>
 		<% }) %>
 	</div>
 </div>

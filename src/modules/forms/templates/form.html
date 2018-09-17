@@ -10,14 +10,14 @@
 		</header>
 		<div class="post-content">
 			<div class="form-group">
-				<label class="control-label required" for="name">Intitulé du formulaire</label>
+				<label class="required" for="name">Intitulé du formulaire</label>
 				<input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Intitulé permettant d'identifier le formulaire"
 					   type="text">
 			</div>
 			<div class="form-group">
-				<label class="control-label">Affichage</label>
+				<label>Affichage</label>
 
-				<div class="radio-group">
+				<div class="form-check">
 					<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked" ' : '' %>>
 					<label for="is_enabled1" class="visible">Visible</label>
 					<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked" ' : '' %>>
@@ -34,8 +34,8 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn btn-danger btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

@@ -6,9 +6,8 @@ var Controller = require('kiubi/controller.js');
 
 /* Models */
 var Menus = require('./models/menus');
-var Menu = require('./models/menu');
 var Page = require('./models/page');
-var Post = require('./models/post');
+var Posts = require('./models/posts');
 var Home = require('./models/home');
 
 /* Views */
@@ -36,6 +35,13 @@ function getHeadersAction(options) {
 		actions.push({
 			title: 'Dupliquer le billet',
 			callback: ['actionDuplicationPost', options.duplicatePost] // post_id
+		});
+	}
+
+	if (options.duplicatePage) {
+		actions.push({
+			title: 'Dupliquer la page',
+			callback: ['actionDuplicationPage', options.duplicatePage] // page_id
 		});
 	}
 
@@ -105,24 +111,8 @@ var SidebarMenuView = Marionette.View.extend({
 
 	page_id: -1,
 
-	addPage: function(event) {
-		var $link = Backbone.$(event.currentTarget);
-
-		this.trigger('add:page', $link.data('id'));
-	},
-
-	addMenu: function(event) {
-		this.trigger('add:menu');
-	},
-
-	onChangePage: function(page_id) {
-		if (this.page_id == page_id) return;
-
-		this.page_id = page_id;
-		this.render();
-	},
-
 	initialize: function(options) {
+		this.page_id = -1;
 		this.collection = new Menus();
 
 		this.fetchAndRender();
@@ -162,12 +152,29 @@ var SidebarMenuView = Marionette.View.extend({
 				};
 			},
 			rootFooter: function(node) {
-				return '<li class="page-add">' +
+				return '<li class="nav-item page-add">' +
 					'<a href="#" data-role="page-add" ' +
-					'data-id="' + node.menu_id + '">' +
+					'data-id="' + node.menu_id + '" class="nav-link">' +
 					'<span class="md-icon"></span>Ajouter une page</a></li>';
 			}
 		});
+	},
+
+	addPage: function(event) {
+		var $link = Backbone.$(event.currentTarget);
+
+		this.trigger('add:page', $link.data('id'));
+	},
+
+	addMenu: function(event) {
+		this.trigger('add:menu');
+	},
+
+	onChangePage: function(page_id) {
+		if (this.page_id == page_id) return;
+
+		this.page_id = page_id;
+		this.render();
 	},
 
 	fetchAndRender: function() {
@@ -216,12 +223,19 @@ var CMSController = Controller.extend({
 	showIndex: function() {
 
 		var m = new Home();
-		m.fetch().done(function() {
+		m.fetch({
+			data: {
+				extra_fields: 'defaults'
+			}
+		}).done(function() {
 
 			this.triggerSidebarMenu('change:page', m.get('page_id'));
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 			var view = new IndexView({
-				model: m
+				model: m,
+				enableSeo: Session.hasScope('site:seo'),
+				enableLayout: Session.hasScope('site:layout')
 			});
 			this.listenTo(m, 'change', function(model) {
 				if (model.hasChanged('name')) {
@@ -259,7 +273,8 @@ var CMSController = Controller.extend({
 
 	showMenu: function(id) {
 
-		var m = new Menu({
+		var c = new Menus();
+		var m = new c.model({
 			menu_id: id
 		});
 
@@ -298,7 +313,8 @@ var CMSController = Controller.extend({
 
 	actionNewMenu: function() {
 
-		var m = new Menu({
+		var c = new Menus();
+		var m = new c.model({
 			name: 'Intitulé par défaut'
 		});
 
@@ -323,10 +339,19 @@ var CMSController = Controller.extend({
 
 		this.triggerSidebarMenu('change:page', id);
 
-		m.fetch().done(function() {
+		m.fetch({
+			data: {
+				extra_fields: 'defaults'
+			}
+		}).done(function() {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 			var view = new PageView({
 				model: m,
-				menus: new Menus()
+				menus: new Menus(),
+				enableSeo: Session.hasScope('site:seo'),
+				enableLayout: Session.hasScope('site:layout'),
+				enableExtranet: Session.hasFeature('extranet')
 			});
 			this.listenTo(m, 'change', function(model) {
 				if (model.hasChanged('name')) {
@@ -354,7 +379,8 @@ var CMSController = Controller.extend({
 				preview: m.get('page_type') == 'page' ? m : false,
 				addPost: m.get('page_type') == 'page' ? m.get('page_id') : false,
 				addPage: m.get('page_parent_id') > 0 ? m.get('page_parent_id') : false,
-				addPageInMenu: m.get('page_parent_id') == 0 ? m.get('menu_id') : false
+				addPageInMenu: m.get('page_parent_id') == 0 ? m.get('menu_id') : false,
+				duplicatePage: m.get('page_type') == 'page' ? m.get('page_id') : false
 			}));
 		}.bind(this)).fail(function() {
 			this.notFound();
@@ -384,7 +410,8 @@ var CMSController = Controller.extend({
 		}.bind(this);
 
 		if (position.menu_id) {
-			var menu = new Menu({
+			var c = new Menus();
+			var menu = new c.model({
 				menu_id: position.menu_id
 			});
 
@@ -407,7 +434,8 @@ var CMSController = Controller.extend({
 
 	actionNewInternalLink: function(position) {
 		var that = this;
-		var menu = new Menu({
+		var c = new Menus();
+		var menu = new c.model({
 			menu_id: position.menu_id
 		});
 
@@ -435,7 +463,8 @@ var CMSController = Controller.extend({
 
 	actionNewExternalLink: function(position) {
 		var that = this;
-		var menu = new Menu({
+		var c = new Menus();
+		var menu = new c.model({
 			menu_id: position.menu_id
 		});
 
@@ -462,7 +491,8 @@ var CMSController = Controller.extend({
 
 	actionNewSeparator: function(position) {
 		var that = this;
-		var menu = new Menu({
+		var c = new Menus();
+		var menu = new c.model({
 			menu_id: position.menu_id
 		});
 
@@ -486,6 +516,22 @@ var CMSController = Controller.extend({
 		});
 	},
 
+	actionDuplicationPage: function(page_id) {
+
+		var that = this;
+		var m = new Page({
+			page_id: page_id
+		});
+
+		m.duplicate()
+			.done(function(page_id) {
+				that.navigationController.showOverlay(300);
+				that.navigationController.navigate('/cms/pages/' + page_id);
+				that.triggerSidebarMenu('refresh:menus');
+			}).fail(function(xhr) {
+				that.navigationController.showErrorModal(xhr);
+			});
+	},
 
 	/**
 	 * Posts
@@ -502,7 +548,8 @@ var CMSController = Controller.extend({
 			}];
 		}
 
-		var m = new Post({
+		var c = new Posts();
+		var m = new c.model({
 			post_id: id
 		});
 		var page;
@@ -565,7 +612,8 @@ var CMSController = Controller.extend({
 	actionNewPost: function(page_id) {
 		var that = this;
 
-		var post = new Post({
+		var c = new Posts();
+		var post = new c.model({
 			is_visible: false,
 			page_id: page_id
 		});
@@ -590,8 +638,8 @@ var CMSController = Controller.extend({
 	actionDuplicationPost: function(post_id) {
 
 		var that = this;
-
-		var m = new Post({
+		var c = new Posts();
+		var m = new c.model({
 			post_id: post_id
 		});
 
@@ -644,6 +692,13 @@ module.exports = Marionette.AppRouter.extend({
 	},
 
 	onRoute: function(name, path, args) {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		if (!Session.hasScope('site:cms')) {
+			this.controller.navigationController.navigate('/');
+			return;
+		}
+
 		this.controller.showSidebarMenu();
 	}
 });

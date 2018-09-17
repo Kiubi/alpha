@@ -8,10 +8,10 @@ var Settings = require('./models/settings');
 var Group = require('./models/group');
 var Groups = require('./models/groups');
 var GrpDiscount = require('./models/group_discounts');
-var Customer = require('./models/customer');
 var Customers = require('./models/customers');
 var BlogComments = require('kiubi/modules/blog/models/comments');
 var CatalogComments = require('kiubi/modules/catalog/models/comments');
+var Orders = require('kiubi/modules/checkout/models/orders');
 var Fidelity = require('./models/fidelity');
 var Discounts = require('./models/discounts');
 var Page = require('kiubi/modules/cms/models/page');
@@ -21,7 +21,7 @@ var CustomersView = require('./views/customers');
 var CustomerView = require('./views/customer');
 var BlogCommentsView = require('kiubi/modules/blog/views/comments');
 var CatalogCommentsView = require('kiubi/modules/catalog/views/comments');
-var OrdersView = require('./views/orders');
+var OrdersView = require('kiubi/modules/checkout/views/orders');
 var DiscountView = require('./views/discount');
 var FidelityView = require('./views/fidelity');
 var SettingsView = require('./views/settings');
@@ -70,7 +70,8 @@ function getHeadersAction(options) {
 
 /* Tabs  */
 function HeaderTabsCustomer(customer_id) {
-	return [{
+
+	var tabs = [{
 		title: 'Détail du membre',
 		url: '/customers/' + customer_id
 	}, {
@@ -85,10 +86,17 @@ function HeaderTabsCustomer(customer_id) {
 	}, {
 		title: 'Remises',
 		url: '/customers/' + customer_id + '/discount'
-	}, {
-		title: 'Fidelité',
-		url: '/customers/' + customer_id + '/fidelity'
 	}];
+
+	var Session = Backbone.Radio.channel('app').request('ctx:session');
+	if (Session.hasFeature('fidelity')) {
+		tabs.push({
+			title: 'Fidelité',
+			url: '/customers/' + customer_id + '/fidelity'
+		});
+	}
+
+	return tabs;
 }
 
 var CustomersController = Controller.extend({
@@ -101,9 +109,15 @@ var CustomersController = Controller.extend({
 		href: '/customers'
 	}],
 
-	showCustomers: function() {
+	showCustomers: function(queryString) {
+
+		var qs = this.parseQueryString(queryString, {
+			'term': null
+		});
+
 		var view = new CustomersView({
-			collection: new Customers()
+			collection: new Customers(),
+			filters: qs
 		});
 		this.navigationController.showContent(view);
 		view.start();
@@ -113,7 +127,7 @@ var CustomersController = Controller.extend({
 	},
 
 	showCustomer: function(id) {
-		var m = new Customer({
+		var m = new Customers().add({
 			customer_id: id
 		});
 
@@ -154,7 +168,7 @@ var CustomersController = Controller.extend({
 	},
 
 	showBlogComments: function(id) {
-		var m = new Customer({
+		var m = new Customers().add({
 			customer_id: id
 		});
 
@@ -180,7 +194,7 @@ var CustomersController = Controller.extend({
 	},
 
 	showCommentsCatalog: function(id) {
-		var m = new Customer({
+		var m = new Customers().add({
 			customer_id: id
 		});
 
@@ -206,16 +220,29 @@ var CustomersController = Controller.extend({
 	},
 
 	showOrders: function(id) {
-		console.log('CustomersController, showOrders', id);
-
-		this.navigationController.showContent(new OrdersView());
-		this.setHeader({
-			title: 'Commandes du membre ' + id
+		var m = new Customers().add({
+			customer_id: id
 		});
+		m.fetch().done(function() {
+			var view = new OrdersView({
+				collection: new Orders(),
+				customer_id: id
+			});
+			this.navigationController.showContent(view);
+			view.start();
+			this.setHeader({
+				title: m.get('firstname') + ' ' + m.get('lastname')
+			}, null, HeaderTabsCustomer(id));
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Membre introuvable'
+			});
+		}.bind(this));
 	},
 
 	showDiscount: function(id) {
-		var c = new Customer({
+		var c = new Customers().add({
 			customer_id: id
 		});
 		var m = new Discounts();
@@ -243,7 +270,7 @@ var CustomersController = Controller.extend({
 	},
 
 	showFidelity: function(id) {
-		var m = new Customer({
+		var m = new Customers().add({
 			customer_id: id
 		});
 
@@ -404,6 +431,18 @@ module.exports = Marionette.AppRouter.extend({
 	},
 
 	onRoute: function(name, path, args) {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		if (!Session.hasScope('site:account')) {
+			this.controller.navigationController.navigate('/');
+			return;
+		}
+
+		if (name == 'showFidelity' && !Session.hasFeature('fidelity')) {
+			this.controller.navigationController.navigate('/');
+			return;
+		}
+
 		this.controller.showSidebarMenu();
 	}
 });

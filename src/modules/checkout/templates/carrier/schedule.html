@@ -1,0 +1,88 @@
+<article class="post-article">
+	<header class="post-header">
+		<h1>Plannification de la <% if(type=='local') { %>date de livraison<% } else { %>date de retrait<% } %></h1>
+	</header>
+	<div class="post-content">
+		<% if(type=='local') { %>
+			<p>La plannification de la date de livraison permet de proposer le choix d'une date et d'une heure auxquelles les commandes peuvent être livrées.</p>
+		<% } else { %>
+			<p>La plannification de la date de retrait permet de proposer le choix d'une date et d'une heure auxquelles les commandes peuvent être retirées en magasin.</p>
+		<% } %>
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<label for="require_scheduling">Plannification</label>
+					<select class="form-control" id="require_scheduling" name="require_scheduling" data-style="selectify">
+						<option value="no" <%= require_scheduling == 'no' ? 'selected="selected"' : '' %>>Désactivée</option>
+						<option value="date" <%= require_scheduling == 'date' ? 'selected="selected"' : '' %>>Activée sans plage horaire</option>
+						<option value="datetime" <%= require_scheduling == 'datetime' ? 'selected="selected"' : '' %>>Activée avec plages horaires</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<% _.each(open_days, function(day){%>
+		<div class="row">
+			<div class="col-3">
+				<div class="form-group">
+					<label><%- day.name %></label>
+					<select name="open_days[<%- day.day_of_week %>][is_open]" data-style="selectify">
+						<option value="0" <%= !day.is_open ? 'selected="selected"' : '' %>>Fermé</option>
+						<option value="1" <%= day.is_open ? 'selected="selected"' : '' %>>Ouvert</option>
+					</select>
+				</div>
+			</div>
+			<% if (require_scheduling == 'datetime') { %>
+			<div class="col-9">
+				<div class="form-group">
+					<label class="required">Heures d'ouverture</label>
+					<input class="form-control" name="open_days[<%- day.day_of_week %>][time_frames]" value="<%- day.time_frames %>" placeholder="Jusqu'à 4 plages horaires (hh-hh) séparées par des virgules (ex. : 9-12,14-18)">
+				</div>
+			</div>
+			<% } %>
+		</div>
+		<%}) %>
+		<hr class="mt-0">
+		<div class="form-group">
+			<label for="closed_days">Jours de fermeture exceptionelle</label>
+			<input class="form-control" id="closed_days" name="closed_days" value="<%- closed_days %>" type="text" placeholder="Jusqu'à 20 dates (jj/mm/aaaa) séparées par des virgules (ex. : 01/05/2017,14/07/2017,01/08/2018)">
+		</div>
+		<label for="limit_hour">Heure de bascule</label>
+		<% if(type=='local') { %>
+			<p>Heure à partir de laquelle les commandes ne peuvent être commandées que le prochain jour ouvré.</p>
+		<% } else { %>
+			<p>Heure à partir de laquelle les commandes ne peuvent être retirées que le prochain jour ouvré.</p>
+		<% } %>
+		<div class="row">
+			<div class="col-3">
+				<div class="form-group">
+					<input class="form-control" id="limit_hour" name="limit_hour" value="<%- limit_hour %>" type="text" placeholder="ex. : 14h45">
+				</div>
+			</div>
+		</div>
+		<label for="scheduling_interval_min">Délai minimal avant de pouvoir <% if(type=='local') { %>livrer les commandes<% } else { %>retirer les commandes<% } %></label>
+		<div class="row">
+			<div class="col-3">
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text"></span></div>
+						<input class="form-control" id="scheduling_interval_min" name="scheduling_interval_min" value="<%- scheduling_interval_min %>" placeholder="0">
+						<div class="input-group-append"><span class="input-group-text">jour(s)</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<label for="scheduling_interval_max">Délai maximal pour pouvoir <% if(type=='local') { %>livrer les commandes<% } else { %>retirer les commandes<% } %></label>
+		<div class="row">
+			<div class="col-3">
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text"></span></div>
+						<input class="form-control" id="scheduling_interval_max" name="scheduling_interval_max" value="<%- scheduling_interval_max %>" placeholder="—">
+						<div class="input-group-append"><span class="input-group-text">jour(s)</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>

@@ -3,12 +3,53 @@ var _ = require('underscore');
 
 var CollectionUtils = require('kiubi/utils/collections.js');
 
+var Customer = Backbone.Model.extend({
+	urlRoot: 'sites/@site/account/customers',
+	idAttribute: 'customer_id',
+
+	parse: function(response) {
+		if ('data' in response) {
+			if (response.data === null) return {};
+			if (_.isNumber(response.data)) {
+				return {
+					customer_id: response.data
+				};
+			}
+			return response.data;
+		}
+		return response;
+	},
+
+	defaults: {
+		customer_id: null,
+		is_enabled: false,
+		number: '',
+		firstname: '',
+		lastname: "",
+		gender: "",
+		email: "",
+		password: "",
+		group_id: 0,
+		website: "",
+		nickname: "",
+		avatar_url: '',
+		avatar_thumb_url: '',
+		/*creation_date": "string",
+		 creation_date_f": "string",
+		 creation_date_timestamp": "integer",*/
+		is_in_mailinglist: false,
+		order_count: 0,
+		order_revenues: 0,
+		order_revenues_label: ''
+	}
+
+});
 
 module.exports = Backbone.Collection.extend({
 
 	url: 'sites/@site/account/customers',
 
-	model: require('./customer'),
+	model: Customer,
 
 	parse: function(response) {
 		this.meta = response.meta;
@@ -68,6 +109,33 @@ module.exports = Backbone.Collection.extend({
 			return model.destroy();
 		}, ids);
 
+	},
+
+	/**
+	 * Suggest costumers
+	 *
+	 * @param {String} term
+	 * @param {Number[]} limit
+	 * @param {Number[]} exclude
+	 * @returns {Promise}
+	 */
+	suggest: function(term, limit, exclude) {
+		return Backbone.ajax({
+			url: 'sites/@site/suggest/account/customers',
+			data: {
+				term: term,
+				exclude: exclude,
+				limit: limit || 5
+			}
+		}).then(function(response) {
+			return _.map(response.data, function(customer) {
+				return {
+					customer_id: customer.customer_id,
+					lastname: customer.lastname,
+					firstname: customer.firstname
+				};
+			});
+		});
 	}
 
 });

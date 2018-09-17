@@ -15,9 +15,9 @@
     </header>
     <div class="post-content">
       <div class="row">
-        <div class="col-xs-2">
+        <div class="col-2">
           <div class="form-group">
-            <label class="control-label" for="civility">Civilité</label>
+            <label for="civility">Civilité</label>
             <select id="civility" name="civility" data-style="selectify">
               <option value="Mr" <%= civility == "Mr" ? 'selected="selected"' : '' %>>M</option>
               <option value="Mrs" <%= civility == "Mrs" ? 'selected="selected"' : '' %>>Mme</option>
@@ -25,21 +25,21 @@
             </select>
           </div>
         </div>
-        <div class="col-xs-5">
+        <div class="col-5">
           <div class="form-group">
-            <label class="control-label required" for="lastname">Nom</label>
+            <label class="required" for="lastname">Nom</label>
             <input class="form-control" name="lastname" id="lastname" type="text" value="<%- lastname %>">
           </div>
         </div>
-        <div class="col-xs-5">
+        <div class="col-5">
           <div class="form-group">
-            <label class="control-label required" for="firstname">Prénom</label>
+            <label class="required" for="firstname">Prénom</label>
             <input class="form-control" name="firstname" id="firstname" type="text" value="<%- firstname %>">
           </div>
         </div>
-        <div class="col-xs-12">
+        <div class="col-12">
           <div class="form-group">
-            <label class="control-label required" for="email">Email</label>
+            <label class="required" for="email">Email</label>
             <p>
               Cet email sera le destinataire de plusieurs informations
               provenant de Kiubi : notifications, messages d'information, factures d'abonnement, copies des commandes, etc.
@@ -58,44 +58,44 @@
     </header>
     <div class="post-content">
       <div class="form-group">
-        <label class="control-label required" for="address">Adresse</label>
+        <label class="required" for="address">Adresse</label>
         <input id="address" name="address" class="form-control" value="<%- address %>" placeholder="">
       </div>
       <div class="row">
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label required" for="zipcode">Code postal</label>
+            <label class="required" for="zipcode">Code postal</label>
             <input id="zipcode" name="zipcode" class="form-control" value="<%- zipcode %>" placeholder="">
           </div>
         </div>
-        <div class="col-xs-8">
+        <div class="col-8">
           <div class="form-group">
-            <label class="control-label required" for="city">Ville</label>
+            <label class="required" for="city">Ville</label>
             <input id="city" name="city" class="form-control" value="<%- city %>" placeholder="">
           </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-6">
           <div class="form-group">
-            <label class="control-label" for="country_id">Pays</label>
+            <label for="country_id">Pays</label>
             <div data-role="countries"></div>
           </div>
         </div>
-        <div class="clearfix"></div>
-        <div class="col-xs-4">
+        <div class="w-100"></div>
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label required" for="phone">Téléphone</label>
+            <label class="required" for="phone">Téléphone</label>
             <input id="phone" name="phone" class="form-control" value="<%- phone %>" placeholder="">
           </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label" for="mobile">Mobile</label>
+            <label for="mobile">Mobile</label>
             <input id="mobile" name="mobile" class="form-control" value="<%- mobile %>" placeholder="">
           </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label" for="fax">Fax (encore utile parait-il ;))</label>
+            <label for="fax">Fax (encore utile parait-il ;))</label>
             <input id="fax" name="fax" class="form-control" value="<%- fax %>" placeholder="">
           </div>
         </div>
@@ -110,51 +110,51 @@
     </header>
     <div class="post-content">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <div class="form-group">
-            <label class="control-label" for="company_name">Dénomination sociale</label>
+            <label for="company_name">Dénomination sociale</label>
             <input id="company_name" name="company_name" class="form-control" value="<%- company_name %>" placeholder="Le nom légal de la société">
           </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label" for="company_forme">Forme juridique</label>
+            <label for="company_forme">Forme juridique</label>
             <input id="company_forme" name="company_forme" class="form-control" value="<%- company_forme %>" placeholder="EURL, SARL, SAS, SA, ...">
           </div>
         </div>
-        <div class="col-xs-8">
+        <div class="col-8">
           <div class="form-group">
-            <label class="control-label" for="company_capital">Capital social</label>
+            <label for="company_capital">Capital social</label>
             <input id="company_capital" name="company_capital" class="form-control" value="<%- company_capital %>" placeholder="Vous pouvez préciser le montant, avec ou sans la devise">
           </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label" for="company_siret">Siret</label>
+            <label for="company_siret">Siret</label>
             <input id="company_siret" name="company_siret" class="form-control" value="<%- company_siret %>" placeholder="Composé de 14 caractères" maxlength="20">
           </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label" for="company_rcs">RCS</label>
+            <label for="company_rcs">RCS</label>
             <input id="company_rcs" name="company_rcs" class="form-control" value="<%- company_rcs %>" placeholder="Composé de 13 caractères" maxlength="20">
           </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label" for="company_naf">NAF (ou APE)</label>
+            <label for="company_naf">NAF (ou APE)</label>
             <input id="company_naf" name="company_naf" class="form-control" value="<%- company_naf %>" placeholder="Composé de 5 caractères" maxlength="20">
           </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-6">
           <div class="form-group">
-            <label class="control-label" for="company_tva">Numéro de TVA intracommunautaire</label>
+            <label for="company_tva">Numéro de TVA intracommunautaire</label>
             <input id="company_tva" name="company_tva" class="form-control" value="<%- company_tva %>" placeholder="Composé de 14 caractères" maxlength="20">
           </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-6">
           <div class="form-group">
-            <label class="control-label" for="company_cnil">Numéro de déclaration CNIL</label>
+            <label for="company_cnil">Numéro de déclaration CNIL</label>
             <input id="company_cnil" name="company_cnil" class="form-control" value="<%- company_cnil %>" placeholder="À déclarer sur https://www.cnil.fr/">
           </div>
         </div>
@@ -167,7 +167,7 @@
 
 <div class="save">
   <div class="btn-toolbar" role="toolbar">
-    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+    <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
   </div>
 </div>
 

@@ -4,10 +4,10 @@ var _ = require('underscore');
 
 var TagView = Marionette.View.extend({
 	template: _.template(
-		'<span class="label-content" title="<%- label %>"><%- label %></span><span data-role="delete" class="md-icon md-close"></span>'
+		'<span class="badge-content" title="<%- label %>"><%- label %></span><span data-role="delete" class="md-icon md-close"></span>'
 	),
 
-	className: 'label label-tag label-list',
+	className: 'badge badge-primary badge-list',
 	tagName: 'span',
 
 	ui: {
@@ -42,14 +42,18 @@ module.exports = Marionette.View.extend({
 	ui: {
 		'drop': '.dropdown',
 		'sel': '.dropdown li[data-role="selection"]',
-		'lixtra': '.dropdown li[data-role="xtra"]'
+		'lixtra': '.dropdown li[data-role="xtra"]',
+		'input': 'input[data-role="input"]'
 	},
 
 	events: {
-		'keyup @ui.drop input': _.debounce(function(event) {
-			this.term = Backbone.$(event.currentTarget).val();
-			this.triggerMethod(this.eventName('input'), this.term, this);
+		'keyup @ui.input': _.debounce(function(event) {
+			this.triggerInput();
 		}, 300),
+
+		'mousedown @ui.input': function(event) {
+			this.triggerInput();
+		},
 
 		'click @ui.sel': function(event) {
 			var index = parseInt(Backbone.$(event.currentTarget).data('index'));
@@ -69,6 +73,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	suggestions: null,
+	term: null,
 
 	searchPlaceholder: 'Rechercher',
 	inputName: '',
@@ -81,6 +86,8 @@ module.exports = Marionette.View.extend({
 	initialize: function(options) {
 
 		this.mergeOptions(options, ['evtSuffix', 'searchPlaceholder', 'inputName']);
+
+		this.term = null;
 
 		this.collection = new Backbone.Collection();
 		this.collection.model = Backbone.Model.extend({
@@ -100,6 +107,13 @@ module.exports = Marionette.View.extend({
 
 	},
 
+	templateContext: function() {
+		return {
+			'searchPlaceholder': this.searchPlaceholder,
+			'inputName': this.inputName
+		};
+	},
+
 	onRender: function() {
 
 		this.showChildView('list', new TagsView({
@@ -108,13 +122,11 @@ module.exports = Marionette.View.extend({
 
 	},
 
-	templateContext: function() {
+	triggerInput: function() {
+		if (this.getUI('input').val() === this.term) return;
 
-		return {
-			'searchPlaceholder': this.searchPlaceholder,
-			'inputName': this.inputName
-		};
-
+		this.term = this.getUI('input').val();
+		this.triggerMethod(this.eventName('input'), this.term, this);
 	},
 
 	showResults: function(results, xtra) {
@@ -123,10 +135,12 @@ module.exports = Marionette.View.extend({
 		var list = '';
 		if (results.length > 0) {
 			list = _.reduce(results, function(acc, result, index) {
-				return acc + '<li data-role="selection" data-index="' + index + '"><a href="#">' + result.label + '</a></li>';
+				return acc + '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' +
+					result.label + '</a></li>';
 			}, '');
 		} else {
-			list = '<li><a href="#">-- Aucun résultat --</a></li>';
+			list =
+				'<li><span class="dropdown-item dropdown-item-empty"><span class="md-icon md-no-result"></span> Aucun résultat</span></li>';
 		}
 
 		if (xtra) {
@@ -136,12 +150,14 @@ module.exports = Marionette.View.extend({
 				eventName: 'xtra'
 			}, xtra);
 
-			list += '<li role="separator" class="divider"></li><li data-role="xtra" data-event="' + xtra.eventName +
-				'"><a href="#">' + xtra.title + '<span class="md-icon ' + xtra.iconClass + '"></span></a></li>';
+			list += '<li class="dropdown-divider"></li><li data-role="xtra" data-event="' + xtra.eventName +
+				'"><a class="dropdown-item" href="#">' + xtra.title + '<span class="md-icon ' + xtra.iconClass +
+				'"></span></a></li>';
 		}
 
 		this.getUI('drop').children('ul').html(list);
-		this.getUI('drop').addClass('open'); // Force opening
+		this.getUI('drop').addClass('show'); // Force opening
+		this.getUI('drop').children('.dropdown-menu').addClass('show'); // Force opening
 	},
 
 	/**
@@ -157,6 +173,26 @@ module.exports = Marionette.View.extend({
 
 	getTags: function() {
 		return this.collection.toJSON();
+	},
+
+	/**
+	 *
+	 * @param {Array} tags
+	 * 					[
+	 * 					{String} label
+	 * 					{Number} value
+	 * 					]
+	 */
+	setTags: function(tags) {
+		this.collection.set(tags, {
+			reset: true
+		});
+		Backbone.$('input', this.el).val('');
+	},
+
+	clearTags: function() {
+		this.collection.reset();
+		Backbone.$('input', this.el).val('');
 	}
 
 });

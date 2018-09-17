@@ -133,6 +133,8 @@ module.exports = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
+			'base_price': this.model.meta.base_price,
+			'currency': format.currencyEntity(this.model.meta.currency),
 			start_date: format.formatDate(this.model.get('start_date')),
 			end_date: format.formatDate(this.model.get('end_date'))
 		};
@@ -148,6 +150,9 @@ module.exports = Marionette.View.extend({
 			searchPlaceholder: 'Recherche des membres ou groups extranet',
 			tags: formatCustomersTags(restrictions.allow.customers, restrictions.allow.groups)
 		}));
+		this.listenTo(this.getChildView('allowed_customers').collection, 'update', function() {
+			this.triggerMethod('field:change');
+		}.bind(this));
 
 		// Denied customers & groups
 		this.showChildView('denied_customers', new TagView({
@@ -155,6 +160,9 @@ module.exports = Marionette.View.extend({
 			searchPlaceholder: 'Recherche des membres ou groups extranet',
 			tags: formatCustomersTags(restrictions.deny.customers, restrictions.deny.groups)
 		}));
+		this.listenTo(this.getChildView('denied_customers').collection, 'update', function() {
+			this.triggerMethod('field:change');
+		}.bind(this));
 
 		if (this.model.get('type') != 'shipping') {
 			// Allowed products & categories
@@ -163,6 +171,9 @@ module.exports = Marionette.View.extend({
 				searchPlaceholder: 'Recherche des produits ou catégories de produits',
 				tags: formatProductsTags(restrictions.allow.products, restrictions.allow.categories)
 			}));
+			this.listenTo(this.getChildView('allowed_products').collection, 'update', function() {
+				this.triggerMethod('field:change');
+			}.bind(this));
 
 			// Denied products & categories
 			this.showChildView('denied_products', new TagView({
@@ -170,6 +181,9 @@ module.exports = Marionette.View.extend({
 				searchPlaceholder: 'Recherche des produits ou catégories de produits',
 				tags: formatProductsTags(restrictions.deny.products, restrictions.deny.categories)
 			}));
+			this.listenTo(this.getChildView('denied_products').collection, 'update', function() {
+				this.triggerMethod('field:change');
+			}.bind(this))
 		} else {
 			this.showChildView('carriers', new SelectView({
 				collectionPromise: this.carriers.promisedSelect({
@@ -183,67 +197,69 @@ module.exports = Marionette.View.extend({
 	// Allow - Deny Customers & Groups
 	onChildviewInputCustomers: function(term, view) {
 
-		Backbone.$.when(
-			this.customers.fetch({
-				data: {
-					limit: 5,
-					term: term
-				}
-			}),
-			this.groups.fetch({
-				data: {
-					limit: 5,
-					term: term
-				}
-			})
-		).done(function() {
+		var exclude_customers = [];
+		var exclude_groups = [];
+		_.each(this.getChildView('allowed_customers').getTags(), function(tag) {
+			if (tag.type == 'group') exclude_groups.push(tag.value);
+			else exclude_customers.push(tag.value);
+		});
+		_.each(this.getChildView('denied_customers').getTags(), function(tag) {
+			if (tag.type == 'group') exclude_groups.push(tag.value);
+			else exclude_customers.push(tag.value);
+		});
 
-			view.showResults(formatCustomersTags(_.map(this.customers.toJSON(), function(r) {
+		Backbone.$.when(
+			this.customers.suggest(term, 5, exclude_customers),
+			this.groups.suggest(term, 5, exclude_groups)
+		).done(function(customers, groups) {
+
+			view.showResults(formatCustomersTags(_.map(customers, function(r) {
 				return {
 					name: r.firstname + ' ' + r.lastname,
 					restriction_id: r.customer_id
 				};
-			}), _.map(this.groups.toJSON(), function(r) {
+			}), _.map(groups, function(r) {
 				return {
 					name: r.name,
 					restriction_id: r.group_id
 				};
 			})));
 
-		}.bind(this));
+		});
 	},
 
 	// Allow - Deny Products & Categories
 	onChildviewInputProducts: function(term, view) {
 
-		Backbone.$.when(
-			this.products.fetch({
-				data: {
-					limit: 5,
-					term: term
-				}
-			}),
-			this.categories.fetch({
-				data: {
-					limit: 5,
-					term: term
-				}
-			})
-		).done(function() {
+		var exclude_products = [];
+		var exclude_categories = [];
+		_.each(this.getChildView('allowed_products').getTags(), function(tag) {
+			if (tag.type == 'product') exclude_products.push(tag.value);
+			else exclude_categories.push(tag.value);
+		});
+		_.each(this.getChildView('denied_products').getTags(), function(tag) {
+			if (tag.type == 'product') exclude_products.push(tag.value);
+			else exclude_categories.push(tag.value);
+		});
 
-			view.showResults(formatProductsTags(_.map(this.products.toJSON(), function(r) {
+		Backbone.$.when(
+			this.products.suggest(term, 5, exclude_products),
+			this.categories.suggest(term, 5, exclude_categories)
+		).done(function(products, categories) {
+
+			view.showResults(formatProductsTags(_.map(products, function(r) {
 				return {
 					name: r.name,
 					restriction_id: r.product_id
 				};
-			}), _.map(this.categories.toJSON(), function(r) {
+			}), _.map(categories, function(r) {
 				return {
 					name: r.name,
 					restriction_id: r.category_id
 				};
 			})));
 
-		}.bind(this));
+		});
 	},
 
 	onSave: function() {

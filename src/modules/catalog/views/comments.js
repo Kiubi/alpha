@@ -15,7 +15,7 @@ var RowView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			convertMediaPath: Session.convertMediaPath.bind(Session),
-			date: format.formatDate(this.model.get('date')),
+			date: format.formatLongDateTime(this.model.get('date')),
 			comment2br: _.escape('' + this.model.get('comment')).replace(/(\r\n|\n\r|\r|\n)+/g, '<br />')
 		};
 	},

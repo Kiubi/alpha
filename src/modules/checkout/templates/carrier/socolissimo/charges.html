@@ -1,0 +1,84 @@
+<article class="post-article">
+	<header class="post-header">
+		<h1>Livraison vers la France Métropolitaine, Andorre et  Monaco</h1>
+	</header>
+	<form data-role="steps">
+	<div class="post-content post-list">
+		<div class="row">
+			<div class="col-4"><label>Tranche de poids</label></div>
+			<div class="col-3"><label>Frais du port</label></div>
+		</div>
+
+		<div data-role="steps"></div>
+
+		<div class="list-item no-hover"><a href="#" data-role="step-add">Ajouter une tranche de poids</a></div>
+	</div>
+	</form>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Livraison en Point Relais</h1>
+	</header>
+	<form data-role="pickup">
+	<div class="post-content post-list">
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<label for="socolissimo_pickup_free_threshold">Francos de port</label>
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text">Gratuit à partir de</span></div>
+						<input class="form-control" id="socolissimo_pickup_free_threshold" name="socolissimo_pickup_free_threshold" value="<%- socolissimo_pickup_free_threshold %>" placeholder="—">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achat</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-4"><label>Tranche de poids</label></div>
+			<div class="col-3"><label>Frais du port</label></div>
+		</div>
+
+		<!--<div class="list-item-empty">
+			Tranches de poids et tarifs identiques à la livraison en France
+		</div>-->
+
+		<div data-role="pickup"></div>
+
+		<div class="list-item no-hover"><a href="#" data-role="pickup-add">Ajouter une tranche de poids</a></div>
+	</div>
+	</form>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Livraison vers la Belgique</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label for="socolissimo_be_extra">Montant du surcout</label>
+			<p>Le montant doit être égale à celui configuré dans l'outil de gestion de compte de la Poste.</p>
+			<div class="row">
+				<div class="col-6">
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text"></span></div>
+						<input class="form-control" id="socolissimo_be_extra" name="socolissimo_be_extra" value="<%- socolissimo_be_extra %>" placeholder="1,00">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %> TTC d'achat</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label>Autoriser la livraison vers la Belgique</label>
+			<div class="form-check">
+				<input name="socolissimo_be_enabled" id="socolissimo_be_enabled1" value="1" type="radio" <%= socolissimo_be_enabled ? 'checked="checked"' : '' %>>
+				<label for="socolissimo_be_enabled1">Oui</label>
+				<input name="socolissimo_be_enabled" id="socolissimo_be_enabled0" value="0" type="radio" <%= !socolissimo_be_enabled ? 'checked="checked"' : '' %>>
+				<label for="socolissimo_be_enabled0">Non</label>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>

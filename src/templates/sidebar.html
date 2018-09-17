@@ -1,33 +1,36 @@
-<a href="#" class="bt-closed md-icon"></a>
+
 
 <div class="logo"><img src="/assets/img/logo_kiubi.png"></div>
 
-<ul class="nav nav-stacked">
+<ul class="nav flex-column">
 	<% _(mainItems).each(function(item){ %>
-	<li class="<%= item.is_active ? 'active' : '' %>">
-		<a href='<%- item.path %>'><span class="md-icon md-icon-menu <%- item.className %>"></span><span class="nav-label"><%- item.name %></span></a>
+	<li class="nav-item <%= item.is_active ? 'active' : '' %>">
+		<% if(item.is_enabled) { %>
+		<a href='<%- item.path %>' class="nav-link" title="<%- item.name %>" data-toggle="tooltip" data-placement="right" data-html="true"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
+		<% } else { %>
+		<span class="nav-link disabled" title="<%- item.name %> indisponible" data-toggle="tooltip" data-placement="right" data-html="true"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
+		<% } %>
 	</li>
 	<% }) %>
 </ul>
 
-<ul class="nav nav-stacked tools">
+<ul class="nav flex-column tools">
 	<% _(toolsItems).each(function(item){ %>
-	<li class="<%= item.is_active ? 'active' : '' %>">
-		<a href='<%- item.path %>'><span class="md-icon md-icon-menu <%- item.className %>"></span><span class="nav-label"><%- item.name %></span></a>
+	<li class="nav-item <%= item.is_active ? 'active' : '' %>">
+		<% if(item.is_enabled) { %>
+		<a href='<%- item.path %>' class="nav-link" title="<%- item.name %>" data-toggle="tooltip" data-placement="right" data-html="true"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
+		<% } else { %>
+		<span class="nav-link disabled" title="<%- item.name %> (Désactivé) indisponible" data-toggle="tooltip" data-placement="right" data-html="true"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
+		<% } %>
 	</li>
 	<% }) %>
+	<li class="nav-item"><span class="nav-link bt-closed"><span class="md-icon md-icon-menu"></span></span></li>
 </ul>
 
 <% if(isAuth) { %>
 <div class="user">
-	<div class="media">
-		<div class="media-left">
-			<a href="#"> <img src="<%- avatar %>" class="img-circle media-object img-avatar"> </a>
-		</div>
-		<div class="media-body">
-			<h4><%- initials %></h4>
-			<span class="user-profil">Premium</span>
-		</div>
-	</div>
+	<a href="#" data-toggle="tooltip" data-placement="right" data-html="true" data-container="body" title="<strong><%- user.firstname %> <%- user.lastname %></strong><br/>Premium">
+		<img src="<%- user.avatar %>" class="rounded-circle img-avatar d-block mx-auto">
+	</a>
 </div>
 <% } %>

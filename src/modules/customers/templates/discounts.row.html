@@ -1,12 +1,17 @@
 <div class="row">
-	<div class="col-xs-3">
-		<div class="form-group has-feedback">
-			<input class="form-control" name="discount_c" placeholder="<%- group_discount %>" value="<%- discount %>">
-			<span class="form-control-feedback md-percent"></span>
+	<div class="col-3">
+
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend"><span class="input-group-text"></span></div>
+				<input class="form-control" name="discount_c" placeholder="<%- group_discount %>" value="<%- discount %>">
+				<div class="input-group-append"><span class="input-group-text">%</span></div>
+			</div>
 		</div>
+
 	</div>
-	<div class="col-xs-6">
+	<div class="col-7">
 		<div data-role="autocomplete"></div>
 	</div>
-	<div class="col-xs-3"><a href="#" data-role="action" data-action="delete" class="md-icon md-delete pull-right"></a></div>
+	<div class="col"><a href="#" data-role="action" data-action="delete" class="md-icon md-delete float-right"></a></div>
 </div>

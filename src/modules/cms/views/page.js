@@ -1,18 +1,18 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector');
 var SelectView = require('kiubi/views/ui/select.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 var RestrictionsView = require('kiubi/modules/customers/views/restrictions');
+var SeoView = require('kiubi/views/ui/seo.js');
 
 var Posts = require('../models/posts');
 var Restrictions = require('kiubi/modules/customers/models/restrictions');
 
-var Session = Backbone.Radio.channel('app').request('ctx:session');
-var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 
 /**
@@ -40,8 +40,6 @@ var ListView = require('kiubi/views/ui/list.js');
 var PageView = Marionette.View.extend({
 	template: require('../templates/page.page.html'),
 
-	behaviors: [CharCountBehavior],
-
 	regions: {
 		list: {
 			el: "article[data-role='list']",
@@ -53,6 +51,10 @@ var PageView = Marionette.View.extend({
 		},
 		restrictions: {
 			el: "div[data-role='restrictions']",
+			replaceElement: true
+		},
+		seo: {
+			el: "article[data-role='seo']",
 			replaceElement: true
 		}
 	},
@@ -69,17 +71,19 @@ var PageView = Marionette.View.extend({
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'collection']);
 
-		this.layoutSelector = new LayoutSelectorView({
-			layout_id: this.model.get('layout_id'),
-			type: 'cms-page',
-			apply: this.model.get('page_id'),
-			applyName: this.model.get('name')
-		});
+		if (this.getOption('enableLayout')) {
+			this.layoutSelector = new LayoutSelectorView({
+				layout_id: this.model.get('layout_id'),
+				type: 'cms-page',
+				apply: this.model.get('page_id'),
+				applyName: this.model.get('name')
+			});
+		}
 	},
 
 	templateContext: function() {
 		return {
-			domain: Session.site.get('domain')
+			enableExtranet: this.getOption('enableExtranet')
 		};
 	},
 
@@ -103,11 +107,22 @@ var PageView = Marionette.View.extend({
 			scrollThreshold: 920 // TODO
 
 		}));
-		this.showChildView('layout', this.layoutSelector);
+		if (this.getOption('enableLayout')) {
+			this.showChildView('layout', this.layoutSelector);
+		}
+		if (this.getOption('enableExtranet')) {
+			this.showChildView('restrictions', new RestrictionsView({
+				restrictions: this.model.get('restrictions')
+			}));
+		}
 
-		this.showChildView('restrictions', new RestrictionsView({
-			restrictions: this.model.get('restrictions')
-		}));
+		// Seo
+		if (this.getOption('enableSeo')) {
+			this.showChildView('seo', new SeoView({
+				slug_prefix: '/',
+				model: this.model
+			}));
+		}
 	},
 
 	start: function() {
@@ -138,6 +153,10 @@ var PageView = Marionette.View.extend({
 
 	onChildviewSortChange: function(data) {
 		this.collection.reOrder(this.model.get('page_id'), data.list);
+	},
+
+	onChildviewChangeRestrictions: function() {
+		this.triggerMethod('field:change');
 	},
 
 	getRestrictions: function() {
@@ -177,13 +196,11 @@ var InternalLinkView = Marionette.View.extend({
 			direction: 'up'
 		}));
 
-		var types = this.model.getInternalLinkTypes().done(function() {
+		var typesPromise = this.model.getInternalLinkTypes(this.model.get('target_type')).done(function() {
 			this.changeType(this.model.get('target_type'));
 		}.bind(this));
-
 		this.showChildView('type', new SelectView({
-			dataSource: types,
-			selected: this.model.get('target_type'),
+			collectionPromise: typesPromise,
 			name: 'target_type',
 			direction: 'up'
 		}));
@@ -197,7 +214,7 @@ var InternalLinkView = Marionette.View.extend({
 
 		var that = this;
 
-		this.getChildView('page').load(
+		this.getChildView('page').loadCollection(
 			this.model.getInternalLinkTargets(type)
 			.then(function(targets) {
 
@@ -222,7 +239,7 @@ var InternalLinkView = Marionette.View.extend({
 						is_group: !target.is_linkable
 					};
 				});
-				return options;
+				return new CollectionUtils.SelectCollection(options);
 			}, function() {
 				// TODO
 				return [];
@@ -255,6 +272,7 @@ var ParentView = Marionette.View.extend({
 	template: require('../templates/page.parent.html'),
 
 	ui: {
+		'drop': '.dropdown',
 		'actionBtn': 'li a',
 		'posBtn': 'li .md-before, li .md-after',
 		'label': '[data-role="label"]'
@@ -297,7 +315,8 @@ var ParentView = Marionette.View.extend({
 			this.getUI('label').text(this.parentTitle(id));
 			this.triggerMethod('select:parent', parent);
 
-			this.$el.removeClass('open'); // manually close dropdown
+			this.getUI('drop').removeClass('show'); // manually close dropdown
+			this.getUI('drop').children('.dropdown-menu').removeClass('show'); // manually close dropdown
 			return false; // prevent click @ui.actionBtn from firing
 		}
 	},
@@ -440,7 +459,10 @@ module.exports = Marionette.View.extend({
 				collection.page_id = this.model.get('page_id');
 				view = new PageView({
 					model: this.model,
-					collection: collection
+					collection: collection,
+					enableSeo: this.getOption('enableSeo'),
+					enableLayout: this.getOption('enableLayout'),
+					enableExtranet: this.getOption('enableExtranet')
 				});
 				view.start();
 				break;
@@ -475,10 +497,15 @@ module.exports = Marionette.View.extend({
 		}));
 	},
 
+	onChildviewFieldChange: function() {
+		// proxy PageView event
+		this.triggerMethod('field:change');
+	},
+
 	onSave: function() {
 
 		var promise;
-		if (this.model.get('page_type') == 'page' && this.getChildView('detail')) {
+		if (this.model.get('page_type') == 'page' && this.getChildView('detail') && this.getOption('enableExtranet')) {
 			var r = this.getChildView('detail').getRestrictions();
 			var collection = new Restrictions();
 			collection.setType('cms/pages', this.model.get('page_id'));

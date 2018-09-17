@@ -1,48 +1,46 @@
-<div class="row" data-role="list">
-	<div class="col-xs-9">
-		<div class="media">
-			<div class="media-left">
-				<div class="checkbox-inline">
+		<div class="row no-gutters" data-role="list">
+			<div class="col-auto">
 					<input id="selection_<%- comment_id %>" name="selection" value="<%- comment_id %>" type="checkbox">
 					<label for="selection_<%- comment_id %>"></label>
-				</div>
 			</div>
-			<div class="media-left">
-				<div class="media-object md-icon md-face img-default img-circle img-avatar"></div>
-				<div class="media-object img-circle img-avatar"><img alt="" src="<%= convertMediaPath(avatar_thumb_url) %>" /></div>
+			<div class="col-auto">
+				<div class="media-object md-icon md-face img-default rounded-circle img-avatar"></div>
+				<div class="media-object rounded-circle img-avatar"><img alt="" src="<%= convertMediaPath(avatar_thumb_url) %>" /></div>
 			</div>
-			<div class="media-body">
-				<% if (customer_id > 0) { %>
-				<h4><%- customer_name %><% if (customer_nickname != "") { %> (<%- customer_nickname %>)<% } %>
-					<% if (origin == "admin") { %>
-						<div class="md-icon md-user"></div>
-					<% } else { %>
-						<a href="/customers/<%- customer_id %>" class="md-icon md-person"></a>
-					<% } %>
-				</h4>
-				<% } else { %>
-					<h4><%- author %></h4>
-				<% } %>
-				<% if(is_visible) { %>
-					Posté le <%- date %> pour <a href="/catalog/products/<%- product_id %>"><%- product_name %></a>
-				<% } else { %>
-					<span class="text-danger">Masqué</span>
-				<% } %>
-				<div class="rating"><span class="md-icon md-rating-<%- rate %>"></span></div>
-			</div>
-		</div>
+			<div class="col item-body">
+		<% if (customer_id > 0) { %>
+		<h4><%- customer_name %><% if (customer_nickname != "") { %> (<%- customer_nickname %>)<% } %>
+			<% if (origin == "admin") { %>
+				<div class="md-icon md-user"></div>
+			<% } else { %>
+				<a href="/customers/<%- customer_id %>" class="md-icon md-person"></a>
+			<% } %>
+		</h4>
+		<% } else { %>
+			<h4><%- author %></h4>
+		<% } %>
+		<% if(is_visible) { %>
+			<%- date %>
+		<% } else { %>
+			<span class="text-danger">Masqué</span>
+		<% } %>
+		dans <a href="/catalog/products/<%- product_id %>"><%- product_name %></a>
 	</div>
-	<div class="col-xs-3">
-		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="#" role="button" data-role="action" data-action="edit">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> </button>
+		<div class="col-4 no-white-space"><div>
+			<div class="rating"><span class="md-icon md-rating-<%- rate %>"></span></div></div>
+	</div>
+	<div class="col-auto">
+		<div class="btn-group float-right" role="group"> <a class="btn btn-primary" href="#" role="button" data-role="action" data-action="edit">Détail</a>
+			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
 			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+				<li><a class="dropdown-item" href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
 			</ul>
 		</div>
-	</div>
 </div>
-<div class="media" data-role="list">
-	<div class="media-body"><blockquote><%= comment2br %></blockquote></div>
+</div>
+
+<div data-role="list">
+	<blockquote><%= comment2br %></blockquote>
 </div>
 
 <form style="display: none;" data-role="edit">
@@ -50,36 +48,45 @@
 	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
 
 	<div class="form-group">
-		<label class="control-label">Informations générales</label>
+		<label>Informations générales</label>
 		<p class="form-control-static">Posté le <%- date %> dans <a href="/catalog/products/<%- product_id %>"><%- product_name %></a></p>
 	</div>
+
 	<div class="form-group">
-		<label class="control-label">IP | Host</label>
+		<label>Note</label>
+		<div class="form-control-static rating"><span class="md-icon md-rating-<%- rate %>"></span></div>
+
+	</div>
+
+
+
+	<div class="form-group">
+		<label>IP | Host</label>
 		<p class="form-control-static"><%- ip %> | <%- reverse_host %></p>
 	</div>
 	<div class="form-group">
-		<label class="control-label">Affichage</label>
-		<div class="radio-group">
+		<label>Affichage</label>
+		<div class="form-check">
 			<input name="is_visible" id="f_<%- comment_id %>_is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
 			<label for="f_<%- comment_id %>_is_visible1" class="visible">Visible</label>
 			<input name="is_visible" id="f_<%- comment_id %>_is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
-			<label for="f_<%- comment_id %>_is_visible0" class="is_visible0">Masqué</label>
+			<label for="f_<%- comment_id %>_is_visible0" class="not-visible">Masqué</label>
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="control-label">Auteur</label>
+		<label>Auteur</label>
 		<p class="form-control-static"><%- author %></p>
 	</div>
 	<div class="form-group">
-		<label class="control-label required" for="f_<%- comment_id %>_comment">Commentaire</label>
+		<label class="required" for="f_<%- comment_id %>_comment">Commentaire</label>
 		<textarea class="form-control" rows="5" id="f_<%- comment_id %>_comment" name="comment" placeholder="Obligatoire"><%- comment %></textarea>
 	</div>
 	<div class="btn-toolbar" role="toolbar">
 		<div class="btn-group" role="group">
-			<button type="button" class="btn btn-cancel" data-role="action" data-action="cancel">Annuler</button>
+			<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="action" data-action="cancel">Annuler</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn btn-action" data-role="action" data-action="save">Enregistrer</button>
+			<button type="button" class="btn btn-lg btn-success btn-save" data-role="action" data-action="save">Enregistrer</button>
 		</div>
 	</div>
 </form>

@@ -12,7 +12,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkShow: function(ids) {
@@ -33,7 +33,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkHide: function(ids) {
@@ -54,7 +54,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkDelete: function(ids) {
@@ -63,5 +63,31 @@ module.exports = Backbone.Collection.extend({
 			return model.destroy();
 		}, ids);
 
+	},
+
+	/**
+	 * Suggest products
+	 *
+	 * @param {String} term
+	 * @param {Number[]} limit
+	 * @param {Number[]} exclude
+	 * @returns {Promise}
+	 */
+	suggest: function(term, limit, exclude) {
+		return Backbone.ajax({
+			url: 'sites/@site/suggest/catalog/products',
+			data: {
+				term: term,
+				exclude: exclude,
+				limit: limit || 5
+			}
+		}).then(function(response) {
+			return _.map(response.data, function(product) {
+				return {
+					product_id: product.product_id,
+					name: product.name
+				};
+			});
+		});
 	}
 });

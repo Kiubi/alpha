@@ -56,13 +56,13 @@ module.exports = Marionette.Object.extend({
 	sidebarMenuService: null,
 	sidebarMenu: null,
 	sidebarMenuEvents: {},
+	sidebarMenuOptions: {},
 	sidebarMenuBuffer: [],
 
 	baseBreadcrum: [],
 
 	initialize: function(options) {
-		this.navigationController = Backbone.Radio.channel('app').request(
-			'ctx:navigationController');
+		this.navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 	},
 
 	/**
@@ -73,11 +73,11 @@ module.exports = Marionette.Object.extend({
 	showSidebarMenu: function() {
 		if (!this.sidebarMenu) return;
 
-		if (this.navigationController.getSidebarMenuDetail() != null && this.navigationController.getSidebarMenuService() ==
-			this.sidebarMenuService) {
+		if (this.navigationController.getSidebarMenuDetail() != null &&
+			this.navigationController.getSidebarMenuService() == this.sidebarMenuService) {
 			return;
 		}
-		var view = new this.sidebarMenu();
+		var view = new this.sidebarMenu(this.sidebarMenuOptions);
 		_.each(this.sidebarMenuEvents, function(value, key) {
 			this.listenTo(view, key, this[value]);
 		}, this);

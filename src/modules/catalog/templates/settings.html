@@ -13,9 +13,9 @@
 			Attention cependant, Kiubi n'assure pas de conversion automatique en cas de changement de devise.
 		</p>
 		<div class="row">
-			<div class="col-xs-4">
+			<div class="col-4">
 				<div class="form-group">
-					<label class="control-label" for="currency">Préfixe des commandes</label>
+					<label for="currency">Préfixe des commandes</label>
 					<select class="form-control" id="currency" name="currency" data-style="selectify">
 						<option value="EUR" <%= currency == "EUR" ? 'selected="selected"' : '' %>>Euro (EUR)</option>
 						<option value="CHF" <%= currency == "CHF" ? 'selected="selected"' : '' %>>Franc suisse (CHF)</option>
@@ -37,13 +37,13 @@
 	</header>
 	<div class="post-content">
 		<p>
-			La vente privée vous permet de restreindre l'accès du catalogue aux visiteurs inscrits et connectés au site web.
+			La vente privée vous permet de restreindre l'accès du catalogue aux visiteurs inscrits et connectés au site Internet.
 			Pour en savoir plus sur la vente privée,
 			<a href="https://aide.kiubi.com/documentation/catalogue/vente-privee.html" target="_blank">consultez l'aide en ligne</a>.
 		</p>
 		<div class="form-group">
-			<label class="control-label" for="">Utilisation de la vente privée </label>
-			<div class="radio-group">
+			<label for="">Utilisation de la vente privée </label>
+			<div class="form-check">
 				<input name="require_auth" id="require_auth1" value="1" <%= require_auth ? 'checked="checked"' : '' %> type="radio">
 				<label for="require_auth1" class="visible">Activée</label>
 				<input name="require_auth" id="require_auth0" value="0" <%= !require_auth ? 'checked="checked"' : '' %> type="radio">
@@ -65,10 +65,10 @@
 			Si un visiteur est identifé, son évaluation sera ajoutée à son compte en tant que membre du site.
 		</p>
 		<div class="row">
-			<div class="col-xs-4">
+			<div class="col-4">
 				<div class="form-group">
-					<label class="control-label" for="">Évaluations ouvertes</label>
-					<div class="radio-group">
+					<label for="">Évaluations ouvertes</label>
+					<div class="form-check">
 						<input name="comments_allowed" id="comments_allowed1" value="1" <%= comments_allowed ? 'checked="checked"' : '' %> type="radio">
 						<label for="comments_allowed1">Oui</label>
 						<input name="comments_allowed" id="comments_allowed0" value="0" <%= !comments_allowed ? 'checked="checked"' : '' %> type="radio">
@@ -76,10 +76,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-4">
 				<div class="form-group">
-					<label class="control-label" for="">Publication immédiate</label>
-					<div class="radio-group">
+					<label for="">Publication immédiate</label>
+					<div class="form-check">
 						<input name="comments_autopublish" id="comments_autopublish1" value="1" <%= comments_autopublish ? 'checked="checked"' : '' %> type="radio">
 						<label for="comments_autopublish1">Oui</label>
 						<input name="comments_autopublish" id="comments_autopublish0" value="0" <%= !comments_autopublish ? 'checked="checked"' : '' %> type="radio">
@@ -87,10 +87,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-4">
 				<div class="form-group">
-					<label class="control-label" for="">Identification requise</label>
-					<div class="radio-group">
+					<label for="">Identification requise</label>
+					<div class="form-check">
 						<input name="comments_anonymous" id="comments_anonymous0" value="0" <%= !comments_anonymous ? 'checked="checked"' : '' %> type="radio">
 						<label for="comments_anonymous0">Oui</label>
 						<input name="comments_anonymous" id="comments_anonymous1" value="1" <%= comments_anonymous ? 'checked="checked"' : '' %> type="radio">
@@ -114,8 +114,8 @@
 			qu'il réponde à une question aléatoirement posée pour poster un nouveau commentaire.
 		</p>
 		<div class="form-group">
-			<label class="control-label" for="">Utilisation du captcha</label>
-			<div class="radio-group">
+			<label for="">Utilisation du captcha</label>
+			<div class="form-check">
 				<input name="comments_captcha" id="comments_captcha1" value="1" <%= comments_captcha ? 'checked="checked"' : '' %> type="radio">
 				<label for="comments_captcha1" class="visible">Activé</label>
 				<input name="comments_captcha" id="comments_captcha0" value="0" <%= !comments_captcha ? 'checked="checked"' : '' %> type="radio">
@@ -130,7 +130,7 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

@@ -29,7 +29,9 @@ function isTokenValid(token) {
 function allowedSite(site) {
 	var d = Backbone.$.Deferred();
 
-	api.get('sites/' + site, {}).done(function(meta, data) {
+	api.get('sites/' + site, {
+		extra_fields: 'scopes,features'
+	}).done(function(meta, data) {
 		d.resolve(data);
 	}).fail(function(meta, error) {
 		d.reject(error.message);
@@ -48,7 +50,11 @@ function pickFirstSite() {
 	api.get('sites', {
 		limit: 1
 	}).done(function(meta, data) {
-		d.resolve(data[0]);
+		allowedSite(data[0].code_site).done(function(site) {
+			d.resolve(site);
+		}).fail(function(msg) {
+			d.reject(msg);
+		});
 	}).fail(function(meta, error) {
 		d.reject(error.message);
 	});
@@ -166,7 +172,8 @@ var Session = Backbone.Model.extend({
 		}
 
 		return setCredidentials(isTokenValid(token), this).then(function() {
-			var promise = getLastSite(this.user.get('user_id')) ? allowedSite(getLastSite(this.user.get('user_id'))) :
+			var promise = getLastSite(this.user.get('user_id')) ?
+				allowedSite(getLastSite(this.user.get('user_id'))) :
 				pickFirstSite();
 			return setSiteContext(promise, this);
 		}.bind(this));
@@ -255,6 +262,32 @@ var Session = Backbone.Model.extend({
 	 */
 	convertThemePath: function(path) {
 		return 'https://' + this.site.get('backoffice') + path + '?sign=' + this.hashMedia(path);
+	},
+
+	/**
+	 * Test if user has a scope in the current session
+	 * 
+	 * @param {String} name
+	 * @returns {boolean}
+	 */
+	hasScope: function(name) {
+
+		if (!this.site.get('scopes')) return false;
+
+		return _.contains(this.site.get('scopes'), name);
+	},
+
+	/**
+	 * Test if site has a feature
+	 *
+	 * @param {String} name
+	 * @returns {boolean}
+	 */
+	hasFeature: function(name) {
+
+		if (!this.site.get('features')) return false;
+
+		return (this.site.get('features')[name] === true);
 	}
 
 });

@@ -1,0 +1,52 @@
+<header class="post-header">
+	<a href="#seo" class="float-right collapsed" data-toggle="collapse"
+	   aria-expanded="false" aria-controls="seo">
+		Afficher <span class="more">plus</span> <span class="less">moins</span> d'options
+	</a>
+	<h1>Référencement</h1>
+</header>
+<div class="post-content">
+	<% if(slug_prefix != false) { %>
+	<div class="form-group">
+		<label class="required" for="slug">Adresse de la page</label>
+		<div class="input-group">
+			<div class="input-group-prepend">
+				<span class="input-group-text"><%- slug_prefix %></span>
+			</div>
+			<input class="form-control" id="slug" name="slug" value="<%- slug %>">
+			<div class="input-group-append">
+				<span class="input-group-text"><%- slug_suffix %></span>
+			</div>
+		</div>
+	</div>
+	<!-- <div class="form-group">
+	<div class="checkbox">
+	<input id="checkbox1" value="" type="checkbox">
+	<label for="checkbox1">Créer une redirection vers la nouvelle adresse</label>
+	</div>
+	</div> -->
+	<% } %>
+	<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+		<label for="meta_title">Titre de la page</label>
+		<input class="form-control" id="meta_title" name="meta_title" value="<%- meta_title %>" placeholder="<%- defaults_meta_title %>" type="text">
+	</div>
+	<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+		<label for="meta_description">Description de la page</label>
+		<textarea class="form-control" id="meta_description" name="meta_description" rows="5" placeholder="<%- defaults_meta_description %>"><%- meta_description %></textarea>
+	</div>
+	<div class="collapse" id="seo">
+		<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+			<label for="meta_keywords">Mots clés de la page</label>
+			<textarea class="form-control" id="meta_keywords" name="meta_keywords" rows="5" placeholder="<%- defaults_meta_keywords %>"><%- meta_keywords %></textarea>
+		</div>
+		<div class="form-group">
+			<label for="js_head">Code avant <code>&lt;/head&gt;</code></label>
+			<textarea class="form-control" id="js_head" name="js_head" rows="5" placeholder="<%- defaults_js_head %>"><%- js_head %></textarea>
+		</div>
+		<div class="form-group">
+			<label for="js_body">Code avant <code>&lt;/body&gt;</code></label>
+			<textarea class="form-control" id="js_body" name="js_body" rows="5" placeholder="<%- defaults_js_body %>"><%- js_body %></textarea>
+		</div>
+	</div>
+</div>
+<footer class="post-footer"></footer>

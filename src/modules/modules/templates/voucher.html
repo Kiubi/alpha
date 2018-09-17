@@ -8,32 +8,32 @@
 		</header>
 		<div class="post-content">
 			<div class="form-group">
-				<label class="control-label required" for="code">Code de réduction</label>
+				<label class="required" for="code">Code de réduction</label>
 
 				<p>Le code doit comprendre 3 caractères minimum, lettres ou chiffres, sans espace, sans caractères
 					spéciaux.</p>
 				<input class="form-control" id="code" name="code" value="<%- code %>" placeholder="BON-1213, PROMO-NOEL, TOPCLIENT, ..." type="text">
 			</div>
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group has-feedback">
-						<label class="control-label" for="start_date">Début de validité</label>
+						<label for="start_date">Début de validité</label>
 						<input data-role="datepicker" class="form-control" id="start_date" name="start_date" value="<%- start_date %>" placeholder="jj/mm/aaaa" type="text">
-						<span class="form-control-feedback md-feedback md-date"></span>
+						<span class="md-feedback md-date"></span>
 					</div>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group has-feedback">
-						<label class="control-label" for="end_date">Fin de validité</label>
+						<label for="end_date">Fin de validité</label>
 						<input data-role="datepicker" class="form-control" id="end_date" name="end_date" value="<%- end_date %>" placeholder="jj/mm/aaaa" type="text">
-						<span class="form-control-feedback md-feedback md-date"></span>
+						<span class="md-feedback md-date"></span>
 					</div>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label class="control-label" for="">Utilisation</label>
+						<label for="">Utilisation</label>
 
-						<div class="radio-group">
+						<div class="form-check">
 							<input name="is_enabled" id="is_enabled1" value="1" <%= is_enabled ? 'checked="checked"' : '' %> type="radio">
 							<label for="is_enabled1" class="visible">Activé</label>
 							<input name="is_enabled" id="is_enabled0" value="0" <%= !is_enabled ? 'checked="checked"' : '' %> type="radio">
@@ -52,95 +52,97 @@
 		</header>
 		<div class="post-content">
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-4">
 
 					<% if(type == 'shipping') { %>
 					<div class="form-group">
-						<label class="control-label" for="value">Montant des frais de port</label>
+						<label for="value">Montant des frais de port</label>
 
 						<div class="input-group">
-							<span class="input-group-addon"></span>
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
 							<input class="form-control" id="value" name="value" value="<%- value %>" placeholder="Frais de port gratuits">
-							<span class="input-group-addon">€TTC</span>
+							<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %></span></div>
 						</div>
 					</div>
 					<% } else if(type == 'amount') { %>
 					<div class="form-group">
-						<label class="control-label" for="value">Montant de la réduction</label>
+						<label for="value">Montant de la réduction</label>
 
 						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon3"></span>
+							<div class="input-group-prepend"><span class="input-group-text" id="basic-addon3"></span></div>
 							<input class="form-control" id="value" name="value" value="<%- value %>" placeholder="0,00">
-							<span class="input-group-addon" id="basic-addon2">€TTC</span>
+							<div class="input-group-append"><span class="input-group-text" id="basic-addon2"><%= currency %> <%- base_price %></span></div>
 						</div>
 					</div>
 					<% } else if(type == 'percent') { %>
 					<div class="form-group has-feedback">
-						<label class="control-label" for="value">Montant de la réduction</label>
+						<label for="value">Montant de la réduction</label>
 
-						<input class="form-control" id="value" name="value" value="<%- value %>" placeholder="0">
-						<span class="form-control-feedback md-percent"></span>
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
+							<input class="form-control" id="value" name="value" value="<%- value %>" placeholder="0">
+							<div class="input-group-append"><span class="input-group-text">%</span></div>
+						</div>
 					</div>
 					<% } %>
 
 				</div>
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label class="control-label" for="threshold">Seuil de validité</label>
-
+						<label for="threshold">Seuil de validité</label>
 						<div class="input-group">
-							<span class="input-group-addon">À partir de</span>
+							<div class="input-group-prepend"><span class="input-group-text">À partir de</span></div>
 							<input class="form-control" id="threshold" name="threshold" value="<%- threshold %>" placeholder="0">
-							<span class="input-group-addon">€TTC d'achats</span>
+							<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achats</span></div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label class="control-label" for="is_stock_unlimited">Limite d'utilisations</label>
+						<label for="is_stock_unlimited">Limite d'utilisations</label>
 						<select id="is_stock_unlimited" name="is_stock_unlimited" data-style="selectify">
 							<option value="0" <%= !is_stock_unlimited ? 'selected="selected"' : '' %>>Limiter l'utilisation</option>
 							<option value="1" <%= is_stock_unlimited ? 'selected="selected"' : '' %>>Utilisation illimitée</option>
 						</select>
 					</div>
 				</div>
-				<div class="col-xs-4" data-role="stock" style="<%= is_stock_unlimited ? 'display: none' : '' %>">
+				<div class="col-4" data-role="stock" style="<%= is_stock_unlimited ? 'display: none' : '' %>">
 					<div class="form-group">
-						<label class="control-label" for="stock">Utilisations maximum</label>
+						<label for="stock">Utilisations maximum</label>
 						<input class="form-control" id="stock" name="stock" value="<%- stock %>" placeholder="0">
 					</div>
 				</div>
-				<div class="col-xs-4" data-role="stock" style="<%= is_stock_unlimited ? 'display: none' : '' %>">
+				<div class="col-4" data-role="stock" style="<%= is_stock_unlimited ? 'display: none' : '' %>">
 					<div class="form-group">
-						<label class="control-label">Nombre d'utilisations</label>
+						<label>Nombre d'utilisations</label>
 						<p class="form-control-static"><%- used %></p>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label class="control-label" for="is_quota_unlimited">Utilisations par membre</label>
+						<label for="is_quota_unlimited">Utilisations par membre</label>
 						<select id="is_quota_unlimited" name="is_quota_unlimited" data-style="selectify">
 							<option value="0" <%= !is_quota_unlimited ? 'selected="selected"' : '' %>>Limiter l'utilisation</option>
 							<option value="1" <%= is_quota_unlimited ? 'selected="selected"' : '' %>>Utilisation illimitée</option>
 						</select>
 					</div>
 				</div>
-				<div class="col-xs-4" data-role="quota" style="<%= is_quota_unlimited ? 'display: none' : '' %>">
+				<div class="col-4" data-role="quota" style="<%= is_quota_unlimited ? 'display: none' : '' %>">
 					<div class="form-group">
-						<label class="control-label" for="quota">Utilisations par membre</label>
+						<label for="quota">Utilisations par membre</label>
 						<input class="form-control" id="quota" name="quota" value="<%- quota %>" placeholder="0">
 					</div>
 				</div>
 			</div>
 			<% if(type == 'shipping') { %>
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label class="control-label" for="carrier_id">Applicable au transporteur</label>
+						<label for="carrier_id">Applicable au transporteur</label>
 						<div data-role="carriers"></div>
 					</div>
 				</div>
@@ -162,15 +164,15 @@
 			</p>
 
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="form-group has-feedback">
-						<label class="control-label" for="allowed_customers">Membres ou groupes extranet à <span class="text-success">inclure</span></label>
+						<label for="allowed_customers">Membres ou groupes extranet à <span class="text-success">inclure</span></label>
 						<div data-role="allowed_customers"></div>
 					</div>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="form-group has-feedback">
-						<label class="control-label" for="denied_customers">Membres ou groupes extranet à <span class="text-danger">exclure</span></label>
+						<label for="denied_customers">Membres ou groupes extranet à <span class="text-danger">exclure</span></label>
 						<div data-role="denied_customers"></div>
 					</div>
 				</div>
@@ -178,15 +180,15 @@
 
 			<% if(type != 'shipping') { %>
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="form-group has-feedback">
-						<label class="control-label" for="allowed_products">Produits ou catégories de produits à <span class="text-success">inclure</span></label>
+						<label for="allowed_products">Produits ou catégories de produits à <span class="text-success">inclure</span></label>
 						<div data-role="allowed_products"></div>
 					</div>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="form-group has-feedback">
-						<label class="control-label" for="denied_products">Produits ou catégories de produits à <span class="text-danger">exclure</span></label>
+						<label for="denied_products">Produits ou catégories de produits à <span class="text-danger">exclure</span></label>
 						<div data-role="denied_products"></div>
 					</div>
 				</div>
@@ -200,8 +202,8 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn btn-danger btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

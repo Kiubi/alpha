@@ -39,8 +39,9 @@ watchify -v -d ./src/app.js             \
 	--exclude jquery-ui/ui/widgets/sortable		\
 	--exclude jquery-ui/ui/widgets/draggable	\
 	--exclude bootstrap                 \
-	--exclude bootstrap-datetimepicker-npm \
+	--exclude pc-bootstrap4-datetimepicker \
 	--exclude chart.js		            \
+	--exclude clipboard		            \
 	--exclude underscore                \
 	--exclude underscore.string         \
 	--exclude backbone.marionette       \
@@ -59,6 +60,9 @@ watchify -v -d ./src/app.js             \
 	--exclude tinymce/plugins/contextmenu/plugin.js \
 	--exclude tinymce/plugins/textcolor/plugin.js   \
 	--exclude tinymce/plugins/table/plugin.js       \
-	--exclude keypress.js/keypress-2.1.4.min.js     \
+	--exclude tinymce/plugins/media/plugin.js       \
+	--exclude tinymce/themes/modern/theme.js        \
+	--exclude kiubi/vendor/tinymce/plugins/link/plugin.js \
+	--exclude keypress.js     \
 	-p bundle-collapser/plugin          \
     -p ${plugin} -o ${output}

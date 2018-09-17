@@ -30,12 +30,16 @@ function bulkAction(collection, action, ids, eventName) {
 }
 
 var Option = Backbone.Model.extend({
+
+	idAttribute: 'value',
+
 	defaults: {
 		label: '',
 		value: null,
 		indent: null,
 		selected: false,
-		extraClassname: null
+		extraClassname: null,
+		is_group: false
 	}
 });
 

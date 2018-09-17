@@ -2,7 +2,7 @@
 
 	<div class="alert alert-warning" role="alert">
 		<a href="https://aide.kiubi.com/documentation/marketing-et-referencement/parametrer-les-points-de-fidelite-sur-votre-site-web.html"
-		   class="md-icon md-help pull-right" target="_blank"></a>
+		   class="md-icon md-help float-right" target="_blank"></a>
 		Le paiement d’une commande permet à un membre d’<strong>accumuler des points</strong> sur une carte de réduction
 		virtuelle.
 		Ces points sont valables un an et peuvent être <strong>échangés contre un bon de réduction</strong> utilisable
@@ -17,31 +17,31 @@
 		</header>
 		<div class="post-content">
 			<div class="form-group">
-				<label class="control-label" for="gain_rate">Gains par commande</label>
+				<label for="gain_rate">Gains par commande</label>
 
-				<p>Nombre de points de fidélité gagnés pour 1,00€TTC payé à chaque commande (hors frais de port).</p>
+				<p>Nombre de points de fidélité gagnés pour 1,00 <%= currency %> <%- base_price %> payé à chaque commande (hors frais de port).</p>
 
 				<div class="row">
-					<div class="col-xs-3">
+					<div class="col-3">
 						<div class="input-group">
-							<span class="input-group-addon"></span>
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
 							<input class="form-control" id="gain_rate" name="gain_rate" value="<%- gain_rate %>" placeholder="0">
-							<span class="input-group-addon">points</span>
+							<div class="input-group-append"><span class="input-group-text">points</span></div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label" for="reward_first_order">Gains bonus</label>
+				<label for="reward_first_order">Gains bonus</label>
 
 				<p>Nombre de points de fidélité gagnés à la première commande.</p>
 
 				<div class="row">
-					<div class="col-xs-3">
+					<div class="col-3">
 						<div class="input-group">
-							<span class="input-group-addon"></span>
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
 							<input class="form-control" id="reward_first_order" name="reward_first_order" value="<%- reward_first_order %>" placeholder="0">
-							<span class="input-group-addon">points</span>
+							<div class="input-group-append"><span class="input-group-text">points</span></div>
 						</div>
 					</div>
 				</div>
@@ -51,11 +51,11 @@
 					compte.</p>
 
 				<div class="row">
-					<div class="col-xs-3">
+					<div class="col-3">
 						<div class="input-group">
-							<span class="input-group-addon"></span>
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
 							<input class="form-control" id="reward_subscriber" name="reward_subscriber" value="<%- reward_subscriber %>" placeholder="0">
-							<span class="input-group-addon">points</span>
+							<div class="input-group-append"><span class="input-group-text">points</span></div>
 						</div>
 					</div>
 				</div>
@@ -73,9 +73,9 @@
 				points de fidélité.</p>
 
 			<div class="form-group">
-				<label class="control-label">Envoi du bon de réduction</label>
+				<label>Envoi du bon de réduction</label>
 
-				<div class="radio-group">
+				<div class="form-check">
 					<input name="is_creation_enabled" id="is_creation_enabled1" value="1" <%= is_creation_enabled ? 'checked="checked"' : '' %> type="radio">
 					<label for="is_creation_enabled1" class="visible">Activé</label>
 					<input name="is_creation_enabled" id="is_creation_enabled0" value="0" <%= !is_creation_enabled ? 'checked="checked"' : '' %> type="radio">
@@ -83,56 +83,56 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="form-group">
-						<label class="control-label" for="creation_cost">Seuil d'envoi</label>
+						<label for="creation_cost">Seuil d'envoi</label>
 
 						<div class="input-group">
-							<span class="input-group-addon">À partir de</span>
+							<div class="input-group-prepend"><span class="input-group-text">À partir de</span></div>
 							<input class="form-control" id="creation_cost" name="creation_cost" value="<%- creation_cost %>" placeholder="500">
-							<span class="input-group-addon">points</span>
+							<div class="input-group-append"><span class="input-group-text">points</span></div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label" for="voucher_threshold">Seuil de validité</label>
+						<label for="voucher_threshold">Seuil de validité</label>
 
 						<div class="input-group">
-							<span class="input-group-addon">À partir de</span>
+							<div class="input-group-prepend"><span class="input-group-text">À partir de</span></div>
 							<input class="form-control" id="voucher_threshold" name="voucher_threshold" value="<%- voucher_threshold %>" placeholder="0">
-							<span class="input-group-addon">€TTC d'achats</span>
+							<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achats</span></div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label" for="is_voucher_restricted">Limite d'utilisation</label>
+						<label for="is_voucher_restricted">Limite d'utilisation</label>
 						<select data-style="selectify" id="is_voucher_restricted" name="is_voucher_restricted">
 							<option value="1" <%= is_voucher_restricted ? 'selected="selected"' : '' %> >Seulement au membre à qui il est envoyé</option>
 							<option value="0" <%= !is_voucher_restricted ? 'selected="selected"' : '' %> >Utilisable par n'importe quel membre</option>
 						</select>
 					</div>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label class="control-label" for="voucher_value">Montant de la réduction</label>
+						<label for="voucher_value">Montant de la réduction</label>
 
 						<div class="input-group">
-							<span class="input-group-addon"></span>
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
 							<input class="form-control" id="voucher_value" name="voucher_value" value="<%- voucher_value %>" placeholder="0">
-							<span class="input-group-addon">€TTC</span>
+							<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %></span></div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label" for="voucher_validity">Durée de validité</label>
+						<label for="voucher_validity">Durée de validité</label>
 
 						<div class="input-group">
-							<span class="input-group-addon"></span>
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
 							<input class="form-control" id="voucher_validity" name="voucher_validity" value="<%- voucher_validity %>" placeholder="0">
-							<span class="input-group-addon">mois</span>
+							<div class="input-group-append"><span class="input-group-text">mois</span></div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label" for="voucher_mail_subject">Sujet de l'email</label>
+				<label for="voucher_mail_subject">Sujet de l'email</label>
 				<input class="form-control" id="voucher_mail_subject" name="voucher_mail_subject" value="<%- voucher_mail_subject %>"
 					   placeholder="Sujet de l'email envoyé au membre qui a obtenu le bon de réduction. Laisser vide pour utiliser le sujet par défaut."
 					   type="text">
@@ -145,8 +145,8 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<a class="btn btn-cancel" href="/modules">Retour</a>
-		<button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+		<a class="btn btn-lg btn-primary btn-cancel" href="/modules">Retour</a>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

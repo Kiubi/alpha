@@ -10,7 +10,7 @@ var RowView = Marionette.View.extend({
 	className: 'list-item',
 	templateContext: function() {
 		return {
-			subscription_date: format.formatDateTime(this.model.get('subscription_date'))
+			subscription_date: format.formatLongDateTime(this.model.get('subscription_date'))
 		};
 	},
 
@@ -92,7 +92,7 @@ module.exports = Marionette.View.extend({
 			sort: this.sortOrder ? this.sortOrder : null
 		};
 		if (this.filters.is_registered != null) {
-			data.is_registered = this.filters.is_registered
+			data.is_registered = this.filters.is_registered;
 		}
 
 		this.collection.fetch({

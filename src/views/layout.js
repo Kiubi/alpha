@@ -27,12 +27,29 @@ var View = Marionette.View.extend({
 
 	childViewEvents: {
 		'sidebarmenu:toggle': function() {
-			this.$el.toggleClass('closed');
+			if (this.$el.hasClass('closed')) {
+				this.unlockMenu()
+			} else {
+				this.lockMenu()
+			}
+		},
+
+		'open:sitesearch': function() {
+			this.$el.addClass('opened');
+		},
+
+		'close:sitesearch': function() {
+			this.$el.removeClass('opened');
 		}
+
 	},
 
 	lockMenu: function() {
 		this.$el.addClass('closed');
+
+		if (this.getChildView('sidebarMenu') && this.getChildView('sidebarMenu').closeDropdown) {
+			this.getChildView('sidebarMenu').closeDropdown();
+		}
 	},
 
 	unlockMenu: function() {
@@ -71,7 +88,6 @@ var View = Marionette.View.extend({
 				options.preventPushState = true;
 			}
 			this.trigger('navigate', Backbone.$(event.currentTarget).attr('href'), options);
-			return false;
 		}
 	}
 });

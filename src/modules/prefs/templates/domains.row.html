@@ -1,27 +1,24 @@
-<div class="row" data-role="list">
-	<div class="col-xs-6">
-		<div class="media">
-			<div class="media-body">
-				<h4><%- name %></h4>
-				<% if (is_https_enabled) { %>
-				<% if(is_https_certified){  %>HTTPS activé<% } else { %>HTTPS en cours d'activation<% } %>
-				<% } %>
-			</div>
-		</div>
+<div class="row no-gutters" data-role="list">
+	<div class="col item-body">
+		<h4><%- name %></h4>
+		<span><% if (is_https_enabled) { %>
+			<% if(is_https_certified){  %>HTTPS activé<% } else { %>HTTPS en cours d'activation<% } %>
+			<% } else { %>HTTPS désactivé<% } %>
+		</span>
 	</div>
-	<div class="col-xs-2"><% if(is_main) { %><span class="label label-enable">Principal</span><% } %></div>
-	<div class="col-xs-4">
-		<% if(actions.length == 1) { %>
-		<button type="button" class="btn btn-option pull-right" role="button" data-role="action" data-action="<%- actions[0].action %>" data-confirm="<%- actions[0].confirm %>"><%- actions[0].label %></button>
-		<% } else if (actions.length > 1) { %>
-		<div class="btn-group pull-right" role="group"> <button type="button" class="btn btn-option" role="button" data-role="action" data-action="<%- actions[0].action %>"><%- actions[0].label %></button>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span>  </button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<% _.each(actions, function(action, index){ if (index==0) return; %>
-				<li><a href="#" data-role="action" data-action="<%- action.action %>" data-confirm="<%- action.confirm %>"><%- action.label %></a></li>
-				<% }) %>
-			</ul>
-		</div>
-		<% } %>
-	</div>
-</div>
+		<div class="col-2"><% if(is_main) { %><span class="badge badge-success">Principal</span><% } %></div>
+		<div class="col-auto" style="min-width: 250px;">
+			<% if(actions.length == 1) { %>
+				<button type="button" class="btn btn-primary float-right" role="button" data-role="action" data-action="<%- actions[0].action %>" data-confirm="<%- actions[0].confirm %>"><%- actions[0].label %></button>
+				<% } else if (actions.length > 1) { %>
+					<div class="btn-group float-right" role="group"> <button type="button" class="btn btn-primary" role="button" data-role="action" data-action="<%- actions[0].action %>"><%- actions[0].label %></button>
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<% _.each(actions, function(action, index){ if (index==0) return; %>
+								<li><a class="dropdown-item" href="#" data-role="action" data-action="<%- action.action %>" data-confirm="<%- action.confirm %>"><%- action.label %></a></li>
+								<% }) %>
+							</ul>
+						</div>
+						<% } %>
+					</div>
+				</div>

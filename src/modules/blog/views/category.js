@@ -1,25 +1,26 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
-var LayoutSelectorView = require(
-	'kiubi/modules/appearance/views/layout.selector.js');
+var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
+var SeoView = require('kiubi/views/ui/seo.js');
 
-var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
-
-var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/category.html'),
 	className: 'container',
 	service: 'blog',
 
-	behaviors: [CharCountBehavior, FormBehavior],
+	behaviors: [FormBehavior],
 
 	regions: {
 		layout: {
 			el: "article[data-role='layout']",
+			replaceElement: true
+		},
+		seo: {
+			el: "article[data-role='seo']",
 			replaceElement: true
 		}
 	},
@@ -34,12 +35,6 @@ module.exports = Marionette.View.extend({
 		'js_head',
 		'js_body'
 	],
-
-	templateContext: function() {
-		return {
-			domain: Session.site.get('domain')
-		};
-	},
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model']);
@@ -61,7 +56,18 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
-		this.showChildView('layout', this.layoutSelector);
+		if (this.getOption('enableLayout')) {
+			this.showChildView('layout', this.layoutSelector);
+		}
+
+		// Seo
+		if (this.getOption('enableSeo')) {
+			this.showChildView('seo', new SeoView({
+				slug_prefix: '/blog/',
+				slug_suffix: '/',
+				model: this.model
+			}));
+		}
 	},
 
 	onChildviewChangeLayout: function(layout_id) {

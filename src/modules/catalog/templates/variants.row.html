@@ -1,22 +1,24 @@
-<div class="row" data-role="list">
-	<div class="col-xs-6">
-		<div class="media">
-			<div class="media-body">
+		<div class="row no-gutters align-items-center" data-role="list">
+			<div class="col item-body">
 				<h4><%- name %></h4>
-				<!--Utilisée par <a href="/catalog/categories/3/products">5 produits</a>-->
+			</div>
+			<div class="col-4">
+				<span class="text-muted">—</span>
+				<!-- #TODO <span>Utilisée par <a href="#">X produits</a></span> -->
+			</div>
+			<div class="col-auto">
+				<a class="btn btn-primary float-right" href="#" role="button" data-role="action" data-action="edit">Détail</a>
 			</div>
 		</div>
-	</div>
-	<div class="col-xs-4"><!--<a href="/catalog/categories/3/products" class="hidden">5 produits</a>--></div>
-	<div class="col-xs-2"><a class="btn btn-option pull-right" href="#" role="button" data-role="action" data-action="edit">Détail</a></div>
-</div>
+
+
 
 <form style="display: none;" data-role="edit">
 
 	<div class="alert alert-danger" data-role="errors" role="alert" style="display: none;"></div>
 
 	<div class="form-group">
-		<label class="control-label required" for="name">Intitulé de la variante</label>
+		<label class="required" for="name">Intitulé de la variante</label>
 		<p>Changer l'intitulé de la variante permet de renommer la variante pour tous les produits qui l'utilise.
 			Elle ne peut cependant être supprimer que dans le détail des produits qui l'utilise.</p>
 		<input class="form-control" id="name" name="name" value="<%- name %>" type="text">
@@ -24,10 +26,10 @@
 
 	<div class="btn-toolbar" role="toolbar">
 		<div class="btn-group" role="group">
-			<button type="button" class="btn btn-cancel" data-role="action" data-action="cancel">Annuler</button>
+			<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="action" data-action="cancel">Annuler</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn btn-action" data-role="action" data-action="save">Enregistrer</button>
+			<button type="button" class="btn btn-lg btn-success btn-save" data-role="action" data-action="save">Enregistrer</button>
 		</div>
 	</div>
 
@@ -36,7 +38,7 @@
 <!--
 		<div class="list-item">
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="media">
 						<div class="media-body">
 							<h4>Un intitulé d'une variantes</h4>
@@ -44,39 +46,39 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-4"><a href="/catalog/categories/3/products" class="hidden">5 produits</a>
+				<div class="col-4"><a href="/catalog/categories/3/products" class="hidden">5 produits</a>
 				</div>
-				<div class="col-xs-2"><a class="btn btn-option pull-right" href="#" role="button">Détail</a></div>
+				<div class="col-2"><a class="btn btn-primary float-right" href="#" role="button">Détail</a></div>
 			</div>
 		</div>
 
 		<div class="list-item">
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="media">
 						<div class="media-body">
 							<h4>Un intitulé d'une variante</h4>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-4">Utilisée par <a href="/catalog/categories/3/products">5 produits</a>
+				<div class="col-4">Utilisée par <a href="/catalog/categories/3/products">5 produits</a>
 				</div>
-				<div class="col-xs-2"><a class="btn btn-option pull-right" href="#" role="button">Détail</a></div>
+				<div class="col-2"><a class="btn btn-primary float-right" href="#" role="button">Détail</a></div>
 			</div>
 		</div>
 
 		<div class="list-item">
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div class="media">
 						<div class="media-body">
 							<h4>Un intitulé d'une variante</h4>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-4"><a href="/catalog/categories/3/products">5 produits</a>
+				<div class="col-4"><a href="/catalog/categories/3/products">5 produits</a>
 				</div>
-				<div class="col-xs-2"><a class="btn btn-option pull-right" href="#" role="button">Détail</a></div>
+				<div class="col-2"><a class="btn btn-primary float-right" href="#" role="button">Détail</a></div>
 			</div>
 		</div>
 

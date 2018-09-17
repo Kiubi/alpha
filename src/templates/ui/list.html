@@ -1,41 +1,55 @@
 <article class="post-article <%- extraClassname %>">
 	<header class="post-header">
 		<h1><%- title %> <span data-role="counter"></span></h1>
-		<div class="form-inline">
+
+
+
+			<div class="row no-gutters">
 
 			<% if(selection && selection.length) { %>
-			<div class="checkbox-inline">
+				<div class="col-auto checkbox-options">
+
 				<input id="selection_all" name="selection_all" value="1" type="checkbox">
-				<label for="selection_all"><span class="btn btn-form-control" data-role="select-all">Tout sélectionner</span></label>
-			</div>
-			<div class="btn-group hidden" role="group">
+				<label for="selection_all"><span class="btn btn-secondary" data-role="select-all">Tout sélectionner</span></label>
+
+			<div class="btn-group m-0 d-none" role="group">
 				<div class="dropdown">
-				<button type="button" class="form-control form-control-select dropdown-toggle btn-bulk-action" data-role="bulk-action" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<span class="fake-selected">Plus d'actions</span><span class="caret"></span>
+				<button type="button" class="btn btn-secondary dropdown-toggle btn-bulk-action" data-role="bulk-action" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="fake-selected">Plus d'actions</span>
 			</button>
 				<ul class="dropdown-menu">
 					<% _(selection).each(function(item, i){ %>
-						<li><a href="#" data-role="action" data-id="<%- i %>"><%- item.title %></a></li>
+						<li class="<%- item.className %>"><a class="dropdown-item" href="#" data-role="action" data-id="<%- i %>"><%- item.title %></a></li>
 					<% }) %>
 				</ul>
 			</div>
-		</div><% } %><span data-role="filters"></span><% if(filterModal) { %><div class="btn-group">
-				<button type="button" class="btn btn-icon md-icon md-filter" data-toggle="modal" data-target="<%- filterModal %>"></button>
+		</div>
+	</div>
+		<% } %>
+
+		<div class="col filters-options">
+			<span data-role="filters"></span><% if(filterModal) { %><div class="btn-group">
+				<button type="button" class="btn btn-secondary btn-icon md-icon md-filter" data-toggle="modal" data-target="<%- filterModal %>"></button>
 			</div>
 			<% } %>
+		</div>
 
 			<% if(order) { %>
-			<div class="btn-group pull-right" role="group" data-role="order">
-				<button type="button" class="btn btn-icon md-icon md-sort dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
-				<ul class="dropdown-menu">
-					<% _(order).each(function(item, index){%>
-						<li <%= item.is_active ? 'class="active"' : '' %> data-id="<%- index %>"><a href="#"><%- item.title %></a></li>
-					<% }) %>
-				</ul>
+			<div class="col-auto sort-options">
+				<div class="btn-group mr-0" role="group" data-role="order">
+					<button type="button" class="btn btn-secondary btn-icon md-icon md-sort dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<% _(order).each(function(item, index){%>
+							<li <%= item.is_active ? 'class="active"' : '' %> data-id="<%- index %>"><a class="dropdown-item" href="#"><%- item.title %></a></li>
+						<% }) %>
+					</ul>
+				</div>
 			</div>
 			<% } %>
 
 		</div>
+
+
 	</header>
 	<div data-role="list"></div>
 	<div data-role="detail"></div>

@@ -7,7 +7,6 @@ var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
 var SelectModalView = require('kiubi/modules/media/views/modal.picker');
 var WysiwygModalView = require('kiubi/modules/media/views/modal.picker.wysiwyg');
 
-var File = require('kiubi/modules/media/models/file');
 var Files = require('kiubi/modules/media/models/files');
 var Page = require('kiubi/modules/cms/models/page');
 
@@ -210,7 +209,7 @@ module.exports = Marionette.Behavior.extend({
 			case 'micro':
 				plugins = ['image', 'contextmenu', 'kiubi', 'lists', 'paste', 'link', 'charmap', 'code'];
 				toolbar =
-					'bold italic underline strikethrough | numlist bullist | pastetext | link unlink | kiubi_media charmap removeformat | code';
+					'bold italic underline strikethrough | numlist bullist | pastetext | link unlink | kiubi_media | removeformat undo redo | code';
 				adjusted_height -= 68;
 				break;
 
@@ -219,8 +218,7 @@ module.exports = Marionette.Behavior.extend({
 					'colorpicker', 'link', 'anchor', 'table', 'charmap', 'code'
 				];
 				toolbar = [
-					'formatselect fontsizeselect | pastetext | undo redo | link unlink anchor | kiubi_media media table | charmap removeformat',
-					'bold italic underline strikethrough | subscript superscript | alignleft aligncenter alignright alignjustify | forecolor backcolor | numlist bullist | outdent indent | fullscreen code'
+					'formatselect fontsizeselect | bold italic underline strikethrough superscript | align alignleft aligncenter alignright alignjustify | forecolor backcolor | numlist bullist | outdent indent | pastetext | link unlink | kiubi_media media table | removeformat undo redo | code'
 				];
 				adjusted_height -= 102;
 				break;
@@ -238,9 +236,10 @@ module.exports = Marionette.Behavior.extend({
 			menu: {},
 			custom_undo_redo_levels: 20,
 			forced_root_block: false, // Beware, potential breaking
-			block_formats: 'Paragraphe=p;Titre 1=h1;Titre 2=h2;Titre 3=h3;Titre 4=h4;Titre 5=h5;Titre 6=h6;Preformatted=pre;Normal (SPAN)=span;Normal (DIV)=div',
+			block_formats: 'Paragraphe=p;Titre 1=h1;Titre 2=h2;Titre 3=h3;Titre 4=h4;Titre 5=h5;Titre 6=h6;Preformatted=pre;DIV=div',
 			plugins: plugins,
 			toolbar: toolbar,
+			contextmenu: "",
 			fontsize_formats: '8px 10px 12px 14px 18px 24px 36px',
 			branding: false,
 			link_list: {
@@ -267,10 +266,10 @@ module.exports = Marionette.Behavior.extend({
 	link_types: function(callback) {
 		var p = new Page();
 		p.getInternalLinkTypes().done(function(types) {
-			callback(_.map(types, function(type) {
+			callback(types.map(function(model) {
 				return {
-					value: type.value,
-					title: type.label
+					value: model.get('value'),
+					title: model.get('label')
 				};
 			}));
 		});
@@ -324,7 +323,7 @@ module.exports = Marionette.Behavior.extend({
 
 		var collection = new Files();
 		collection.folder_id = 2; // TODO Fix
-		var model = new File();
+		var model = new(new Files()).model();
 
 		var contentView = new SelectModalView({
 			collection: collection,

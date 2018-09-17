@@ -43,17 +43,23 @@ module.exports = Marionette.View.extend({
 				selected: this.model.get('parent_folder_id'),
 				name: 'parent_folder_id'
 			}));
-			this.showChildView('restrictions', new RestrictionsView({
-				restrictions: this.model.get('restrictions')
-			}));
+			if (this.getOption('enableExtranet')) {
+				this.showChildView('restrictions', new RestrictionsView({
+					restrictions: this.model.get('restrictions')
+				}));
+			}
 		}
+	},
+
+	onChildviewChangeRestrictions: function() {
+		this.triggerMethod('field:change');
 	},
 
 	onSave: function() {
 
 		var data = Forms.extractFields(this.fields, this);
 
-		if (this.model.get('parent_folder_id') > 0) {
+		if (this.model.get('parent_folder_id') > 0 && this.getOption('enableExtranet')) {
 			var r = this.getChildView('restrictions').getRestrictions();
 			var collection = new Restrictions();
 			collection.setType('media/folders', this.model.get('folder_id'));

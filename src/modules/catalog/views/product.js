@@ -11,12 +11,15 @@ var AutocompleteView = require('kiubi/views/ui/select.search.js');
 var AutocompleteInputView = require('kiubi/views/ui/input.search.js');
 var TagView = require('kiubi/views/ui/tag.search.js');
 var ListView = require('kiubi/views/ui/list.js');
+var SeoView = require('kiubi/views/ui/seo.js');
 
 var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
+var VatBehavior = require('kiubi/behaviors/vat.js');
+
 var format = require('kiubi/utils/format.js');
 var Forms = require('kiubi/utils/forms.js');
 var Datepicker = require('kiubi/behaviors/datepicker.js');
@@ -26,73 +29,6 @@ var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 // Variants
 
-var VatBehavior = Marionette.Behavior.extend({
-
-	ui: {
-		'price_vat': 'input[data-role="vat"]'
-	},
-
-	events: {
-		'keyup @ui.price_vat': 'onPriceChange'
-	},
-
-	onRender: function() {
-		this.listenTo(this.view.getChildView('taxes'), 'change', this.onVATChange);
-	},
-
-	getCurrentTax: function() {
-		var tax = this.view.taxes.get(this.view.getChildView('taxes').selected);
-		if (tax) {
-			return (1 + tax.get('vat_rate') / 100);
-		}
-		return null;
-	},
-
-	onVATChange: function() {
-		var rate = this.getCurrentTax();
-		if (rate == null) return;
-		var view = this.view;
-
-		this.getUI('price_vat').each(function() {
-			if (this.name.substring(this.name.length - 6) != 'ex_vat') {
-				return;
-			}
-
-			var $inc = Backbone.$('input[name="' + Backbone.$(this).data('linked') + '"]', view.el);
-			if (!$inc) return;
-
-			var val = format.unformatFloat(this.value);
-			if (val == null) {
-				$inc.val('');
-				return;
-			}
-			val *= rate;
-			$inc.val(format.formatFloat(val, 4));
-		});
-	},
-
-	onPriceChange: function(event) {
-		var rate = this.getCurrentTax();
-		if (rate == null) return;
-
-		var $linked = Backbone.$('input[name="' + Backbone.$(event.currentTarget).data('linked') + '"]', this.view.el);
-		if (!$linked) return;
-
-		var val = format.unformatFloat(event.currentTarget.value);
-		if (val == null) {
-			$linked.val('');
-			return;
-		}
-
-		if (event.currentTarget.name.substring(event.currentTarget.name.length - 6) == 'ex_vat') {
-			val *= rate;
-		} else {
-			val /= rate;
-		}
-		$linked.val(format.formatFloat(val, 4));
-	}
-
-});
 
 
 var VariantImageRowView = Marionette.View.extend({
@@ -183,12 +119,17 @@ var NewVariantRowView = Marionette.View.extend({
 		this.taxes = options.taxes;
 		this.images = options.images;
 		this.names = options.names;
+		this.currency = options.currency;
 	},
 
 	onRender: function() {
+		var defaultTax = this.taxes.find({
+			is_default: true
+		});
 		this.showChildView('taxes', new SelectView({
 			collection: this.taxes,
-			name: 'tax_id'
+			name: 'tax_id',
+			selected: defaultTax ? defaultTax.get('tax_id') : null
 		}));
 		this.showChildView('images', new Marionette.CollectionView({
 			className: 'btn-group',
@@ -206,16 +147,11 @@ var NewVariantRowView = Marionette.View.extend({
 	},
 
 	onChildviewInput: function(term, view) {
-		this.names.fetch({
-			data: {
-				term: term,
-				limit: 5
-			}
-		}).done(function() {
-			var results = _.map(this.names.toJSON(), function(name) {
+		this.names.suggest(term, 5).done(function(names) {
+			var results = _.map(names, function(variant) {
 				return {
-					label: name.name,
-					value: name.name
+					label: variant.name,
+					value: variant.name
 				};
 			});
 			view.showResults(results);
@@ -225,7 +161,8 @@ var NewVariantRowView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			images: this.images.toJSON(),
-			convertMediaPath: Session.convertMediaPath.bind(Session)
+			convertMediaPath: Session.convertMediaPath.bind(Session),
+			currency: this.currency
 		};
 	},
 
@@ -318,6 +255,7 @@ var VariantRowView = Marionette.View.extend({
 		this.taxes = options.taxes;
 		this.images = options.images;
 		this.names = options.names;
+		this.currency = options.currency;
 		this.listenTo(this.images, 'add remove', this.onImageSync);
 	},
 
@@ -333,7 +271,8 @@ var VariantRowView = Marionette.View.extend({
 			price_inc_vat: format.formatFloat(this.model.get('price_inc_vat'), 4),
 			price_discount_ex_vat: format.formatFloat(this.model.get('price_discount_ex_vat'), 4),
 			price_discount_inc_vat: format.formatFloat(this.model.get('price_discount_inc_vat'), 4),
-			price_ecotax: format.formatFloat(this.model.get('price_ecotax'))
+			price_ecotax: format.formatFloat(this.model.get('price_ecotax')),
+			currency: this.currency
 		};
 	},
 
@@ -396,16 +335,11 @@ var VariantRowView = Marionette.View.extend({
 	},
 
 	onChildviewInput: function(term, view) {
-		this.names.fetch({
-			data: {
-				term: term,
-				limit: 5
-			}
-		}).done(function() {
-			var results = _.map(this.names.toJSON(), function(name) {
+		this.names.suggest(term, 5).done(function(names) {
+			var results = _.map(names, function(variant) {
 				return {
-					label: name.name,
-					value: name.name
+					label: variant.name,
+					value: variant.name
 				};
 			});
 			view.showResults(results);
@@ -612,7 +546,7 @@ var TypeSelectorView = Marionette.View.extend({
 		}
 	},
 
-	behaviors: [WysiwygBehavior, SelectifyBehavior],
+	behaviors: [CharCountBehavior, WysiwygBehavior, SelectifyBehavior],
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['type', 'typesSource', 'product']);
@@ -686,7 +620,7 @@ module.exports = Marionette.View.extend({
 	className: 'container',
 	service: 'catalog',
 
-	behaviors: [CharCountBehavior, FormBehavior, WysiwygBehavior, Datepicker],
+	behaviors: [FormBehavior, WysiwygBehavior, Datepicker],
 
 	regions: {
 		layout: {
@@ -719,6 +653,10 @@ module.exports = Marionette.View.extend({
 		},
 		images: {
 			el: "article[data-role='images']",
+			replaceElement: true
+		},
+		seo: {
+			el: "article[data-role='seo']",
 			replaceElement: true
 		}
 	},
@@ -758,13 +696,15 @@ module.exports = Marionette.View.extend({
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'typesSource', 'categories', 'brands', 'tags', 'variants', 'taxes', 'images']);
 
-		this.layoutSelector = new LayoutSelectorView({
-			layout_id: this.model.get('layout_id'),
-			type: 'catalog-product',
-			apply: this.model.get('product_id'),
-			applyName: this.model.get('name')
-		});
-
+		if (this.getOption('enableLayout')) {
+			this.layoutSelector = new LayoutSelectorView({
+				layout_id: this.model.get('layout_id'),
+				type: 'catalog-product',
+				apply: this.model.get('product_id'),
+				applyName: this.model.get('name')
+			});
+		}
+		this.variants.set(this.model.get('variants'));
 		this.variantsView = new ListView({
 			collection: this.variants,
 			rowView: VariantRowView,
@@ -773,10 +713,16 @@ module.exports = Marionette.View.extend({
 			childViewOptions: {
 				taxes: this.taxes,
 				images: this.images,
-				names: new VariantsNames()
+				names: new VariantsNames(),
+				currency: format.currencyEntity(this.model.meta.currency)
 			}
 		});
 
+		var images = this.model.get('images');
+		_.each(images, function(image) {
+			image.product_id = this.model.get('product_id'); // images fetched with extra_fields doesn't have a product id
+		}.bind(this));
+		this.images.set(images);
 		this.imagesView = new ImagesView({
 			collection: this.images
 		});
@@ -786,14 +732,15 @@ module.exports = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
-			domain: Session.site.get('domain'),
 			available_date: format.formatDateTime(this.model.get('available_date')),
-			extra_shipping: format.formatFloat(this.model.get('extra_shipping'))
+			extra_shipping: format.formatFloat(this.model.get('extra_shipping')),
+			'base_price': this.model.meta.base_price,
+			'currency': format.currencyEntity(this.model.meta.currency)
 		};
 	},
 
 	onBeforeRender: function() {
-		if (this.layoutSelector.isAttached()) {
+		if (this.getOption('enableLayout') && this.layoutSelector.isAttached()) {
 			this.detachChildView('layout');
 		}
 		if (this.variantsView.isAttached()) {
@@ -806,24 +753,22 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
-		this.showChildView('layout', this.layoutSelector);
-		this.showChildView('type', new TypeSelectorView({
+		if (this.getOption('enableLayout')) {
+			this.showChildView('layout', this.layoutSelector);
+		}
+		var view = new TypeSelectorView({
 			type: this.model.get('type'),
 			product: this.model,
 			typesSource: this.typesSource
-		}));
-
-		// Images
-		var that = this;
-		var images = this.model.get('images');
-		_.each(images, function(image) {
-			image.product_id = that.model.get('product_id'); // images fetched with extra_fields doesn't have a product id
 		});
-		this.images.set(images);
-		this.showChildView('images', this.imagesView);
+		this.showChildView('type', view);
+		// proxy filepickers events
+		this.listenTo(view, 'childview:field:change', function() {
+			this.triggerMethod('field:change')
+		}.bind(this));
 
+		this.showChildView('images', this.imagesView);
 		this.showChildView('variants', this.variantsView);
-		this.variants.set(this.model.get('variants'));
 
 		// Categories
 		var main_category = _.find(this.model.get('categories'), function(c) {
@@ -849,6 +794,10 @@ module.exports = Marionette.View.extend({
 			searchPlaceholder: 'Rechercher une catégorie',
 			tags: other_categories
 		}));
+		this.listenTo(this.getChildView('other-categ').collection, 'update', function() {
+			this.triggerMethod('field:change');
+		}.bind(this));
+
 
 		// Brand
 		this.showChildView('brand', new AutocompleteView({
@@ -873,21 +822,24 @@ module.exports = Marionette.View.extend({
 			searchPlaceholder: 'Rechercher un tag',
 			tags: tags
 		}));
+		this.listenTo(this.getChildView('tags').collection, 'update', function() {
+			this.triggerMethod('field:change');
+		}.bind(this));
 
-
+		// Seo
+		if (this.getOption('enableSeo')) {
+			this.showChildView('seo', new SeoView({
+				slug_prefix: '/catalogue/',
+				model: this.model
+			}));
+		}
 	},
 
 	// Brand management
 
 	onChildviewInputBrand: function(term, view) {
-
-		this.brands.fetch({
-			data: {
-				limit: 5,
-				term: term
-			}
-		}).done(function() {
-			var results = _.map(this.brands.toJSON(), function(brand) {
+		this.brands.suggest(term, 5).done(function(brands) {
+			var results = _.map(brands, function(brand) {
 				return {
 					label: brand.name,
 					value: brand.brand_id
@@ -934,20 +886,15 @@ module.exports = Marionette.View.extend({
 
 	onChildviewInputTags: function(term, view) {
 
-		this.tags.fetch({
-			data: {
-				limit: 5,
-				term: term
-			}
-		}).done(function() {
-			var results = _.map(this.tags.toJSON(), function(tag) {
+		var exclude = _.pluck(view.getTags(), 'value');
+		this.tags.suggest(term, 5, exclude).done(function(tags) {
+			var results = _.map(tags, function(tag) {
 				return {
 					label: tag.name,
 					value: tag.tag_id
 				};
 			});
 
-			// TODO : exclude current des results
 			// TODO : ne pas mettre xtra si correspondance exacte avec la marque
 			view.showResults(results, {
 				title: 'Ajouter le tag',
@@ -971,32 +918,27 @@ module.exports = Marionette.View.extend({
 
 		if (view == this.getChildView('primary-categ') || view == this.getChildView('other-categ')) {
 
-			this.categories.fetch({
-				data: {
-					limit: 5,
-					term: term
-				}
-			}).done(function() {
-				var results = _.map(this.categories.toJSON(), function(categ) {
+			var exclude;
+
+			if (view == this.getChildView('primary-categ')) {
+				// exclude primary
+				exclude = [view.current.value];
+			} else if (view == this.getChildView('other-categ')) {
+				// exclude primary and secondary
+				exclude = _.pluck(view.getTags(), 'value');
+				var primary = this.getChildView('primary-categ');
+				exclude.push(primary.current.value);
+			}
+
+			this.categories.suggest(term, 5, exclude).done(function(categories) {
+				var results = _.map(categories, function(categ) {
 					return {
 						label: categ.name,
 						value: categ.category_id
 					};
 				});
-
-				// Filter out primary category
-				if (view == this.getChildView('other-categ')) {
-					var primary = this.getChildView('primary-categ');
-					results = _.filter(results, function(r) {
-						return r.value != primary.current.value;
-					});
-				}
-
-				// TODO : primary-categ exclude current, other-categs
-				// TODO : other-categ exclude currents
 				view.showResults(results);
-			}.bind(this));
-
+			});
 		}
 	},
 

@@ -1,7 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
-var File = require('kiubi/modules/media/models/file.js');
 var Files = require('kiubi/modules/media/models/files.js');
 
 var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
@@ -40,7 +39,7 @@ module.exports = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['fieldname', 'value', 'type', 'fieldLabel', 'comment']);
-		this.model = new File();
+		this.model = new(new Files()).model();
 
 		if (this.value > 0) {
 			this.model.set('media_id', this.value);

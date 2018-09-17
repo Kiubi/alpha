@@ -12,8 +12,8 @@ var RowView = Marionette.View.extend({
 			plural: function(nb, singular, plural) {
 				return (nb > 1 ? plural : singular).replace('%d', nb);
 			},
-			start_date: format.formatDate(this.model.get('start_date')),
-			end_date: format.formatDate(this.model.get('end_date'))
+			start_date: format.formatLongDate(this.model.get('start_date')),
+			end_date: format.formatLongDate(this.model.get('end_date'))
 		};
 	},
 

@@ -14,7 +14,7 @@ var RowView = Marionette.View.extend({
 			plural: function(nb, singular, plural) {
 				return (nb > 1 ? plural : singular).replace('%d', nb);
 			},
-			publication_date: format.formatDate(this.model.get('publication_date')),
+			publication_date: format.formatLongDateTime(this.model.get('publication_date')),
 			convertMediaPath: Session.convertMediaPath.bind(Session)
 		};
 	},
@@ -41,9 +41,13 @@ module.exports = Marionette.View.extend({
 	},
 
 	sortOrder: '-publication',
+	filters: null,
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['collection']);
+		this.filters = {
+			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
+		};
 	},
 
 	onRender: function() {
@@ -74,19 +78,28 @@ module.exports = Marionette.View.extend({
 				confirm: true
 			}],
 			filters: [{
+				id: 'category_id',
 				extraClassname: 'select-category',
 				title: 'Toutes les catégories',
 				collectionPromise: this.getOption('categories').promisedSelect(this.collection.category_id)
+			}, {
+				id: 'term',
+				title: 'Rechercher',
+				type: 'input',
+				value: this.filters.term
 			}]
 		}));
 	},
 
 	start: function() {
+		var data = {
+			sort: this.sortOrder ? this.sortOrder : null
+		};
+		if (this.filters.term != null) data.term = this.filters.term;
+
 		this.collection.fetch({
 			reset: true,
-			data: {
-				sort: this.sortOrder ? this.sortOrder : null
-			}
+			data: data
 		});
 	},
 
@@ -102,14 +115,24 @@ module.exports = Marionette.View.extend({
 		return this.collection.bulkDelete(ids);
 	},
 
+	/* Filers */
+
 	onChildviewFilterChange: function(filter) {
-		// Only one filter, so assume it is the category filter
-		if (filter.value) {
-			if (this.collection.category_id == filter.value) return;
-			this.collection.category_id = filter.value;
-		} else {
-			if (this.collection.category_id == null) return;
-			this.collection.category_id = null;
+
+		switch (filter.model.get('id')) {
+			case 'category_id':
+				// Only one filter, so assume it is the category filter
+				if (filter.value) {
+					if (this.collection.category_id == filter.value) return;
+					this.collection.category_id = filter.value;
+				} else {
+					if (this.collection.category_id == null) return;
+					this.collection.category_id = null;
+				}
+				break;
+			case 'term':
+				this.filters.term = filter.value != '' ? filter.value : null;
+				break;
 		}
 		this.start();
 	},

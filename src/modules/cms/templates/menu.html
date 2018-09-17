@@ -13,12 +13,12 @@
 			constituent l'arborescence du site et permettront à l'internaute
 			de le parcourir.</p>
     <div class="form-group">
-      <label class="control-label" for="name">Intitulé du menu</label>
+      <label for="name">Intitulé du menu</label>
       <input class="form-control" id="name" name="name" value="<%- name %>"
 			placeholder="Intitulé permettant d'identifier le menu" type="text">
     </div>
     <div class="form-group">
-      <label class="control-label">Identifiant API</label>
+      <label>Identifiant API</label>
       <p class="form-control-static"><%- api_key %></p>
     </div>
   </div>
@@ -30,9 +30,9 @@
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
 		<% if(!is_main) { %>
-		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-lg btn btn-danger btn-delete" data-role="delete">Supprimer</button>
 		<% } %>
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

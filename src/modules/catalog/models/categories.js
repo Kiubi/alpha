@@ -63,6 +63,32 @@ module.exports = Backbone.Collection.extend({
 			return model.destroy();
 		}, ids);
 
+	},
+
+	/**
+	 * Suggest categories
+	 *
+	 * @param {String} term
+	 * @param {Number[]} limit
+	 * @param {Number[]} exclude
+	 * @returns {Promise}
+	 */
+	suggest: function(term, limit, exclude) {
+		return Backbone.ajax({
+			url: 'sites/@site/suggest/catalog/categories',
+			data: {
+				term: term,
+				exclude: exclude,
+				limit: limit || 5
+			}
+		}).then(function(response) {
+			return _.map(response.data, function(category) {
+				return {
+					category_id: category.category_id,
+					name: category.name
+				};
+			});
+		});
 	}
 
 });

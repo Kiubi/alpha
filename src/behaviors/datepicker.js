@@ -1,9 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
-
-var DatePicker = require('bootstrap-datetimepicker-npm');
-DatePicker(Backbone.$); // register DatePicker as a jquery module
+require('pc-bootstrap4-datetimepicker');
 
 module.exports = Marionette.Behavior.extend({
 
@@ -68,18 +66,24 @@ module.exports = Marionette.Behavior.extend({
 			}
 		};
 
-		this.getUI('inputsDate').datetimepicker(_.extend({
+		var Dpickers = this.getUI('inputsDate').datetimepicker(_.extend({
 			format: 'DD/MM/YYYY'
 		}, options));
-		this.getUI('inputsDateTime').datetimepicker(_.extend({
+		var Tpickers = this.getUI('inputsDateTime').datetimepicker(_.extend({
 			format: 'DD/MM/YYYY HH:mm:ss'
 		}, options));
+		this.view.triggerMethod('load:datepicker', Dpickers.add(Tpickers));
 		this.loaded = true;
 	},
 
 	onChange: function(event) {
 		if (!this.loaded) return;
-		this.view.triggerMethod('field:change');
+		var $el = Backbone.$(event.currentTarget);
+		this.view.triggerMethod('field:change', {
+			name: $el.attr("name"),
+			value: $el.val(),
+			date: event.date
+		});
 	},
 
 	/**

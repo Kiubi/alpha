@@ -6,7 +6,16 @@ var Carrier = Backbone.Model.extend({
 	urlRoot: 'sites/@site/checkout/carriers',
 	idAttribute: 'carrier_id',
 
+	meta: {},
+
 	parse: function(response) {
+		this.meta = {};
+		if ('meta' in response && response.meta.base_price) {
+			this.meta = {
+				'base_price': response.meta.base_price,
+				'currency': response.meta.currency
+			};
+		}
 		if ('data' in response) {
 			if (response.data === null) return {};
 			if (_.isNumber(response.data)) {
@@ -25,10 +34,11 @@ var Carrier = Backbone.Model.extend({
 		"name": '',
 		"is_enabled": false,
 		"is_default": false,
+		"is_deletable": false,
 		"description": '',
 		"position": 0,
 		"type": '',
-		// "use_inet": false,
+		"use_coliship": false,
 		// "tax_id": null,
 		// "company": '',
 		// "address": '',
@@ -39,12 +49,29 @@ var Carrier = Backbone.Model.extend({
 		// "identifier": '',
 		// "secret_key": '',
 		// "threshold": '',
-		// "require_scheduling": '',
-		// "open_days": [],
-		// "closed_days": [],
-		// "limit_hour": '',
-		// "scheduling_interval_min": '',
-		// "scheduling_interval_max": '',
+		"require_scheduling": 'no',
+		"open_days": [],
+		"closed_days": [],
+		"limit_hour": null,
+		"scheduling_interval_min": null,
+		"scheduling_interval_max": null,
+		// Detail
+		"coliship_type": null,
+		"coliship_tradername": '',
+		"socolissimo_id": null,
+		"socolissimo_secret": null,
+		"socolissimo_be_enabled": null,
+		"socolissimo_be_extra": null,
+		"socolissimo_pickup_franco": null
+	},
+
+	isSupported: function() {
+		return (this.get('type') == 'magasin' || this.get('type') == 'socolissimo' || this.get('type') == 'local' || this.get(
+			'type') == 'tranchespoids');
+	},
+
+	isDeletable: function() {
+		return (this.get('is_deletable') == true);
 	}
 
 });
@@ -91,6 +118,16 @@ module.exports = Backbone.Collection.extend({
 			c.add(collector);
 
 			return c;
+		});
+	},
+
+	reOrder: function(list) {
+		return Backbone.ajax({
+			url: 'sites/@site/checkout/carriers',
+			method: 'PUT',
+			data: {
+				order: list
+			}
 		});
 	},
 

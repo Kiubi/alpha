@@ -1,0 +1,40 @@
+<article class="post-article">
+<header class="post-header">
+	<h1>Adresse de la boutique</h1>
+</header>
+<div class="post-content">
+	<div class="form-group">
+		<label for="description">Description</label>
+		<textarea class="form-control" id="description" name="description" placeholder="Description de l'option telle qu'elle apparaîtra dans le choix de la livraison" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- description %></textarea>
+	</div>
+	<div class="form-group">
+		<label for="company">Société</label>
+		<input class="form-control" id="company" name="company" value="<%- company %>" type="text" placeholder="Raison sociale de la société">
+	</div>
+	<div class="form-group">
+		<label class="required" for="address">Adresse</label>
+		<input class="form-control" id="address" name="address" value="<%- address %>" type="text" placeholder="Numéro, rue, bâtiment, étage, ...">
+	</div>
+	<div class="row">
+		<div class="col-4">
+			<div class="form-group">
+				<label class="required" for="zipcode">Code postal</label>
+				<input class="form-control" id="zipcode" name="zipcode" type="text" value="<%- zipcode %>">
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				<label class="required" for="city">Ville</label>
+				<input class="form-control" id="city" name="city" type="text" value="<%- city %>">
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				<label class="required">Pays</label>
+				<div data-role="countries"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<footer class="post-footer"></footer>
+</article>

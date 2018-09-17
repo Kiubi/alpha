@@ -96,6 +96,13 @@ module.exports = Marionette.AppRouter.extend({
 	},
 
 	onRoute: function(name, path, args) {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		if (!Session.hasScope('site:theme')) {
+			this.controller.navigationController.navigate('/');
+			return;
+		}
+
 		this.controller.showSidebarMenu();
 	}
 });

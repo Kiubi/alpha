@@ -1,5 +1,5 @@
-<div class="dropdown">
-	<input class="form-control" name="<%- name %>" data-toggle="dropdown" value="<%- current %>" placeholder="<%- searchPlaceholder %>" type="text" autocomplete="off">
-	<span class="form-control-feedback md-feedback md-search"></span>
-	<ul class="dropdown-menu dropdown-control"></ul>
+<div class="dropdown <%- extraDropdownClassname %>">
+	<input class="form-control <%- extraInputClassname %>" name="<%- name %>" data-toggle="dropdown" value="<%- current %>" placeholder="<%- searchPlaceholder %>" type="text" autocomplete="off">
+	<span class="md-feedback md-search"></span>
+	<ul class="dropdown-menu <%- extraDropdownMenuClassname %>"></ul>
 </div>

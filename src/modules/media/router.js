@@ -5,9 +5,7 @@ var _ = require('underscore');
 var Controller = require('kiubi/controller.js');
 
 /* Models */
-var Folder = require('./models/folder');
 var Folders = require('./models/folders');
-var File = require('./models/file');
 var Files = require('./models/files');
 
 /* Views */
@@ -171,13 +169,17 @@ var MediaController = Controller.extend({
 	 * Files 
 	 */
 
-	showIndex: function() {
-		this.navigationController.navigate('/media/folders/2/files');
+	showIndex: function(queryString) {
+		this.navigationController.navigate('/media/folders/2/files' + (queryString ? '?' + queryString : ''));
 	},
 
-	showFiles: function(folder_id) {
+	showFiles: function(folder_id, queryString) {
 
-		var m = new Folder({
+		var qs = this.parseQueryString(queryString, {
+			'term': null
+		});
+
+		var m = new(new Folders()).model({
 			folder_id: folder_id
 		});
 
@@ -188,7 +190,8 @@ var MediaController = Controller.extend({
 		m.fetch().done(function() {
 				this.navigationController.showContent(new FilesView({
 					collection: collection,
-					folders: new Folders()
+					folders: new Folders(),
+					filters: qs
 				}));
 				this.setHeader({
 					title: m.get('name')
@@ -211,7 +214,7 @@ var MediaController = Controller.extend({
 	 */
 
 	showFolder: function(folder_id) {
-		var m = new Folder({
+		var m = new(new Folders()).model({
 			folder_id: folder_id
 		});
 		var collection = new Folders();
@@ -224,9 +227,13 @@ var MediaController = Controller.extend({
 		this.triggerSidebarMenu('change:folder', folder_id);
 
 		m.fetch().done(function() {
+				var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 				var view = new FolderView({
 					model: m,
-					folders: collection
+					folders: collection,
+					enableExtranet: Session.hasFeature('extranet')
+
 				});
 				this.listenTo(m, 'change', function(model) {
 					if (model.hasChanged('name')) {
@@ -262,7 +269,7 @@ var MediaController = Controller.extend({
 
 	actionNewFolder: function(parent_id) {
 
-		var m = new Folder({
+		var m = new(new Folders()).model({
 			name: 'Intitulé par défaut',
 			parent_folder_id: parent_id
 		});
@@ -296,7 +303,7 @@ var MediaController = Controller.extend({
 			}];
 		}
 
-		var m = new File({
+		var m = new(new Files()).model({
 			media_id: id
 		});
 		var folder;
@@ -308,7 +315,7 @@ var MediaController = Controller.extend({
 		});
 
 		m.fetch().then(function() {
-				folder = new Folder({
+				folder = new(new Folders()).model({
 					folder_id: m.get('folder_id')
 				});
 				return folder.fetch();

@@ -1,27 +1,32 @@
-<div class="row">
-	<div class="col-xs-6">
-		<div class="media">
-			<div class="media-body">
-				<h4><%- name %></h4>
+		<div class="row no-gutters align-items-center">
+			<div class="col item-body">
+				<span><h4><%- name %></h4>
 				<% if(is_enabled) { %>
-				Créé le <%- creation_date %>
-				<% } else { %>
-				<span class="text-danger">Masqué</span>
-				<% }%>
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-3">
-		<a href="/forms/inbox?id=<%- form_id %>"><%- replies_count %></a>
-		<% if(replies_unread_count > 0) { %><strong><a href="/forms/inbox?id=<%- form_id %>&u=1">(<%- replies_unread_count %>)</a></strong><% } %>
-	</div>
-	<div class="col-xs-3">
-		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/forms/<%- form_id %>" role="button">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span>  </button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
-			</ul>
-		</div>
-	</div>
 
-</div>
+					<% } else { %>
+						<span class="text-danger">Masqué</span>
+						<% }%>
+					</span>
+					</div>
+					<div class="col-4">
+						<% if(replies_count > 0) { %>
+							<span>
+								<a href="/forms/inbox?id=<%- form_id %>">
+								<%- plural(replies_count, '%d réponse', '%d réponses') %></a>
+								<% if(replies_unread_count > 0) { %>
+									<strong><a href="/forms/inbox?id=<%- form_id %>&is_read=0">(<%- plural(replies_unread_count, '%d non-lue', '%d non-lues') %>)</a></strong>
+								<% } %>
+							</span>
+							<% } else { %>
+								<span class="text-muted">—</span>
+							<% } %>
+					</div>
+					<div class="col-auto">
+						<div class="btn-group float-right" role="group"> <a class="btn btn-primary" href="/forms/<%- form_id %>" role="button">Détail</a>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li><a class="dropdown-item" href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>

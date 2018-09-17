@@ -1,39 +1,35 @@
-<div class="row">
-	<div class="col-xs-8">
-		<div class="media">
-			<div class="media-left">
-				<% if(type == 'image') { %>
-				<div class="media-object md-icon md-image img-default"></div>
-				<div class="media-object"><img alt="<%- name %>" src="<%= uploadPreview %>" /></div>
-				<% } else { %>
-				<div class="md-icon md-file media-object file"></div><span class="file-type"><%- ext %></span>
-				<% } %>
-			</div>
-			<div class="media-body">
+<div class="row no-gutters">
+	<div class="col-auto">
+		<% if(type == 'image') { %>
+		<div class="media-object md-icon md-image img-default"></div>
+		<div class="media-object"><img alt="<%- name %>" src="<%= uploadPreview %>" /></div>
+		<% } else { %>
+		<div class="md-icon md-file media-object file"></div><span class="file-type"><%- ext %></span>
+		<% } %>
+	</div>
+	<div class="col item-body">
 				<h4><%- name %></h4>
 				<%- size %>
 				<% if (uploadProgression.status == 'fail' ) { %>
 				<div class="text-danger"><%- uploadProgression.error %></div>
 				<% } %>
-			</div>
-		</div>
 	</div>
 
-<% if ( uploadProgression.status == 'pending' || uploadProgression.status == 'uploading' ) { %>
-	<div class="col-xs-3">
+<% if ( uploadProgression.status == 'uploading' ) { %>
+	<div class="col-3">
 		<div class="progress">
 			<div class="progress-bar" role="progressbar" aria-valuenow="<%- uploadProgression.prct %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- uploadProgression.prct %>%"></div>
 		</div>
 	</div>
 
 <% } else if ( uploadProgression.status == 'done' ) { %>
-	<div class="col-xs-4">
-		<span class="md-icon md-check-circle pull-right"></span>
+	<div class="col-3">
+		<span class="md-icon md-check-circle float-right"></span>
 	</div>
 <% } %>
 
 <% if ( uploadProgression.status == 'pending' ) { %>
-	<div class="col-xs-1"><a href="#" class="md-icon md-delete pull-right" data-role="cancel"></a></div>
+	<div class="col-3"><a href="#" class="md-icon md-delete float-right" data-role="cancel"></a></div>
 <% } %>
 
 </div>

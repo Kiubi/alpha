@@ -5,6 +5,7 @@ var _ = require('underscore');
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
 var SelectView = require('kiubi/views/ui/select.js');
 var FilePickerView = require('kiubi/modules/media/views/file.picker.js');
+var SeoView = require('kiubi/views/ui/seo.js');
 
 var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
@@ -14,8 +15,6 @@ var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var Forms = require('kiubi/utils/forms.js');
 var format = require('kiubi/utils/format');
 var Datepicker = require('kiubi/behaviors/datepicker.js');
-
-var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 var TypeSelectorView = Marionette.View.extend({
 	template: require('../templates/post.type.html'),
@@ -37,7 +36,7 @@ var TypeSelectorView = Marionette.View.extend({
 		}
 	},
 
-	behaviors: [WysiwygBehavior, SelectifyBehavior],
+	behaviors: [WysiwygBehavior, SelectifyBehavior, CharCountBehavior],
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['type', 'typesSource', 'post']);
@@ -109,7 +108,7 @@ module.exports = Marionette.View.extend({
 	className: 'container',
 	service: 'blog',
 
-	behaviors: [CharCountBehavior, FormBehavior, WysiwygBehavior, Datepicker],
+	behaviors: [FormBehavior, WysiwygBehavior, Datepicker],
 
 	fields: [
 		'title',
@@ -161,12 +160,15 @@ module.exports = Marionette.View.extend({
 		image: {
 			el: "div[data-role='image']",
 			replaceElement: true
+		},
+		seo: {
+			el: "article[data-role='seo']",
+			replaceElement: true
 		}
 	},
 
 	templateContext: function() {
 		return {
-			domain: Session.site.get('domain'),
 			publication_date: format.formatDateTime(this.model.get('publication_date'))
 		};
 	},
@@ -174,24 +176,28 @@ module.exports = Marionette.View.extend({
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'categories', 'typesSource']);
 
-		this.layoutSelector = new LayoutSelectorView({
-			layout_id: this.model.get('layout_id'),
-			type: 'blog-post',
-			apply: this.model.get('post_id'),
-			applyName: this.model.get('title')
-		});
+		if (this.getOption('enableLayout')) {
+			this.layoutSelector = new LayoutSelectorView({
+				layout_id: this.model.get('layout_id'),
+				type: 'blog-post',
+				apply: this.model.get('post_id'),
+				applyName: this.model.get('title')
+			});
+		}
 
 		this.listenTo(this.model, 'change', this.render);
 	},
 
 	onBeforeRender: function() {
-		if (this.layoutSelector.isAttached()) {
+		if (this.getOption('enableLayout') && this.layoutSelector.isAttached()) {
 			this.detachChildView('layout');
 		}
 	},
 
 	onRender: function() {
-		this.showChildView('layout', this.layoutSelector);
+		if (this.getOption('enableLayout')) {
+			this.showChildView('layout', this.layoutSelector);
+		}
 		this.showChildView('categories', new SelectView({
 			collection: this.categories,
 			selected: this.model.get('category_id'),
@@ -214,6 +220,19 @@ module.exports = Marionette.View.extend({
 			type: 'image',
 			value: this.model.get('thumb') ? this.model.get('thumb').id : ''
 		}));
+
+		// Seo
+		if (this.getOption('enableSeo')) {
+			this.showChildView('seo', new SeoView({
+				slug_prefix: '/blog/',
+				model: this.model
+			}));
+		}
+	},
+
+	onChildviewFieldChange: function() {
+		// proxy filepicker event
+		this.triggerMethod('field:change');
 	},
 
 	onChildviewChangeLayout: function(layout_id) {

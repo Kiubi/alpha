@@ -6,15 +6,15 @@
 		<p>Un lien externe vous permet de faire un lien, depuis un menu, vers n'importe quelle adresse web.
 		</p>
 		<div class="row">
-			<div class="col-xs-8">
+			<div class="col-8">
 				<div class="form-group">
-					<label class="control-label required" for="url">Adresse du lien externe</label>
+					<label class="required" for="url">Adresse du lien externe</label>
 					<input class="form-control" id="url" name="url" value="<%- url %>" placeholder="Adresse sous la forme https://www.adresse-internet.com/" type="text">
 				</div>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-4">
 				<div class="form-group">
-					<label class="control-label">Fenêtre cible </label>
+					<label>Fenêtre cible </label>
 					<select name="url_target" data-style="selectify">
 						<option value="_self" <%= url_target == '_self' ? 'selected="selected"' : ''%> >Même fenêtre</option>
 						<option value="_blank" <%= url_target == '_blank' ? 'selected="selected"' : ''%> >Nouvelle fenêtre</option>

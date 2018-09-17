@@ -1,5 +1,5 @@
 <div class="alert alert-warning" role="alert">
-  <a href="https://aide.kiubi.com/documentation/catalogue/gerer-les-taxes.html" class="md-icon md-help pull-right" target="_blank"></a>
+  <a href="https://aide.kiubi.com/documentation/catalogue/gerer-les-taxes.html" class="md-icon md-help float-right" target="_blank"></a>
 Modifier les paramètres des taxes peut avoir des impacts importants sur le catalogue produits et la gestion des commandes.
 Pour en savoir plus sur la gestion des taxes,
 <a href="https://aide.kiubi.com/documentation/catalogue/gerer-les-taxes.html" target="_blank">consultez l'aide en ligne</a>.</div>
@@ -13,11 +13,11 @@ Pour en savoir plus sur la gestion des taxes,
 	</header>
 	<div class="post-content">
 		<div class="form-group">
-			<label class="control-label" for="">Affichage des prix</label>
+			<label for="">Affichage des prix</label>
 			<p>Vous pouvez choisir d'afficher les prix du catalogue en HT ou en TTC.
 				Les commandes seront toujours payées en TTC.
 			</p>
-			<div class="radio-group">
+			<div class="form-check">
 				<input name="display_taxes" id="display_taxes0" value="0" <%= !display_taxes ? 'checked="checked"' : '' %> type="radio">
 				<label for="display_taxes0">Prix HT</label>
 				<input name="display_taxes" id="display_taxes1" value="1" <%= display_taxes ? 'checked="checked"' : '' %> type="radio">
@@ -25,11 +25,11 @@ Pour en savoir plus sur la gestion des taxes,
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="">Éxoneration de TVA</label>
+			<label for="">Éxoneration de TVA</label>
 			<p>Selon la législation en vigueur et le statut de votre entreprise, vous pouvez être exonéré de TVA.
 				Si vous choisissez l'exonération de TVA, les nouveaux montants des prix seront calculés sur leur base HT actuelle.
 			</p>
-			<div class="radio-group">
+			<div class="form-check">
 				<input name="is_duty_free" id="is_duty_free0" value="0" <%= !is_duty_free ? 'checked="checked"' : '' %> type="radio">
 				<label for="is_duty_free0">Sans éxoneration</label>
 				<input name="is_duty_free" id="is_duty_free1" value="1" <%= is_duty_free ? 'checked="checked"' : '' %> type="radio">
@@ -47,7 +47,7 @@ Pour en savoir plus sur la gestion des taxes,
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

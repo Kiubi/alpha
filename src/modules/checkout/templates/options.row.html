@@ -1,0 +1,24 @@
+		<div class="row no-gutters">
+			<div class="col-auto"><a href="#" class="md-icon md-drag btn-drag"></a></div>
+			<div class="col item-body">
+		<h4><%- name %></h4>
+		<% if (is_supported) { %>
+			<% if (is_enabled) { %><%- type_label %><% } else { %><span class="text-danger">Masqué</span><% } %>
+		<% } else { %>
+			<span class="text-danger">Type d'option non supportée : <%- type %></span>
+		<% } %>
+	</div>
+	<div class="col-4">
+		<% if (price_inc_vat == 0) { %>Offert<% } else { %><%- price_inc_vat_label %> TTC<% } %>
+	</div>
+	<div class="col-auto">
+		<% if (is_supported) { %>
+		<div class="btn-group float-right" role="group"> <a class="btn btn-primary" href="/checkout/options/<%- option_id %>" role="button">Détail</a>
+			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a class="dropdown-item" href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+			</ul>
+		</div>
+		<% } %>
+	</div>
+</div>

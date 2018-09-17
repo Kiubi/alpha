@@ -1,7 +1,7 @@
 <form>
 
 	<div class="alert alert-warning" role="alert">
-		<a href="https://aide.kiubi.com/documentation/Marketing-et-referencement/export-comparateurs-prix-lengow.html" class="md-icon md-help pull-right" target="_blank"></a>
+		<a href="https://aide.kiubi.com/documentation/Marketing-et-referencement/export-comparateurs-prix-lengow.html" class="md-icon md-help float-right" target="_blank"></a>
 		Lengow est une solution permettant d’optimiser la visibilité et la rentabilité des sites marchands,
 		que ce soit sur les comparateurs de prix, les places de marché, les plateformes d’affiliation ou les réseaux
 		sociaux.
@@ -18,16 +18,16 @@
 		</header>
 		<div class="post-content">
 			<div class="form-group">
-				<label class="control-label required" for="id">Id client Lengow</label>
+				<label class="required" for="id">Id client Lengow</label>
 
 				<p>Ce numéro est fourni par Lengow, vous pouvez retrouver cet ID en haut de chaque page de leur
 					solution.</p>
 				<input id="id" name="id" class="form-control" value="<%- id %>" placeholder="">
 			</div>
 			<div class="form-group">
-				<label class="control-label">Tracker de conversion</label>
+				<label>Tracker de conversion</label>
 
-				<div class="radio-group">
+				<div class="form-check">
 					<input name="is_tracker_enabled" id="is_tracker_enabled1" value="1" type="radio" <%= is_tracker_enabled ? 'checked="checked"' : '' %>>
 					<label for="is_tracker_enabled1" class="visible">Activé</label>
 					<input name="is_tracker_enabled" id="is_tracker_enabled0" value="0" type="radio" <%= !is_tracker_enabled ? 'checked="checked"' : '' %>>
@@ -35,9 +35,9 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label">Flux d'export</label>
+				<label>Flux d'export</label>
 
-				<div class="radio-group">
+				<div class="form-check">
 					<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
 					<label for="is_enabled1" class="visible">Activé</label>
 					<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
@@ -46,7 +46,7 @@
 			</div>
 			<% if(is_enabled) { %>
 			<div class="form-group">
-				<label class="control-label">Adresse de l'export à communiquer à Lengow</label>
+				<label>Adresse de l'export à communiquer à Lengow</label>
 
 				<% if (export_url) { %>
 					<p>Dernier export créé le <%- last_export %>.</p>
@@ -58,7 +58,7 @@
 			</div>
 			<% } %>
 			<div class="form-group has-feedback">
-				<label class="control-label required" for="categories">Catégories à inclure dans l'export</label>
+				<label class="required" for="categories">Catégories à inclure dans l'export</label>
 				<div data-role="categories"></div>
 			</div>
 		</div>
@@ -69,8 +69,8 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<a class="btn btn-cancel" href="/modules">Retour</a>
-		<button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+		<a class="btn btn-lg btn-primary btn-cancel" href="/modules">Retour</a>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

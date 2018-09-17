@@ -58,20 +58,14 @@ var RowView = Marionette.View.extend({
 	// Catalog categories
 
 	onChildviewInputCatalog: function(term, view) {
-		this.categories.fetch({
-			data: {
-				limit: 5,
-				term: term
-			}
-		}).done(function() {
-			var results = _.map(this.categories.toJSON(), function(categ) {
+		var exclude = view.current.value ? [view.current.value] : null;
+		this.categories.suggest(term, 5, exclude).done(function(categories) {
+			var results = _.map(categories, function(categ) {
 				return {
 					label: categ.name,
 					value: categ.category_id
 				};
 			});
-
-			// TODO : exclude current
 			view.showResults(results);
 		}.bind(this));
 	},

@@ -13,6 +13,20 @@ var OverlayView = Marionette.View.extend({
 	className: 'overlay'
 });
 
+var Link = Backbone.Model.extend({
+	defaults: {
+		name: "",
+		path: '/',
+		className: '',
+		type: "main",
+		is_active: false,
+		scope: null,
+		feature: null,
+		is_enabled: true
+	}
+});
+
+
 /**
  *
  * @param {Marionette.view} view
@@ -113,87 +127,78 @@ module.exports = Marionette.Object.extend({
 	showSidebar: function() {
 
 		var links = new Backbone.Collection();
+		links.model = Link;
 		links.add([{
-				name: "Dashboard",
+				name: "Tableau de bord",
 				path: '/',
 				className: 'md-home',
-				type: "main",
 				is_active: true
 			}, {
 				name: "Site Web",
 				path: "/cms",
 				className: 'md-website',
-				type: "main",
-				is_active: false
+				scope: 'site:cms'
 			}, {
 				name: "Blog",
 				path: "/blog",
 				className: 'md-blog',
-				type: "main",
-				is_active: false
+				scope: 'site:blog'
 			}, {
 				name: "Catalogue",
 				path: "/catalog",
 				className: 'md-product',
-				type: "main",
-				is_active: false
+				scope: 'site:catalog',
+				feature: 'catalog'
 			}, {
 				name: "Commandes",
 				path: "/checkout",
 				className: 'md-order',
-				type: "main",
-				is_active: false
+				scope: 'site:checkout',
+				feature: 'checkout'
 			}, {
 				name: "Membres",
 				path: "/customers",
 				className: 'md-member',
-				type: "main",
-				is_active: false
+				scope: 'site:account'
 			}, {
 				name: "Modules",
 				path: "/modules",
-				className: 'md-extension',
-				type: "main",
-				is_active: false
+				className: 'md-extension'
 			}, {
 				name: "Mises en page",
 				path: "/appearance",
 				className: 'md-layout',
-				type: "main",
-				is_active: false
+				scope: 'site:layout'
 			}, {
-				name: "Thèmes",
+				name: "Thèmes graphiques",
 				path: "/themes",
 				className: 'md-theme',
-				type: "main",
-				is_active: false
+				scope: 'site:theme'
 			},
 			// Tools
 			{
 				name: "Médiathèque",
 				path: "/media",
 				className: 'md-media',
-				type: "tools",
-				is_active: false
+				type: "tools"
 			},
 			{
 				name: "Préférences",
 				path: "/prefs",
 				className: 'md-settings',
 				type: "tools",
-				is_active: false
+				scope: 'site:pref'
 			},
 			{
 				name: "Aide & support",
 				path: "#",
 				className: 'md-help',
-				type: "tools",
-				is_active: false
+				type: "tools"
 			}
 		]);
 
 		this.layoutView.showChildView('sidebar', new SidebarView({
-			model: this.application.session.user,
+			session: this.application.session,
 			collection: links
 		}));
 	},
@@ -270,7 +275,11 @@ module.exports = Marionette.Object.extend({
 	 * @param {Marionette.View} view
 	 */
 	showContent: function(view) {
-		this.layoutView.showChildView('content', view);
+		try {
+			this.layoutView.showChildView('content', view);
+		} catch (error) {
+			console.error(error);
+		}
 		document.title = getPageTitle(view);
 	},
 
@@ -376,11 +385,6 @@ module.exports = Marionette.Object.extend({
 	 */
 	notFound: function() {
 		this.application.router.controller.notFound();
-	},
-
-
-	underConstruction: function() {
-		this.application.router.controller.underConstruction();
 	},
 
 	/**

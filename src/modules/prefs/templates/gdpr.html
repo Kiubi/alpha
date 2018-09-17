@@ -98,14 +98,14 @@
                 </p>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Création de compte d'un membre (Inscription au site)</label>
+                  <label>Création de compte d'un membre (Inscription au site)</label>
                   <p>
                     Le texte précisant les données personnelles collectées
                     à la création d'un compte d'un membre et leurs finalités de traitements peut être personnalisé dans <a href="/customers/settings">les paramètres des membres</a>.
                     Ce texte, ainsi que la demande de consentement, doivent obligatoirement être
                     placés dans une zone clairement distincte de la validation de conditions d'utilisation du site.
                   </p>
-                  <div class="radio-group">
+                  <div class="form-check">
                     <input name="is_customers_consent_required" id="is_customers_consent_required1" value="1" type="radio" <%= (is_customers_consent_required) ? 'checked="checked"' : '' %>>
                     <label for="is_customers_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
                     <input name="is_customers_consent_required" id="is_customers_consent_required0" value="0" type="radio" <%= (!is_customers_consent_required) ? 'checked="checked"' : '' %>>
@@ -114,8 +114,8 @@
                 </div>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Poster un commentaire dans le blog</label>
-                  <div class="radio-group">
+                  <label>Poster un commentaire dans le blog</label>
+                  <div class="form-check">
                     <input name="is_comments_consent_required" id="is_comments_consent_required1" value="1" type="radio" <%= (is_comments_consent_required) ? 'checked="checked"' : '' %>>
                     <label for="is_comments_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
                     <input name="is_comments_consent_required" id="is_comments_consent_required0" value="0" type="radio" <%= (!is_comments_consent_required) ? 'checked="checked"' : '' %>>
@@ -124,8 +124,8 @@
                 </div>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Poster une évaluation de produit</label>
-                  <div class="radio-group">
+                  <label>Poster une évaluation de produit</label>
+                  <div class="form-check">
                     <input name="is_evaluations_consent_required" id="is_evaluations_consent_required1" value="1" type="radio" <%= (is_evaluations_consent_required) ? 'checked="checked"' : '' %>>
                     <label for="is_evaluations_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
                     <input name="is_evaluations_consent_required" id="is_evaluations_consent_required0" value="0" type="radio" <%= (!is_evaluations_consent_required) ? 'checked="checked"' : '' %>>
@@ -134,8 +134,8 @@
                 </div>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Inscription à la newsletter</label>
-                  <div class="radio-group">
+                  <label>Inscription à la newsletter</label>
+                  <div class="form-check">
                     <input name="is_newsletter_consent_required" id="is_newsletter_consent_required1" value="1" type="radio" <%= (is_newsletter_consent_required) ? 'checked="checked"' : '' %>>
                     <label for="is_newsletter_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
                     <input name="is_newsletter_consent_required" id="is_newsletter_consent_required0" value="0" type="radio" <%= (!is_newsletter_consent_required) ? 'checked="checked"' : '' %>>
@@ -144,8 +144,8 @@
                 </div>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Choix de l'adresse de livraison d'une commande</label>
-                  <div class="radio-group">
+                  <label>Choix de l'adresse de livraison d'une commande</label>
+                  <div class="form-check">
                     <input name="is_checkout_consent_required" id="is_checkout_consent_required1" value="1" type="radio"<%= (is_checkout_consent_required) ? 'checked="checked"' : '' %>>
                     <label for="is_checkout_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
                     <input name="is_checkout_consent_required" id="is_checkout_consent_required0" value="0" type="radio"<%= (!is_checkout_consent_required) ? 'checked="checked"' : '' %>>
@@ -154,7 +154,7 @@
                 </div>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Formulaires Dismoi? (Gestionnaire de formulaires)</label>
+                  <label>Formulaires Dismoi? (Gestionnaire de formulaires)</label>
                   <p class="form-control-static">
                     Les finalités de traitements et le consentement préalable sont propres à chaque
                     formulaire et doivent être configurés dans les paramètres du formulaire en question.
@@ -162,7 +162,7 @@
                 </div>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Gestion du compte d'un membre</label>
+                  <label>Gestion du compte d'un membre</label>
                   <p class="form-control-static">
                     La demande de consentement ayant été faite à l'inscription au site,
                     elle n'est plus nécessaire dans la gestion du compte du membre.
@@ -190,7 +190,7 @@
                 </p>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Gestion du compte d'un membre</label>
+                  <label>Gestion du compte d'un membre</label>
                   <p class="form-control-static">
                     Un membre inscrit peut mettre à jour ou supprimer librement les données non obligatoires à la
                     bonne marche du service proposé par le site directement en se connectant à son compte. Les commandes qu'un membre a passé sur le site
@@ -199,7 +199,7 @@
                 </div>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Suppression du compte d'un membre</label>
+                  <label>Suppression du compte d'un membre</label>
                   <p class="form-control-static">
                     Si un membre inscrit souhaite retirer l'ensemble de son consentement, il peut supprimer son compte.
                     Cela supprimera toutes ses informations personnelles ainsi que tous les commentaires postés en étant identifié sur le site.
@@ -209,7 +209,7 @@
                   </p>
                 </div>
                 <div class="form-group post-group">
-                  <label class="control-label">Portabilités des données personnelles</label>
+                  <label>Portabilités des données personnelles</label>
                   <p class="form-control-static">
                     Toutes les données personnelles peuvent être supprimées et exportées dans
                     des fichiers au format CSV ou Excel dans les différents services de la console d'adminstration
@@ -219,7 +219,7 @@
                 </div>
 
                 <div class="form-group post-group">
-                  <label class="control-label">Chiffrage des mots de passe des membres</label>
+                  <label>Chiffrage des mots de passe des membres</label>
                   <p class="form-control-static">
                     Les mots de passe des membres sont chiffrés et ne peuvent ni être lus en clair ni être transmis (principe de sécurité).
                     La demande de renvoi de mot de passe génère automatiquement un nouveau mot de passe temporaire.
@@ -255,7 +255,7 @@
 
           <div class="save">
             <div class="btn-toolbar" role="toolbar">
-              <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+              <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
             </div>
           </div>
 

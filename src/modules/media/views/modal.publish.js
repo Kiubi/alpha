@@ -73,7 +73,7 @@ module.exports = Marionette.View.extend({
 
 		// Clean already uploaded
 		var cleanList = this.collection.filter(function(model) {
-			return model.uploadProgression.status != 'todo';
+			return model.uploadProgression.status != 'pending';
 		});
 		if (cleanList.length) {
 			this.collection.remove(cleanList);

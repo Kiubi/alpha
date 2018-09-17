@@ -29,7 +29,6 @@ module.exports = Marionette.View.extend({
 	title: 'Mon titre',
 	modalClass: '',
 	action: null,
-	keyCombos: [],
 
 	templateContext: function() {
 		return {
@@ -43,36 +42,36 @@ module.exports = Marionette.View.extend({
 	initialize: function(options) {
 		this.mergeOptions(options);
 
-		this.keyListener = Backbone.Radio.channel('app').request(
-			'ctx:keyListener');
+		this.keyListener = Backbone.Radio.channel('app').request('ctx:keyListener');
+	},
+
+	onAttach: function() {
+		this.keyListener.register_combo({
+			"keys": "esc",
+			"is_exclusive": true,
+			"on_keydown": this.close,
+			"this": this
+		});
 	},
 
 	onRender: function() {
-		this.keyCombos.push(
-			this.keyListener.register_combo({
-				"keys": "esc",
-				"is_exclusive": true,
-				"on_keydown": this.close,
-				"this": this
-			}));
-
 		this.getUI('modal').css("display", "block");
 
 		setTimeout(function() {
-			this.$el.addClass('in');
+			this.$el.addClass('show');
 		}.bind(this), 10); // Must wait DOM attachement
 		setTimeout(function() {
-			this.getUI('modal').addClass('in');
+			this.getUI('modal').addClass('show');
 		}.bind(this), 150);
 	},
 
 	onDestroy: function() {
-		this.keyListener.unregister_many(this.keyCombos);
+		this.keyListener.unregister_combo("esc");
 	},
 
 	/**
 	 * Ferme la modal
-	 * 
+	 *
 	 * @param {boolean} is_animated
 	 */
 	close: function(is_animated) {
@@ -81,8 +80,8 @@ module.exports = Marionette.View.extend({
 			return;
 		}
 
-		this.$el.removeClass('in');
-		this.getUI('modal').removeClass('in');
+		this.$el.removeClass('show');
+		this.getUI('modal').removeClass('show');
 		setTimeout(function() {
 			this.destroy();
 		}.bind(this), 300);

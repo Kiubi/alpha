@@ -1,0 +1,75 @@
+<form>
+<article class="post-article">
+	<header class="post-header">
+		<h1>Paramètres du mode de paiement</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label for="intitule_long">Intitulé du mode de paiement</label>
+			<input class="form-control" id="intitule_long" name="intitule_long" value="<%- config.intitule_long %>" placeholder="<%- name%>" type="text">
+		</div>
+		<div class="form-group">
+			<label>Utilisation</label>
+
+			<div class="form-check">
+				<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled1" class="visible">Activé</label>
+				<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled0" class="not-visible">Désactivé</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-8">
+				<div class="form-group">
+					<label class="required" for="IBAN">IBAN</label>
+					<input class="form-control" id="IBAN" name="IBAN" value="<%- config.IBAN %>" placeholder="34 caractères max." type="text">
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="form-group">
+					<label class="required" for="BIC">BIC</label>
+					<input class="form-control" id="BIC" name="BIC" value="<%- config.BIC %>" placeholder="11 caracères max." type="text">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-3">
+				<div class="form-group">
+					<label class="required" for="rib_banque">Banque</label>
+					<input class="form-control" id="rib_banque" name="rib_banque" value="<%- config.rib_banque %>" placeholder="11 caractères max." type="text">
+				</div>
+			</div>
+			<div class="col-3">
+				<div class="form-group">
+					<label class="required" for="rib_guichet">Guichet</label>
+					<input class="form-control" id="rib_guichet" name="rib_guichet" value="<%- config.rib_guichet %>" placeholder="5 caracères max." type="text">
+				</div>
+			</div>
+			<div class="col-3">
+				<div class="form-group">
+					<label class="required" for="rib_compte">N° compte</label>
+					<input class="form-control" id="rib_compte" name="rib_compte" value="<%- config.rib_compte %>" placeholder="5 caracères max." type="text">
+				</div>
+			</div>
+			<div class="col-3">
+				<div class="form-group">
+					<label class="required" for="rib_cle">Clé</label>
+					<input class="form-control" id="rib_cle" name="rib_cle" value="<%- config.rib_cle %>" placeholder="2 caracères max." type="text">
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="required" for="domicile">Domiciliation</label>
+			<input class="form-control" id="domicile" name="domicile" value="<%- config.domicile %>" placeholder="" type="text">
+		</div>
+		<div class="form-group">
+			<label class="required" for="message">Message de confirmation</label>
+
+			<p>Le message de confirmation s'affiche à la fin de la procédure de commande, une fois la commande
+				enregistrée.</p>
+			<textarea class="form-control" id="message" name="message" placeholder="" data-role="wysiwyg" rows="21"><%- config.message %></textarea>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+</form>

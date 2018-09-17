@@ -42,7 +42,7 @@
     <div class="post-content">
 
       <div class="form-group">
-        <div class="radio-group">
+        <div class="form-check">
           <input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= (is_enabled) ? 'checked="checked"' : '' %>>
           <label for="is_enabled1" class="visible">Activé (recommandé)</label>
           <input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= (!is_enabled) ? 'checked="checked"' : '' %>>
@@ -68,7 +68,7 @@
 
 <div class="save">
   <div class="btn-toolbar" role="toolbar">
-    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+    <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
   </div>
 </div>
 

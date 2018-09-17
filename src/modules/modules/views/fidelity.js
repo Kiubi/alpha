@@ -3,6 +3,7 @@ var Marionette = require('backbone.marionette');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
+var format = require('kiubi/utils/format');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/fidelity.html'),
@@ -23,6 +24,13 @@ module.exports = Marionette.View.extend({
 		'voucher_threshold',
 		'is_voucher_restricted'
 	],
+
+	templateContext: function() {
+		return {
+			'base_price': this.model.meta.base_price,
+			'currency': format.currencyEntity(this.model.meta.currency)
+		};
+	},
 
 	onSave: function() {
 		return this.model.save(

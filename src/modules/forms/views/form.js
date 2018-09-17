@@ -198,12 +198,12 @@ module.exports = Marionette.View.extend({
 	},
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['model', 'fields']);
+		this.mergeOptions(options, ['model', 'collection']);
 	},
 
 	onRender: function() {
 		this.showChildView('list', new ListView({
-			collection: this.fields,
+			collection: this.collection,
 			rowView: RowView,
 			newRowView: NewRowView,
 
@@ -229,7 +229,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChildviewSortChange: function(data) {
-		this.fields.reOrder(data.list);
+		this.collection.reOrder(data.list);
 	}
 
 });

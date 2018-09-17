@@ -150,11 +150,16 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
-		this.showChildView('type', new TypeSelectorView({
+		var view = new TypeSelectorView({
 			type: this.model.get('type'),
 			post: this.model,
 			typesSource: this.typesSource
-		}));
+		});
+		this.showChildView('type', view);
+		// proxy filepickers events
+		this.listenTo(view, 'childview:field:change', function() {
+			this.triggerMethod('field:change')
+		}.bind(this));
 
 		this.showChildView('page', new SelectView({
 			collection: this.menus,
@@ -174,7 +179,7 @@ module.exports = Marionette.View.extend({
 		};
 
 		this.showChildView('group', new SelectView({
-			dataSource: this.model.getGroups(),
+			collectionPromise: this.model.getGroups(),
 			emptyLabel: '&nbsp;',
 			name: 'group_list',
 			direction: 'up'

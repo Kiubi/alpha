@@ -11,12 +11,12 @@
       l'enregistrement de sa commande, quelque soit le mode de paiment utilisé. Vous pouvez ajouter un message personnalisé dans cet email.
     </p>
     <div class="form-group">
-      <label class="control-label" for="">Destinataires</label>
+      <label for="">Destinataires</label>
       <p>Saisissez les emails des destinataires, séparés par des virgules. Sans destinataire, l'email par défaut est utilisé.</p>
       <input class="form-control" id="" placeholder="marc.beyer@troll-idees.com">
     </div>
     <div class="form-group">
-      <label class="control-label required" for="mail_pending">Message personnalisé</label>
+      <label class="required" for="mail_pending">Message personnalisé</label>
       <textarea class="form-control" name="mail_pending" id="mail_pending" placeholder="Message tel qu'il apparaîtra dans l'email"  data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- mail_pending %></textarea>
     </div>
   </div>
@@ -32,19 +32,19 @@
       Vous pouvez ajouter un message personnalisé pour chacuns de ces emails.
     </p>
     <div class="form-group">
-      <label class="control-label required" for="mail_processing">Message personnalisé de l'état : <span class="label label-default">En cours</span></label>
+      <label class="required" for="mail_processing">Message personnalisé de l'état : <span class="badge badge-primary">En cours</span></label>
       <textarea class="form-control" name="mail_processing" id="mail_processing" placeholder="Message tel qu'il apparaîtra dans l'email" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- mail_processing %></textarea>
     </div>
     <div class="form-group">
-      <label class="control-label required" for="mail_processed">Message personnalisé de l'état : <span class="label label-default">Traitée</span></label>
+      <label class="required" for="mail_processed">Message personnalisé de l'état : <span class="badge badge-primary">Traitée</span></label>
       <textarea class="form-control" name="mail_processed" id="mail_processed" placeholder="Message tel qu'il apparaîtra dans l'email" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- mail_processed %></textarea>
     </div>
     <div class="form-group">
-      <label class="control-label required" for="mail_shipped">Message personnalisé de l'état : <span class="label label-default">Expédiée</span></label>
+      <label class="required" for="mail_shipped">Message personnalisé de l'état : <span class="badge badge-primary">Expédiée</span></label>
       <textarea class="form-control" name="mail_shipped" id="mail_shipped" placeholder="Message tel qu'il apparaîtra dans l'email" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- mail_shipped %></textarea>
     </div>
     <div class="form-group">
-      <label class="control-label required" for="mail_cancelled">Message personnalisé de l'état : <span class="label label-default">Annulée</span></label>
+      <label class="required" for="mail_cancelled">Message personnalisé de l'état : <span class="badge badge-primary">Annulée</span></label>
       <textarea class="form-control" name="mail_cancelled" id="mail_cancelled" placeholder="Message tel qu'il apparaîtra dans l'email" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- mail_cancelled %></textarea>
     </div>
   </div>
@@ -55,7 +55,7 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

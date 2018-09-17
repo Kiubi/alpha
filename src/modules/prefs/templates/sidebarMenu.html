@@ -1,13 +1,22 @@
 <h2>Préférences</h2>
-<ul class="nav nav-sidebar">
-	<li><a href="/prefs">Préférences générales</a></li>
-	<li><a href="/prefs/contact">Coordonnées du site</a></li>
-<!--	<li><a href="/prefs/users">Comptes utilisateurs</a></li> -->
-	<li><a href="/prefs/meta">Meta par défaut</a></li>
-	<li><a href="/prefs/medias">Fichiers de la médiathèque</a></li>
-	<li><a href="/prefs/domains">Noms de domaine</a></li>
-	<li><a href="/prefs/https">Accès HTTPS</a></li>
-	<li><a href="/prefs/l10n">Traductions</a></li>
-	<li><a href="/prefs/gdpr">Données personnelles</a></li>
-	<li><a href="/prefs/shortcut">Raccourcis clavier</a></li>
+<ul class="nav nav-sidebar flex-column">
+	<% if(has_scope_pref) { %>
+	<li class="nav-item"><a class="nav-link" href="/prefs">Préférences générales</a></li>
+	<li class="nav-item"><a class="nav-link" href="/prefs/contact">Coordonnées du site</a></li>
+	<% } %>
+	<% if(has_scope_seo) { %>
+	<li class="nav-item"><a class="nav-link" href="/prefs/meta">Meta par défaut</a></li>
+	<% } %>
+	<li class="nav-item"><a class="nav-link" href="/prefs/medias">Fichiers de la médiathèque</a></li>
+	<% if(has_scope_domains) { %>
+	<li class="nav-item"><a class="nav-link" href="/prefs/domains">Noms de domaine</a></li>
+	<li class="nav-item"><a class="nav-link" href="/prefs/https">Accès HTTPS</a></li>
+	<% } %>
+	<% if(has_scope_cms) { %>
+	<li class="nav-item"><a class="nav-link" href="/prefs/l10n">Traductions</a></li>
+	<% } %>
+	<% if(has_scope_pref) { %>
+	<li class="nav-item"><a class="nav-link" href="/prefs/gdpr">Données personnelles</a></li>
+	<% } %>
+	<li class="nav-item"><a class="nav-link" href="/prefs/shortcut">Raccourcis clavier</a></li>
 </ul>

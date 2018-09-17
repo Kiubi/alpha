@@ -1,9 +1,9 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var format = require('kiubi/utils/format.js');
-var _ = require('underscore');
 
 var SelectView = require('kiubi/views/ui/select.js');
+var FileView = require('kiubi/views/ui/input.file.js');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
@@ -21,6 +21,10 @@ module.exports = Marionette.View.extend({
 		folder: {
 			el: "div[data-role='folder']",
 			replaceElement: true
+		},
+		file: {
+			el: "div[data-role='file']",
+			replaceElement: true
 		}
 	},
 
@@ -30,24 +34,17 @@ module.exports = Marionette.View.extend({
 		'folder_id'
 	],
 
-	tempfileUpload: null,
-
-	events: {
-		"change input[type=file]": "dropFile"
-	},
-
 	render_counter: 1,
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'folder', 'folders']);
 
 		this.listenTo(this.model, 'change:folder_id', this.onFolderChange);
-
 	},
 
 	templateContext: function() {
 		return {
-			last_date: format.formatDateTime(this.model.get('modification_date')),
+			last_date: format.formatLongDateTime(this.model.get('modification_date')),
 			size: format.formatBytes(this.model.get('weight'), 2),
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			render_counter: this.render_counter++ // Hack to force image reload on upload
@@ -60,6 +57,7 @@ module.exports = Marionette.View.extend({
 			selected: this.model.get('folder_id'),
 			name: 'folder_id'
 		}));
+		this.showChildView('file', new FileView());
 	},
 
 	onFolderChange: function() {
@@ -73,8 +71,8 @@ module.exports = Marionette.View.extend({
 	onSave: function() {
 
 		var fields = Forms.extractFields(this.fields, this);
-		if (this.tempfileUpload) {
-			fields.file = this.tempfileUpload;
+		if (this.getChildView('file').getFile()) {
+			fields.file = this.getChildView('file').getFile();
 		}
 
 		return this.model.save(fields, {
@@ -90,23 +88,6 @@ module.exports = Marionette.View.extend({
 		return this.model.destroy({
 			wait: true
 		});
-	},
-
-	dropFile: function(event) {
-		if (Backbone.$(event.target).is('input[type=file]')) {
-			// stop la propagation de l'event 
-			event.stopPropagation();
-		}
-
-		event.preventDefault();
-
-		var dataTransfer = event.originalEvent.dataTransfer;
-		var files = (dataTransfer ? dataTransfer.files : event.originalEvent.target
-			.files);
-
-		_.each(files, function(File) {
-			this.tempfileUpload = File;
-		}.bind(this));
 	}
 
 });

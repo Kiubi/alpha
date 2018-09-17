@@ -17,9 +17,10 @@ var filterCollection = Backbone.Collection.extend({
 			id: null,
 			title: '',
 			type: 'select',
-			extraClassname: '',
-			collectionPromise: null,
-			collection: null
+			extraClassname: '', // FilterBtnView
+			collectionPromise: null, // FilterBtnView, FilterSelectView
+			collection: null,
+			value: null // FilterInputView
 		}
 	})
 });
@@ -185,7 +186,8 @@ var FilterSearchView = Marionette.View.extend({
 		'li': 'li[data-role="selection"]',
 		'clear': 'span[data-role="clear"]',
 		'input': 'input[data-role="input"]',
-		'dropdown-menu': '.dropdown-menu'
+		'dropdown-menu': '.dropdown-menu',
+		'toggle': '.dropdown-toggle'
 	},
 
 	/**
@@ -196,6 +198,7 @@ var FilterSearchView = Marionette.View.extend({
 
 		'shown.bs.dropdown': function(event) {
 			this.getUI('input').focus();
+			this.triggerInput();
 		},
 
 		'click @ui.li': function(event) {
@@ -213,14 +216,7 @@ var FilterSearchView = Marionette.View.extend({
 		},
 
 		'keyup @ui.input': _.debounce(function() {
-			this.term = this.getUI('input').val();
-
-			this.proxy.triggerMethod('filter:input', {
-				model: this.model,
-				value: this.term,
-				view: this
-			});
-
+			this.triggerInput();
 		}, 300),
 
 		'click @ui.clear': function(event) {
@@ -244,7 +240,7 @@ var FilterSearchView = Marionette.View.extend({
 		}
 	},
 
-	term: '',
+	term: null,
 	current: {
 		label: '',
 		value: null
@@ -253,11 +249,31 @@ var FilterSearchView = Marionette.View.extend({
 	searchPlaceholder: 'Rechercher',
 
 	initialize: function(options) {
+		this.term = null;
 		this.mergeOptions(options, ['model', 'proxy']);
 		this.current = {
 			label: this.model.get('title'),
 			value: null
 		};
+	},
+
+	templateContext: function() {
+		return {
+			'term': this.term,
+			'searchPlaceholder': this.searchPlaceholder,
+			'current': this.current
+		};
+	},
+
+	triggerInput: function() {
+		if (this.getUI('input').val() === this.term) return;
+		this.term = this.getUI('input').val();
+
+		this.proxy.triggerMethod('filter:input', {
+			model: this.model,
+			value: this.term,
+			view: this
+		});
 	},
 
 	/**
@@ -272,8 +288,10 @@ var FilterSearchView = Marionette.View.extend({
 
 		if (this.current.value == null) {
 			this.getUI('clear').removeClass('md-cancel');
+			this.getUI('toggle').removeClass('cancel');
 		} else {
 			this.getUI('clear').addClass('md-cancel');
+			this.getUI('toggle').addClass('cancel');
 		}
 
 	},
@@ -292,22 +310,16 @@ var FilterSearchView = Marionette.View.extend({
 		var list = '';
 		if (results.length > 0) {
 			list = _.reduce(results, function(memo, result, index) {
-				return memo + '<li data-role="selection" data-index="' + index + '"><a href="#">' + result.label + '</a></li>';
-			}, '<li role="separator" class="divider"></li>');
+				return memo + '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' +
+					result.label + '</a></li>';
+			}, '<li class="dropdown-divider"></li>');
 		} else {
-			list = '<li role="separator" class="divider"></li><li><a href="#">-- Aucun résultat --</a></li>';
+			list =
+				'<li class="dropdown-divider"></li><li><span class="dropdown-item dropdown-item-empty"><span class="md-icon md-no-result"></span> Aucun résultat</span></li>';
 		}
 
 		this.emptyList(this.getUI('dropdown-menu')).append(list);
 		this.getUI('input').focus();
-	},
-
-	templateContext: function() {
-		return {
-			'term': this.term,
-			'searchPlaceholder': this.searchPlaceholder,
-			'current': this.current
-		};
 	},
 
 	emptyList: function($dropdown) {
@@ -320,7 +332,7 @@ var FilterSearchView = Marionette.View.extend({
 var FilterInputView = Marionette.View.extend({
 	template: require('kiubi/templates/ui/list.filter.input.html'),
 
-	className: 'form-group has-feedback',
+	className: 'btn-group has-feedback',
 
 	ui: {
 		'term': 'input[name="term"]'
@@ -341,6 +353,7 @@ var FilterInputView = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'proxy']);
+		this.currentTerm = this.model.get('value') ? this.model.get('value') : '';
 	},
 
 	/* Events */
@@ -387,7 +400,7 @@ var FiltersView = Marionette.CollectionView.extend({
 
 var NoChildrenView = Marionette.View.extend({
 	template: _.template(
-		'<span class="list-item-empty">Il n\'y a encore rien à afficher...</span>'
+		'<span class="list-item-empty"><span class="md-icon md-empty mb-2"></span>Il n\'y a encore rien à afficher</span>'
 	)
 });
 
@@ -630,12 +643,12 @@ module.exports = Marionette.View.extend({
 
 		// Affichage du bouton d'actions groupées et compteur de sélection
 		if (checked > 0) {
-			this.getUI('action-main').parent().parent().removeClass('hidden');
-			this.getUI('select-all').addClass('hidden');
+			this.getUI('action-main').parent().parent().removeClass('d-none');
+			this.getUI('select-all').addClass('d-none');
 			this.setCounterText(' : ' + checked + (checked > 1 ? ' sélectionnés' : ' sélectionné'));
 		} else {
-			this.getUI('action-main').parent().parent().addClass('hidden');
-			this.getUI('select-all').removeClass('hidden');
+			this.getUI('action-main').parent().parent().addClass('d-none');
+			this.getUI('select-all').removeClass('d-none');
 			this.setCounterText('');
 		}
 
@@ -720,6 +733,9 @@ module.exports = Marionette.View.extend({
 			}
 			mainBtn.text(mainBtn.data('title'));
 			mainBtn.removeClass('btn-load btn-load-inverse');
+
+			// If action has deleted rows, need to update the checked counter
+			this.selectRow();
 		}.bind(this));
 	},
 

@@ -1,0 +1,30 @@
+<div class="row">
+	<div class="col-4">
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend"><span class="input-group-text">Jusqu'à</span></div>
+				<input class="form-control" name="weight[]" value="<%- weight %>" placeholder="—">
+				<div class="input-group-append"><span class="input-group-text">Kg</span></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-3">
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend"><span class="input-group-text"></span></div>
+				<input class="form-control" name="price_ex_vat[]" value="<%- price_ex_vat %>" data-role="vat" data-linked="price_inc_vat[]" placeholder="0,00">
+				<div class="input-group-append"><span class="input-group-text"><%= currency %> HT</span></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-3">
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend"><span class="input-group-text"></span></div>
+				<input class="form-control" name="price_inc_vat[]" value="<%- price_inc_vat %>" data-role="vat" data-linked="price_ex_vat[]" placeholder="0,00">
+				<div class="input-group-append"><span class="input-group-text"><%= currency %> TTC</span></div>
+			</div>
+		</div>
+	</div>
+	<div class="col"><a href="#" data-role="action" data-action="delete" class="md-icon md-delete float-right"></a></div>
+</div>

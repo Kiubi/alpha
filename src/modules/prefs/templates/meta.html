@@ -1,7 +1,7 @@
 <form>
 
 <div class="alert alert-warning" role="alert">
-  <a href="https://aide.kiubi.com/recherche/catalogue/tags:M%E9tas-balises/" class="md-icon md-help pull-right" target="_blank"></a>
+  <a href="https://aide.kiubi.com/recherche/catalogue/tags:M%E9tas-balises/" class="md-icon md-help float-right" target="_blank"></a>
   Vous pouvez définir les balises <code>&lt;title&gt;</code>, <code>&lt;meta description&gt;</code>
   et <code>&lt;meta keywords&gt;</code> qui seront <strong>utilisées par défaut</strong> pour toutes les pages du site Internet.
   Il est cependant conseillé de <strong>personnaliser ces balises pour chaque page</strong>.
@@ -15,15 +15,15 @@
   </header>
   <div class="post-content">
     <div class="form-group">
-      <label class="control-label" for="meta_title">Titre par défaut des pages</label>
+      <label for="meta_title">Titre par défaut des pages</label>
       <input class="form-control" id="meta_title" name="meta_title" value="<%- meta_title %>" placeholder="Contenu de la balise &lt;title&gt; utilisée par défaut" type="text">
     </div>
     <div class="form-group">
-      <label class="control-label" for="meta_description">Description par défaut des pages</label>
+      <label for="meta_description">Description par défaut des pages</label>
       <textarea class="form-control" rows="5" id="meta_description" name="meta_description" placeholder="Contenu de la balise &lt;meta description&gt; utilisée par défaut"><%- meta_description %></textarea>
     </div>
     <div class="form-group">
-      <label class="control-label" for="meta_keywords">Mots clés par défaut des pages</label>
+      <label for="meta_keywords">Mots clés par défaut des pages</label>
       <textarea class="form-control" rows="5" id="meta_keywords" name="meta_keywords" placeholder="Contenu de la balise &lt;meta keywords&gt; utilisée par défaut"><%- meta_keywords %></textarea>
     </div>
   </div>
@@ -34,7 +34,7 @@
 
 <div class="save">
   <div class="btn-toolbar" role="toolbar">
-    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+    <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
   </div>
 </div>
 

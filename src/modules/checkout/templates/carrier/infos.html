@@ -1,0 +1,31 @@
+<article class="post-article">
+<header class="post-header">
+	<h1>Informations complémentaires</h1>
+</header>
+<div class="post-content">
+	<div class="form-group">
+		<label for="description">Description</label>
+		<textarea class="form-control" id="description" name="description" placeholder="Description du transporteur telle qu'elle apparaîtra dans le choix de la livraison" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- description %></textarea>
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<div class="form-group">
+				<label for="threshold">Montant de commande minimum</label>
+				<div class="input-group">
+					<div class="input-group-prepend"><span class="input-group-text">Actif à partir de</span></div>
+					<input class="form-control" id="threshold" name="threshold" value="<%- threshold %>" placeholder="1,00">
+					<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achat</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="col-3">
+			<div class="form-group">
+				<label>Taxe</label>
+				<div data-role="taxes"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<footer class="post-footer"></footer>
+</article>

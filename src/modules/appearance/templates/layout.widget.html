@@ -1,13 +1,13 @@
 <div class="widget color <%- color %>" data-role="widget" data-widget="<%- widget_id %>" data-type="<%- type %>">
-	<div class="media">
-		<div class="media-left">
-			<div class="corner-color"><div class="corner-color-content"></div></div>
+	<div class="corner-color"><div class="corner-color-content"></div></div>
+	<div class="row no-gutters">
+		<div class="col-auto">
 			<div class="md-icon service-icon"></div>
 		</div>
-		<div class="media-left"><a href="#" class="md-icon md-drag btn-drag"></a></div>
-		<div class="media-body">
+		<div class="col-auto"><a href="#" class="md-icon md-drag btn-drag"></a></div>
+		<div class="col">
 			<div class="icon-toolbar" role="toolbar" data-widget="<%- widget_id %>">
-				<a href="#" class="md-icon md-note-add"></a>
+				<a href="#" class="md-icon md-note-add d-none"></a>
 				<a href="#" data-role="configureWidget" class="md-icon md-settings"></a>
 				<a href="#" data-role="removeWidget" class="md-icon md-cancel"></a>
 			</div>

@@ -6,7 +6,7 @@
 		<div class="form-group">
 			<p>Le type de billet détermine l'apparence et le contenu du billet dans la page :</p>
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<select id="type" name="type" data-style="selectify">
 						<% _(types).each(function(item){ %>
 							<option value="<%- item.type %>" <%= (item.type == type) ? 'selected="selected"':''  %> data-tags="<%- item.position %>"><%- item.name %></option>
@@ -24,24 +24,24 @@
 
 	<% switch(field.type){ case 'text': %>
 	<div class="form-group">
-		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+		<label for="<%- field.field %>"><%- field.name %></label>
 		<input class="form-control" id="<%- field.field %>" name="<%- field.field %>" value="<%- post.get(field.field) %>">
 	</div>
 	<% break; case 'textarea': %>
 	<div class="form-group">
-		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+		<label for="<%- field.field %>"><%- field.name %></label>
 		<textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" rows="5"><%- post.get(field.field) %></textarea>
 	</div>
 	<% break; case 'wysiwyg': %>
 	<div class="form-group">
-		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+		<label for="<%- field.field %>"><%- field.name %></label>
 		<textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" data-role="wysiwyg" rows="21"><%- post.get(field.field) %></textarea>
 	</div>
 	<% break; case 'select': %>
 	<div class="form-group">
-		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+		<label for="<%- field.field %>"><%- field.name %></label>
 		<div class="row">
-			<div class="col-xs-6">
+			<div class="col-6">
 				<select id="<%- field.field %>" name="<%- field.field %>" data-style="selectify">
 					<% _(field.options).each(function(option){ %>
 					<option value="<%- option.value %>" <%= (option.value == post.get(field.field)) ? 'selected="selected"':''  %>><%- option.name %></option>

@@ -5,20 +5,47 @@ var Controller = require('kiubi/controller.js');
 var TooltipBehavior = require('kiubi/behaviors/tooltip');
 
 var NotFoundView = require('./views/notFound');
-var UnderConstructionView = require('./views/underConstruction');
 var DashboardView = require('./views/dashboard');
 var LoginView = require('./views/login');
+
+var Stats = require('./models/stats');
+var Report = require('./models/report');
+var Logs = require('./models/logs');
+var Live = require('./models/live');
+
+var statsModel = new Stats();
 
 var SidebarMenuView = Marionette.View.extend({
 	template: require('./templates/dashboard.sidebarMenu.html'),
 	service: 'dashboard',
-	behaviors: [TooltipBehavior]
+	behaviors: [TooltipBehavior],
+
+	initialize: function(options) {
+
+		this.mergeOptions(options, ['stat']);
+
+		if (this.stat) {
+			this.listenTo(this.stat, 'sync', this.render);
+		}
+	},
+
+	templateContext: function() {
+		return {
+			pending_orders: this.stat.get('checkout') ? this.stat.get('checkout').pending_orders : null,
+			stock_shortage_count: this.stat.get('catalog') ? this.stat.get('catalog').stock_shortage_count : null,
+			unread_responses: this.stat.get('forms') ? this.stat.get('forms').unread_responses : null
+		};
+	}
+
 });
 
 var DefaultController = Controller.extend({
 
 	sidebarMenuService: 'dashboard',
 	sidebarMenu: SidebarMenuView,
+	sidebarMenuOptions: {
+		stat: statsModel
+	},
 
 	/*
 	 *	Show NotFound Page
@@ -38,25 +65,6 @@ var DefaultController = Controller.extend({
 		}
 
 		this.navigationController.showContent(new NotFoundView());
-	},
-
-	/*
-	 *	Show ComingSoon Page
-	 */
-	underConstruction: function() {
-		this.navigationController.setBreadCrum([{
-			title: 'Kiubi',
-			href: '/'
-		},
-			{
-				title: 'Page en construction'
-			}
-		]);
-		this.navigationController.setHeaderActions(null);
-		this.navigationController.setHeaderTabs(null);
-		this.navigationController.refreshHeader();
-
-		this.navigationController.showContent(new UnderConstructionView());
 	},
 
 	/*
@@ -95,11 +103,15 @@ var DefaultController = Controller.extend({
 	/*
 	 *	Dashboard
 	 */
-
 	dashboard: function() {
 		this.showSidebarMenu();
 
-		var view = new DashboardView();
+		var view = new DashboardView({
+			stats: statsModel,
+			report: new Report(),
+			activity: new Logs(),
+			live: new Live()
+		});
 
 		// Catch change site. User could already be in dashboard
 		var Session = Backbone.Radio.channel('app').request('ctx:session');

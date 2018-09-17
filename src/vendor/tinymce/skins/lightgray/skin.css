@@ -8,7 +8,16 @@
 }
 
 .mce-panel {
-  border-color: #d9d9d9;
+  border-color: transparent;
+}
+
+.mce-edit-area.mce-panel,
+.mce-statusbar.mce-panel {
+  border: 1px solid #d9d9d9 !important;
+}
+
+.mce-statusbar.mce-panel {
+  border-top: none !important;
 }
 
 .mce-txt,
@@ -23,13 +32,31 @@
 
 .mce-top-part .mce-panel,
 .mce-top-part .mce-btn {
-  background-color: #e5e5e5;
+  background-color: #fff;
 }
 
 .mce-top-part .mce-btn:hover,
-.mce-top-part .mce-btn:active {
-  background: #b3b3b3;
-  border-color: #e5e5e5;
+.mce-top-part .mce-btn:active,
+.mce-splitbtn .mce-open:hover,
+.mce-splitbtn .mce-open:active,
+.mce-splitbtn:hover .mce-open {
+  background: transparent;
+  border-color: transparent;
+}
+
+.mce-splitbtn.mce-opened {
+  border-color: transparent;
+}
+
+.mce-top-part .mce-btn:hover .mce-ico,
+.mce-top-part .mce-btn:active .mce-ico {
+  color: #6EC33D;
+}
+
+.mce-top-part .mce-btn:hover .mce-ico.mce-i-backcolor,
+.mce-top-part .mce-btn:active .mce-ico.mce-i-backcolor {
+  color: #fff;
+  background-color: #6EC33D;
 }
 
 .mce-btn:hover .mce-caret,
@@ -39,17 +66,39 @@
   border-top-color: #595959;
 }
 
+.mce-toolbar-grp .mce-btn-group .mce-btn {
+  margin: 0 20px 5px 0;
+}
+
+.mce-toolbar-grp .mce-btn button {
+  padding: 0;
+}
+
+.mce-toolbar-grp .mce-menubtn button,
+.mce-toolbar-grp .mce-splitbtn button:first-child {
+  padding-right: 5px
+}
+
 div.mce-menubtn.mce-opened {
   border-bottom: none;
+}
+
+.mce-menubtn.mce-fixed-width span {
+  width: 95px;
+}
+
+.mce-fixed-width + .mce-menubtn.mce-fixed-width span {
+  width: 50px;
+  text-overflow: inherit;
 }
 
 .mce-top-part .mce-btn.mce-active,
 .mce-top-part .mce-btn.mce-active:hover,
 .mce-top-part .mce-btn.mce-active:focus,
 .mce-top-part .mce-btn.mce-active:active {
-  color: #595959;
-  background: #b3b3b3;
-  border-color: #e5e5e5;
+  color: #337ab7;
+  background: transparent;
+  border-color: transparent;
 }
 
 .mce-top-part .mce-btn.mce-active button,
@@ -234,4 +283,151 @@ div.mce-menubtn.mce-opened {
 .mce-tab.mce-active {
   color: #363636 !important;
   background: url(/assets/img/bg_body.jpg) fixed;
+}
+
+.mce-tooltip * {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.mce-menu .mce-ico,
+.mce-top-part .mce-ico {
+	font-family: 'Material Icons' !important;
+	font-weight: normal;
+	font-style: normal;
+  font-size: 20px;
+	line-height: 1;
+	text-transform: none;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	font-feature-settings: 'liga';
+}
+
+.mce-i-numlist::before {
+    content: "format_list_numbered";
+}
+
+.mce-i-bold::before {
+    content: "format_bold";
+}
+
+.mce-i-italic::before {
+    content: "format_italic";
+}
+
+.mce-i-underline::before {
+    content: "format_underlined";
+}
+
+.mce-i-strikethrough::before {
+    content: "format_strikethrough";
+}
+
+.mce-i-superscript::before {
+    content: "explicit";
+}
+
+.mce-i-alignleft::before {
+    content: "format_align_left";
+}
+
+.mce-i-aligncenter::before {
+    content: "format_align_center";
+}
+
+.mce-i-alignright::before {
+    content: "format_align_right";
+}
+
+.mce-i-alignjustify::before {
+    content: "format_align_justify";
+}
+
+.mce-i-forecolor::before {
+    content: "title";
+}
+
+.mce-i-backcolor::before {
+    content: "title";
+}
+
+.mce-colorbutton .mce-preview {
+  margin-top: 8px;
+  margin-left: -15px;
+}
+
+.mce-i-numlist::before {
+    content: "format_list_numbered";
+}
+
+.mce-i-bullist::before {
+    content: "format_list_bulleted";
+}
+
+.mce-i-outdent::before {
+    content: "format_indent_decrease";
+}
+
+.mce-i-indent::before {
+    content: "format_indent_increase";
+}
+
+.mce-i-pastetext::before {
+    content: "assignment";
+}
+
+.mce-active .mce-i-pastetext::before {
+  content: "assignment_turned_in";
+}
+
+.mce-i-link::before {
+    content: "link";
+}
+
+.mce-i-unlink::before {
+    content: "link_off";
+}
+
+.mce-i-anchor::before {
+    content: "bookmark_border";
+}
+
+.mce-i-image::before {
+    content: "filter";
+}
+
+.mce-i-media::before {
+    content: "slideshow";
+}
+
+.mce-i-table {
+  padding-right: 5px;
+}
+
+.mce-i-table::before {
+    content: "grid_on";
+}
+
+.mce-i-charmap::before {
+    content: "functions";
+}
+
+.mce-i-removeformat::before {
+    content: "format_clear";
+}
+
+.mce-i-undo::before {
+    content: "undo";
+}
+
+.mce-i-redo::before {
+    content: "redo";
+}
+
+.mce-i-code::before {
+    content: "code";
 }

@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
@@ -79,13 +80,11 @@ module.exports = Marionette.View.extend({
 			name: 'target_page'
 		}));
 
-		var types = this.page.getInternalLinkTypes().done(function() {
+		var typesPromise = this.page.getInternalLinkTypes(this.model.get('target_type')).done(function() {
 			this.changeType(this.model.get('target_type'));
 		}.bind(this));
-
 		this.showChildView('type', new SelectView({
-			dataSource: types,
-			selected: this.model.get('target_type'),
+			collectionPromise: typesPromise,
 			name: 'target_type'
 		}));
 
@@ -100,7 +99,7 @@ module.exports = Marionette.View.extend({
 
 	changeType: function(type) {
 
-		this.getChildView('page').load(
+		this.getChildView('page').loadCollection(
 			this.page.getInternalLinkTargets(type)
 			.then(function(targets) {
 				var options = _.map(targets, function(target) {
@@ -117,7 +116,7 @@ module.exports = Marionette.View.extend({
 						is_group: !target.is_linkable
 					};
 				});
-				return options;
+				return new CollectionUtils.SelectCollection(options);
 			}, function() {
 				// TODO
 				return [];

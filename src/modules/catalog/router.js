@@ -44,7 +44,7 @@ function getHeadersAction(options) {
 	actions = actions.concat(
 		[{
 			title: 'Ajouter un produit',
-			callback: 'actionNewProduct'
+			callback: ['actionNewProduct', options.targetCategory || null] // category_id
 		}, {
 			title: 'Ajouter une catégorie',
 			callback: 'actionNewCategory'
@@ -169,7 +169,19 @@ var CatalogController = Controller.extend({
 	 * Products
 	 */
 
-	showProducts: function(category_id) {
+	showProductsByCategory: function(category_id, queryString) {
+		this.showGlobalProducts(queryString, category_id);
+	},
+
+	showProducts: function(queryString) {
+		this.showGlobalProducts(queryString, null);
+	},
+
+	showGlobalProducts: function(queryString, category_id) {
+
+		var qs = this.parseQueryString(queryString, {
+			'term': null
+		});
 
 		var promise, m;
 		category_id = parseInt(category_id);
@@ -188,13 +200,16 @@ var CatalogController = Controller.extend({
 					collection: c,
 					categories: new Categories(),
 					tags: new Tags(),
-					category_id: category_id ? category_id : null
+					category_id: category_id ? category_id : null,
+					filters: qs
 				});
 				this.navigationController.showContent(view);
 				view.start();
 				this.setHeader({
 					title: category_id ? m.get('name') : 'Tous les produits'
-				}, getHeadersAction(), category_id ? HeaderTabscategory(category_id, m.get('product_count')) : null);
+				}, getHeadersAction({
+					targetCategory: category_id ? category_id : null
+				}), category_id ? HeaderTabscategory(category_id, m.get('product_count')) : null);
 
 			}.bind(this))
 			.fail(function() {
@@ -213,9 +228,11 @@ var CatalogController = Controller.extend({
 		});
 		Backbone.$.when(t.fetch(), m.fetch({
 			data: {
-				extra_fields: 'texts,variants,price_label,images'
+				extra_fields: 'texts,variants,price_label,images,defaults'
 			}
 		})).done(function() {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 			var variants = new Variants();
 			variants.product_id = m.get('product_id');
 			var i = new Images();
@@ -228,7 +245,9 @@ var CatalogController = Controller.extend({
 				tags: new Tags(),
 				variants: variants,
 				taxes: t,
-				images: i
+				images: i,
+				enableSeo: Session.hasScope('site:seo'),
+				enableLayout: Session.hasScope('site:layout')
 			});
 			this.listenTo(m, 'change', function(model) {
 				if (model.hasChanged('name')) {
@@ -257,12 +276,14 @@ var CatalogController = Controller.extend({
 		}.bind(this));
 	},
 
-	actionNewProduct: function() {
+	actionNewProduct: function(category_id) {
 
 		var m = new Product({
 			name: 'Intitulé par défaut',
 			slug: 'intitule-par-defaut',
-			is_visible: false
+			is_visible: false,
+			stock: null,
+			categories: category_id ? [category_id] : []
 		});
 
 		return m.save().done(function() {
@@ -341,9 +362,17 @@ var CatalogController = Controller.extend({
 		var m = new Category({
 			category_id: id
 		});
-		m.fetch().done(function() {
+		m.fetch({
+			data: {
+				extra_fields: 'defaults'
+			}
+		}).done(function() {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 			var view = new CategoryView({
-				model: m
+				model: m,
+				enableSeo: Session.hasScope('site:seo'),
+				enableLayout: Session.hasScope('site:layout')
 			});
 			this.listenTo(m, 'change', function(model) {
 				if (model.hasChanged('name')) {
@@ -365,7 +394,8 @@ var CatalogController = Controller.extend({
 				title: m.get('name')
 			}, getHeadersAction({
 				preview: m,
-				addSave: true
+				addSave: true,
+				targetCategory: id
 			}), HeaderTabscategory(id, m.get('product_count')));
 		}.bind(this)).fail(function() {
 			this.notFound();
@@ -396,9 +426,17 @@ var CatalogController = Controller.extend({
 	showHome: function() {
 
 		var m = new Home();
-		m.fetch().done(function() {
+		m.fetch({
+			data: {
+				extra_fields: 'defaults'
+			}
+		}).done(function() {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 			var view = new HomeView({
-				model: m
+				model: m,
+				enableSeo: Session.hasScope('site:seo'),
+				enableLayout: Session.hasScope('site:layout')
 			});
 
 			this.listenTo(m, 'change', function(model) {
@@ -438,12 +476,12 @@ var CatalogController = Controller.extend({
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: 'Toutes les catégories'
-			});
+			}, getHeadersAction());
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
 				title: 'Catégories introuvables'
-			}, getHeadersAction());
+			});
 		}.bind(this));
 	},
 
@@ -557,7 +595,7 @@ var CatalogController = Controller.extend({
 
 		this.setHeader({
 			title: 'Tous les tags'
-		}, null, HeaderTagsTabs());
+		}, getHeadersAction(), HeaderTagsTabs());
 	},
 
 	showBrands: function() {
@@ -571,7 +609,7 @@ var CatalogController = Controller.extend({
 
 		this.setHeader({
 			title: 'Toutes les marques'
-		}, null, HeaderTagsTabs());
+		}, getHeadersAction(), HeaderTagsTabs());
 	},
 
 	showVariants: function() {
@@ -585,7 +623,7 @@ var CatalogController = Controller.extend({
 
 		this.setHeader({
 			title: 'Toutes les variantes'
-		}, null, HeaderTagsTabs());
+		}, getHeadersAction(), HeaderTagsTabs());
 	},
 
 	/*
@@ -608,7 +646,7 @@ module.exports = Marionette.AppRouter.extend({
 		'catalog/products/:id/linked': 'showLinked',
 		'catalog/categories': 'showCategories',
 		'catalog/categories/:id': 'showCategory',
-		'catalog/categories/:id/products': 'showProducts',
+		'catalog/categories/:id/products': 'showProductsByCategory',
 		'catalog/comments': 'showComments',
 		'catalog/settings': 'showSettings',
 		'catalog/taxes': 'showTaxes',
@@ -618,6 +656,13 @@ module.exports = Marionette.AppRouter.extend({
 	},
 
 	onRoute: function(name, path, args) {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		if (!Session.hasScope('site:catalog') || !Session.hasFeature('catalog')) {
+			this.controller.navigationController.navigate('/');
+			return;
+		}
+
 		this.controller.showSidebarMenu();
 	}
 });

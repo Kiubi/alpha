@@ -30,13 +30,9 @@ module.exports = Marionette.Behavior.extend({
 		'change @ui.radioInputs': function() {
 			this.getUI('form').trigger('input');
 		} // Fix input event on radio
-		// TODO : media picker
-		// TODO : datepicker
 	},
 
 	behaviors: [SelectifyBehavior, ScrollFixBehavior],
-
-	keyCombos: [],
 
 	initialize: function(options) {
 		this.mergeOptions(options);
@@ -51,17 +47,16 @@ module.exports = Marionette.Behavior.extend({
 		ControllerChannel.trigger('modified:content');
 	},
 
-	onRender: function() {
-		this.keyCombos.push(
-			this.keyListener.register_combo({
-				"keys": "meta s",
-				"is_exclusive": true,
-				"on_keydown": this.onSave.bind(this)
-			}));
+	onAttach: function() {
+		this.keyListener.register_combo({
+			"keys": "meta s",
+			"is_exclusive": true,
+			"on_keydown": this.onSave.bind(this)
+		});
 	},
 
 	onDestroy: function() {
-		this.keyListener.unregister_many(this.keyCombos);
+		this.keyListener.unregister_combo("meta s");
 	},
 
 	/**

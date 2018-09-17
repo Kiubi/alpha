@@ -56,13 +56,8 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChildviewInput: function(term, view) {
-		this.categories.fetch({
-			data: {
-				term: term,
-				limit: 5
-			}
-		}).done(function() {
-			view.showResults(formatCategoriesTags(this.categories.toJSON()));
+		this.categories.suggest(term, 5, _.pluck(view.getTags(), 'value')).done(function(categories) {
+			view.showResults(formatCategoriesTags(categories));
 		}.bind(this));
 	},
 

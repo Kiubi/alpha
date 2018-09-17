@@ -1,35 +1,35 @@
 <% if(actions && actions.length > 0) { %>
-<div class="btn-toolbar pull-right" role="toolbar">
-	<div class="btn-group" role="group">
-		<button data-id="<%- actions[0].index %>" type="button" class="btn btn-action <%= !actions[0].isEnabled ? 'disabled' : '' %>" data-role="default-action"><%- actions[0].title %></button>
-		<% if (actions.length > 1) %>
-		<button type="button" class="btn btn-action dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span></button>
-		<ul class="dropdown-menu dropdown-menu-right" data-role="other-actions">
-			<% _(actions).each(function(action, index){ if(index==0) return; %>
-			<li data-id="<%- action.index %>" class="<%= !action.isEnabled ? 'disabled' : '' %>"><a href="#"><%- action.title %></a></li>
-			<% }) %>
-		</ul>
-		<% %>
-	</div>
-</div>
+		<div class="btn-group float-right">
+			<button data-id="<%- actions[0].index %>" type="button" class="btn btn-lg btn-success btn-action <%= !actions[0].isEnabled ? 'disabled' : '' %>" data-role="default-action"><%- actions[0].title %></button>
+			<% if (actions.length > 1) %>
+			<button type="button" class="btn btn-lg btn-success btn-action dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+			<ul class="dropdown-menu dropdown-menu-right" data-role="other-actions">
+				<% _(actions).each(function(action, index){ if(index==0) return; %>
+				<li data-id="<%- action.index %>"><a href="#" class="dropdown-item <%= !action.isEnabled ? 'disabled' : '' %>"><%- action.title %></a></li>
+				<% }) %>
+			</ul>
+			<% %>
+		</div>
+
 <% } %>
 
-<ol class="breadcrumb">
-	<% _(links).each(function(link){ %>
- 		<% if (link.href) { %>
-			<li><a href="<%- link.href %>" title="<%- link.title %>"><%- link.title %></a></li>
-		<% } else { %>
-			<li class="active" title="<%- link.title %>"><%- link.title %></li>
-		<% } %>
-	<% }) %>
-	<li class="gradient"></li>
-</ol>
+<ol class="breadcrumb flex-nowrap">
+		<% _(links).each(function(link){ %>
+	 		<% if (link.href) { %>
+				<li class="breadcrumb-item"><a href="<%- link.href %>" title="<%- link.title %>"><%- link.title %></a></li>
+			<% } else { %>
+				<li class="breadcrumb-item active" title="<%- link.title %>"><%- link.title %></li>
+			<% } %>
+		<% }) %>
+		<li class="gradient"></li>
+	</ol>
+
 
 <% if(tabs) { %>
-<ul class="nav nav-pills">
+<ul class="nav">
 	<% _(tabs).each(function(tab){ %>
-	<li role="presentation" <%= tab.is_active ? 'class="active"' : '' %>>
-		<a href="<%- tab.url %>">
+	<li role="presentation" class="nav-item <%= tab.is_active ? 'active' : '' %>">
+		<a href="<%- tab.url %>" class="nav-link">
 		<%- tab.title %>
 		<% if(tab.icon) { %>
 		<span class="md-icon <%- tab.icon %>"></span>

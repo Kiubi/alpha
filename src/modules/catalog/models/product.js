@@ -6,8 +6,16 @@ module.exports = Backbone.Model.extend({
 	idAttribute: 'product_id',
 
 	previewLink: null,
+	meta: {},
 
 	parse: function(response) {
+		this.meta = {};
+		if ('meta' in response && response.meta.base_price) {
+			this.meta = {
+				'base_price': response.meta.base_price,
+				'currency': response.meta.currency
+			};
+		}
 		if ('data' in response) {
 			if (response.data === null) return {};
 			if (_.isNumber(response.data)) {

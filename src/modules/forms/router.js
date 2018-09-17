@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var Controller = require('kiubi/controller.js');
+var ControllerChannel = Backbone.Radio.channel('controller');
 
 var Forms = require('./models/forms');
 var Fields = require('./models/fields');
@@ -19,19 +20,41 @@ var SidebarMenuView = Marionette.View.extend({
 	behaviors: [ActiveLinksBehaviors],
 
 	initialize: function(options) {
+
+		this.unread_count = 0;
+
 		this.forms = new Forms();
-		this.listenTo(this.forms, 'sync', this.render);
+		this.listenTo(this.forms, 'sync', function() {
+			this.unread_count = this.forms.reduce(function(memo, model) {
+				return memo + model.get('replies_unread_count');
+			}, 0);
+			this.render();
+		}.bind(this));
 		this.forms.fetch();
+
+		this.listenTo(ControllerChannel, 'refresh:forms', this.onRefreshForms);
 	},
 
 	templateContext: function() {
-		var c = this.forms.reduce(function(memo, model) {
-			return memo + model.get('replies_unread_count');
-		}, 0);
-
 		return {
-			unread_count: c
+			unread_count: this.unread_count
 		};
+	},
+
+	onRefreshForms: function(delta) {
+
+		if (delta == null) {
+			this.forms.fetch();
+			return;
+		}
+
+		if (this.unread_count + delta < 0) {
+			this.unread_count = 0;
+		} else {
+			this.unread_count += delta;
+		}
+
+		this.render();
 	}
 });
 
@@ -60,7 +83,7 @@ var FormsController = Controller.extend({
 
 		var qs = this.parseQueryString(queryString, {
 			'id': null,
-			'u': null // [null,1] => all, only unread
+			'is_read': null
 		});
 
 		var view = new InboxView({
@@ -119,7 +142,7 @@ var FormsController = Controller.extend({
 			fields.fetch();
 			var view = new FormView({
 				model: m,
-				fields: fields
+				collection: fields
 			});
 			this.listenTo(m, 'change', function(model) {
 				if (model.hasChanged('name')) {
@@ -185,6 +208,13 @@ module.exports = Marionette.AppRouter.extend({
 	},
 
 	onRoute: function(name, path, args) {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		if (!Session.hasScope('site:modules')) {
+			this.controller.navigationController.navigate('/');
+			return;
+		}
+
 		this.controller.showSidebarMenu();
 	}
 });

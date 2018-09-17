@@ -23,8 +23,6 @@ var HttpsView = require('./views/https');
 var MediasView = require('./views/medias');
 var MetaView = require('./views/meta');
 var DomainsView = require('./views/domains');
-var UsersView = require('./views/users');
-var UserView = require('./views/user');
 var ShortcutView = require('./views/shortcut');
 var GdprView = require('./views/gdpr');
 var L10nView = require('./views/l10n');
@@ -34,7 +32,18 @@ var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
 	template: require('./templates/sidebarMenu.html'),
 	service: 'prefs',
-	behaviors: [ActiveLinksBehaviors]
+	behaviors: [ActiveLinksBehaviors],
+
+	templateContext: function() {
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
+		return {
+			has_scope_pref: Session.hasScope('site:pref'),
+			has_scope_domains: Session.hasScope('site:domains'),
+			has_scope_cms: Session.hasScope('site:cms'),
+			has_scope_seo: Session.hasScope('site:seo')
+		};
+	}
 });
 
 /* Tabs  */
@@ -47,6 +56,24 @@ function HeaderTabsL10n() {
 		title: 'Import',
 		url: '/prefs/l10n/import'
 	}];
+}
+
+function ctlScope(name) {
+	switch (name) {
+		case 'showIndex':
+		case 'showContact':
+		case 'showGdpr':
+			return 'site:pref';
+		case 'showHttps':
+		case 'showDomains':
+			return 'site:domains';
+		case 'showL10n':
+		case 'showL10nImport':
+			return 'site:cms';
+		case 'showMeta':
+			return 'site:seo';
+	}
+	return null;
 }
 
 var PrefsController = Controller.extend({
@@ -186,24 +213,6 @@ var PrefsController = Controller.extend({
 		});
 	},
 
-	showUsers: function() {
-		console.log('PrefsController, showUsers');
-
-		this.navigationController.showContent(new UsersView());
-		this.setHeader({
-			title: 'Comptes utilisateurs'
-		});
-	},
-
-	showUser: function(id) {
-		console.log('CustomersController, showUser', id);
-
-		this.navigationController.showContent(new UserView());
-		this.setHeader({
-			title: 'Détail du membre ' + id
-		});
-	},
-
 	showShortcut: function() {
 		this.navigationController.showContent(new ShortcutView());
 		this.setHeader({
@@ -284,8 +293,6 @@ module.exports = Marionette.AppRouter.extend({
 		'prefs/medias': 'showMedias',
 		'prefs/meta': 'showMeta',
 		'prefs/domains': 'showDomains',
-		'prefs/users': 'showUsers',
-		'prefs/users/:id': 'showUser',
 		'prefs/shortcut': 'showShortcut',
 		'prefs/gdpr': 'showGdpr',
 		'prefs/l10n': 'showL10n',
@@ -293,6 +300,16 @@ module.exports = Marionette.AppRouter.extend({
 	},
 
 	onRoute: function(name, path, args) {
+
+		var scope = ctlScope(name);
+		if (scope) {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
+			if (!Session.hasScope(scope)) {
+				this.controller.navigationController.navigate('/');
+				return;
+			}
+		}
+
 		this.controller.showSidebarMenu();
 	}
 });

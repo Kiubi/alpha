@@ -1,19 +1,13 @@
-<div class="row">
-	<div class="col-xs-12">
-		<div class="media">
-			<div class="media-left">
-				<div class="checkbox-inline">
-					<input id="response_<%- response_id %>" name="selection" value="<%- response_id %>" type="checkbox">
-					<label for="response_<%- response_id %>"></label>
-				</div>
-			</div>
-			<div class="media-body">
-				<span data-role="read" class="read <%- is_read ? '' : 'not-read' %>" title="<%- is_read ? 'Marquer comme non lu' : 'Marquer comme lu' %>"></span>
-				<h4>#<%- response_id %></h4>
-				reçue le <%- creation_date %>
-				<span><%- subject %></span>
-			</div>
-		</div>
+<div class="row no-gutters">
+	<div class="col-auto">
+		<input id="response_<%- response_id %>" name="selection" value="<%- response_id %>" type="checkbox">
+		<label for="response_<%- response_id %>"></label>
+	</div>
+	<div class="col item-body">
+		<span data-role="read" class="read <%- is_read ? '' : 'not-read' %>" title="<%- is_read ? 'Marquer comme non lu' : 'Marquer comme lu' %>"></span>
+		<h4>#<%- response_id %></h4>
+		<%- creation_date_fromnow %>
+		<span><%- subject %></span>
 		<p><%- summary %></p>
 	</div>
 </div>

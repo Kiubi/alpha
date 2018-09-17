@@ -1,12 +1,12 @@
 <% if(response_id) { %>
     <div class="answer-header">
-      <p>Le <%- creation_date %></p>
+      <p><%- creation_date %></p>
       <H1>#<%- response_id %> - <%- subject %></H1> Réponse à <a href="/forms/<%- form_id %>"><%- form_name %></a>
     </div>
 
 	<% _.each(fields, function(field){ %>
 	<div class="form-group">
-		<label class="control-label"><%- field.name %></label>
+		<label><%- field.name %></label>
 		<p class="form-control-static">
       <% if(field.value && field.type == 'text') { %>
         <%= nl2br(field.value) %>
@@ -20,7 +20,7 @@
 	<% }) %>
 
     <div class="form-group">
-      <label class="control-label">IP | Host</label>
+      <label>IP | Host</label>
       <p class="form-control-static"><%- ip %> | <%- reverse_host %></p>
     </div>
 <% } else { %>

@@ -39,22 +39,19 @@ var NewRowView = Marionette.View.extend({
 	},
 
 	onChildviewInput: function(term, view) {
-		this.products.fetch({
-			data: {
-				limit: 5,
-				term: term
-			}
-		}).done(function() {
-			var results = _.map(this.products.toJSON(), function(product) {
+
+		var exclude = this.collection.pluck('linked_product_id');
+		exclude.push(this.collection.product_id);
+
+		this.products.suggest(term, 5, exclude).done(function(suggestions) {
+			var results = _.map(suggestions, function(product) {
 				return {
 					label: product.name,
 					value: product.product_id
 				};
 			});
-
-			// TODO : exclude current des results
 			view.showResults(results);
-		}.bind(this));
+		});
 	},
 
 	onChildviewChange: function(selected, view) {
@@ -76,6 +73,9 @@ var NewRowView = Marionette.View.extend({
 		var m = new this.collection.model({
 			linked_product_id: data.linked_product_id
 		});
+
+		this.getChildView('product').clear();
+
 		return m.save(data)
 			.done(function() {
 				this.getUI('form').hide();
@@ -116,9 +116,14 @@ var RowView = Marionette.View.extend({
 			main_category: _.find(this.model.get('categories'), function(category) {
 				return category.is_main;
 			}),
-			sec_categories: _.filter(this.model.get('categories'), function(category) {
-				return !category.is_main;
-			})
+			sec_categories: _.reduce(this.model.get('categories'), function(acc, category) {
+				if (!category.is_main) {
+					// category.name need double escaping
+					acc.push('<a href="/catalog/categories/' + category.category_id + '">' + _.escape(category.name) +
+						'</a><br/>');
+				}
+				return acc;
+			}, [])
 		};
 	},
 

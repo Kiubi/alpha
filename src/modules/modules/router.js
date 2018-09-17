@@ -27,7 +27,7 @@ var ImportProducts = require('./models/import.products');
 var ImportPosts = require('./models/import.posts');
 var ImportWordpress = require('./models/import.wordpress');
 var Menus = require('kiubi/modules/cms/models/menus');
-var Post = require('kiubi/modules/cms/models/post');
+var Posts = require('kiubi/modules/cms/models/posts');
 
 /* Views */
 var IndexView = require('./views/index');
@@ -91,11 +91,77 @@ function HeaderTabsSubscribers() {
 	}];
 }
 
+
+function ctlScope(name) {
+	switch (name) {
+		case 'showInjectcode':
+		case 'showRedirections':
+			return 'site:seo';
+		case 'showFidelity':
+		case 'showAnalytics':
+			return 'site:modules';
+		case 'showVouchers':
+		case 'showVoucher':
+		case 'showSubscribers':
+		case 'showSubscribersSettings':
+		case 'showMerchantCenter':
+		case 'showLengow':
+		case 'showIadvize':
+		case 'showAvisVerifies':
+			return 'site:marketing';
+		case 'showImportPosts':
+			return 'site:cms';
+		case 'showImportProducts':
+			return 'site:catalog';
+		case 'showImportWordpress':
+			return 'site:blog';
+		case 'showBackups':
+			return 'site:backup';
+	}
+	return null;
+}
+
+function ctlFeature(name) {
+	switch (name) {
+		case 'showFidelity':
+			return 'fidelity';
+		case 'showVouchers':
+		case 'showVoucher':
+		case 'showLengow':
+		case 'showAvisVerifies':
+		case 'showMerchantCenter':
+			return 'checkout';
+		case 'showImportProducts':
+			return 'catalog';
+	}
+	return null;
+}
+
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
 	template: require('./templates/sidebarMenu.html'),
 	service: 'modules',
-	behaviors: [ActiveLinksBehaviors]
+	behaviors: [ActiveLinksBehaviors],
+
+	templateContext: function() {
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
+		return {
+			has_scope_seo: Session.hasScope('site:seo'),
+			has_scope_modules: Session.hasScope('site:modules'),
+			has_scope_checkout: Session.hasScope('site:checkout'),
+			has_scope_marketing: Session.hasScope('site:marketing'),
+			has_scope_cms: Session.hasScope('site:cms'),
+			has_scope_catalog: Session.hasScope('site:catalog'),
+			has_scope_blog: Session.hasScope('site:blog'),
+			has_scope_backup: Session.hasScope('site:backup'),
+
+			has_feature_catalog: Session.hasFeature('catalog'),
+			has_feature_checkout: Session.hasFeature('checkout'),
+			has_feature_fidelity: Session.hasFeature('fidelity')
+		};
+	}
+
 });
 
 var ModulesController = Controller.extend({
@@ -348,9 +414,10 @@ var ModulesController = Controller.extend({
 	},
 
 	showImportPosts: function() {
+		var c = new Posts();
 		this.navigationController.showContent(new ImportPostsView({
 			model: new ImportPosts(),
-			post: new Post(),
+			post: new c.model(),
 			menus: new Menus()
 		}));
 		this.setHeader({
@@ -369,9 +436,10 @@ var ModulesController = Controller.extend({
 	},
 
 	showImportWordpress: function() {
+		var posts = new Posts();
 		this.navigationController.showContent(new ImportWordpressView({
 			model: new ImportWordpress(),
-			post: new Post()
+			post: new posts.model()
 		}));
 		this.setHeader({
 			title: 'Import depuis Wordpress'
@@ -539,6 +607,23 @@ module.exports = Marionette.AppRouter.extend({
 	},
 
 	onRoute: function(name, path, args) {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		var scope = ctlScope(name);
+		var feature = ctlFeature(name);
+		if (scope) {
+			if (!Session.hasScope(scope)) {
+				this.controller.navigationController.navigate('/');
+				return;
+			}
+		}
+		if (feature) {
+			if (!Session.hasFeature(feature)) {
+				this.controller.navigationController.navigate('/');
+				return;
+			}
+		}
+
 		this.controller.showSidebarMenu();
 	}
 });

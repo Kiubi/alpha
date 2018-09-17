@@ -3,20 +3,18 @@ var Marionette = require('backbone.marionette');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
 var FilePickerView = require('kiubi/modules/media/views/file.picker.js');
+var SeoView = require('kiubi/views/ui/seo.js');
 
-var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
 var Forms = require('kiubi/utils/forms.js');
-
-var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/category.html'),
 	className: 'container',
 	service: 'catalog',
 
-	behaviors: [CharCountBehavior, FormBehavior, WysiwygBehavior],
+	behaviors: [FormBehavior, WysiwygBehavior],
 
 	regions: {
 		layout: {
@@ -25,6 +23,10 @@ module.exports = Marionette.View.extend({
 		},
 		image: {
 			el: "div[data-role='image']",
+			replaceElement: true
+		},
+		seo: {
+			el: "article[data-role='seo']",
 			replaceElement: true
 		}
 	},
@@ -42,39 +44,51 @@ module.exports = Marionette.View.extend({
 		'js_body'
 	],
 
-	templateContext: function() {
-		return {
-			domain: Session.site.get('domain')
-		};
-	},
-
 	initialize: function(options) {
 		this.mergeOptions(options, ['model']);
 
-		this.layoutSelector = new LayoutSelectorView({
-			layout_id: this.model.get('layout_id'),
-			type: 'catalog-category',
-			apply: this.model.get('category_id'),
-			applyName: this.model.get('name')
-		});
+		if (this.getOption('enableLayout')) {
+			this.layoutSelector = new LayoutSelectorView({
+				layout_id: this.model.get('layout_id'),
+				type: 'catalog-category',
+				apply: this.model.get('category_id'),
+				applyName: this.model.get('name')
+			});
+		}
 
 		this.listenTo(this.model, 'change', this.render);
 	},
 
 	onBeforeRender: function() {
-		if (this.layoutSelector.isAttached()) {
+		if (this.getOption('enableLayout') && this.layoutSelector.isAttached()) {
 			this.detachChildView('layout');
 		}
 	},
 
 	onRender: function() {
-		this.showChildView('layout', this.layoutSelector);
+		if (this.getOption('enableLayout')) {
+			this.showChildView('layout', this.layoutSelector);
+		}
 		this.showChildView('image', new FilePickerView({
 			fieldname: 'media_id',
 			fieldLabel: 'Illustration',
 			type: 'image',
 			value: this.model.get('media_id') ? this.model.get('media_id') : ''
 		}));
+
+		// Seo
+		if (this.getOption('enableSeo')) {
+			this.showChildView('seo', new SeoView({
+				slug_prefix: '/catalogue/',
+				slug_suffix: '/',
+				model: this.model
+			}));
+		}
+	},
+
+	onChildviewFieldChange: function() {
+		// proxy filepicker event
+		this.triggerMethod('field:change');
 	},
 
 	onChildviewChangeLayout: function(layout_id) {

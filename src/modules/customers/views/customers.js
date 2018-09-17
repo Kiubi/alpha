@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var format = require('kiubi/utils/format.js');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 var Session = Backbone.Radio.channel('app').request('ctx:session');
@@ -15,7 +16,8 @@ var RowView = Marionette.View.extend({
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			plural: function(nb, singular, plural) {
 				return (nb > 1 ? plural : singular).replace('%d', nb);
-			}
+			},
+			creation_date: format.formatLongDate(this.model.get('creation_date'))
 		};
 	}
 
@@ -37,8 +39,14 @@ module.exports = Marionette.View.extend({
 
 	sortOrder: '-date',
 
+	filters: null,
+
 	initialize: function(options) {
 		this.mergeOptions(options, ['collection']);
+
+		this.filters = {
+			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
+		};
 	},
 
 	onRender: function() {
@@ -72,17 +80,27 @@ module.exports = Marionette.View.extend({
 					callback: this.deleteCustomer.bind(this),
 					confirm: true
 				}
-			]
+			],
+			filters: [{
+				id: 'term',
+				title: 'Rechercher',
+				type: 'input',
+				value: this.filters.term
+			}]
 		}));
 	},
 
 	start: function() {
+
+		var data = {
+			sort: this.sortOrder ? this.sortOrder : null,
+			extra_fields: 'orders'
+		};
+		if (this.filters.term) data.term = this.filters.term;
+
 		this.collection.fetch({
 			reset: true,
-			data: {
-				sort: this.sortOrder ? this.sortOrder : null,
-				extra_fields: 'orders'
-			}
+			data: data
 		});
 	},
 
@@ -105,5 +123,14 @@ module.exports = Marionette.View.extend({
 	onChildviewChangeOrder: function(order) {
 		this.sortOrder = order;
 		this.start();
+	},
+
+	onChildviewFilterChange: function(filter) {
+		if (filter.model.get('id') == 'term') {
+			this.filters.term = filter.value != '' ? filter.value : null;
+		}
+
+		this.start();
 	}
+
 });

@@ -1,36 +1,42 @@
-<div class="row">
-	<div class="col-xs-6 col-md-7">
-		<div class="media">
-			<div class="media-left">
-				<div class="checkbox-inline">
-					<input id="blog_post_<%- post_id %>" name="selection" value="<%- post_id %>" type="checkbox">
-					<label for="blog_post_<%- post_id %>"></label>
+			<div class="row no-gutters">
+				<div class="col-auto">
+						<input id="blog_post_<%- post_id %>" name="selection" value="<%- post_id %>" type="checkbox">
+						<label for="blog_post_<%- post_id %>"></label>
 				</div>
-			</div>
-			<div class="media-left">
-				<div class="media-object md-icon md-image img-default"></div>
-				<% if(thumb) { %>
-				<div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath(thumb.url_miniature) %>" /></div>
-				<% } %>
-			</div>
-			<div class="media-body">
-				<h4><%- title %></h4>
-				<% if(is_visible) { %>
-				Posté le <%- publication_date %>
-				dans <a href="/blog/categories/<%- category_id %>"><%- category_name %></a>
-				<% } else { %>
-				<span class="text-danger">Masqué</span>
-				<% } %>
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-3"><a href="/blog/posts/<%- post_id %>/comments"><%- plural(comments_count, '%d commentaire', '%d commentaires') %></a></div>
-	<div class="col-xs-3 col-md-2">
-		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/blog/posts/<%- post_id %>" role="button">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> </button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="#"data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
+				<div class="col-auto">
+					<div class="media-object md-icon md-image img-default"></div>
+					<% if(thumb) { %>
+						<div class="media-object no-ratio">
+							<img alt="" src="<%= convertMediaPath(thumb.url_miniature) %>" />
+						</div>
+						<% } %>
+					</div>
+				<div class="col item-body">
+					<h4><%- title %></h4>
+					<% if(is_visible) { %>
+					<a href="/blog/categories/<%- category_id %>"><%- category_name %></a>
+						<% } else { %>
+							<span class="text-danger">Masqué</span>
+							<% } %>
+						</div>
+						<div class="col-4">
+							<span title="Date de publication">
+								<i class="md-icon md-date"></i><%- publication_date %>
+							</span>
+						</div>
+						<div class="col-2 no-white-space">
+							<% if(comments_count > 0) { %>
+								<a href="/blog/posts/<%- post_id %>/comments"><%- plural(comments_count, '%d commentaire', '%d commentaires') %></a>
+								<% } else { %>
+									<span class="text-muted">—</span>
+									<% } %>
+						</div>
+						<div class="col-auto">
+							<div class="btn-group float-right" role="group"> <a class="btn btn-primary" href="/blog/posts/<%- post_id %>" role="button">Détail</a>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a href="#" class="dropdown-item" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>

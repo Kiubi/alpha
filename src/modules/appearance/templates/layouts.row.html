@@ -4,8 +4,8 @@
 	<% } else { %>
 	<div class="corner-color template-variant right"><div class="corner-color-content"></div></div>
 	<% } %>
-	<div class="media">
-	<div class="media-left">
+	<div class="row no-gutters">
+	<div class="col-auto mr-4">
 		<a href="/appearance/layouts/<%- page %>/<%- layout_id %>">
 			<div class="si-overlay">
 				<span class="md-icon md-edit btn-si"></span>
@@ -14,42 +14,44 @@
 		</a>
 
 	</div>
-	<div class="media-body">
+	<div class="col item-body">
 		<h4>
 			<%- name %>
 		</h4>
-		<div class="flex-row">
-			<div class="flex-col-1"><span class="data-label">Appliqué à</span></div>
-			<div class="flex-col-2"><a href="#">
+		<div class="row no-gutters">
+			<div class="col-4"><span class="data-label">Appliqué à</span></div>
+			<div class="col"><a href="#">
 				<%- usage_count %> pages</a></div>
 		</div>
 
-		<div class="flex-row">
-			<div class="flex-col-1"><span class="data-label">Template</span></div>
-			<div class="flex-col-2"><%- model.name %></div>
+		<div class="row no-gutters">
+			<div class="col-4"><span class="data-label">Template</span></div>
+			<div class="col"><%- model.name %></div>
 		</div>
 
-		<div class="flex-row">
-			<div class="flex-col-1"><span class="data-label">Répertoire</span></div>
-			<div class="flex-col-2"><em><%- model.id %></em></div>
+		<div class="row no-gutters mb-4">
+			<div class="col-4"><span class="data-label">Répertoire</span></div>
+			<div class="col"><em><%- model.id %></em></div>
 		</div>
 
-		<div class="btn-toolbar pull-right" role="toolbar">
-
-			<% if (is_multi_layouts) { %>
-			 		<% if(is_default) { %>
-			 			<a class="btn btn-option" data-role="duplicate" href="#" role="button">Dupliquer</a>
-			 		<% } else { %>
-			 			<div class="btn-group" role="edit"><a class="btn btn-option" data-role="duplicate" href="#" role="button">Dupliquer</a>
-			 				<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> </button>
-			 				<ul class="dropdown-menu dropdown-menu-right">
-			 					<li><a data-role="delete" href="#">Supprimer</a></li>
-			 				</ul>
-			 			</div>
-			 		<% } %>
-			<% } %>
-
-		</div>
 	</div>
+	<div class="col-12">
+		<div class="btn-toolbar float-right" role="toolbar">
+
+				<% if (is_multi_layouts) { %>
+				 		<% if(is_default) { %>
+				 			<a class="btn btn-primary" data-role="duplicate" href="#" role="button">Dupliquer</a>
+				 		<% } else { %>
+				 			<div class="btn-group" role="edit"><a class="btn btn-primary" data-role="duplicate" href="#" role="button">Dupliquer</a>
+				 				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+				 				<ul class="dropdown-menu dropdown-menu-right">
+				 					<li><a class="dropdown-item" data-role="delete" href="#">Supprimer</a></li>
+				 				</ul>
+				 			</div>
+				 		<% } %>
+				<% } %>
+
+			</div>
+</div>
 </div>
 </div>

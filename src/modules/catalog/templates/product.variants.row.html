@@ -1,40 +1,40 @@
-<div class="row" data-role="list">
-	<div class="col-xs-5">
-		<div class="media">
-			<div class="media-left">
+		<div class="row no-gutters" data-role="list">
+			<div class="col-auto">
 				<div class="media-object md-icon md-image img-default"></div>
 				<div class="media-object"><img alt="" src="<%- media_id ? convertMediaPath('/media/miniature/' + media_id + '.jpg') : '' %>" /></div>
 			</div>
-			<div class="media-left"> <a href="#" class="md-icon md-drag btn-drag"></a>
+			<div class="col-auto"> <a href="#" class="md-icon md-drag btn-drag"></a>
 			</div>
-			<div class="media-body">
-				<h4><%- name %></h4>
-				<% if(reference) { %>Réf.&nbsp;:&nbsp;<%- reference %><% } %>
-			</div>
-		</div>
+			<div class="col item-body">
+		<h4><%- name %></h4>
+		<% if(reference) { %>
+				<span>#<%- reference%></span>
+			<% } else { %>
+				<span class="text-muted">Pas de référence</span>
+			<% } %>
 	</div>
-	<div class="col-xs-2">
+	<div class="col-3">
 		<span class="price">
 			<%- current_price_ex_vat_label%>HT<br/>
 			<%- current_price_inc_vat_label%>TTC
 		</span>
 	</div>
-	<div class="col-xs-2">
-		<% if(is_stock_unlimited) { %>
-			<span class="label label-stockin">Illimité</span>
-		<% } else { %>
-			<span class="label <%= stock == 0 ? 'label-stockout' : 'label-stockin' %>"><%= stock == 0 ? 'Rupture' : stock + ' en stock ' %></span>
-		<% } %>
-	</div>
-	<div class="col-xs-3">
-		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="#" role="button" data-role="action" data-action="editRow">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> </button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="#" data-role="action" data-action="duplicateRow">Dupliquer</a></li>
-				<li><a href="#" data-role="action" data-action="deleteRow" data-confirm="warning">Supprimer</a></li>
-			</ul>
+		<div class="col-2">
+			<% if(is_stock_unlimited) { %>
+				<span class="badge badge-success">Illimité</span>
+			<% } else { %>
+				<span class="badge <%= stock == 0 ? 'badge-danger' : 'badge-success' %>"><%= stock == 0 ? 'Rupture' : stock + ' en stock ' %></span>
+			<% } %>
 		</div>
-	</div>
+		<div class="col-auto">
+			<div class="btn-group float-right" role="group"> <a class="btn btn-primary" href="#" role="button" data-role="action" data-action="editRow">Détail</a>
+				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a class="dropdown-item" href="#" data-role="action" data-action="duplicateRow">Dupliquer</a></li>
+					<li><a class="dropdown-item" href="#" data-role="action" data-action="deleteRow" data-confirm="warning">Supprimer</a></li>
+				</ul>
+			</div>
+		</div>
 </div>
 
 <form style="display: none;" data-role="edit">
@@ -42,96 +42,96 @@
 	<div class="alert alert-danger" data-role="errors" role="alert" style="display: none;"></div>
 
 	<div class="row">
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group has-feedback">
-				<label class="control-label" for="name">Intitulé de la variante</label>
+				<label for="name">Intitulé de la variante</label>
 				<div data-role="name"></div>
 			</div>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="reference">Référence</label>
+				<label for="reference">Référence</label>
 				<input class="form-control" id="reference" name="reference" value="<%- reference %>" placeholder="" type="text">
 			</div>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="gtin">Code-barre (EAN/ISBN)</label>
+				<label for="gtin">Code-barre (EAN/ISBN)</label>
 				<input class="form-control" id="gtin" name="gtin" value="<%- gtin %>" placeholder="8, 10, 12, 13 ou 14 chiffres" type="text">
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="price_ex_vat">Prix HT</label>
+				<label for="price_ex_vat">Prix HT</label>
 				<div class="input-group">
-					<span class="input-group-addon"></span>
+					<div class="input-group-prepend"><span class="input-group-text"></span></div>
 					<input class="form-control" id="price_ex_vat" name="price_ex_vat" data-role="vat" data-linked="price_inc_vat" value="<%- price_ex_vat %>" placeholder="0,00">
-					<span class="input-group-addon">€</span>
+					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="price_inc_vat">Prix TTC</label>
+				<label for="price_inc_vat">Prix TTC</label>
 				<div class="input-group">
-					<span class="input-group-addon"></span>
+					<div class="input-group-prepend"><span class="input-group-text"></span></div>
 					<input class="form-control" id="price_inc_vat" name="price_inc_vat" data-role="vat" data-linked="price_ex_vat" value="<%- price_inc_vat %>" placeholder="0,00">
-					<span class="input-group-addon">€</span>
+					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="tax_id">Taxe</label>
+				<label for="tax_id">Taxe</label>
 				<div data-role="taxes"></div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="price_discount_ex_vat">Promotion HT</label>
+				<label for="price_discount_ex_vat">Promotion HT</label>
 				<div class="input-group">
-					<span class="input-group-addon"></span>
+					<div class="input-group-prepend"><span class="input-group-text"></span></div>
 					<input class="form-control" id="price_discount_ex_vat" name="price_discount_ex_vat" data-role="vat" data-linked="price_discount_inc_vat" value="<%- price_discount_ex_vat %>" placeholder="Pas de promotion">
-					<span class="input-group-addon">€</span>
+					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="price_discount_inc_vat">Promotion TTC</label>
+				<label for="price_discount_inc_vat">Promotion TTC</label>
 				<div class="input-group">
-					<span class="input-group-addon"></span>
+					<div class="input-group-prepend"><span class="input-group-text"></span></div>
 					<input class="form-control" id="price_discount_inc_vat" name="price_discount_inc_vat" data-role="vat" data-linked="price_discount_ex_vat" value="<%- price_discount_inc_vat %>" placeholder="Pas de promotion">
-					<span class="input-group-addon">€</span>
+					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
 				</div>
 			</div>
 		</div>
-		<!--<div class="col-xs-4">
+		<!--<div class="col-4">
 			<div class="form-group has-feedback">
-				<label class="control-label" for="exmemple2">Date de fin</label>
+				<label for="exmemple2">Date de fin</label>
 				<input class="form-control" id="exmemple2" placeholder="jj/mm/aaaa à hh:mm" type="text">
-				<span class="form-control-feedback md-feedback md-date"></span>
+				<span class="md-feedback md-date"></span>
 			</div>
 		</div>-->
 	</div>
 	<div class="row">
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="weight">Poids</label>
+				<label for="weight">Poids</label>
 				<div class="input-group">
-					<span class="input-group-addon"></span>
+					<div class="input-group-prepend"><span class="input-group-text"></span></div>
 					<input class="form-control" id="weight" name="weight" value="<%- weight %>" placeholder="0">
-					<span class="input-group-addon">g</span>
+					<div class="input-group-append"><span class="input-group-text">g</span></div>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="condition">Etat</label>
+				<label for="condition">Etat</label>
 				<select class="form-control" id="condition" name="condition" data-style="selectify">
 					<option value="new" <%= condition == 'new' ? 'selected="selected"' : '' %>>Neuf</option>
 					<option value="used" <%= condition == 'used' ? 'selected="selected"' : '' %>>Occasion</option>
@@ -139,51 +139,51 @@
 				</select>
 			</div>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="price_ecotax">Eco-participation incluse</label>
+				<label for="price_ecotax">Eco-participation incluse</label>
 				<div class="input-group">
-					<span class="input-group-addon"></span>
+					<div class="input-group-prepend"><span class="input-group-text"></span></div>
 					<input class="form-control" id="price_ecotax" name="price_ecotax" value="<%- price_ecotax %>" placeholder="Pas d'éco-participation">
-					<span class="input-group-addon">€</span>
+					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-4">
+		<div class="col-4">
 			<div class="form-group">
-				<label class="control-label" for="is_stock_unlimited">Stock</label>
+				<label for="is_stock_unlimited">Stock</label>
 				<select class="form-control" id="is_stock_unlimited" name="is_stock_unlimited" data-style="selectify">
 					<option value="0" <%= !is_stock_unlimited ? 'selected="selected"':'' %>>Quantité limitée</option>
 					<option value="1" <%= is_stock_unlimited ? 'selected="selected"':'' %>>Stock illimité</option>
 				</select>
 			</div>
 		</div>
-		<div class="col-xs-4" data-role="stock" <%= is_stock_unlimited ? 'style="display:none"':'' %>>
+		<div class="col-4" data-role="stock" <%= is_stock_unlimited ? 'style="display:none"':'' %>>
 			<div class="form-group">
-				<label class="control-label" for="stock">Ajouter au stock</label>
+				<label for="stock">Ajouter au stock</label>
 				<input class="form-control" id="stock" name="stock" placeholder="+ pour ajouter ou - pour retirer" type="text">
 			</div>
 		</div>
-		<div class="col-xs-4" data-role="stock" <%= is_stock_unlimited ? 'style="display:none"':'' %>>
+		<div class="col-4" data-role="stock" <%= is_stock_unlimited ? 'style="display:none"':'' %>>
 			<div class="form-group">
-				<label class="control-label">Stock actuel</label>
+				<label>Stock actuel</label>
 				<p class="form-control-static"><%- stock %></p>
 			</div>
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="control-label">Illustration</label><br/>
+		<label>Illustration</label><br/>
 		<div data-role="images"></div>
 	</div>
 
 	<div class="btn-toolbar" role="toolbar">
 		<div class="btn-group" role="group">
-			<button type="button" class="btn btn-cancel" data-role="action" data-action="cancelRow">Annuler</button>
+			<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="action" data-action="cancelRow">Annuler</button>
 		</div>
 		<div class="btn-group" role="group">
-			<button type="button" class="btn btn-action" data-role="action" data-action="saveRow">Enregistrer</button>
+			<button type="button" class="btn btn-lg btn-success btn-save" data-role="action" data-action="saveRow">Enregistrer</button>
 		</div>
 	</div>
 

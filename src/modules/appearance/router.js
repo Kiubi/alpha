@@ -182,7 +182,7 @@ var AppearanceController = Controller.extend({
 			this.setHeader({
 				title: 'Type de mise en page introuvable'
 			});
-		});
+		}.bind(this));
 	},
 
 	showLayout: function(page, id) {
@@ -277,6 +277,13 @@ module.exports = Marionette.AppRouter.extend({
 	},
 
 	onRoute: function(name, path, args) {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		if (!Session.hasScope('site:layout')) {
+			this.controller.navigationController.navigate('/');
+			return;
+		}
+
 		// Load an other sidebar for showLayout
 		switch (name) {
 			default: this.controller.sidebarMenuService = 'appearance';

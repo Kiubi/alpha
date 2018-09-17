@@ -1,12 +1,12 @@
-<div class="form-control form-control-select dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+<button class="btn btn-secondary dropdown-toggle <%= current.value ? 'cancel' : '' %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 	<span data-role="label" class="fake-selected"><%- current.label %></span>
-	<span data-role="clear" class="caret <%= current.value ? 'md-cancel' : '' %>"></span>
-</div>
+</button>
+<span data-role="clear" class="md-icon <%= current.value ? 'md-cancel' : '' %> float-right"></span>
 <ul class="dropdown-menu dropdown-control dropdown-control-lg">
-	<li class="dropdown-content">
+	<li class="dropdown-item">
 		<span class="form-group has-feedback">
 			<input data-role="input" class="form-control" value="<%- term %>" placeholder="<%- searchPlaceholder %>">
-			<span class="form-control-feedback md-feedback md-search"></span>
+			<span class="md-feedback md-search"></span>
 		</span>
 	</li>
 </ul>

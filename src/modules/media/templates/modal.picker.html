@@ -1,20 +1,27 @@
 <article class="post-article">
 	<header class="post-header"><br />
-		<div class="form-inline">
-			<div class="form-group">
-				<div data-role="categories"></div>
+		<div class="row no-gutters">
+
+			<div class="col filters-options">
+				<div class="btn-group">
+					<div data-role="categories"></div>
+				</div>
+				<div class="btn-group has-feedback">
+					<input class="form-control" name="term" placeholder="Rechercher" type="text">
+					<span class="md-feedback md-search"></span>
+				</div>
 			</div>
-			<div class="form-group has-feedback">
-				<input class="form-control" name="term" placeholder="Rechercher" type="text">
-				<span class="form-control-feedback md-feedback md-search"></span>
+
+			<div class="col-auto sort-options">
+				<div class="btn-group mr-0">
+					<button type="button" class="btn btn-secondary btn-modal btn-icon md-icon md-sort dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+					<ul class="dropdown-menu dropdown-menu-right" data-role="order">
+						<li data-sort="name" class="<%= order == 'name' ? 'active' : ''%>"><a class="dropdown-item" href="#">Intitulé</a></li>
+						<li data-sort="-date" class="<%= order == '-date' ? 'active' : ''%>"><a class="dropdown-item" href="#">Modification</a></li>
+					</ul>
+				</div>
 			</div>
-			<div class="btn-group pull-right">
-				<button type="button" class="btn btn-modal btn-icon md-icon md-sort dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
-				<ul class="dropdown-menu" data-role="order">
-					<li data-sort="name" class="<%= order == 'name' ? 'active' : ''%>"><a href="#">Intitulé</a></li>
-					<li data-sort="-date" class="<%= order == '-date' ? 'active' : ''%>"><a href="#">Modification</a></li>
-				</ul>
-			</div>
+
 		</div>
 	</header>
 	<div data-role="list"></div>

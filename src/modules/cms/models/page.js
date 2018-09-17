@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
 module.exports = Backbone.Model.extend({
 	urlRoot: 'sites/@site/cms/pages',
@@ -49,20 +50,25 @@ module.exports = Backbone.Model.extend({
 	},
 
 	/**
-	 * Return all iternal links target types, formatted like selectPayload
+	 * Return all iternal links target types
 	 * 
-	 * @returns {Promise}
+	 * @returns {Promise} will return a SelectCollection
 	 */
-	getInternalLinkTypes: function() {
+	getInternalLinkTypes: function(selected) {
 		return Backbone.ajax({
 			url: 'sites/@site/cms/internal_links/targets'
 		}).then(function(response) {
-			return _.map(response.data, function(type) {
+
+			var c = new CollectionUtils.SelectCollection();
+			c.add(_.map(response.data, function(type) {
 				return {
-					value: type.type,
-					label: type.name
-				};
-			});
+					'value': type.type,
+					'label': type.name,
+					'selected': selected && selected == type.type
+				}
+			}));
+
+			return c;
 		});
 	},
 
@@ -70,11 +76,30 @@ module.exports = Backbone.Model.extend({
 	 * * Return all iternal links targets from a type
 	 * 
 	 * @param {String} type
-	 * @returns {Promise}
+	 * @returns {Promise} will return a SelectCollection
 	 */
 	getInternalLinkTargets: function(type) {
 		return Backbone.ajax({
 			url: 'sites/@site/cms/internal_links/targets/' + type
+		}).then(function(response) {
+			return response.data;
+		});
+	},
+
+	/**
+	 * Duplicate current page
+	 *
+	 * @return {Promise} Will return new page_id
+	 */
+	duplicate: function() {
+
+		return Backbone.ajax({
+			url: 'sites/@site/cms/pages',
+			method: 'POST',
+			data: {
+				page_id: this.get('page_id')
+				// name : '...'
+			}
 		}).then(function(response) {
 			return response.data;
 		});

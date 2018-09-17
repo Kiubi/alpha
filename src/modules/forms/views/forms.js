@@ -13,6 +13,9 @@ var RowView = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
+			plural: function(nb, singular, plural) {
+				return (nb > 1 ? plural : singular).replace('%d', nb);
+			},
 			creation_date: format.formatDateTime(this.model.get('creation_date'))
 		};
 	},

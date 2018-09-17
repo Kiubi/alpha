@@ -3,6 +3,8 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
 var AutocompleteView = require('kiubi/views/ui/select.search.js');
+var FileView = require('kiubi/views/ui/input.file.js');
+
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 
@@ -17,6 +19,10 @@ module.exports = Marionette.View.extend({
 		'categories': {
 			el: "div[data-role='categories']",
 			replaceElement: true
+		},
+		file: {
+			el: "div[data-role='file']",
+			replaceElement: true
 		}
 	},
 
@@ -29,7 +35,6 @@ module.exports = Marionette.View.extend({
 	],
 
 	step: 0,
-	tempfileUpload: null,
 	report: null,
 
 	initialize: function(options) {
@@ -53,6 +58,8 @@ module.exports = Marionette.View.extend({
 					value: null
 				}
 			}));
+
+			this.showChildView('file', new FileView());
 		}
 
 	},
@@ -60,13 +67,9 @@ module.exports = Marionette.View.extend({
 	// Categories
 
 	onChildviewInput: function(term, view) {
-		this.categories.fetch({
-			data: {
-				limit: 5,
-				term: term
-			}
-		}).done(function() {
-			var results = _.map(this.categories.toJSON(), function(categ) {
+		var exclude = view.current.value ? [view.current.value] : null;
+		this.categories.suggest(term, 5, exclude).done(function(categories) {
+			var results = _.map(categories, function(categ) {
 				return {
 					label: categ.name,
 					value: categ.category_id
@@ -74,22 +77,6 @@ module.exports = Marionette.View.extend({
 			});
 
 			view.showResults(results);
-		}.bind(this));
-	},
-
-	dropFile: function(event) {
-		if (Backbone.$(event.target).is('input[type=file]')) {
-			// stop la propagation de l'event
-			event.stopPropagation();
-		}
-
-		event.preventDefault();
-
-		var dataTransfer = event.originalEvent.dataTransfer;
-		var files = (dataTransfer ? dataTransfer.files : event.originalEvent.target.files);
-
-		_.each(files, function(File) {
-			this.tempfileUpload = File;
 		}.bind(this));
 	},
 
@@ -101,7 +88,7 @@ module.exports = Marionette.View.extend({
 			var data = Forms.extractFields(this.fields, this);
 
 			data.category_id = this.getChildView('categories').getCurrent().value;
-			data.file = this.tempfileUpload;
+			data.file = this.getChildView('file').getFile();;
 			navigationController.showOverlay();
 
 			return this.model.analyse(data).done(function(report) {
@@ -135,7 +122,6 @@ module.exports = Marionette.View.extend({
 		} else {
 			this.step = 0;
 			this.report = null;
-			this.tempfileUpload = null;
 			this.render();
 		}
 

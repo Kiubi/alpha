@@ -1,37 +1,40 @@
-<article class="post-article">
+<article class="post-article bg-theme">
 	<header class="post-header">
 		<h1><%- theme.name %></h1>
 	</header>
 	<div class="post-content">
-		<div class="btn-group pull-right" role="group" style="margin-left: 20px;">
+		<div class="btn-group ml-4 float-right" role="group">
 			<% if (theme.code == 'theme') { %>
-			<a class="btn btn-option" href="#" role="button" data-role="default">Revenir en thème par défaut</a>
+			<a class="btn btn-lg btn-success" href="#" role="button" data-role="default">Revenir en thème par défaut</a>
 			<% } else { %>
-			<a class="btn btn-option" href="#" role="button" data-role="custom">Passer en thème personnalisé</a>
+			<a class="btn btn-lg btn-success" href="#" role="button" data-role="custom">Passer en thème personnalisé</a>
 			<% } %>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<span class="caret"></span>
-				<span class="sr-only">Menu</span>
+			<button type="button" class="btn btn-lg btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			</button>
 			<ul class="dropdown-menu dropdown-menu-right">
 				<% if(theme.author_url) { %>
-					<li><a href="<%- theme.author_url %>" target="_blank">Site web de l'auteur</a></li>
+					<li><a class="dropdown-item" href="<%- theme.author_url %>" target="_blank">Site web de l'auteur</a></li>
 				<% } %>
 				<% if(theme.author_email) { %>
-					<li><a href="mailto:<%- theme.author_email %>">Contacter l'auteur</a></li>
+					<li><a class="dropdown-item" href="mailto:<%- theme.author_email %>">Contacter l'auteur</a></li>
 				<% } %>
 				<!--<li><a href="#">Exporter le thème</a></li>-->
 				<% if(theme_download) { %>
-					<li><a href="<%- theme_download %>" target="_blank">Télécharger les fichiers du thème</a></li>
+					<li><a class="dropdown-item" href="<%- theme_download %>" target="_blank">Télécharger les fichiers du thème</a></li>
+				<% } %>
+				<% if (theme.code != 'theme') { %>
+					<li class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="#" target="_blank">Changer de thème</a></li>
 				<% } %>
 			</ul>
 		</div>
 		<% if(theme.code == 'theme') { %>
-		<p>Vous utilisez un thème graphique personnalisé. Vous pouvez créer un look sur mesure en modifiant les
-			templates qui composent le thème.</p>
+		<p>Vous utilisez un thème graphique personnalisé. Vous avez accès à tous les templates
+			 qui composent le thème pour créer un look sur mesure.
+			 </p>
 		<% } else { %>
-		<p>Vous utilisez un thème graphique mis à votre disposition par Kiubi. Il vous fait profiter d'un look
-			esthétique et professionnel, toujours maintenu à jour.</p>
+		<p>Vous utilisez le thème graphique par défaut. Vous pouvez créer un look sur mesure en
+			utilisant un thème graphique personnalisé.</p>
 		<% } %>
 		<div class="devises">
 			<!--<div class="mobile">
@@ -72,49 +75,47 @@
 			pour vous aider à exploiter les possibilités de personnalisation offertes par Kiubi.
 		</p>
 
-		<div>
 			<div class="row">
-				<div class="col-xs-3">
-					<label class="control-label" for="">Adresse de l'hôte :</label>
+				<div class="col-3">
+					<label for="">Adresse de l'hôte :</label>
 				</div>
-				<div class="col-xs-9"><p><%- ftp.host %></p>
+				<div class="col-9"><p><%- ftp.host %></p>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-3">
-					<label class="control-label" for="">Port :</label>
+				<div class="col-3">
+					<label for="">Port :</label>
 				</div>
-				<div class="col-xs-9"><p><%- ftp.port %></p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-3">
-					<label class="control-label" for="">Nom d'utilisateur :</label>
-				</div>
-				<div class="col-xs-9"><p><%- ftp.login %></p>
+				<div class="col-9"><p><%- ftp.port %></p>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-3">
-					<label class="control-label" for="">Mot de passe :</label>
+				<div class="col-3">
+					<label for="">Nom d'utilisateur :</label>
 				</div>
-				<div class="col-xs-9"><p><span style="display: none" data-role="password-mask"><%- ftp.password %></span>
+				<div class="col-9"><p><%- ftp.login %></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<label for="">Mot de passe :</label>
+				</div>
+				<div class="col-9"><p><span style="display: none" data-role="password-mask"><%- ftp.password %></span>
 					<a data-role="password-toggle" href="#">Afficher le mot de passe</a></p>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-3">
-					<label class="control-label" for="">Répertoire racine :</label>
+				<div class="col-3">
+					<label for="">Répertoire racine :</label>
 				</div>
-				<div class="col-xs-9"><p>/theme/</p>
+				<div class="col-9"><p>/theme/</p>
 				</div>
 			</div>
-		</div>
-		<footer class="post-footer"></footer>
 	</div>
+	<footer class="post-footer"></footer>
 </article>
 
-<% } else { %>
+<% } %>
 
 <article class="post-article">
 	<header class="post-header">
@@ -122,26 +123,25 @@
 	</header>
 	<div class="post-content">
 		<div class="row">
-			<div class="col-xs-7">
+			<div class="col-7">
 				<p>
-					Retrouvez sur Thème & Co de nombreux templates et thèmes de qualité et utilisez les avec Kiubi.
-					Des thèmes <em>ready to made</em> pour des sites de présentation d'entreprise ou e-commerce.
-					Tout ce dont vous avez besoin pour personnaliser votre site Internet.
+					Retrouvez sur Thème & Co de nombreux templates et thèmes de qualité pour des sites de présentation d'entreprise ou des sites e-commerce.<br>
+					<a class="btn btn-primary mt-3" href="https://www.theme-and-co.fr/" target="_blank">Visiter Thème & Co</a>
 				</p>
-
-				<p><a class="btn btn-option" href="https://www.theme-and-co.fr/" target="_blank">Visiter Thème & Co</a>
+				<p>
+					Si vous souhaitez une prestation sur mesure pour votre projet, nos agences web partenaires sont à votre disposition.<br>
+					<a class="btn btn-primary mt-3" href="https://www.kiubi.com/contact.html" target="_blank">Contacter un
+						expert</a>
+					</p>
+				</div>
+				<div class="col-5 text-right">
+					<p>
+					<a href="https://www.theme-and-co.fr/" target="_blank">
+						<img src="assets/img/illustration_theme_and_co.png">
+					</a>
 				</p>
-
-				<p><a class="btn btn-option" href="https://www.kiubi.com/contact.html" target="_blank">Contacter un
-					expert</a></p>
-			</div>
-			<div class="col-xs-5">
-				<p class="text-right"><a href="https://www.theme-and-co.fr/" target="_blank"><img
-						src="assets/img/illustration_theme_and_co.png"></a></p>
+				</div>
 			</div>
 		</div>
-	</div>
-	<footer class="post-footer"></footer>
-</article>
-
-<% } %>
+		<footer class="post-footer"></footer>
+	</article>

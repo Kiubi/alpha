@@ -2,52 +2,51 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+var TooltipBehavior = require('kiubi/behaviors/tooltip');
+
 var navigationChannel = Backbone.Radio.channel('navigation');
 
 module.exports = Marionette.View.extend({
 
 	template: require('../templates/sidebar.html'),
 
+	behaviors: [TooltipBehavior],
+
 	triggers: {
-		'click a.bt-closed': 'sidebarmenu:toggle'
-	},
-
-	modelEvents: {
-		'authenticate': 'onAuthenticate'
-	},
-
-	initialize: function(options) {
-		this.mergeOptions(options, ['model', 'collection']);
-
-		this.listenTo(navigationChannel, 'change:url', this.onChangeURL);
-	},
-
-	serializeWhere: function(props) {
-		return _.invoke(this.collection.where(props), 'toJSON');
-
+		'click span.bt-closed': 'sidebarmenu:toggle'
 	},
 
 	templateContext: function() {
 		return {
-			isAuth: this.model.isAuth(),
-			initials: this.model.get('firstname').charAt(0) + '.' + this.model.get(
-				'lastname').charAt(0) + '.',
-			mainItems: this.serializeWhere({
-				type: 'main'
-			}),
-			toolsItems: this.serializeWhere({
-				type: 'tools'
-			})
+			user: this.session.user.toJSON(),
+			isAuth: this.session.user.isAuth(),
+			mainItems: this.getLinks('main'),
+			toolsItems: this.getLinks('tools')
 		};
 	},
 
-	onAuthenticate: function() {
-		this.render();
+	initialize: function(options) {
+		this.mergeOptions(options, ['session', 'collection']);
+
+		this.listenTo(navigationChannel, 'change:url', this.onChangeURL);
+		this.listenTo(this.session.site, 'change:site', this.render);
+	},
+
+	getLinks: function(type) {
+		var links = this.collection.where({
+			type: type
+		});
+		_.each(links, function(model) {
+			var scope = (model.get('scope') == null || this.session.hasScope(model.get('scope')));
+			var feature = (model.get('feature') == null || this.session.hasFeature(model.get('feature')));
+			model.set('is_enabled', scope && feature);
+		}.bind(this));
+		return _.invoke(links, 'toJSON');
 	},
 
 	/**
 	 * Listen to change:url event on navigation channel. Activate links in sidebar
-	 * 
+	 *
 	 * @param {Object} data
 	 */
 	onChangeURL: function(data) {

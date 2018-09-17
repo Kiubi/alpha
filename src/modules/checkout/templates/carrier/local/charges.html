@@ -1,0 +1,62 @@
+<article class="post-article">
+	<form>
+	<header class="post-header no-border">
+		<h1>Zones livrables</h1>
+	</header>
+	<div class="post-content post-list">
+		<div class="post-group">
+
+			<div data-role="select-zone">
+				<div class="form-group">
+					<a href="#" data-role="delete-zone" class="md-icon md-delete float-right"></a>&nbsp;<a href="#" data-role="edit-zone" class="md-icon md-edit float-right"></a>
+
+					<label>Zone concernée</label>
+					<div data-role="zones"></div>
+
+				</div>
+				<p style="margin: -15px 0 0 0; "><a href="#" data-role="add-zone">Ajouter une zone</a></p>
+			</div>
+
+			<div data-role="edit-zone" style="display: none">
+
+				<div class="form-group has-feedback">
+					<label>Codes postaux</label>
+					<div data-role="tags"></div>
+				</div>
+				<div class="btn-toolbar" role="toolbar">
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel-zone">Annuler</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-lg btn-success btn-save" data-role="save-zone">Enregistrer</button>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<label for="free_threshold">Francos de port pour la zone concernée</label>
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text">Gratuit à partir de</span></div>
+						<input class="form-control" id="free_threshold" name="free_threshold" value="" placeholder="—">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achat</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-4"><label>Tranche de poids</label></div>
+			<div class="col-3"><label>Frais du port</label></div>
+		</div>
+
+		<div data-role="steps"></div>
+
+		<div class="list-item no-hover"><a href="#" data-role="step-add">Ajouter une tranche pour la zone concernée</a></div>
+
+	</div>
+	<footer class="post-footer"></footer>
+	</form>
+</article>

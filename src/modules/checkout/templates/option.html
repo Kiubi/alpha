@@ -1,76 +1,84 @@
+<form>
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
 <article class="post-article">
-  <header class="post-header">
-    <h1>Informations générales</h1>
-  </header>
-  <div class="post-content">
-    <div class="form-group">
-      <label class="control-label" for="exmemple1">Type d'option</label>
-      <p>Option simple sous la forme d'une case à cocher pour y souscire dans le détail du panier.</p>
-      <p>Zone de texte permettant d'ajouter un commentaire si l'option est souscrite dans le détail du panier.</p>
-      <p>Liste de valeurs prédéterminées sélectionnables si l'option est souscrite dans le détail du panier.</p>
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="">Affichage</label>
-      <div class="radio-group">
-        <input name="affichage" id="affichage1" value="option1" checked="checked" type="radio">
-        <label for="affichage1" class="visible">Visible</label>
-        <input name="affichage" id="affichage0" value="option1" type="radio">
-        <label for="affichage0" class="not-visible">Masqué</label>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label required" for="exmemple1">Intitulé de l'option</label>
-      <input class="form-control" id="exmemple1" placeholder="Intitulé de l'option tel qu'il apparaîtra dans le détail du panier" type="text">
-    </div>
-    <div class="row">
-      <div class="col-xs-4">
-        <div class="form-group">
-          <label class="control-label" for="exmemple2">Prix HT</label>
-          <div class="input-group">
-            <span class="input-group-addon"></span>
-            <input class="form-control" placeholder="Gratuit">
-            <span class="input-group-addon">€</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-4">
-        <div class="form-group">
-          <label class="control-label" for="exmemple2">Prix TTC</label>
-          <div class="input-group">
-            <span class="input-group-addon"></span>
-            <input class="form-control" placeholder="Gratuit">
-            <span class="input-group-addon">€</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-4">
-        <div class="form-group has-feedback">
-          <label class="control-label" for="exmemple3">Taxe</label>
-          <select class="form-control" ic="exmemple3">
-            <option selected="selected">20,00%</option>
-            <option>5,50%</option>
-          </select>
-          <div class="form-control-feedback md-feedback md-select"></div>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label required" for="exmemple1">Liste des valeurs</label>
-      <input class="form-control" id="exmemple1" placeholder="Valeur 1, Valeur 2, Valeur 3, ..." type="text">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="exmemple1">Description</label>
-      <textarea class="form-control" rows="5" placeholder="Description de l'option telle qu'elle apparaîtra dans le détail du panier"></textarea>
-    </div>
-  </div>
-  <footer class="post-footer"></footer>
+	<header class="post-header">
+		<h1>Informations générales</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label>Type d'option</label>
+			<% if(type == 'simple') { %>
+			<p>Option simple sous la forme d'une case à cocher pour y souscire dans le détail du panier.</p>
+			<% } else if(type == 'textarea') { %>
+			<p>Zone de texte permettant d'ajouter un commentaire si l'option est souscrite dans le détail du panier.</p>
+			<% } else { %>
+			<p>Liste de valeurs prédéterminées sélectionnables si l'option est souscrite dans le détail du panier.</p>
+			<% } %>
+		</div>
+		<div class="form-group">
+			<label>Affichage</label>
+			<div class="form-check">
+				<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled1" class="visible">Visible</label>
+				<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled0" class="not-visible">Masqué</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="required" for="name">Intitulé de l'option</label>
+			<input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Intitulé de l'option tel qu'il apparaîtra dans le détail du panier" type="text">
+		</div>
+		<div class="row">
+			<div class="col-4">
+				<div class="form-group">
+					<label for="price_ex_vat">Prix HT</label>
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text"></span></div>
+						<input class="form-control" id="price_ex_vat" name="price_ex_vat" value="<%- price_ex_vat %>" data-role="vat" data-linked="price_inc_vat" placeholder="Gratuit">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="form-group">
+					<label for="price_inc_vat">Prix TTC</label>
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text"></span></div>
+						<input class="form-control" id="price_inc_vat" name="price_inc_vat" value="<%- price_inc_vat %>" data-role="vat" data-linked="price_ex_vat" placeholder="Gratuit">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="form-group">
+					<label>Taxe</label>
+					<div data-role='taxes'></div>
+				</div>
+			</div>
+		</div>
+		<% if (type == 'select') { %>
+		<div class="form-group">
+			<label class="required" for="values">Liste des valeurs</label>
+			<input class="form-control" id="values" name="values" value="<%- values %>" placeholder="Valeur 1, Valeur 2, Valeur 3, ..." type="text">
+		</div>
+		<% } %>
+		<div class="form-group">
+			<label for="description">Description</label>
+			<textarea class="form-control" id="description" name="description" rows="5" placeholder="Description de l'option telle qu'elle apparaîtra dans le détail du panier"><%- description %></textarea>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
 </article>
 
+</form>
+
 <div class="save">
-  <div class="btn-toolbar" role="toolbar">
-    <button type="button" class="btn btn-delete">Supprimer</button>
-    <button type="button" class="btn btn-action  pull-right">Enregistrer</button>
-  </div>
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-lg btn btn-danger btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
+	</div>
 </div>
 
 <footer class="footer"> </footer>

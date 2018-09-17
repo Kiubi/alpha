@@ -30,13 +30,12 @@ function selectify(selector, customOptions) {
 		var select_id = (_select.attr('id') == undefined) ? 'fake-select-' + index : _select.attr('id');
 		o = $.extend({}, o, _select.data());
 
-		_select.wrap('<div class="fake-select-wrap"/>');
-		_select.before('<div class="fake-select-mask ' + (o.direction == 'down' ? 'dropdown' : 'dropup') + '" id="' +
+		_select.before('<div class="fake-select ' + (o.direction == 'down' ? 'dropdown' : 'dropup') + '" id="' +
 			select_id +
-			'-mask"><button type="button" class="form-control form-control-select ' + o.btnStyle + ' ' + o.btnSize +
+			'-mask"><button type="button" class="btn btn-secondary ' + o.btnStyle + ' ' + o.btnSize +
 			' dropdown-toggle" data-toggle="dropdown"><span class="fake-selected">' + getLabel($("option:selected", _select)) +
-			'</span><span class="caret"></span></button><ul class="dropdown-menu dropdown-control"></ul></div>');
-		var select_mask = _select.prev('.fake-select-mask');
+			'</span></button><ul class="dropdown-menu dropdown-control"></ul></div>');
+		var select_mask = _select.prev('.fake-select');
 		var select_index = _select.prop('selectedIndex');
 
 		var dropdown_menu = select_mask.find('.dropdown-menu');
@@ -46,9 +45,10 @@ function selectify(selector, customOptions) {
 			var indent = Backbone.$(this).data('indent');
 			var indent_class = (indent != undefined && indent != null && indent != '') ? 'page-level-' + indent : '';
 			if (this.tagName == 'OPTGROUP') { // this.class == disabled
-				li = '<li class="' + indent_class + '"><span class="disabled">' + this.label + '</span></li>';
+				li = '<li class="' + indent_class + '"><span class="dropdown-item disabled">' + this.label + '</span></li>';
 			} else {
-				li = '<li class="' + indent_class + (option_index == select_index ? ' active' : '') + '"><a data-index="' +
+				li = '<li class="' + indent_class + (option_index == select_index ? ' active' : '') +
+					'"><a class="dropdown-item" data-index="' +
 					this.index + '" href="#">' + $(this).text() + '</a></li>';
 				option_index++;
 			}

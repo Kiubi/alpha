@@ -1,17 +1,19 @@
 <form>
 	<div class="alert alert-warning" role="alert">
-		<a href="https://doc.kiubi.com/generalites.html" class="md-icon md-help pull-right" target="_blank"></a>
+		<a href="https://doc.kiubi.com/generalites.html" class="md-icon md-help float-right" target="_blank"></a>
 
 		Le thème graphique personnalisé permet de créer un look sur mesure pour votre un site Internet,
-		en vous donnant <strong>un accès complet aux templates</strong> qui le composent. Aucune limitation technique
-		particulière ne vous est alors imposée.
+		en vous donnant <strong>un accès complet aux templates</strong> qui le composent. Aucune limitation graphique et technique
+		particulières ne vous sont alors imposées.
 		<br/><br/>
 		Afin de répondre aux exigences de qualité et de performance d'un site Internet professionnel,
-		<strong>la maîtrise des standards du Web</strong> tels que le HTML, le CSS et le javascript est nécessaire. Le
+		<strong>la maîtrise des standards du Web</strong> tels que le HTML, le CSS et le Javascript est nécessaire. Le
 		<a href="https://doc.kiubi.com/" target="_blank">guide du webdesigner</a> est à votre disposition
-		pour vous aider à exploiter les possibilités de personnalisation offertes par Kiubi.<br><br>
+		pour vous aider à exploiter les très nombreux possibilités de personnalisation offertes par Kiubi.<br><br>
 		Activer le thème graphique personnalisé va également <strong>réinitialiser tous les fichiers</strong> de votre
-		espace FTP, dont l'accès vous sera donné après l'activation du thème.
+		espace FTP.
+		Nous vous conseillons avant son l'activation de
+		<a href="/modules/backups" target="_blank">réaliser un point de sauvegarde</a>.
 	</div>
 
 	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
@@ -22,27 +24,28 @@
 		</header>
 		<div class="post-content">
 			<div class="form-group">
-				<label class="control-label required" for="name">Intitulé du thème</label>
+				<label class="required" for="name">Intitulé du thème</label>
 				<input class="form-control" id="name" name="name" value="" type="text"
 					   placeholder="Intitulé du thème tel qu'il apparaîtra dans la console d'administration">
 			</div>
 			<div class="form-group">
-				<label class="control-label">Mise en page</label>
-
-				<p></p>
-
-				<div class="radio-group">
+				<label>Mise en page</label>
+				<div class="radio">
 					<input name="reuse_layouts" id="reuse_layouts1" value="1" checked="checked" type="radio">
-					<label for="reuse_layouts1" class="">Conserver la mise en page actuelle qui est déjà personnalisé pour ce site</label>
+					<label for="reuse_layouts1" class="">Conserver la mise en page actuelle qui est déjà personnalisée pour ce site</label>
+					<p class="ml-4">Recommandé si le thème à copier est <em>identique</em> au thème par défaut</p>
+				</div>
+				<div class="radio">
 					<input name="reuse_layouts" id="reuse_layouts0" value="0" type="radio">
 					<label for="reuse_layouts0" class="">Remplacer la mise en page actuelle par la mise en page par défaut du thème</label>
+					<p class="ml-4">Recommandé si le thème à copier est <em>différent</em> du thème par défaut</p>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label for="code" class="control-label">Thème à copier</label>
+						<label for="code" >Thème à copier</label>
 						<select id="code" name="code" data-style="selectify">
 							<% _.each(themes, function(theme){ %>
 							<option value="<%- theme.code %>"><%- theme.name %></option>
@@ -58,8 +61,8 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<a class="btn btn-cancel" href="/themes">Retour</a>
-		<button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+		<a class="btn btn-lg btn-primary btn-cancel" href="/themes">Retour</a>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

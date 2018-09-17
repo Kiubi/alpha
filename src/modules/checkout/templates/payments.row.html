@@ -1,0 +1,19 @@
+		<div class="row no-gutters">
+			<div class="col-auto"><a href="#" class="md-icon md-drag btn-drag"></a></div>
+			<div class="col item-body">
+				<h4><%- name %></h4>
+				<%= type_label %>
+			</div>
+			<div class="col-3">
+				<% if (is_enabled) { %>
+					<span class="badge badge-success">Activé</span>
+					<% } else { %>
+						<span class="badge badge-danger">Désactivé</span>
+						<% } %>
+					</div>
+					<div class="col-auto">
+						<% if(is_supported) { %>
+							<a class="btn btn-primary float-right" href="/checkout/payments/<%- payment_id %>" role="button">Détail</a>
+							<% } %>
+						</div>
+				</div>

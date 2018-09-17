@@ -1,0 +1,111 @@
+<form>
+<article class="post-article">
+	<header class="post-header">
+		<h1>Conditions préalables</h1>
+	</header>
+	<div class="post-content">
+		<p>
+			Paypal est une solution de paiement en ligne simple et rapide à mettre en place pour recevoir des paiements.
+			Pour plus d'informations,
+			<a href="https://www.paypal.com/fr/home" target="_blank">rendez-vous sur le site officiel</a>.
+		</p>
+
+		<p>
+			Afin de configurer correctement ce mode de paiement vous devez :
+		</p>
+		<ol>
+			<li>
+				Allez sur le site de Paypal et <a href="https://www.paypal.com/fr/webapps/mpp/account-selection"
+												  target="_blank">
+				vous ouvrir un compte</a>. Vous aurez le choix entre plusieurs types de compte et
+				<strong class="text-danger">vous devrez obligatoirement prendre un compte Professionnel (Premier ou
+					Business)</strong>.
+				Dans le cas contraire, le système de paiement Paypal ne fonctionnera pas avec Kiubi.
+				Si vous possédez déjà un compte Personnel, vous devrez surclasser votre compte.
+			</li>
+			<li>
+				Souscrire à l'offre <a href="https://www.paypal.com/fr/webapps/mpp/standard" target="_blank">PayPal
+				Intégral</a>
+			</li>
+			<li>
+				Configurez le paiement dans l'administration du compte Paypal (généralement dans l'onglet "Mon Compte"
+				puis "Préférences") :
+				<br/><br/>
+				Taxe / TVA :
+				<br/>
+				<strong>Vérifiez qu'aucun taux de TVA ne soit défini. La TVA est gérée directement par Kiubi</strong>
+				<br/><br/>
+				Calculs des frais de livraison :
+				<br/>
+				<strong>Vérifiez qu'aucun coût ne soit défini. Les frais de livraison sont gérés directement par
+					Kiubi</strong>
+				<br/><br/>
+				Préférences de notification instantanée de paiement :
+				<br/>
+				<strong>
+					Cochez la case et remplir le champ "URL de notification" avec l'URL suivante :
+					<br/>
+					<%- notification_url %>
+				</strong>
+				<br/><br/>
+				Préférences de réception de paiements sur le site :
+				<br/>
+				<strong>Activez le "Renvoi automatique" en choisissant "Oui"</strong>
+				<br/><br/>
+				Remplir le champ "URL de renvoi" avec l'URL suivante :
+				<br/>
+				<strong><%- domain %>/ecommerce/validation.html </strong>
+				<br/><br/>
+				<strong>Activez le "Transfert des données de paiement" en choisissant "Oui"</strong>
+				<br/><br/>
+			</li>
+			<li>
+				Complétez le formulaire ci-dessous avec l'adresse email de votre compte Paypal et activez le paiement.
+			</li>
+		</ol>
+		<p>
+			<strong>Aucune autre intervention technique n’est nécessaire</strong>, si toutes les opérations ont été
+			correctement effectuées,
+			ce mode de paiement sera alors actif sur le site. Une fois toutes ces opérations de configuration terminées,
+			<strong class="text-danger">il est indispensable d'effectuer au moins un paiement réel</strong> sur le site
+			pour tester son bon fonctionnement.
+		</p>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Paramètres du mode de paiement</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label for="intitule_long">Intitulé du mode de paiement</label>
+			<input class="form-control" id="intitule_long" name="intitule_long" value="<%- config.intitule_long %>" placeholder="<%- name%>" type="text">
+		</div>
+		<div class="form-group">
+			<label>Utilisation</label>
+
+			<div class="form-check">
+				<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled1" class="visible">Activé</label>
+				<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled0" class="not-visible">Désactivé</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="required" for="email">Email du compte PayPal</label>
+			<input class="form-control" id="email" name="email" value="<%- config.email %>" placeholder="Email utilisé pour l'ouverture du compte Paypal"
+				   type="text">
+		</div>
+		<div class="form-group">
+			<label class="required" for="message">Message de confirmation</label>
+
+			<p>Le message de confirmation s'affiche à la fin de la procédure de commande, une fois la commande
+				enregistrée.</p>
+			<textarea class="form-control" id="message" name="message" placeholder="" data-role="wysiwyg" rows="21"><%- config.message %></textarea>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+</form>

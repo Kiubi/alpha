@@ -24,7 +24,7 @@ cp -r ./src/assets/img/* "./$dest/assets/img/"
 echo " - bootstrap"
 mkdir -p ./$dest/vendor/bootstrap/css
 cp -r ./node_modules/bootstrap/dist/css/bootstrap.min.css ./$dest/vendor/bootstrap/css/
-cat ./node_modules/bootstrap-datetimepicker-npm/build/css/bootstrap-datetimepicker.min.css >> ./$dest/vendor/bootstrap/css/bootstrap.min.css
+cat ./node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css >> ./$dest/vendor/bootstrap/css/bootstrap.min.css
 
 echo " - tinymce"
 mkdir -p ./$dest/vendor/tinymce/skins
@@ -83,8 +83,9 @@ browserify -d -p ${minifyify} -o "${output}" \
 	-r jquery-ui/ui/widgets/sortable	\
 	-r jquery-ui/ui/widgets/draggable	\
 	-r bootstrap						\
-	-r bootstrap-datetimepicker-npm		\
+	-r pc-bootstrap4-datetimepicker		\
 	-r chart.js		                    \
+	-r clipboard		                \
 	-r underscore                       \
 	-r underscore.string                \
 	-r backbone.marionette              \
@@ -103,7 +104,10 @@ browserify -d -p ${minifyify} -o "${output}" \
 	-r tinymce/plugins/contextmenu/plugin.js \
 	-r tinymce/plugins/textcolor/plugin.js	 \
 	-r tinymce/plugins/table/plugin.js	     \
-	-r keypress.js/keypress-2.1.4.min.js
+	-r tinymce/plugins/media/plugin.js	     \
+	-r tinymce/themes/modern/theme.js	     \
+	-r kiubi/vendor/tinymce/plugins/link/plugin.js \
+	-r keypress.js
 
 echo "Bundle Kiubi Back"
 
@@ -130,8 +134,9 @@ browserify -d ./src/app.js              \
 	--exclude jquery-ui/ui/widgets/sortable		\
 	--exclude jquery-ui/ui/widgets/draggable	\
 	--exclude bootstrap                 \
-	--exclude bootstrap-datetimepicker-npm          \
+	--exclude pc-bootstrap4-datetimepicker          \
 	--exclude chart.js		            \
+	--exclude clipboard		            \
 	--exclude underscore                \
 	--exclude underscore.string         \
 	--exclude backbone.marionette       \
@@ -150,7 +155,10 @@ browserify -d ./src/app.js              \
 	--exclude tinymce/plugins/contextmenu/plugin.js \
 	--exclude tinymce/plugins/textcolor/plugin.js   \
 	--exclude tinymce/plugins/table/plugin.js       \
-	--exclude keypress.js/keypress-2.1.4.min.js     \
+	--exclude tinymce/plugins/media/plugin.js       \
+	--exclude tinymce/themes/modern/theme.js        \
+	--exclude kiubi/vendor/tinymce/plugins/link/plugin.js \
+	--exclude keypress.js     \
 	$locales                            \
 	-p bundle-collapser/plugin          \
     -p ${minifyify} -o ${output}

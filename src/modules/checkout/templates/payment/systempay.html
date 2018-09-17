@@ -1,0 +1,154 @@
+<form>
+<article class="post-article">
+	<header class="post-header">
+		<h1>Conditions préalables</h1>
+	</header>
+	<div class="post-content">
+		<p>
+			Systempay est la solution de paiement en ligne sécurisé proposé par la Banque Populaire.
+			Pour plus d'informations,
+			<a href="http://www.cyberpluspaiement.com" target="_blank">rendez-vous sur le site officiel</a> ou prenez
+			contact avec un établissement bancaire.
+		</p>
+
+		<p>
+			Afin de configurer correctement ce mode de paiement vous devez :
+		</p>
+		<ol>
+			<li>
+				Prendre contact avec un établissement bancaire afin d'obtenir l’ouverture d’un contrat monétique de
+				Vente A Distance (VAD)
+			</li>
+			<li>
+				Une fois le dossier d'adhésion fourni par l'établissement bancaire déposé,
+				récupérez l'identifiant boutique sur l'outil de gestion de caisse fourni par l'établissement bancaire
+			</li>
+			<li>
+				Récupérez le certificat de test sur l'outil de gestion de caisse
+			</li>
+			<li>
+				Renseignez l'URL serveur TEST, appelée aussi "URL silencieuse", dans l'outil de gestion de caisse :
+				<br/><br/>
+				URL serveur de la boutique en mode test :
+				<br/>
+				<strong><%- notification_url %></strong>
+				<br/><br/>
+			</li>
+			<li>
+				Renseignez l'URL de retour de la boutique en mode TEST dans l'outil de gestion de caisse :
+				<br/><br/>
+				URL de retour de la boutique en mode test :
+				<br/>
+				<strong><%- domain %>/ecommerce/validation.html</strong>
+				<br/><br/>
+			</li>
+			<li>
+				Completez le formulaire ci-dessous en indiquant l'identifiant boutique et le certificat de test et
+				activez le paiement
+			</li>
+			<li>
+				<strong class="text-danger">Effectuez 1 paiement en mode TEST</strong>
+			</li>
+			<li>
+				Vérifiez que sans cliquer sur le bouton de retour à la boutique, Kiubi est bien renseigné sur la
+				validation du paiement
+			</li>
+			<li>
+				Remplir le PV de recette et renvoyez le au getionnaire de votre solution de paiement
+			</li>
+			<li>
+				Dès validation du PV de recette, vous recevrez un email indiquant que le certificat de production a été
+				généré
+			</li>
+			<li>
+				Renseignez l'URL serveur PRODUCTION, appelée aussi "URL silencieuse", dans l'outil de gestion de caisse
+				:
+				<br/><br/>
+				URL serveur de la boutique :
+				<br/>
+				<strong><%- notification_url %></strong>
+				<br/><br/>
+			</li>
+			<li>
+				Renseignez l'URL de retour de la boutique en mode PRODUCTION dans l'outil de gestion de caisse :
+				<br/><br/>
+				URL de retour de la boutique :
+				<br/>
+				<strong><%- domain %>/ecommerce/validation.html</strong>
+				<br/><br/>
+			</li>
+			<li>
+				Configurez dans le module de paiement le champ "Mode" dans l'outil de gestion de caisse. Effacez TEST et
+				saisir en majuscules PRODUCTION
+			</li>
+			<li>
+				<strong class="text-danger">Passez le paiement en mode PRODUCTION</strong> dans le formulaire ci-dessous
+			</li>
+		</ol>
+		<p>
+			<strong>Aucune autre intervention technique n’est nécessaire</strong>, si toutes les opérations ont été
+			correctement effectuées,
+			ce mode de paiement sera alors actif sur le site. Une fois toutes ces opérations de configuration terminées,
+			<strong class="text-danger">il est indispensable d'effectuer au moins un paiement réel</strong> sur le site
+			pour tester son bon fonctionnement.
+		</p>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Paramètres du mode de paiement</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label for="intitule_long">Intitulé du mode de paiement</label>
+			<input class="form-control" id="intitule_long" name="intitule_long" value="<%- config.intitule_long %>" placeholder="<%- name%>" type="text">
+		</div>
+		<div class="form-group">
+			<label>Utilisation</label>
+
+			<div class="form-check">
+				<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled1" class="visible">Activé</label>
+				<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled0" class="not-visible">Désactivé</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="hash">Algorithme de hachage</label>
+			<select class="form-control" id="hash" name="hash" data-style="selectify">
+				<option value="sha1" <%= config.hash != 'sha256' ? 'selected="selected"' : '' %>>SHA-1</option>
+				<option value="sha256" <%= config.hash == 'sha256' ? 'selected="selected"' : '' %>>SHA-256</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label>Mode</label>
+			<div class="form-check">
+				<input name="mode" id="modetest" value="test" type="radio" <%= config.mode != 'prod' ? 'checked="checked"' : '' %>>
+				<label for="modetest">TEST</label>
+				<input name="mode" id="modeprod" value="prod" type="radio" <%= config.mode == 'prod' ? 'checked="checked"' : '' %>>
+				<label for="modeprod">PRODUCTION</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="required" for="tpe">Identifiant boutique</label>
+			<input class="form-control" id="tpe" name="tpe" value="<%- config.tpe %>" placeholder="8 chiffres fournis par l'établissement bancaire"
+				   type="text">
+		</div>
+		<div class="form-group">
+			<label class="required" for="key">Certificat</label>
+			<input class="form-control" id="key" name="key" value="<%- config.key %>"
+				   placeholder="Une série de 16 chiffres fournis par l'établissement bancaire" type="text">
+		</div>
+		<div class="form-group">
+			<label class="required" for="message">Message de confirmation</label>
+
+			<p>Le message de confirmation s'affiche à la fin de la procédure de commande, une fois la commande
+				enregistrée.</p>
+			<textarea class="form-control" id="message" name="message" placeholder="" data-role="wysiwyg" rows="21"><%- config.message %></textarea>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+</form>

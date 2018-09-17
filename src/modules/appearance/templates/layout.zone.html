@@ -1,15 +1,15 @@
-<div class="btn-group pull-right">
+<div class="btn-group float-right">
 	<a href="#" class="md-icon md-add-layout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </a>
-	<ul class="dropdown-menu" data-role="addBloc">
+	<ul class="dropdown-menu dropdown-menu-right" data-role="addBloc">
 		<li class="dropdown-header">Disposition :</li>
-		<li><a href="#" data-col="1" data-zone="<%- zone_id %>">Sur 1 colonne</a></li>
+		<li><a class="dropdown-item" href="#" data-col="1" data-zone="<%- zone_id %>">Sur 1 colonne</a></li>
 		<% if (col_count >= 2) { %>
-		<li><a href="#" data-col="2" data-zone="<%- zone_id %>">Sur 2 colonnes</a></li>
-		<li><a href="#" data-col="2d" data-zone="<%- zone_id %>">Sur 2 colonnes à droite</a></li>
-		<li><a href="#" data-col="2g" data-zone="<%- zone_id %>">Sur 2 colonnes à gauche</a></li>
+		<li><a class="dropdown-item" href="#" data-col="2" data-zone="<%- zone_id %>">Sur 2 colonnes</a></li>
+		<li><a class="dropdown-item" href="#" data-col="2d" data-zone="<%- zone_id %>">Sur 2 colonnes à droite</a></li>
+		<li><a class="dropdown-item" href="#" data-col="2g" data-zone="<%- zone_id %>">Sur 2 colonnes à gauche</a></li>
 		<% } %>
 		<% if (col_count >= 3) { %>
-		<li><a href="#" data-col="3" data-zone="<%- zone_id %>">Sur 3 colonnes</a></li>
+		<li><a class="dropdown-item" href="#" data-col="3" data-zone="<%- zone_id %>">Sur 3 colonnes</a></li>
 		<% } %>
 	</ul>
 </div>

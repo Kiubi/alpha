@@ -58,7 +58,7 @@ var Response = Backbone.Model.extend({
 
 	getSummary: function() {
 
-		var l = 140;
+		var l = 115;
 
 		return _.reduce(this.get('fields'), function(memo, field) {
 			if (memo.length >= l) return memo;

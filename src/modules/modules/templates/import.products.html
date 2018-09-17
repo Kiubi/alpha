@@ -3,7 +3,7 @@
 
 <div class="alert alert-warning" role="alert">
 	<a href="https://aide.kiubi.com/documentation/Modules/import-de-produits.html"
-	   class="md-icon md-help pull-right" target="_blank"></a>
+	   class="md-icon md-help float-right" target="_blank"></a>
 	Vous pouvez <strong>importer plusieurs produits simultanément</strong> pour remplir et mettre à jour le
 	catalogue.
 	Nous vous conseillons avant tout import de produits de <a
@@ -20,30 +20,30 @@
 	</header>
 	<div class="post-content">
 		<div class="form-group">
-			<label class="control-label" for="file">Fichier d'import</label>
+			<label>Fichier d'import</label>
 
 			<p>Vous pouvez télécharger un exemple de modèle de fichier d'import
 				(<a href="https://cdn.kiubi-admin.com/69/documents/import_catalogue.csv" target="_blank">CSV</a> ou
 				<a href="https://cdn.kiubi-admin.com/69/documents/import_catalogue.xls" target="_blank">XLS</a>)
 				pour vous aider à préparer votre propre fichier.
 			</p>
-			<input name="file" id="file" type="file">
+			<div data-role="file"></div>
 		</div>
 		<div class="form-group has-feedback">
-			<label class="control-label">Catégorie par défaut</label>
+			<label>Catégorie par défaut</label>
 
 			<p>Vous devez choisir une catégorie qui sera utilisée si la catégorie du produit n'est pas précisé dans le fichier d'import.</p>
 
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<div data-role="categories"></div>
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label">Afficher les produits après l'import</label>
+			<label>Afficher les produits après l'import</label>
 
-			<div class="radio-group">
+			<div class="form-check">
 				<input name="is_enabled" id="is_enabled1" value="1" type="radio">
 				<label for="is_enabled1" class="">Oui</label>
 				<input name="is_enabled" id="is_enabled0" value="0" type="radio" checked="checked">
@@ -57,7 +57,7 @@
 
 <div class="save">
 <div class="btn-toolbar" role="toolbar">
-	<button type="button" class="btn btn-action pull-right" data-role="save">Importer</button>
+	<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Importer</button>
 </div>
 </div>
 
@@ -102,9 +102,9 @@
 
 <div class="save">
 <div class="btn-toolbar" role="toolbar">
-	<button type="button" class="btn btn-cancel" data-role="cancel">Retour</button>
+	<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel">Retour</button>
 	<% if(!report.errors || report.errors.length == 0) { %>
-	<button type="button" class="btn btn-action pull-right" data-role="save">Importer</button>
+	<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Importer</button>
 	<% } %>
 </div>
 </div>
@@ -128,7 +128,7 @@
 
 <div class="save">
 <div class="btn-toolbar" role="toolbar">
-	<button type="button" class="btn btn-cancel" data-role="cancel">Retour</button>
+	<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel">Retour</button>
 </div>
 </div>
 

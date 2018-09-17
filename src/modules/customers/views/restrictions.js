@@ -6,20 +6,22 @@ var Groups = require('kiubi/modules/customers/models/groups');
 var Customers = require('kiubi/modules/customers/models/customers');
 
 function formatCustomer(data, index) {
-	return '<li data-role="selection" data-index="' + index + '"><a href="#">' + data.firstname + ' ' + data.lastname +
+	return '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' + data.firstname +
+		' ' + data.lastname +
 		'</a></li>';
 }
 
 function formatGroup(data, index) {
-	return '<li data-role="selection" data-index="' + index + '"><a href="#">' + data.name + '</a></li>';
+	return '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' + data.name +
+		'</a></li>';
 }
 
 var TagView = Marionette.View.extend({
 	template: _.template(
-		'<span class="label-content" title="<%- name %>"><%- name %></span><span data-role="delete" class="md-icon md-close"></span>'
+		'<span class="badge-content" title="<%- name %>"><%- name %></span><span data-role="delete" class="md-icon md-close"></span>'
 	),
 
-	className: 'label label-extranet label-list',
+	className: 'badge badge-warning badge-list',
 	tagName: 'span',
 
 	ui: {
@@ -65,13 +67,19 @@ module.exports = Marionette.View.extend({
 
 	events: {
 		'keyup @ui.dropGrp input': _.debounce(function(event) {
-			this.term = Backbone.$(event.currentTarget).val();
-			this.triggerMethod('input:grp', this.term);
+			this.triggerInput(Backbone.$(event.currentTarget), 'grp');
+		}, 300),
+
+		'mousedown @ui.dropGrp input': _.debounce(function(event) {
+			this.triggerInput(Backbone.$(event.currentTarget), 'grp');
 		}, 300),
 
 		'keyup @ui.dropCust input': _.debounce(function(event) {
-			this.term = Backbone.$(event.currentTarget).val();
-			this.triggerMethod('input:cust', this.term);
+			this.triggerInput(Backbone.$(event.currentTarget), 'cust');
+		}, 300),
+
+		'mousedown @ui.dropCust input': _.debounce(function(event) {
+			this.triggerInput(Backbone.$(event.currentTarget), 'cust');
 		}, 300),
 
 		'click @ui.selGrp': function(event) {
@@ -87,67 +95,15 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	onInputGrp: function(term) {
-		this.groups.fetch({
-			data: {
-				term: term,
-				limit: 5
-			}
-		}).done(function() {
-			this.showResults(this.groups.toJSON(), this.getUI('dropGrp'));
-		}.bind(this)); // TODO fail
-	},
-
-	onInputCust: function(term) {
-		this.customers.fetch({
-			data: {
-				term: term,
-				limit: 5
-			}
-		}).done(function() {
-			this.showResults(this.customers.toJSON(), this.getUI('dropCust'));
-		}.bind(this)); // TODO fail
-	},
-
-	onSelectGrp: function(index) {
-		if (index > this.groups.length) return;
-
-		var selected = this.groups.at(index);
-		if (!selected) return;
-
-		this.selected_groups.add({
-			name: selected.get('name'),
-			id: selected.get('group_id')
-		});
-	},
-
-	onSelectCust: function(index) {
-		if (index > this.customers.length) return;
-
-		var selected = this.customers.at(index);
-		if (!selected) return;
-
-		this.selected_customers.add({
-			name: selected.get('firstname') + ' ' + selected.get('lastname'),
-			id: selected.get('customer_id')
-		});
-	},
-
-	showResults: function(results, $dd) {
-		var list = '';
-		if (results.length > 0) {
-			list = _.reduce(results, function(acc, result, index) {
-				return acc + (result.customer_id ? formatCustomer(result, index) : formatGroup(result, index));
-			}, '');
-		} else {
-			list = '<li><a href="#">-- Aucun résultat --</a></li>';
-		}
-		$dd.children('ul').html(list);
-		$dd.addClass('open'); // Force opening
-	},
+	term: null,
 
 	initialize: function(options) {
 		this.mergeOptions(options, []);
+
+		this.term = {
+			'cust': null,
+			'grp': null
+		};
 
 		var tag = Backbone.Model.extend({
 			defaults: {
@@ -165,6 +121,9 @@ module.exports = Marionette.View.extend({
 		this.selected_groups = new Backbone.Collection();
 		this.selected_customers = new Backbone.Collection();
 		this.selected_groups.model = this.selected_customers.model = tag;
+
+		this.suggestions_groups = [];
+		this.suggestions_customers = [];
 
 		var customers = _.filter(this.getOption('restrictions'), function(restriction) {
 			return restriction.customer_id;
@@ -187,6 +146,13 @@ module.exports = Marionette.View.extend({
 			};
 		});
 		this.selected_groups.add(groups);
+
+		this.listenTo(this.selected_customers, 'update', function() {
+			this.triggerMethod('change:restrictions');
+		}.bind(this));
+		this.listenTo(this.selected_groups, 'update', function() {
+			this.triggerMethod('change:restrictions');
+		}.bind(this));
 	},
 
 	onRender: function() {
@@ -198,6 +164,65 @@ module.exports = Marionette.View.extend({
 		this.showChildView('groups', new TagsView({
 			collection: this.selected_groups
 		}));
+	},
+
+	triggerInput: function(target, type) {
+		if (target.val() === this.term[type]) return;
+
+		this.term[type] = target.val();
+		this.triggerMethod('input:' + type, this.term[type], this);
+	},
+
+	onInputGrp: function(term) {
+		this.groups.suggest(term, 5, this.selected_groups.pluck('id')).done(function(groups) {
+			this.suggestions_groups = groups;
+			this.showResults(groups, this.getUI('dropGrp'));
+		}.bind(this)); // TODO fail
+	},
+
+	onSelectGrp: function(index) {
+		if (index > this.suggestions_groups.length) return;
+
+		var selected = this.suggestions_groups[index];
+		if (!selected) return;
+
+		this.selected_groups.add({
+			name: selected.name,
+			id: selected.group_id
+		});
+	},
+
+	onInputCust: function(term) {
+		this.customers.suggest(term, 5, this.selected_customers.pluck('id')).done(function(customers) {
+			this.suggestions_customers = customers;
+			this.showResults(customers, this.getUI('dropCust'));
+		}.bind(this)); // TODO fail
+	},
+
+	onSelectCust: function(index) {
+		if (index > this.suggestions_customers.length) return;
+
+		var selected = this.suggestions_customers[index];
+		if (!selected) return;
+
+		this.selected_customers.add({
+			name: selected.firstname + ' ' + selected.lastname,
+			id: selected.customer_id
+		});
+	},
+
+	showResults: function(results, $dd) {
+		var list = '';
+		if (results.length > 0) {
+			list = _.reduce(results, function(acc, result, index) {
+				return acc + (result.customer_id ? formatCustomer(result, index) : formatGroup(result, index));
+			}, '');
+		} else {
+			list =
+				'<li><span class="dropdown-item dropdown-item-empty"><span class="md-icon md-no-result"></span> Aucun résultat</span></li>';
+		}
+		$dd.children('ul').html(list);
+		$dd.addClass('show'); // Force opening
 	},
 
 	getRestrictions: function() {

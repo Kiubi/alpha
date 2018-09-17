@@ -7,12 +7,10 @@ var ControllerChannel = Backbone.Radio.channel('controller');
 
 /* Models */
 var Blog = require('./models/blog');
-var Category = require('./models/category');
+
 var Categories = require('./models/categories');
-var Post = require('./models/post');
 var Posts = require('./models/posts');
 var Comments = require('./models/comments');
-var Link = require('./models/link');
 var Links = require('./models/links');
 var Settings = require('./models/settings');
 var Home = require('./models/home');
@@ -188,15 +186,28 @@ var BlogController = Controller.extend({
 	 * Posts
 	 */
 
-	showPosts: function(category_id) {
+	showPostsByCategory: function(category_id, queryString) {
+		this.showGlobalPosts(queryString, category_id);
+	},
+
+	showPosts: function(queryString) {
+		this.showGlobalPosts(queryString, null);
+	},
+
+	showGlobalPosts: function(queryString, category_id) {
+
+		var qs = this.parseQueryString(queryString, {
+			'term': null
+		});
 
 		var promise;
 		var c = new Posts();
 		var title = 'Tous les billets postés';
 		var tabs = null;
-		if (category_id > 0) {
+		if (category_id) {
 			c.category_id = category_id;
-			var categorie = new Category({
+			var categs = new Categories();
+			var categorie = new categs.model({
 				category_id: category_id
 			});
 			promise = categorie.fetch().done(function() {
@@ -211,7 +222,8 @@ var BlogController = Controller.extend({
 
 			var view = new PostsView({
 				collection: c,
-				categories: new Categories()
+				categories: new Categories(),
+				filters: qs
 			});
 
 			this.listenTo(c, 'bulk:delete', function(action) {
@@ -237,17 +249,25 @@ var BlogController = Controller.extend({
 
 	showPost: function(id) {
 
-		var m = new Post({
+		var c = new Posts();
+		var m = new c.model({
 			post_id: id
 		});
 
-		m.fetch().done(function() {
+		m.fetch({
+			data: {
+				extra_fields: 'defaults'
+			}
+		}).done(function() {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
 			var categories = new Categories();
 			categories.fetch();
 			var view = new PostView({
 				model: m,
 				categories: categories,
-				typesSource: m.getTypes()
+				typesSource: m.getTypes(),
+				enableSeo: Session.hasScope('site:seo'),
+				enableLayout: Session.hasScope('site:layout')
 			});
 
 			this.listenTo(m, 'change', function(model) {
@@ -295,7 +315,8 @@ var BlogController = Controller.extend({
 				return;
 			}
 
-			var m = new Post({
+			var c = new Posts();
+			var m = new c.model({
 				title: 'Intitulé par défaut',
 				slug: 'intitule-par-defaut',
 				is_visible: false,
@@ -321,10 +342,17 @@ var BlogController = Controller.extend({
 	showHome: function() {
 
 		var m = new Home();
-		m.fetch().done(function() {
+		m.fetch({
+			data: {
+				extra_fields: 'defaults'
+			}
+		}).done(function() {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
 			var view = new HomeView({
 				collection: new Categories(),
-				model: m
+				model: m,
+				enableSeo: Session.hasScope('site:seo'),
+				enableLayout: Session.hasScope('site:layout')
 			});
 			this.listenTo(m, 'change', function(model) {
 				this.triggerSidebarMenu('refresh:categories');
@@ -402,7 +430,8 @@ var BlogController = Controller.extend({
 		if (post_id > 0) {
 			param.post_id = post_id;
 
-			var post = new Post({
+			var posts = new Posts();
+			var post = new posts.model({
 				post_id: post_id
 			});
 			promise = post.fetch().done(function() {
@@ -445,12 +474,20 @@ var BlogController = Controller.extend({
 
 	showCategory: function(id) {
 
-		var m = new Category({
+		var c = new Categories();
+		var m = new c.model({
 			category_id: id
 		});
-		m.fetch().done(function() {
+		m.fetch({
+			data: {
+				extra_fields: 'defaults'
+			}
+		}).done(function() {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
 			var view = new CategoryView({
-				model: m
+				model: m,
+				enableSeo: Session.hasScope('site:seo'),
+				enableLayout: Session.hasScope('site:layout')
 			});
 			this.listenTo(m, 'change', function(model) {
 				if (model.hasChanged('name')) {
@@ -484,7 +521,8 @@ var BlogController = Controller.extend({
 
 	actionNewCategory: function() {
 
-		var m = new Category({
+		var c = new Categories();
+		var m = new c.model({
 			name: 'Intitulé par défaut',
 			slug: 'intitule-par-defaut',
 			is_visible: false
@@ -521,10 +559,15 @@ module.exports = Marionette.AppRouter.extend({
 		'blog/posts/:id/comments': 'showComments',
 		'blog/comments': 'showComments',
 		'blog/categories/:id': 'showCategory',
-		'blog/categories/:id/posts': 'showPosts'
+		'blog/categories/:id/posts': 'showPostsByCategory'
 	},
 
 	onRoute: function(name, path, args) {
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		if (!Session.hasScope('site:blog')) {
+			this.controller.navigationController.navigate('/');
+			return;
+		}
 		this.controller.showSidebarMenu();
 	}
 

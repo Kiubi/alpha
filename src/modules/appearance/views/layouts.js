@@ -5,7 +5,7 @@ var Builder = require('../models/builder');
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/layouts.row.html'),
-	className: 'col-xs-12',
+	className: 'col',
 
 	ui: {
 		'duplicate': '[data-role="duplicate"]',
@@ -88,13 +88,13 @@ var RowView = Marionette.View.extend({
 });
 
 var ListView = Marionette.CollectionView.extend({
-	className: 'row flex-row',
+	className: 'row',
 	childView: RowView
 });
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/layouts.html'),
-	className: 'container container-large',
+	className: 'container-fluid',
 	service: 'appearance',
 
 	ui: {

@@ -24,7 +24,8 @@ module.exports = Marionette.View.extend({
 		'lixtra': 'li[data-role="xtra"]',
 		'clear': 'span[data-role="clear"]',
 		'input': 'input[data-role="input"]',
-		'dropdown-menu': '.dropdown-menu'
+		'dropdown-menu': '.dropdown-menu',
+		'toggle': '.dropdown-toggle'
 	},
 
 	/**
@@ -35,6 +36,7 @@ module.exports = Marionette.View.extend({
 
 		'shown.bs.dropdown': function(event) {
 			this.getUI('input').focus();
+			this.triggerInput();
 		},
 
 		'click @ui.li': function(event) {
@@ -53,8 +55,7 @@ module.exports = Marionette.View.extend({
 		},
 
 		'keyup @ui.input': _.debounce(function() {
-			this.term = this.getUI('input').val();
-			this.triggerMethod(this.eventName('input'), this.term, this);
+			this.triggerInput();
 		}, 300),
 
 		'click @ui.clear': function(event) {
@@ -73,7 +74,7 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	term: '',
+	term: null,
 	current: {
 		label: '',
 		value: null
@@ -89,6 +90,38 @@ module.exports = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['current', 'searchPlaceholder', 'evtSuffix', 'isMandatory']);
+		this.term = null;
+	},
+
+	templateContext: function() {
+		return {
+			'id': this.cid,
+			'term': this.term,
+			'searchPlaceholder': this.searchPlaceholder,
+			'current': this.current,
+			'isMandatory': this.isMandatory
+		};
+	},
+
+	triggerInput: function() {
+		if (this.getUI('input').val() === this.term) return;
+
+		this.term = this.getUI('input').val();
+		this.triggerMethod(this.eventName('input'), this.term, this);
+	},
+
+	getCurrent: function() {
+		return this.current;
+	},
+
+	clear: function() {
+		this.term = '';
+		this.setCurrent({
+			label: '',
+			value: null
+		});
+		this.suggestions = [];
+		this.render();
 	},
 
 	/**
@@ -104,8 +137,10 @@ module.exports = Marionette.View.extend({
 		if (!this.isMandatory) {
 			if (this.current.value == null) {
 				this.getUI('clear').removeClass('md-cancel');
+				this.getUI('toggle').removeClass('cancel');
 			} else {
 				this.getUI('clear').addClass('md-cancel');
+				this.getUI('toggle').addClass('cancel');
 			}
 		}
 	},
@@ -124,10 +159,12 @@ module.exports = Marionette.View.extend({
 		var list = '';
 		if (results.length > 0) {
 			list = _.reduce(results, function(memo, result, index) {
-				return memo + '<li data-role="selection" data-index="' + index + '"><a href="#">' + result.label + '</a></li>';
-			}, '<li role="separator" class="divider"></li>');
+				return memo + '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' +
+					result.label + '</a></li>';
+			}, '<li class="dropdown-divider"></li>');
 		} else {
-			list = '<li role="separator" class="divider"></li><li><a href="#">-- Aucun résultat --</a></li>';
+			list =
+				'<li class="dropdown-divider"></li><li><span class="dropdown-item dropdown-item-empty"><span class="md-icon md-no-result"></span> Aucun résultat</span></li>';
 		}
 		if (xtra) {
 			xtra = _.extend({
@@ -136,25 +173,12 @@ module.exports = Marionette.View.extend({
 				eventName: 'xtra'
 			}, xtra);
 
-			list += '<li role="separator" class="divider"></li><li data-role="xtra" data-event="' + xtra.eventName +
-				'"><a href="#">' + xtra.title + '<span class="md-icon ' + xtra.iconClass + '"></span></a></li>';
+			list += '<li class="dropdown-divider"></li><li data-role="xtra" data-event="' + xtra.eventName +
+				'"><a class="dropdown-item" href="#">' + xtra.title + '<span class="md-icon ' + xtra.iconClass +
+				'"></span></a></li>';
 		}
 		emptyList(this.getUI('dropdown-menu')).append(list);
 		this.getUI('input').focus();
-	},
-
-	templateContext: function() {
-		return {
-			'id': this.cid,
-			'term': this.term,
-			'searchPlaceholder': this.searchPlaceholder,
-			'current': this.current,
-			'isMandatory': this.isMandatory
-		};
-	},
-
-	getCurrent: function() {
-		return this.current;
 	}
 
 });

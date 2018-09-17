@@ -1,11 +1,12 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var _ = require('underscore');
+var format = require('kiubi/utils/format.js');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 var Session = Backbone.Radio.channel('app').request('ctx:session');
 var SelectView = require('kiubi/views/ui/select.js');
+var FileView = require('kiubi/views/ui/input.file.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/customer.html'),
@@ -17,6 +18,10 @@ module.exports = Marionette.View.extend({
 	regions: {
 		groups: {
 			el: "div[data-role='groups']",
+			replaceElement: true
+		},
+		file: {
+			el: "div[data-role='file']",
 			replaceElement: true
 		}
 	},
@@ -30,8 +35,7 @@ module.exports = Marionette.View.extend({
 		'click @ui.showPwdBtn': function() {
 			this.getUI('showPwdBtn').hide();
 			this.getUI('pwdInput').show();
-		},
-		"change input[type=file]": "dropFile"
+		}
 	},
 
 	fields: [
@@ -45,7 +49,6 @@ module.exports = Marionette.View.extend({
 		'group_id'
 	],
 
-	tempfileUpload: null,
 	render_counter: 1,
 
 	initialize: function(options) {
@@ -55,7 +58,8 @@ module.exports = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			convertMediaPath: Session.convertMediaPath.bind(Session),
-			render_counter: this.render_counter++ // Hack to force image reload on upload
+			render_counter: this.render_counter++, // Hack to force image reload on upload
+			creation_date: format.formatLongDateTime(this.model.get('creation_date'))
 		};
 	},
 
@@ -67,6 +71,9 @@ module.exports = Marionette.View.extend({
 			name: 'group_id',
 			direction: 'up'
 		}));
+		this.showChildView('file', new FileView({
+			name: 'avatar'
+		}));
 	},
 
 	onSave: function() {
@@ -75,8 +82,8 @@ module.exports = Marionette.View.extend({
 		if (this.getUI('pwdInput').val() != '') {
 			data.password = this.getUI('pwdInput').val();
 		}
-		if (this.tempfileUpload) {
-			data.avatar = this.tempfileUpload;
+		if (this.getChildView('file').getFile()) {
+			data.avatar = this.getChildView('file').getFile();
 		}
 
 		return this.model.save(
@@ -87,22 +94,6 @@ module.exports = Marionette.View.extend({
 		).done(function() {
 			// Re-render to update file preview
 			this.render();
-		}.bind(this));
-	},
-
-	dropFile: function(event) {
-		if (Backbone.$(event.target).is('input[type=file]')) {
-			// stop la propagation de l'event
-			event.stopPropagation();
-		}
-
-		event.preventDefault();
-
-		var dataTransfer = event.originalEvent.dataTransfer;
-		var files = (dataTransfer ? dataTransfer.files : event.originalEvent.target.files);
-
-		_.each(files, function(File) {
-			this.tempfileUpload = File;
 		}.bind(this));
 	},
 

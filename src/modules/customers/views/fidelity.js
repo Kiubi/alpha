@@ -71,8 +71,8 @@ var RowView = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
-			end_date: this.model.get('end_date') ? format.formatDate(this.model.get('end_date')) : '',
-			value_date: format.formatDate(this.model.get('value_date'))
+			end_date: this.model.get('end_date') ? format.formatLongDate(this.model.get('end_date')) : '',
+			value_date: format.formatLongDate(this.model.get('value_date'))
 		};
 	}
 

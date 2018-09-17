@@ -12,7 +12,7 @@ L'adresse publique de ce fichier est <a href="<%- thumb.url %>" target="_blank">
   </header>
   <div class="post-content">
     <div class="row media-detail">
-      <div class="col-xs-4">
+      <div class="col-4">
 		  <% if(type == 'image') { %>
 		  <div class="media-object"><a class="preview" href="<%- thumb.url %>" target="_blank">
           <img alt="<%- name %>" src="<%- convertMediaPath('/media/g_vignette/' + media_id + '.jpg') %>&<%- render_counter %>"></a>
@@ -30,26 +30,26 @@ L'adresse publique de ce fichier est <a href="<%- thumb.url %>" target="_blank">
 		  Par <%- modification_by %>
 		  </p>
       </div>
-      <div class="col-xs-8">
+      <div class="col-8">
         <div class="form-group">
-          <label class="control-label" for="name">Intitulé du fichier</label>
+          <label for="name">Intitulé du fichier</label>
           <input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Intitulé permettant d'identifier le fichier" type="text">
         </div>
         <div class="row">
-          <div class="col-xs-7">
+          <div class="col-7">
             <div class="form-group">
-              <label class="control-label">Dossier</label>
+              <label>Dossier</label>
               <div data-role="folder"></div>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label" for="description">Description</label>
+          <label for="description">Description</label>
           <input class="form-control" id="description" name="description" value="<%- description %>" placeholder="Ca doit servir à quelque chose, mais on sait pas quoi..." type="text">
         </div>
         <div class="form-group">
-          <label class="control-label" for="file">Remplacement de fichier</label>
-          <input id="file" name="file" type="file">
+          <label for="file">Remplacement de fichier</label>
+			<div data-role="file"></div>
         </div>
       </div>
     </div>
@@ -61,8 +61,8 @@ L'adresse publique de ce fichier est <a href="<%- thumb.url %>" target="_blank">
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn btn-danger btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

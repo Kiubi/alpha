@@ -25,7 +25,7 @@ module.exports = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			themes: _.filter(this.collection.toJSON(), function(theme) {
-				return theme.code != 'theme'
+				return theme.code != 'theme';
 			}) // without custom theme !
 		};
 	},

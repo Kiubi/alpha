@@ -2,14 +2,13 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
+var SeoView = require('kiubi/views/ui/seo.js');
 
-var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 
 var ControllerChannel = Backbone.Radio.channel('controller');
-var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/categories.row.html'),
@@ -49,7 +48,7 @@ module.exports = Marionette.View.extend({
 	className: 'container',
 	service: 'blog',
 
-	behaviors: [CharCountBehavior, FormBehavior],
+	behaviors: [FormBehavior],
 
 	regions: {
 		list: {
@@ -58,6 +57,10 @@ module.exports = Marionette.View.extend({
 		},
 		layout: {
 			el: "article[data-role='layout']",
+			replaceElement: true
+		},
+		seo: {
+			el: "article[data-role='seo']",
 			replaceElement: true
 		}
 	},
@@ -103,7 +106,17 @@ module.exports = Marionette.View.extend({
 			scrollThreshold: 920
 
 		}));
-		this.showChildView('layout', this.layoutSelector);
+		if (this.getOption('enableLayout')) {
+			this.showChildView('layout', this.layoutSelector);
+		}
+
+		// Seo
+		if (this.getOption('enableSeo')) {
+			this.showChildView('seo', new SeoView({
+				slug_prefix: false,
+				model: this.model
+			}));
+		}
 	},
 
 	start: function() {

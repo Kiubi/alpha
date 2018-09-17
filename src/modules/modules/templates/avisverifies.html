@@ -1,7 +1,7 @@
 <form>
 
 	<div class="alert alert-warning" role="alert">
-		<a href="https://aide.kiubi.com/documentation/avis-verifies.html" class="md-icon md-help pull-right" target="_blank"></a>
+		<a href="https://aide.kiubi.com/documentation/avis-verifies.html" class="md-icon md-help float-right" target="_blank"></a>
 		Avis Vérifiés est une solution spécialisée dans la récolte des avis clients.
 		Pour bénéficier de ses fonctionnalités, vous devez au préalable vous
 		<a href="https://www.avis-verifies.com/" target="_blank">ouvrir un compte sur le site d'Avis Vérifiés</a>.
@@ -15,17 +15,17 @@
 		</header>
 		<div class="post-content">
 			<div class="form-group">
-				<label class="control-label required" for="id">Identifiant Site Web</label>
+				<label class="required" for="id">Identifiant Site Web</label>
 				<input id="id" name="id" class="form-control" value="<%- id %>" placeholder="">
 			</div>
 			<div class="form-group">
-				<label class="control-label required" for="secret">Clé secrète</label>
+				<label class="required" for="secret">Clé secrète</label>
 				<input id="secret" name="secret" class="form-control" value="<%- secret %>" placeholder="">
 			</div>
 			<div class="form-group">
-				<label class="control-label">Utilisation</label>
+				<label>Utilisation</label>
 
-				<div class="radio-group">
+				<div class="form-check">
 					<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
 					<label for="is_enabled1" class="visible">Activé</label>
 					<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
@@ -33,10 +33,10 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label" for="plateform">Pays</label>
+				<label for="plateform">Pays</label>
 
 				<div class="row">
-					<div class="col-xs-6">
+					<div class="col-6">
 						<select data-style="selectify" id="plateform" name="plateform">
 							<% _.each(allPlatforms, function(label, value){ %>
 							<option value="<%- value %>" <%= value == plateform ? 'selected="selected"' : '' %>><%- label %></option>
@@ -46,10 +46,10 @@
 				</div>
 			</div>
 			<div class="form-group has-feedback">
-				<label class="control-label" for="is_sending_products">Avis récoltés</label>
+				<label for="is_sending_products">Avis récoltés</label>
 
 				<div class="row">
-					<div class="col-xs-6">
+					<div class="col-6">
 						<select data-style="selectify" id="is_sending_products" name="is_sending_products">
 							<option value="0" <%= !is_sending_products ? 'selected="selected"' : '' %>>Commandes uniquement</option>
 							<option value="1" <%= is_sending_products ? 'selected="selected"' : '' %>>Commandes et produits</option>
@@ -59,14 +59,14 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="offset">Délai d'attente avant demande d'avis</label>
+			<label for="offset">Délai d'attente avant demande d'avis</label>
 
 			<div class="row">
-				<div class="col-xs-3">
+				<div class="col-3">
 					<div class="input-group">
-						<span class="input-group-addon"></span>
+						<div class="input-group-prepend"><span class="input-group-text"></span></div>
 						<input class="form-control" id="offset" name="offset" value="<%- offset %>" placeholder="0">
-						<span class="input-group-addon">jours</span>
+						<div class="input-group-append"><span class="input-group-text">jours</span></div>
 					</div>
 				</div>
 			</div>
@@ -78,8 +78,8 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<a class="btn btn-cancel" href="/modules">Retour</a>
-		<button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+		<a class="btn btn-lg btn-primary btn-cancel" href="/modules">Retour</a>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

@@ -1,0 +1,117 @@
+<form>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Conditions préalables</h1>
+	</header>
+	<div class="post-content">
+		<p>
+			ATOS SIPS est la solution de paiement en ligne sécurisé proposée par les banques suivantes :
+			Société Générale - Sogénactif / Agora, Crédit Lyonnais - Sherlock, HSBC, CCF - Elysnet,
+			Crédit du Nord - Webaffaires, La Poste - Scellius, Crédit Agricole - e-Transactions, BNP Paribas - Merc@net.
+			Pour plus d'informations,
+			<a href="http://sips.worldline.com/fr-fr/accueil.html" target="_blank">rendez-vous sur le site officiel</a>
+			ou prenez contact avec un établissement bancaire.
+		</p>
+
+		<p>
+			Afin de configurer correctement ce mode de paiement vous devez :
+		</p>
+		<ol>
+			<li>
+				Prendre contact avec un établissement bancaire afin d'obtenir l’ouverture d’un contrat monétique de
+				Vente A Distance (VAD)
+			</li>
+			<li>
+				Une fois que vous avez eu confirmation du service technique de l'établissement bancaire que le TPE a été
+				activé,
+				complétez le formulaire ci-dessous avec les informations fournis par l'établissement bancaire et activez
+				le paiement
+			</li>
+		</ol>
+		<p>
+			<strong>Aucune autre intervention technique n’est nécessaire</strong>, si toutes les opérations ont été
+			correctement effectuées,
+			ce mode de paiement sera alors actif sur le site. Une fois toutes ces opérations de configuration terminées,
+			<strong class="text-danger">il est indispensable d'effectuer au moins un paiement réel</strong> sur le site
+			pour tester son bon fonctionnement.
+		</p>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Paramètres du mode de paiement</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label for="intitule_long">Intitulé du mode de paiement</label>
+			<input class="form-control" id="intitule_long" name="intitule_long" value="<%- config.intitule_long %>" placeholder="<%- name%>" type="text">
+		</div>
+		<div class="form-group">
+			<label>Utilisation</label>
+
+			<div class="form-check">
+				<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%= is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled1" class="visible">Activé</label>
+				<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%= !is_enabled ? 'checked="checked"' : '' %>>
+				<label for="is_enabled0" class="not-visible">Désactivé</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="required" for="exmemple1">Certificat</label>
+
+			<% if(config.certif) {%>
+				<p> Certificat installé : <%- config.certif %></p>
+			<% } %>
+
+			<p>
+				Fichier nommé <code>certif.fr.xxxxxxxxxxxxx</code>. Remplaçez les <code>x</code> par un numéro de
+				marchand.
+				Le fichier et le numéro de marchand sont fournis par l'établissement bancaire.
+			</p>
+			<div data-role="file"></div>
+		</div>
+
+		<div class="form-group">
+			<label>Retour automatique au site après paiement</label>
+
+			<div class="form-check">
+				<input name="auto_return" id="auto_return1" value="1" type="radio" <%= config.auto_return ? 'checked="checked"' : '' %>>
+				<label for="auto_return1" class="">Activé</label>
+				<input name="auto_return" id="auto_return0" value="0" type="radio" <%= !config.auto_return ? 'checked="checked"' : '' %>>
+				<label for="auto_return0" class="">Désactivé</label>
+			</div>
+		</div>
+
+		<% if (config.driver == 'hmac') { %>
+
+		<div class="form-group">
+			<label for="version">Version de la clé secrète</label>
+			<input class="form-control" id="version" name="version" value="<%- config.version %>" placeholder="Indiquée dans votre console d'administration bancaire sur la page de téléchargement du certificat." type="text">
+		</div>
+
+		<div class="form-group">
+			<label for="banque">Banque</label>
+			<select class="form-control" id="banque" name="banque" data-style="selectify">
+				<option value="atos" <%= config.banque == 'atos' ? 'selected="selected"' : '' %> >Multi-banques</option>
+				<option value="mercanet" <%= config.banque == 'mercanet' ? 'selected="selected"' : '' %>>Mercanet</option>
+				<option value="sogenactif" <%= config.banque == 'sogenactif' ? 'selected="selected"' : '' %>>Sogenactif</option>
+			</select>
+		</div>
+
+		<% } %>
+
+		<div class="form-group">
+			<label class="required" for="message">Message de confirmation</label>
+
+			<p>Le message de confirmation s'affiche à la fin de la procédure de commande, une fois la commande
+				enregistrée.</p>
+			<textarea class="form-control" id="message" name="message" placeholder="" data-role="wysiwyg" rows="21"><%- config.message %></textarea>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+</form>

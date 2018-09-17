@@ -1,0 +1,84 @@
+<article class="post-article">
+	<header class="post-header">
+		<h1>Paramètres de configuration</h1>
+	</header>
+	<div class="post-content">
+
+		<div class="form-group">
+			<label class="required" for="socolissimo_id">Identifiant FO</label>
+			<input class="form-control" id="socolissimo_id" name="socolissimo_id" value="<%- socolissimo_id %>" placeholder="14 chiffres fournis par La Poste dans l'outil de gestion de compte" type="text">
+		</div>
+
+		<div class="form-group">
+			<label class="required" for="socolissimo_secret">Clé de cryptage</label>
+			<input class="form-control" id="socolissimo_secret" name="socolissimo_secret" value="<%- socolissimo_secret %>" placeholder="12 chiffres fournis par La Poste dans l'outil de gestion de compte" type="text">
+		</div>
+
+		<div class="form-group">
+			<label>Remise contre signature</label>
+			<p>Proposé uniquement lorsque l'internaute choisit une livraison à domicile.</p>
+			<div class="form-check">
+				<input name="coliship_type" id="coliship_type1" value="expert" type="radio" <%= coliship_type == 'expert' ? 'checked="checked"' : ''%>>
+				<label for="coliship_type1">Oui (Colissimo Expert)</label>
+				<input name="coliship_type" id="coliship_type0" value="access" type="radio" <%= coliship_type == 'access' ? 'checked="checked"' : ''%>>
+				<label for="coliship_type0">Non (Colissimo Access)</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="coliship_tradername">Nom commercial du chargeur</label>
+			<p>Utilisé pour l'export vers le logiciel Expeditor INET.</p>
+			<input class="form-control" id="coliship_tradername" name="coliship_tradername" value="<%- coliship_tradername %>" placeholder="La valeur renseignée se substitue à celle configurée dans l'outil de gestion de compte" type="text">
+		</div>
+
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Informations complémentaires</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label for="description">Description</label>
+			<textarea class="form-control" id="description" name="description" placeholder="Description du transporteur telle qu'elle apparaîtra dans le choix de la livraison" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- description %></textarea>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<label for="threshold">Montant de commande minimum</label>
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text">Actif à partir de</span></div>
+						<input class="form-control" id="threshold" name="threshold" value="<%- threshold %>" placeholder="1,00">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achat</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="col-6">
+				<div class="form-group">
+					<label for="free_threshold">Francos de port</label>
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text">Gratuit à partir de</span></div>
+						<input class="form-control" id="free_threshold" name="free_threshold" placeholder="—">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achat</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-6">
+				<div class="form-group">
+					<label for="delay">Délai de livraison</label>
+					<input class="form-control" type="text" id="delay" name="delay" placeholder="3 jours, 1 semaine...">
+				</div>
+			</div>
+			<div class="col-3">
+				<div class="form-group">
+					<label>Taxe</label>
+					<div data-role="taxes"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>

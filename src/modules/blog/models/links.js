@@ -1,10 +1,37 @@
 var Backbone = require('backbone');
-
+var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
+
+var Link = Backbone.Model.extend({
+	urlRoot: 'sites/@site/blog/links',
+	idAttribute: 'link_id',
+	parse: function(response) {
+		if ('data' in response) {
+			if (response.data === null) return {};
+			if (_.isNumber(response.data)) {
+				return {
+					link_id: response.data
+				};
+			}
+			return response.data;
+		}
+		return response;
+	},
+
+	defaults: {
+		link_id: null,
+		name: '',
+		description: '',
+		url: '',
+		is_enabled: false,
+		position: 0
+	}
+
+});
 
 module.exports = Backbone.Collection.extend({
 	url: 'sites/@site/blog/links',
-	model: require('./link'),
+	model: Link,
 	parse: function(response) {
 		this.meta = response.meta;
 		return response.data;

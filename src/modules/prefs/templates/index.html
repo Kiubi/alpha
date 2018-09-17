@@ -8,7 +8,7 @@
     </header>
     <div class="post-content">
       <div class="form-group">
-        <label class="control-label required" for="site_title">Nom du site Internet</label>
+        <label class="required" for="site_title">Nom du site Internet</label>
         <p>
           Donnez un nom explicite au site pour permettre son identification par Kiubi et par les Internautes.
           Ce nom est mentionné dans de nombreux documents : factures, commandes, mentions légales, etc.
@@ -19,12 +19,12 @@
 	  <div data-role="logo"></div>
 
       <div class="form-group">
-        <label class="control-label">Accès au site Internet</label>
-        <div class="radio">
+        <label>Accès au site Internet</label>
+        <div class="form-check">
           <input name="is_site_open" id="is_site_open1" value="1" type="radio" <%= site.is_site_open ? 'checked="checked"' : '' %>>
           <label for="is_site_open1" class="visible">Le site est ouvert, tous les services sont publiquement accessibles</label>
         </div>
-        <div class="radio">
+        <div class="form-check">
           <input name="is_site_open" id="is_site_open0" value="0" type="radio" <%= !site.is_site_open ? 'checked="checked"' : '' %>>
           <label for="is_site_open0" class="not-visible">Le site est fermé, aucun service n'est accessible, sauf pour les utilisateurs de la console d'administration</label>
         </div>
@@ -43,10 +43,10 @@
         Un service désactivé ne sera accessible à personne : ni aux Internautes, ni aux utilisateurs de la console d'administration.
       </p>
       <div class="row">
-        <div class="col-xs-5">
+        <div class="col-5">
           <div class="form-group">
-            <label class="control-label">Vente en ligne</label>
-            <div class="radio-group">
+            <label>Vente en ligne</label>
+            <div class="form-check">
               <input name="is_checkout_enabled" id="is_checkout_enabled1" value="1" type="radio" <%= site.is_checkout_enabled ? 'checked="checked"' : '' %>>
               <label for="is_checkout_enabled1" class="visible">Activée</label>
               <input name="is_checkout_enabled" id="is_checkout_enabled0" value="0" type="radio" <%= !site.is_checkout_enabled ? 'checked="checked"' : '' %>>
@@ -54,8 +54,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label">Catalogue</label>
-            <div class="radio-group">
+            <label>Catalogue</label>
+            <div class="form-check">
               <input name="is_catalog_enabled" id="is_catalog_enabled1" value="1" type="radio" <%= site.is_catalog_enabled ? 'checked="checked"' : '' %>>
               <label for="is_catalog_enabled1" class="visible">Activé</label>
               <input name="is_catalog_enabled" id="is_catalog_enabled0" value="0" type="radio" <%= !site.is_catalog_enabled ? 'checked="checked"' : '' %>>
@@ -63,10 +63,10 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-5">
+        <div class="col-5">
           <div class="form-group">
-            <label class="control-label">Blog</label>
-            <div class="radio-group">
+            <label>Blog</label>
+            <div class="form-check">
               <input name="is_blog_enabled" id="is_blog_enabled1" value="1" type="radio" <%= site.is_blog_enabled ? 'checked="checked"' : '' %>>
               <label for="is_blog_enabled1" class="visible">Activé</label>
               <input name="is_blog_enabled" id="is_blog_enabled0" value="0" type="radio" <%= !site.is_blog_enabled ? 'checked="checked"' : '' %>>
@@ -74,8 +74,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label">Page de contact</label>
-            <div class="radio-group">
+            <label>Page de contact</label>
+            <div class="form-check">
               <input name="is_contact_enabled" id="is_contact_enabled1" value="1" type="radio" <%= site.is_contact_enabled ? 'checked="checked"' : '' %>>
               <label for="is_contact_enabled1" class="visible">Activée</label>
               <input name="is_contact_enabled" id="is_contact_enabled0" value="0" type="radio" <%= !site.is_contact_enabled ? 'checked="checked"' : '' %>>
@@ -94,12 +94,12 @@
     </header>
     <div class="post-content">
       <p>
-        En activant l'API Front-Office vous ouvrez <a href="http://www.kiubi.com/api/v1/" target="_blank">des points d'accès dédiés et structurés</a> aux données de votre site.
+        En activant l'API Front-Office vous ouvrez <a href="<%- domain %>/api/v1/" target="_blank">des points d'accès dédiés et structurés</a> aux données de votre site.
         Ce paramètre n'impacte pas l'accès aux données du site par l'API Developers.
       </p>
       <div class="form-group">
-      <label class="control-label">Utilisation de l'API Front-office</label>
-        <div class="radio-group">
+      <label>Utilisation de l'API Front-office</label>
+        <div class="form-check">
         <input name="is_api_enabled" id="is_api_enabled1" value="1" type="radio" <%= site.is_api_enabled ? 'checked="checked"' : '' %>>
         <label for="is_api_enabled1" class="visible">Activée</label>
         <input name="is_api_enabled" id="is_api_enabled0" value="0" type="radio" <%= !site.is_api_enabled ? 'checked="checked"' : '' %>>
@@ -120,11 +120,11 @@
         en ajoutant une demande d'identification directement avant la page d'accueil.
       </p>
       <div class="form-group">
-        <label class="control-label" for="front_login">Identifiant</label>
+        <label for="front_login">Identifiant</label>
         <input id="front_login" name="front_login" class="form-control" value="<%- site.front_login %>" placeholder="Si le mot de passe est renseigné, cet identifiant sera demandé pour accéder au site">
       </div>
       <div class="form-group">
-        <label class="control-label" for="front_password">Mot de passe</label>
+        <label for="front_password">Mot de passe</label>
         <input id="front_password" name="front_password" class="form-control" value="<%- site.front_password %>" placeholder="Si l'identifiant est renseigné, ce mot de passe sera demandé pour accéder au site">
       </div>
     </div>
@@ -141,18 +141,18 @@
         Il est composé du nom de la marque ou de la société, de sa signature (ou slogan) ainsi que du logo.
       </p>
       <div class="form-group">
-        <label class="control-label" for="site_excerpt">Nom de la marque</label>
+        <label for="site_excerpt">Nom de la marque</label>
         <input id="site_excerpt" name="site_excerpt" class="form-control" value="<%- theme.site_excerpt %>" placeholder="Le nom est généralement affichée dans la zone d'entête du site">
       </div>
       <div class="form-group">
-        <label class="control-label" for="site_description">Signature de la marque</label>
+        <label for="site_description">Signature de la marque</label>
         <input id="site_description" name="site_description" class="form-control" value="<%- theme.site_description %>" placeholder="La signature est généralement affichée en dessous du nom">
       </div>
       <div class="row">
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label">Afficher le nom</label>
-            <div class="radio-group">
+            <label>Afficher le nom</label>
+            <div class="form-check">
               <input name="is_excerpt_visible" id="is_excerpt_visible1" value="1" type="radio" <%= theme.is_excerpt_visible ? 'checked="checked"' : '' %>>
               <label for="is_excerpt_visible1" class="">Oui</label>
               <input name="is_excerpt_visible" id="is_excerpt_visible0" value="0" type="radio" <%= !theme.is_excerpt_visible ? 'checked="checked"' : '' %>>
@@ -160,10 +160,10 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label">Afficher la signature</label>
-            <div class="radio-group">
+            <label>Afficher la signature</label>
+            <div class="form-check">
               <input name="is_description_visible" id="is_description_visible1" value="1" type="radio" <%= theme.is_description_visible ? 'checked="checked"' : '' %>>
               <label for="is_description_visible1" class="">Oui</label>
               <input name="is_description_visible" id="is_description_visible0" value="0" type="radio" <%= !theme.is_description_visible ? 'checked="checked"' : '' %>>
@@ -171,10 +171,10 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-4">
           <div class="form-group">
-            <label class="control-label">Afficher le logo</label>
-            <div class="radio-group">
+            <label>Afficher le logo</label>
+            <div class="form-check">
               <input name="is_logo_visible" id="is_logo_visible1" value="1" type="radio" <%= theme.is_logo_visible ? 'checked="checked"' : '' %>>
               <label for="is_logo_visible1" class="">Oui</label>
               <input name="is_logo_visible" id="is_logo_visible0" value="0" type="radio" <%= !theme.is_logo_visible ? 'checked="checked"' : '' %>>
@@ -197,24 +197,24 @@
         Une redirection 301 est alors mise en place automatiquement vers la nouvelle adresse.
       </p>
       <div class="row">
-        <div class="col-xs-3"><label class="control-label">Nom du service</label></div>
-        <div class="col-xs-8"><label class="control-label">Adresse du répertoire</label></div>
+        <div class="col-3"><label>Nom du service</label></div>
+        <div class="col-8"><label>Adresse du répertoire</label></div>
       </div>
 
 		<% _.each(site.breadcrumb, function(service, default_path){ %>
 		<div class="list-item list-item-form">
 			<div class="row">
-				<div class="col-xs-3">
+				<div class="col-3">
 					<div class="form-group">
 						<input name="breadcrumb[<%- default_path %>][name]" class="form-control" value="<%- service.name %>" placeholder="<%- service.default_name %>">
 					</div>
 				</div>
-				<div class="col-xs-9">
+				<div class="col-9">
 					<div class="form-group">
 						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon3"><%- domain %>/</span>
+							<div class="input-group-prepend"><span class="input-group-text" id="basic-addon3"><%- domain %>/</span></div>
 							<input name="breadcrumb[<%- default_path %>][path]" class="form-control" value="<%- service.path %>" placeholder="<%- default_path %>">
-							<span class="input-group-addon" id="basic-addon2">/</span>
+							<div class="input-group-append"><span class="input-group-text" id="basic-addon2">/</span></div>
 						</div>
 					</div>
 				</div>
@@ -241,7 +241,7 @@
 
   <div class="save">
     <div class="btn-toolbar" role="toolbar">
-      <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+      <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
     </div>
   </div>
 

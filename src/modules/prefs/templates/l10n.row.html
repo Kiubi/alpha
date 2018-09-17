@@ -1,13 +1,11 @@
-<div class="row i18n-list" data-role="list">
-	<div class="col-xs-9 col-md-10">
-		<div class="row flex-row">
-			<div class="col-xs-6">
+	<div class="row i18n-list"  data-role="list">
+			<div class="col">
 				<code class="i18n-id"><%- msgid %></code>
 			</div>
-			<div class="col-xs-1 text-center">
+			<div class="col-1 align-item-center justify-content-center">
 				<span class="md-icon md-next"></span>
 			</div>
-			<div class="col-xs-6">
+			<div class="col">
 				<code>
 					<% if(msgstr) { %>
 						<%- msgstr %>
@@ -16,14 +14,12 @@
 							<% } %>
 						</code>
 					</div>
-				</div>
-			</div>
-			<div class="col-xs-3 col-md-2">
-				<div class="btn-group pull-right" role="group">
-					<a class="btn btn-option" href="#" role="button" data-role="action" data-action="edit">Détail</a>
-					<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> </button>
+			<div class="col-auto">
+				<div class="btn-group float-right" role="group">
+					<a class="btn btn-primary" href="#" role="button" data-role="action" data-action="edit">Détail</a>
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
 					<ul class="dropdown-menu dropdown-menu-right">
-						<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+						<li><a class="dropdown-item" href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
 					</ul>
 				</div>
 			</div>
@@ -34,16 +30,16 @@
 			<div class="alert alert-danger" data-role="errors" role="alert" style="display: none;"></div>
 
 			<div class="form-group has-feedback">
-				<label class="control-label" ><%- msgid %></label>
+				<label ><%- msgid %></label>
 				<input class="form-control" name="msgstr" value="<%- msgstr %>" placeholder="Traduction">
 			</div>
 
 			<div class="btn-toolbar" role="toolbar">
 				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-cancel" data-role="action" data-action="cancel">Annuler</button>
+					<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="action" data-action="cancel">Annuler</button>
 				</div>
 				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-action" data-role="action" data-action="save">Enregistrer</button>
+					<button type="button" class="btn btn-lg btn-success btn-save" data-role="action" data-action="save">Enregistrer</button>
 				</div>
 			</div>
 

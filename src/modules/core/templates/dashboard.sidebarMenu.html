@@ -1,17 +1,45 @@
 <h2>Activités en attente</h2>
-<ul class="nav nav-stacked">
-	<li><a href="/checkout"><span class="md-icon"></span><span class="badge">199</span>Commandes à traiter</a></li>
-	<li><a href="/catalog"><span class="md-icon"></span><span class="badge">34</span>Ruptures de stock</a></li>
-	<li><a href="/catalog/comments"><span class="md-icon"></span><span class="badge">14</span>Évaluations</a></li>
-	<li><a href="/forms/inbox"><span class="md-icon"></span><span class="badge">27</span>Réponses non lues</a></li>
-	<li><a href="/blog/comments"><span class="md-icon"></span><span class="badge">3</span>Commentaires</a></li>
+<ul class="nav nav-sidebar flex-column">
+	<% if(pending_orders != null) { %>
+	<li class="nav-item"><a class="nav-link" href="/checkout"><span class="badge"><%- pending_orders %></span>Commandes à traiter</a></li>
+	<% } %>
+	<% if(pending_orders != null) { %>
+	<li class="nav-item"><a class="nav-link" href="/catalog"><span class="badge"><%- stock_shortage_count %></span>Ruptures de stock</a></li>
+	<% } %>
+	<!-- <li class="nav-item"><a class="nav-link" href="/catalog/comments"><span class="badge">0</span>Évaluations</a></li> -->
+	<% if(pending_orders != null) { %>
+	<li class="nav-item"><a class="nav-link" href="/forms/inbox"><span class="badge"><%- unread_responses %></span>Réponses non lues</a></li>
+	<% } %>
+	<!-- <li class="nav-item"><a class="nav-link" href="/blog/comments"><span class="badge">0</span>Commentaires</a></li> -->
 </ul>
+
+
+<p class="dashboard-alert">
+	Vous utilisez une version alpha de la console d'administration de Kiubi qui peut rencontrer certains dysfonctionnements.<br><br>
+	Par conséquent, il est conseillé de n'y utiliser qu'un site Internet dédié aux tests.<br><br>
+	Plusieurs modules ne sont pas encore disponibles ou fictifs et seront ajoutés ultérieurement.</p>
+<!-- #TODO
 <div class="quotas">
 	<h4>Espace disque <span class="pull-right quotas-detail">500Mo / 2Go</span></h4>
 	<div class="progress">
 		<div class="progress-bar progress-bar-storage-media" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width:15%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Médias : 3,16Mo"></div>
 		<div class="progress-bar progress-bar-storage-data" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Données : 554,71Ko"></div>
 		<div class="progress-bar progress-bar-storage-ftp" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:10%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="FTP : 5,12Mo"></div>
+		<div class="progress-bar progress-bar-free" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Libre : 1,99Go"></div>
+	</div>
+	<h4>Formulaires <span class="pull-right quotas-detail">2 / 10</span></h4>
+	<div class="progress">
+		<div class="progress-bar progress-bar-storage-media" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width:15%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Médias : 3,16Mo"></div>
+		<div class="progress-bar progress-bar-free" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Libre : 1,99Go"></div>
+	</div>
+	<h4>Utilisateurs <span class="pull-right quotas-detail">1 / 1</span></h4>
+	<div class="progress">
+		<div class="progress-bar progress-bar-storage-media" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Données : 554,71Ko"></div>
+		<div class="progress-bar progress-bar-free" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Libre : 1,99Go"></div>
+	</div>
+	<h4>Produits <span class="pull-right quotas-detail">12 300 / 24 000</span></h4>
+	<div class="progress">
+		<div class="progress-bar progress-bar-storage-media" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:10%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="FTP : 5,12Mo"></div>
 		<div class="progress-bar progress-bar-free" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Libre : 1,99Go"></div>
 	</div>
 	<h4>Bande passante <span class="pull-right quotas-detail">80Go / 60Go</span></h4>
@@ -25,3 +53,4 @@
 		<div class="progress-bar progress-bar-free" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Disponibles : 679K"></div>
 	</div>
 </div>
+-->

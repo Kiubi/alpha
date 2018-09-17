@@ -4,6 +4,15 @@ var _ = require('underscore');
 
 module.exports = Marionette.Object.extend({
 
+	openNodes: [],
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['nodeInfo', 'rootFooter']);
+		this.openNodes = [];
+	},
+
+	/* OVERRIDE */
+
 	nodeInfo: function(model) {
 		return {
 			url: '#',
@@ -14,7 +23,9 @@ module.exports = Marionette.Object.extend({
 		};
 	},
 
-	openNodes: [],
+	rootFooter: function(node) {
+		return '';
+	},
 
 	/**
 	 *
@@ -42,14 +53,6 @@ module.exports = Marionette.Object.extend({
 	 */
 	isNodeOpen: function(id) {
 		return (_.indexOf(this.openNodes, id) >= 0);
-	},
-
-	rootFooter: function(node) {
-		return '';
-	},
-
-	initialize: function(options) {
-		this.mergeOptions(options, ['nodeInfo', 'rootFooter']);
 	},
 
 	render: function(node) {
@@ -89,9 +92,9 @@ module.exports = Marionette.Object.extend({
 				has_active_child = true;
 			}
 
-			html += '<li class="' + className + '">' +
-				'<span class="menu-expand" ' + aria + '></span>' +
-				'<a href="' + page.url + '" title="' + _.escape(page.name) + '">' +
+			html += '<li class="nav-item ' + className + '">' +
+				'<span class="md-icon menu-expand" ' + aria + '></span>' +
+				'<a href="' + page.url + '" title="' + _.escape(page.name) + '" class="nav-link">' +
 				'<span class="md-icon"></span>' + _.escape(page.name) +
 				'</a></li>';
 
@@ -104,14 +107,15 @@ module.exports = Marionette.Object.extend({
 		if (node.model) {
 			// LEAF
 			var id = 'menutree' + node.model.get(node.model.idAttribute);
-			var collapseClass = has_active_child || this.isNodeOpen(node.model.get(node.model.idAttribute)) ? 'collapse in' :
+			var collapseClass = has_active_child || this.isNodeOpen(node.model.get(node.model.idAttribute)) ? 'collapse show' :
 				'collapse';
-			html = '<div class="menu-tree"><ul class="nav nav-sidebar ' + collapseClass + '" ' + 'id="' + id + '">' +
+			html = '<div class="menu-tree ' + collapseClass + '" ' + 'id="' + id +
+				'"><ul class="nav nav-sidebar flex-column">' +
 				html +
 				'</ul></div>';
 		} else {
 			// ROOT
-			html = '<div class="menu-tree"><ul class="nav nav-sidebar">' +
+			html = '<div class="menu-tree"><ul class="nav nav-sidebar flex-column">' +
 				html + this.rootFooter(node) +
 				'</ul></div>';
 		}

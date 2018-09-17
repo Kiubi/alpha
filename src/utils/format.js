@@ -5,7 +5,7 @@ var moment = require('moment');
 
 /**
  * Format a date from kiubi API
- * 
+ *
  * @param {String} string_date
  * @returns {String}
  */
@@ -31,6 +31,17 @@ function formatDateTime(string_date) {
  * @param {String} string_date
  * @returns {String}
  */
+function formatLongDate(string_date) {
+	if (string_date == '') return string_date;
+	return moment(string_date, 'YYYY-MM-DD').format('DD MMM YYYY');
+}
+
+/**
+ * Format a datetime from kiubi API
+ *
+ * @param {String} string_date
+ * @returns {String}
+ */
 function formatLongDateTime(string_date) {
 	if (string_date == '') return string_date;
 	return moment(string_date, 'YYYY-MM-DD HH:mm:ss').format('DD MMM YYYY [à] HH[h]mm');
@@ -38,7 +49,7 @@ function formatLongDateTime(string_date) {
 
 /**
  * Byte size for humans
- * 
+ *
  * @param {int} bytes
  * @param {int} decimals
  * @returns {String}
@@ -86,10 +97,34 @@ function unformatFloat(amount) {
 	return val;
 }
 
+/**
+ * Retourne l'entité HTML d'une devise
+ *
+ * @param {String} code
+ * @returns {String}
+ */
+function currencyEntity(code) {
+
+	switch (code) {
+		case 'EUR':
+			return '&euro;';
+		case 'GBP':
+			return '&pound;';
+		case 'CAD':
+		case 'USD':
+			return '$';
+		default:
+			return code;
+	}
+
+}
+
 
 module.exports.formatDate = formatDate;
 module.exports.formatDateTime = formatDateTime;
+module.exports.formatLongDate = formatLongDate;
 module.exports.formatLongDateTime = formatLongDateTime;
 module.exports.formatBytes = formatBytes;
 module.exports.formatFloat = formatFloat;
 module.exports.unformatFloat = unformatFloat;
+module.exports.currencyEntity = currencyEntity;

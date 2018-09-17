@@ -94,10 +94,7 @@ var User = require('./models/user');
 var Session = require('./models/session');
 var NavigationController = require('./navigation');
 var api = require('./utils/api.client');
-// var keypressContainer = require('keypress.js');
-// Package 2.1.4 Bug #130 : See : https://github.com/dmauro/Keypress/issues/130
-var keypressContainer = require('keypress.js/keypress-2.1.4.min.js');
-
+var keypressContainer = require('keypress.js');
 var keyListener = new keypressContainer.keypress.Listener();
 SP.registerKeyListener(keyListener);
 

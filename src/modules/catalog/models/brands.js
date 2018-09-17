@@ -45,5 +45,30 @@ module.exports = Backbone.Collection.extend({
 			return model.destroy();
 		}, ids);
 
+	},
+
+	/**
+	 * Suggest brand
+	 *
+	 * @param {String} term
+	 * @param {Number[]} limit
+	 * @returns {Promise}
+	 */
+	suggest: function(term, limit) {
+		return Backbone.ajax({
+			url: 'sites/@site/suggest/catalog/brands',
+			data: {
+				term: term,
+				limit: limit || 5
+			}
+		}).then(function(response) {
+			return _.map(response.data, function(brand) {
+				return {
+					brand_id: brand.brand_id,
+					name: brand.name
+				};
+			});
+		});
 	}
+
 });

@@ -4,7 +4,7 @@
 		<form>
 
 		<div class="row media-detail">
-			<div class="col-xs-4">
+			<div class="col-4">
 				<% if(type == 'image') { %>
 				<div class="media-object"><a class="preview" href="<%- thumb.url  %>" target="_blank">
 					<img alt="<%- name %>" src="<%- convertMediaPath('/media/g_vignette/' + media_id + '.jpg') %>"></a>
@@ -22,12 +22,12 @@
 					Modifié le <%- last_date %>
 				</p>
 			</div>
-			<div class="col-xs-8">
+			<div class="col-8">
 				<% if(type == 'image') { %>
 				<div class="row">
-					<div class="col-xs-7">
+					<div class="col-7">
 						<div class="form-group">
-							<label class="control-label" for="m_integration_type">Type d'intégration</label>
+							<label for="m_integration_type">Type d'intégration</label>
 							<select id="m_integration_type" name="integration_type" data-style="selectify">
 								<option <%= integration == 'inline' ? 'selected="selected"' : '' %> value="inline">Insérer l'image</option>
 								<option <%= integration == 'inline' ? '' : 'selected="selected"' %> value="file">Insérer un lien vers l'image</option>
@@ -35,11 +35,11 @@
 						</div>
 						<% if(integration == 'inline') { %>
 						<div class="form-group">
-							<label class="control-label">Taille de l'image</label>
+							<label>Taille de l'image</label>
 							<div data-role="image_variant"></div>
 						</div>
 						<div class="form-group">
-							<label class="control-label" for="m_image_align">Alignement</label>
+							<label for="m_image_align">Alignement</label>
 							<select id="m_image_align" name="image_align"  data-style="selectify">
 								<option value="default">Par défaut</option>
 								<option value="left">À gauche</option>
@@ -52,89 +52,99 @@
 				</div>
 				<% if(integration == 'inline') { %>
 				<div class="form-group">
-					<label class="control-label" for="m_alt">Texte alternatif</label>
+					<label for="m_alt">Texte alternatif</label>
 					<input class="form-control" id="m_alt" name="alt" value="<%- description %>" placeholder="Contenu de l'attribut alt" type="text">
 				</div>
-				<label class="control-label">Marges</label>
+				<label>Marges</label>
 				<div class="row">
-					<div class="col-xs-3">
-						<div class="form-group has-feedback">
+					<div class="col-3">
+						<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
 							<input class="form-control" name="margin_top" placeholder="Haut" type="text">
-							<span class="form-control-feedback md-pixel"></span>
+							<div class="input-group-append"><span class="input-group-text">px</span></div>
 						</div>
 					</div>
-					<div class="col-xs-3">
-						<div class="form-group has-feedback">
-							<input class="form-control" name="margin_right" placeholder="Droite" type="text">
-							<span class="form-control-feedback md-pixel"></span>
+					</div>
+					<div class="col-3">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
+							<input class="form-control pr-0" name="margin_right" placeholder="Droite" type="text">
+							<div class="input-group-append"><span class="input-group-text">px</span></div>
 						</div>
 					</div>
-					<div class="col-xs-3">
-						<div class="form-group has-feedback">
+					<div class="col-3">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
 							<input class="form-control" name="margin_bottom" placeholder="Bas" type="text">
-							<span class="form-control-feedback md-pixel"></span>
+							<div class="input-group-append"><span class="input-group-text">px</span></div>
 						</div>
 					</div>
-					<div class="col-xs-3">
-						<div class="form-group has-feedback">
-							<input class="form-control" name="margin_left" placeholder="Gauche" type="text">
-							<span class="form-control-feedback md-pixel"></span>
+					<div class="col-3">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
+							<input class="form-control pr-0" name="margin_left" placeholder="Gauche" type="text">
+							<div class="input-group-append"><span class="input-group-text">px</span></div>
 						</div>
 					</div>
 				</div>
-				<label class="control-label">Taille</label>
+				<label>Taille</label>
 				<div class="row">
-					<div class="col-xs-3">
-						<div class="form-group has-feedback">
-							<input class="form-control" id="image_width" name="image_width" placeholder="Largeur" type="text">
-							<span class="form-control-feedback md-pixel"></span>
+					<div class="col-3">
+						<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
+							<input class="form-control pr-0" id="image_width" name="image_width" placeholder="Largeur" type="text">
+							<div class="input-group-append"><span class="input-group-text">px</span></div>
 						</div>
 					</div>
-					<div class="col-xs-3">
-						<div class="form-group has-feedback">
-							<input class="form-control" id="image_height" name="image_height" placeholder="Hauteur" type="text">
-							<span class="form-control-feedback md-pixel"></span>
+				</div>
+					<div class="col-3">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
+							<input class="form-control pr-0" id="image_height" name="image_height" placeholder="Hauteur" type="text">
+							<div class="input-group-append"><span class="input-group-text">px</span></div>
 						</div>
 					</div>
 				</div>
 				<% } %>
 				<% } %>
 				<div class="form-group">
-					<label class="control-label" for="m_title">Titre</label>
+					<label for="m_title">Titre</label>
 					<input class="form-control" id="m_title" name="title" placeholder="Contenu de l'attribut title" type="text">
 				</div>
 				<div class="form-group">
-					<label class="control-label" for="m_class">Class</label>
+					<label for="m_class">Class</label>
 					<input class="form-control" id="m_class" name="class" placeholder="Contenu de l'attribut class" type="text">
 				</div>
-				<label class="control-label">Insérer également les informations sur fichier</label>
-				<div class="form-group">
-					<div class="checkbox-inline">
+				<label>Insérer également les informations sur fichier</label>
+				<div class="row no-gutters">
+					<div class="col-4 mb-2">
 						<input id="m_xtra_name" name="xtra_name" value="1" type="checkbox">
 						<label for="m_xtra_name"> Nom</label>
-					</div>
-					<div class="checkbox-inline">
+				</div>
+				<div class="col-4 mb-2">
 						<input id="m_xtra_file" name="xtra_file" value="1" type="checkbox">
 						<label for="m_xtra_file"> Fichier</label>
-					</div>
-					<div class="checkbox-inline">
+				</div>
+					<div class="col-4 mb-2">
 						<input id="m_xtra_weight" name="xtra_weight" value="1" type="checkbox">
 						<label for="m_xtra_weight">Poids</label>
-					</div>
+				</div>
 					<% if(type == 'image') { %>
-					<div class="checkbox-inline">
+						<div class="col-4 mb-2">
 						<input id="m_xtra_size" name="xtra_size" value="1" type="checkbox">
 						<label for="m_xtra_size">Taille</label>
-					</div>
+				</div>
 					<% } %>
-					<div class="checkbox-inline">
+					<div class="col-4 mb-2">
+							<input id="m_xtra_author" name="xtra_author" value="1" type="checkbox">
+							<label for="m_xtra_author">Auteur</label>
+					</div>
+					<div class="col-4 mb-2">
 						<input id="m_xtra_modification" name="xtra_modification" value="1" type="checkbox">
 						<label for="m_xtra_modification">Date de modification</label>
-					</div>
-					<div class="checkbox-inline">
-						<input id="m_xtra_author" name="xtra_author" value="1" type="checkbox">
-						<label for="m_xtra_author">Auteur</label>
-					</div>
+				</div>
 				</div>
 			</div>
 		</div>

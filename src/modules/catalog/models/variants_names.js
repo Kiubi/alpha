@@ -50,6 +50,29 @@ module.exports = Backbone.Collection.extend({
 	parse: function(response) {
 		this.meta = response.meta;
 		return response.data;
+	},
+
+	/**
+	 * Suggest variant name
+	 *
+	 * @param {String} term
+	 * @param {Number[]} limit
+	 * @returns {Promise}
+	 */
+	suggest: function(term, limit) {
+		return Backbone.ajax({
+			url: 'sites/@site/suggest/catalog/variants',
+			data: {
+				term: term,
+				limit: limit || 5
+			}
+		}).then(function(response) {
+			return _.map(response.data, function(variant) {
+				return {
+					name: variant.name
+				};
+			});
+		});
 	}
 
 });

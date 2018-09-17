@@ -8,16 +8,16 @@
 	</header>
 	<div class="post-content">
 		<div class="row">
-			<div class="col-xs-6">
+			<div class="col-6">
 				<div class="form-group">
-					<label class="control-label">Page du billet</label>
+					<label>Page du billet</label>
 					<div data-role="page"></div>
 				</div>
 			</div>
-			<div class="col-xs-4 col-xs-offset-2">
+			<div class="col-4 offset-2">
 				<div class="form-group">
-					<label class="control-label">Affichage</label>
-					<div class="radio-group">
+					<label>Affichage</label>
+					<div class="form-check">
 						<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
 						<label for="is_visible1" class="visible">Visible</label>
 						<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
@@ -39,16 +39,16 @@
 	<div class="post-content">
 		<p>Les groupes sont utilisés comme critères d'affichage des billets dans certain widgets de Kiubi et peuvent être utilisés pour organiser le contenu de votre site. Vous pouvez ajouter un seul groupe par billet.</p>
 		<div class="row">
-			<div class="col-xs-8">
+			<div class="col-8">
 				<div class="form-group">
-					<label class="control-label" for="group">Ajouter un groupe</label>
+					<label for="group">Ajouter un groupe</label>
 					<input class="form-control" id="group" name="group" value="<%- group %>" placeholder="Colonne à droite, Slideshow, Pied de page..." type="text">
-					<!-- <span class="label label-tag label-list ">Colonne à droite<span class="md-icon md-close"></span></span> -->
+					<!-- <span class="badge label-tag badge-list ">Colonne à droite<span class="md-icon md-close"></span></span> -->
 				</div>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-4">
 				<div class="form-group">
-					<label class="control-label">Groupes existants</label>
+					<label>Groupes existants</label>
 					<div data-role="group"></div>
 				</div>
 			</div>
@@ -61,8 +61,8 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-delete" data-role="delete">Supprimer</button>
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn-danger btn-delete" data-role="delete">Supprimer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

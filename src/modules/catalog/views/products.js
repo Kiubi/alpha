@@ -21,9 +21,14 @@ var RowView = Marionette.View.extend({
 			main_category: _.find(this.model.get('categories'), function(category) {
 				return category.is_main;
 			}),
-			sec_categories: _.filter(this.model.get('categories'), function(category) {
-				return !category.is_main;
-			})
+			sec_categories: _.reduce(this.model.get('categories'), function(acc, category) {
+				if (!category.is_main) {
+					// category.name need double escaping
+					acc.push('<a href="/catalog/categories/' + category.category_id + '">' + _.escape(category.name) +
+						'</a><br/>');
+				}
+				return acc;
+			}, [])
 		};
 	},
 
@@ -57,7 +62,8 @@ module.exports = Marionette.View.extend({
 		this.filters = {
 			stock: null,
 			category_id: null,
-			tag_id: null
+			tag_id: null,
+			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
 		};
 	},
 
@@ -96,8 +102,14 @@ module.exports = Marionette.View.extend({
 		filters.push({
 			id: 'stock',
 			extraClassname: 'select-state',
-			title: 'États',
+			title: 'Tous les états',
 			collectionPromise: c
+		});
+		filters.push({
+			id: 'term',
+			title: 'Rechercher',
+			type: 'input',
+			value: this.filters.term
 		});
 
 		this.showChildView('list', new ListView({
@@ -143,6 +155,7 @@ module.exports = Marionette.View.extend({
 		if (this.filters.stock != null) data.stock = this.filters.stock;
 		if (this.filters.category_id != null) data.category_id = this.filters.category_id;
 		if (this.filters.tag_id != null) data.tag_id = this.filters.tag_id;
+		if (this.filters.term != null) data.term = this.filters.term;
 		this.collection.fetch({
 			reset: true,
 			data: data
@@ -176,6 +189,8 @@ module.exports = Marionette.View.extend({
 			} else {
 				this.filters.stock = null;
 			}
+		} else if (filter.model.get('id') == 'term') {
+			this.filters.term = filter.value != '' ? filter.value : null;
 		}
 
 		this.start();
@@ -187,14 +202,9 @@ module.exports = Marionette.View.extend({
 
 
 		if (filter.model.get('id') == 'categories') {
-
-			this.categories.fetch({
-				data: {
-					limit: 5,
-					term: filter.value
-				}
-			}).done(function() {
-				var results = _.map(this.categories.toJSON(), function(categ) {
+			var exclude = filter.view.current.value ? [filter.view.current.value] : null;
+			this.categories.suggest(filter.value, 5, exclude).done(function(categories) {
+				var results = _.map(categories, function(categ) {
 					return {
 						label: categ.name,
 						value: categ.category_id
@@ -204,13 +214,9 @@ module.exports = Marionette.View.extend({
 				filter.view.showResults(results);
 			}.bind(this));
 		} else {
-			this.tags.fetch({
-				data: {
-					limit: 5,
-					term: filter.value
-				}
-			}).done(function() {
-				var results = _.map(this.tags.toJSON(), function(tag) {
+			var exclude = filter.view.current.value ? [filter.view.current.value] : null;
+			this.tags.suggest(filter.value, 5, exclude).done(function(tags) {
+				var results = _.map(tags, function(tag) {
 					return {
 						label: tag.name,
 						value: tag.tag_id

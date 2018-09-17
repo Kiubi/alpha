@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var CollectionUtils = require('kiubi/utils/collections.js');
 var format = require('kiubi/utils/format.js');
+var ClipboardJS = require('clipboard');
 
 var ControllerChannel = Backbone.Radio.channel('controller');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
@@ -11,15 +12,35 @@ var Session = Backbone.Radio.channel('app').request('ctx:session');
 var RowView = Marionette.View.extend({
 	template: require('../templates/files.row.html'),
 	className: 'list-item list-media',
+
+	behaviors: [RowActionsBehavior],
+
+	ui: {
+		'clipboard': '[data-role="clipboard"]'
+	},
+
+	clipboard: null,
+
 	templateContext: function() {
 		return {
-			last_date: format.formatDateTime(this.model.get('modification_date')),
+			last_date: format.formatLongDateTime(this.model.get('modification_date')),
 			size: format.formatBytes(this.model.get('weight'), 2),
-			convertMediaPath: Session.convertMediaPath.bind(Session)
+			convertMediaPath: Session.convertMediaPath.bind(Session),
+			is_copy_supported: ClipboardJS.isSupported()
 		};
 	},
 
-	behaviors: [RowActionsBehavior],
+	onAttach: function() {
+		if (ClipboardJS.isSupported() && this.getUI('clipboard').length) {
+			this.clipboard = new ClipboardJS(this.getUI('clipboard')[0]);
+		} else {
+			this.clipboard = null;
+		}
+	},
+
+	onDestroy: function() {
+		this.clipboard.destroy();
+	},
 
 	onActionDelete: function() {
 		return this.model.destroy();
@@ -46,7 +67,8 @@ module.exports = Marionette.View.extend({
 	initialize: function(options) {
 		this.mergeOptions(options, ['collection', 'folders']);
 		this.filters = {
-			folder_id: null
+			folder_id: null,
+			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
 		};
 
 		this.start();
@@ -97,25 +119,34 @@ module.exports = Marionette.View.extend({
 				}
 			],
 			filters: [{
-                id: 'folder',
+				id: 'folder',
 				extraClassname: 'select-category',
 				title: 'Destination',
 				collectionPromise: this.folders.promisedSelect(this.collection.folder_id)
 			}, {
-                id: 'export',
+				id: 'export',
 				extraClassname: 'md-export',
 				type: 'button',
 				collectionPromise: c_export
+			}, {
+				id: 'term',
+				title: 'Rechercher',
+				type: 'input',
+				value: this.filters.term
 			}]
 		}));
 	},
 
 	start: function() {
+
+		var data = {
+			sort: this.sortOrder ? this.sortOrder : null
+		};
+		if (this.filters.term) data.term = this.filters.term;
+
 		this.collection.fetch({
 			reset: true,
-			data: {
-				sort: this.sortOrder ? this.sortOrder : null
-			}
+			data: data
 		});
 	},
 
@@ -187,6 +218,9 @@ module.exports = Marionette.View.extend({
 					view.collection.pop();
 				}
 			}
+		} else if (filter.model.get('id') == 'term') {
+			this.filters.term = filter.value != '' ? filter.value : null;
+			this.start();
 		}
 	},
 

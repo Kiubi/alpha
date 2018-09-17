@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 
@@ -16,11 +17,12 @@ module.exports = Marionette.View.extend({
 	extraClassName: '',
 	behaviors: [SelectifyBehavior],
 
-	collectionEvents: {
+	/*collectionEvents: {
 		sync: function() {
 			this.render();
+			// this.triggerMethod('load', this.selected);
 		}
-	},
+	},*/
 
 	ui: {
 		'select': 'select'
@@ -31,49 +33,42 @@ module.exports = Marionette.View.extend({
 	selected: null,
 	name: '',
 	emptyLabel: '',
-	dataSource: null,
-	datas: null,
 
 	/**
 	 *
 	 * @param {Object} options
 	 * 							{String} selected
 	 * 							{String} name
-	 * 							{Backbone.Collection} collection
-	 * 							{Promise} dataSource
+	 * 							{Backbone.Collection} collection with selectPayload
+	 * 							{Promise} collectionPromise
 	 * 							{String} direction	Choose dropdown direction : "up" or "down"
 	 */
 	initialize: function(options) {
-		this.mergeOptions(options, ['selected', 'name', 'collection', 'direction']);
+		this.mergeOptions(options, ['selected', 'name', 'direction']);
 
 		if (this.getOption('extraClassName')) {
 			this.$el.addClass(this.getOption('extraClassName'));
 		}
 
-		if (this.getOption('dataSource')) {
-			this.load(this.getOption('dataSource'));
-		}
+		this.collection = new CollectionUtils.SelectCollection();
 
 		if (this.getOption('collectionPromise')) {
 			this.loadCollection(this.getOption('collectionPromise'));
-		}
-
-		if (this.collection && this.collection.selectPayload) {
-			this.listenTo(this.collection, 'sync', this.render);
+		} else if (this.getOption('collection') && this.getOption('collection').selectPayload) {
+			if (this.getOption('collection').length > 0) {
+				this.loadPayload(); // already loaded
+			} else {
+				this.listenTo(this.getOption('collection'), 'sync', this.loadPayload);
+			}
 		}
 	},
 
-	/**
-	 * Load options from a promise
-	 *
-	 * @param {Promise} promise
-	 */
-	load: function(promise) {
-		this.dataSource = promise;
-		this.dataSource.done(function(options) {
-			this.datas = options;
-			this.render();
-		}.bind(this));
+	loadPayload: function() {
+		this.collection.set(this.getOption('collection').selectPayload(), {
+			reset: true
+		});
+		this.trigger('load', this.selected);
+		this.render();
 	},
 
 	/**
@@ -82,15 +77,17 @@ module.exports = Marionette.View.extend({
 	 * @param {Promise} promise
 	 */
 	loadCollection: function(promise) {
-		this.dataSource = promise;
-		this.dataSource.done(function(collection) {
-			this.datas = collection.toJSON();
-			var selected = collection.findWhere({
+		promise.done(function(collection) {
+			this.collection.set(collection.toJSON(), {
+				reset: true
+			});
+			var selected = this.collection.findWhere({
 				'selected': true
 			});
 			if (selected) {
 				this.selected = selected.get('value');
 			}
+			this.trigger('load', this.selected);
 			this.render();
 		}.bind(this));
 	},
@@ -100,24 +97,11 @@ module.exports = Marionette.View.extend({
 		this.triggerMethod('change', this.selected, this.getOption('name'));
 	},
 
-	getOptionsList: function() {
-		if (this.dataSource && this.datas) { // promise was resolved
-			return this.datas;
-		}
-
-		if (this.collection && this.collection.selectPayload) {
-			return this.collection.selectPayload();
-		}
-
-		return [];
-	},
-
 	onRender: function() {
 		this.getUI('select').on('change', this.onSelect.bind(this));
 		// if selected is not defined, seek first element
 		if (this.selected == null && !this.getOption('emptyLabel')) {
-			var options = this.getOptionsList();
-			if (options.length) this.selected = options[0].value;
+			if (this.collection.length) this.selected = this.collection.at(0).get('value');
 		}
 	},
 
@@ -127,11 +111,12 @@ module.exports = Marionette.View.extend({
 			direction: this.direction,
 			selected: this.selected,
 			emptyLabel: this.getOption('emptyLabel'),
-			options: this.getOptionsList()
+			options: this.collection.toJSON()
 		};
 	},
 
 	onBeforeDestroy: function() {
 		this.getUI('select').off('change');
 	}
+
 });

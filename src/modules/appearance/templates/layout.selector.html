@@ -2,30 +2,31 @@
 	<h1>Mise en page</h1>
 </header>
 <div class="post-content post-group templates">
-	<div class="media">
-		<div class="media-left">
+	<div class="row">
+		<div class="col-auto">
 			<a href="/appearance/layouts/<%- page %>/<%- layout_id %>">
 				<div class="si-overlay">
 					<span class="md-icon md-edit btn-si"></span>
 				</div>
 				<%= structure %>
-			</a>
-		</div>
-		<div class="media-body">
+			</a></div>
+		<div class="col">
 			<div class="form-group">
-				<p>La mise en page choisie détermine l'apparence de cette page :</p>
-				<div class="row">
-					<div class="col-xs-7">
-						<select data-style="selectify">
-							<% _(layouts).each(function(item){%>
-							<option value="<%- item.layout_id %>" <%= layout_id == item.layout_id ? 'selected="selected"' : '' %>><%- item.name %></option>
-							<% }) %>
-						</select>
-					</div>
+			<p>La mise en page choisie détermine l'apparence de cette page :</p>
+			<div class="row">
+				<div class="col-7">
+					<select data-style="selectify">
+						<% _(layouts).each(function(item){%>
+						<option value="<%- item.layout_id %>" <%= layout_id == item.layout_id ? 'selected="selected"' : '' %>><%- item.name %></option>
+						<% }) %>
+					</select>
 				</div>
 			</div>
-			<p><a href="/appearance/layouts/<%- page %>/<%- layout_id %>">Modifier cette mise en page</a><br><a href="#" data-role="create">Créer une nouvelle mise en page</a></p>
 		</div>
+		<p class="mb-1"><a href="/appearance/layouts/<%- page %>/<%- layout_id %>">Modifier cette mise en page</a></p>
+		<p class="m-0"><a href="#" data-role="create">Créer une nouvelle mise en page</a></p>
 	</div>
+</div>
+	<div class="w-100"></div>
 </div>
 <footer class="post-footer"></footer>

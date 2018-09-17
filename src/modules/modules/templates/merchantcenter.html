@@ -80,9 +80,9 @@
 		</header>
 		<div class="post-content">
 			<div class="form-group">
-				<label class="control-label">Utilisation</label>
+				<label>Utilisation</label>
 
-				<div class="radio-group">
+				<div class="form-check">
 					<input name="is_enabled" id="is_enabled1" value="1" type="radio" <%- is_enabled ? 'checked="checked"' : '' %>>
 					<label for="is_enabled1" class="visible">Activé</label>
 					<input name="is_enabled" id="is_enabled0" value="0" type="radio" <%- !is_enabled ? 'checked="checked"' : '' %>>
@@ -90,7 +90,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label">Adresse du flux vers Google Merchant Center</label>
+				<label>Adresse du flux vers Google Merchant Center</label>
 
 				<% if (last_export) { %>
 					<p class="form-control-static">Dernier export créé le <%- last_export %>.</p>
@@ -127,9 +127,9 @@
 		</p>
 
 		<div class="row">
-			<div class="col-xs-5"><label class="control-label" for="">Catégorie du catalogue</label>
+			<div class="col-4"><label for="">Catégorie du catalogue</label>
 			</div>
-			<div class="col-xs-7"><label class="control-label" for="">Catégorie de Google Merchant Center</label>
+			<div class="col-8"><label for="">Catégorie de Google Merchant Center</label>
 			</div>
 		</div>
 
@@ -144,8 +144,8 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<a class="btn btn-cancel" href="/modules">Retour</a>
-		<button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+		<a class="btn btn-lg btn-primary btn-cancel" href="/modules">Retour</a>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

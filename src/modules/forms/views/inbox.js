@@ -3,6 +3,9 @@ var Marionette = require('backbone.marionette');
 var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
 var format = require('kiubi/utils/format.js');
+var moment = require('moment');
+
+var ControllerChannel = Backbone.Radio.channel('controller');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 
@@ -15,7 +18,7 @@ var DetailView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			'response_id': this.model ? this.model.get('response_id') : '',
-			creation_date: format.formatDateTime(this.model.get('creation_date')),
+			creation_date: format.formatLongDateTime(this.model.get('creation_date')),
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			nl2br: function(text) {
 				return _.escape('' + text).replace(/(\r\n|\n\r|\r|\n)+/g, '<br />');
@@ -50,8 +53,19 @@ var RowView = Marionette.View.extend({
 	},
 
 	templateContext: function() {
+
+		var creation_date = moment(this.model.get('creation_date'), 'YYYY-MM-DD HH:mm:ss');
+		var diff = moment().diff(creation_date, 'days');
+
+		if (diff >= 7) {
+			creation_date_fromnow = format.formatLongDateTime(this.model.get('creation_date'));
+		} else {
+			creation_date_fromnow = creation_date.fromNow();
+		}
+
 		return {
-			creation_date: format.formatDateTime(this.model.get('creation_date')),
+			creation_date: format.formatLongDateTime(this.model.get('creation_date')),
+			creation_date_fromnow: creation_date_fromnow,
 			summary: this.model.getSummary()
 		};
 	},
@@ -66,10 +80,13 @@ var RowView = Marionette.View.extend({
 
 	onToggleRead: function(event) {
 		event.preventDefault();
+		var delta = this.model.get('is_read') ? 1 : -1;
 		this.model.save({
 			is_read: !this.model.get('is_read')
 		}, {
 			patch: true
+		}).done(function() {
+			ControllerChannel.trigger('refresh:forms', delta);
 		});
 		return false;
 	}
@@ -97,8 +114,8 @@ module.exports = Marionette.View.extend({
 		this.mergeOptions(options, ['collection']);
 
 		this.filters = {
-			'id': null,
-			'is_read': null
+			'id': this.getOption('filters') && this.getOption('filters').id ? this.getOption('filters').id : null,
+			'is_read': this.getOption('filters') && this.getOption('filters').is_read ? this.getOption('filters').is_read : null
 		};
 
 		this.empty = new this.collection.model();
@@ -122,24 +139,6 @@ module.exports = Marionette.View.extend({
 
 	onRender: function() {
 
-		var c_state = new CollectionUtils.SelectCollection();
-		c_state.add([{
-			'value': 'read',
-			'label': 'Lues',
-			'selected': this.filters.is_read == 1
-		}, {
-			'value': 'unread',
-			'label': 'Non-lues',
-			'selected': this.filters.is_read == 0
-		}]);
-
-		var c_export = new CollectionUtils.SelectCollection();
-		c_export.add({
-			'value': 'export',
-			'label': 'Exporter les réponses',
-			'selected': false
-		});
-
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
@@ -161,17 +160,32 @@ module.exports = Marionette.View.extend({
 				confirm: true
 			}],
 			filters: [{
+				id: 'form',
 				extraClassname: 'select-category',
 				title: 'Tous les formulaires',
 				collectionPromise: this.getOption('forms').promisedSelect(this.filters.id)
 			}, {
+				id: 'read',
 				extraClassname: 'select-state',
 				title: 'Tous les états',
-				collectionPromise: c_state
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					'value': 'read',
+					'label': 'Lues',
+					'selected': this.filters.is_read == 1
+				}, {
+					'value': 'unread',
+					'label': 'Non-lues',
+					'selected': this.filters.is_read == 0
+				}])
 			}, {
+				id: 'export',
 				extraClassname: 'md-export',
 				type: 'button',
-				collectionPromise: c_export
+				collectionPromise: new CollectionUtils.SelectCollection({
+					'value': 'export',
+					'label': 'Exporter les réponses',
+					'selected': false
+				})
 			}]
 		}));
 	},
@@ -192,11 +206,31 @@ module.exports = Marionette.View.extend({
 	},
 
 	readRep: function(ids) {
-		return this.collection.bulkRead(ids);
+
+		var delta = this.collection.reduce(function(acc, model) {
+			if (!model.get('is_read') && _.contains(ids, '' + model.get('response_id'))) { // FIXME ids is String[]
+				acc--;
+			}
+			return acc;
+		}, 0);
+
+		return this.collection.bulkRead(ids).done(function() {
+			ControllerChannel.trigger('refresh:forms', delta);
+		});
 	},
 
 	unreadRep: function(ids) {
-		return this.collection.bulkUnred(ids);
+
+		var delta = this.collection.reduce(function(acc, model) {
+			if (model.get('is_read') && _.contains(ids, '' + model.get('response_id'))) { // FIXME ids is String[]
+				acc++;
+			}
+			return acc;
+		}, 0);
+
+		return this.collection.bulkUnred(ids).done(function() {
+			ControllerChannel.trigger('refresh:forms', delta);
+		});
 	},
 
 	deleteRep: function(ids) {
@@ -205,11 +239,18 @@ module.exports = Marionette.View.extend({
 
 	onChildviewFilterChange: function(filter) {
 
-		if (filter.index == 0) {
+		if (filter.model.get('id') == 'form') {
 			this.filters.id = filter.value == '' ? null : filter.value;
-		} else if (filter.index == 1) {
-			this.filters.u = filter.value == 'unread' ? '1' : null;
-		} else if (filter.index == 2) {
+			this.start();
+		} else if (filter.model.get('id') == 'read') {
+
+			if (filter.value === '' || filter.value === null) {
+				this.filters.is_read = null;
+			} else {
+				this.filters.is_read = (filter.value == 'read') ? '1' : '0';
+			}
+			this.start();
+		} else if (filter.model.get('id') == 'export') {
 			if (!filter.view) return;
 			var view = filter.view;
 
@@ -258,8 +299,6 @@ module.exports = Marionette.View.extend({
 				}
 			}
 		}
-
-		this.start();
 	},
 
 	onChildviewSelectRow: function(model) {
@@ -268,6 +307,8 @@ module.exports = Marionette.View.extend({
 				is_read: true
 			}, {
 				patch: true
+			}).done(function() {
+				ControllerChannel.trigger('refresh:forms', -1);
 			});
 		}
 

@@ -12,10 +12,10 @@
 				Si un visiteur est identifé, son commentaire sera ajouté à son compte en tant que membre du site.
 			</p>
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label class="control-label" for="">Commentaires ouverts</label>
-						<div class="radio-group">
+						<label for="">Commentaires ouverts</label>
+						<div class="form-check">
 							<input name="comments_allowed" id="comments_allowed1" value="1" <%= comments_allowed ? 'checked="checked"' : '' %> type="radio">
 							<label for="comments_allowed1">Oui</label>
 							<input name="comments_allowed" id="comments_allowed0" value="0" <%= !comments_allowed ? 'checked="checked"' : '' %> type="radio">
@@ -23,10 +23,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label class="control-label" for="">Publication immédiate</label>
-						<div class="radio-group">
+						<label for="">Publication immédiate</label>
+						<div class="form-check">
 							<input name="comments_autopublish" id="comments_autopublish1" value="1" <%= comments_autopublish ? 'checked="checked"' : '' %> type="radio">
 							<label for="comments_autopublish1">Oui</label>
 							<input name="comments_autopublish" id="comments_autopublish0" value="0" <%= !comments_autopublish ? 'checked="checked"' : '' %> type="radio">
@@ -34,10 +34,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-4">
 					<div class="form-group">
-						<label class="control-label" for="">Identification requise</label>
-						<div class="radio-group">
+						<label for="">Identification requise</label>
+						<div class="form-check">
 							<input name="comments_anonymous" id="comments_anonymous0" value="0" <%= !comments_anonymous ? 'checked="checked"' : '' %> type="radio">
 							<label for="comments_anonymous0">Oui</label>
 							<input name="comments_anonymous" id="comments_anonymous1" value="1" <%= comments_anonymous ? 'checked="checked"' : '' %> type="radio">
@@ -60,8 +60,8 @@
 				qu'il réponde à une question aléatoirement posée pour poster un nouveau commentaire.
 			</p>
 			<div class="form-group">
-				<label class="control-label" for="">Utilisation du captcha</label>
-				<div class="radio-group">
+				<label for="">Utilisation du captcha</label>
+				<div class="form-check">
 					<input name="comments_captcha" id="comments_captcha1" value="1" <%= comments_captcha ? 'checked="checked"' : '' %> type="radio">
 					<label for="comments_captcha1" class="visible">Activé</label>
 					<input name="comments_captcha" id="comments_captcha0" value="0" <%= !comments_captcha ? 'checked="checked"' : '' %> type="radio">
@@ -80,8 +80,8 @@
 	<div class="post-content">
 		<p>En activant la syndication, les internautes vont pouvoir s’abonner aux flux RSS et/ou Atom du blog.</p>
 		<div class="form-group">
-			<label class="control-label">Utilisation</label>
-			<div class="radio-group">
+			<label>Utilisation</label>
+			<div class="form-check">
 				<input name="is_rss_enabled" id="is_rss_enabled1" value="1" <%= is_rss_enabled ? 'checked="checked"' : '' %> type="radio">
 				<label for="is_rss_enabled1" class="visible">Activé</label>
 				<input name="is_rss_enabled" id="is_rss_enabled0" value="0" <%= !is_rss_enabled ? 'checked="checked"' : '' %> type="radio">
@@ -89,9 +89,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="rss_post_count">Nombre de billets inclus dans le flux</label>
+			<label for="rss_post_count">Nombre de billets inclus dans le flux</label>
 			<div class="row">
-				<div class="col-xs-2">
+				<div class="col-2">
 					<input id="rss_post_count" name="rss_post_count" class="form-control" value="<%- rss_post_count %>" placeholder="max. 15">
 				</div>
 			</div>
@@ -104,7 +104,7 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
-		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>
 

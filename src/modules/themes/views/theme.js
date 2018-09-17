@@ -10,7 +10,7 @@ var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/theme.html'),
-	className: 'container',
+	className: 'container container-locked',
 	service: 'themes',
 
 	behaviors: [SelectifyBehavior],
@@ -38,7 +38,7 @@ module.exports = Marionette.View.extend({
 
 			this.themes.fetch().then(function() {
 				var theme = this.themes.find(function(model) {
-					return model.get('code') != 'theme'
+					return model.get('code') != 'theme';
 				});
 				if (!theme) {
 					fail('Aucun theme disponible');
@@ -64,7 +64,7 @@ module.exports = Marionette.View.extend({
 			this.themes.fetch().then(function() {
 
 				var theme = this.themes.find(function(model) {
-					return model.get('code') == 'theme'
+					return model.get('code') == 'theme';
 				});
 
 				// Custom already exists

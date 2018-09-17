@@ -1,8 +1,9 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var _ = require('underscore');
 
 var SelectView = require('kiubi/views/ui/select.js');
+var FileView = require('kiubi/views/ui/input.file.js');
+
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 
@@ -21,6 +22,10 @@ module.exports = Marionette.View.extend({
 		type: {
 			el: 'div[data-role="type"]',
 			replaceElement: true
+		},
+		file: {
+			el: "div[data-role='file']",
+			replaceElement: true
 		}
 	},
 
@@ -38,7 +43,6 @@ module.exports = Marionette.View.extend({
 	],
 
 	step: 0,
-	tempfileUpload: null,
 	report: null,
 
 	initialize: function(options) {
@@ -63,22 +67,7 @@ module.exports = Marionette.View.extend({
 			name: 'type'
 		}));
 
-	},
-
-	dropFile: function(event) {
-		if (Backbone.$(event.target).is('input[type=file]')) {
-			// stop la propagation de l'event
-			event.stopPropagation();
-		}
-
-		event.preventDefault();
-
-		var dataTransfer = event.originalEvent.dataTransfer;
-		var files = (dataTransfer ? dataTransfer.files : event.originalEvent.target.files);
-
-		_.each(files, function(File) {
-			this.tempfileUpload = File;
-		}.bind(this));
+		this.showChildView('file', new FileView());
 	},
 
 	onSave: function() {
@@ -88,7 +77,7 @@ module.exports = Marionette.View.extend({
 
 			var data = Forms.extractFields(this.fields, this);
 
-			data.file = this.tempfileUpload;
+			data.file = this.getChildView('file').getFile();
 			navigationController.showOverlay();
 
 			return this.model.analyse(data).done(function(report) {
@@ -122,7 +111,6 @@ module.exports = Marionette.View.extend({
 		} else {
 			this.step = 0;
 			this.report = null;
-			this.tempfileUpload = null;
 			this.render();
 		}
 

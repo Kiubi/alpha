@@ -1,38 +1,41 @@
-<div class="row">
-	<div class="col-xs-6 col-md-7">
-		<div class="media">
-			<div class="media-left">
-				<div class="checkbox-inline">
-					<input id="section_<%- category_id %>" name="selection" value="<%- category_id %>" type="checkbox">
-					<label for="section_<%- category_id %>"></label>
+			<div class="row no-gutters">
+				<div class="col-auto">
+						<input id="section_<%- category_id %>" name="selection" value="<%- category_id %>" type="checkbox">
+						<label for="section_<%- category_id %>"></label>
+				</div>
+				<div class="col-auto">
+					<div class="media-object md-icon md-image img-default"></div>
+					<% if (media_id) { %>
+						<div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath('/media/miniature/'+media_id) %>"/>
+						</div>
+						<% } %>
+					</div>
+					<div class="col-auto"><a href="#" class="md-icon md-drag btn-drag"></a></div>
+				<div class="col item-body">
+					<h4><%- name %></h4>
+					<% if(!is_visible) { %>
+						<span class="text-danger">Masqué</span>
+					<% } else { %>
+						<% if(short_desc) { %>
+							<span><%= short_desc %></span>
+						<% } else { %>
+							<span class="text-muted">La catégorie n'a pas de description</span>
+						<% } %>
+					<% } %>
+				</div>
+				<div class="col-4">
+					<% if(product_count > 0) { %>
+						<a href="/catalog/categories/<%- category_id %>/products"><%= plural(product_count, '%d produit', '%d produits') %></a>
+					<% } else { %>
+						<span class="text-muted">—</span>
+					<% } %>
+				</div>
+				<div class="col-auto">
+					<div class="btn-group float-right" role="group"><a class="btn btn-primary" href="/catalog/categories/<%- category_id %>" role="button">Détail</a>
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li><a class="dropdown-item" href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
-			<div class="media-left">
-				<div class="media-object md-icon md-image img-default"></div>
-				<% if (media_id) { %>
-				<div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath('/media/miniature/'+media_id) %>"/>
-				</div>
-				<% } %>
-			</div>
-			<div class="media-left"><a href="#" class="md-icon md-drag btn-drag"></a></div>
-			<div class="media-body">
-				<h4><%- name %></h4>
-				<% if(!is_visible) { %>
-				<span class="text-danger">Masqué</span>
-				<% } else { %>
-					<%= short_desc ? short_desc : '<span class="text-muted">La catégorie n\'a pas de description</span>' %>
-				<% } %>
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-3"><a href="/catalog/categories/<%- category_id %>/products"><%= plural(product_count, '%d produit en vente', '%d produits en vente') %></a></div>
-	<div class="col-xs-3 col-md-2">
-		<div class="btn-group pull-right" role="group"><a class="btn btn-option" href="/catalog/categories/<%- category_id %>" role="button">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span> </button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
-			</ul>
-		</div>
-	</div>
-
-</div>

@@ -1,0 +1,46 @@
+<article class="post-article">
+	<form>
+	<header class="post-header no-border">
+		<h1>Pays livrables</h1>
+	</header>
+	<div class="post-content post-list">
+		<div class="post-group">
+			<div class="row">
+				<div class="col-6">
+					<div class="form-group">
+						<label>Pays concerné</label>
+						<div data-role="countries"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<label for="free_threshold">Francos de port pour le pays concerné</label>
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text" >Gratuit à partir de</span></div>
+						<input class="form-control" id="free_threshold" name="free_threshold" value="" placeholder="—">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achat</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-6">
+				<div class="form-group">
+					<label for="delay">Délai de livraison pour le pays concerné</label>
+					<input class="form-control" id="delay" name="delay" value="" type="text" placeholder="3 jours, 1 semaine...">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-4"><label>Tranche de poids</label></div>
+			<div class="col-3"><label>Frais du port</label></div>
+		</div>
+
+		<div data-role="steps"></div>
+
+		<div class="list-item no-hover"><a href="#" data-role="step-add">Ajouter une tranche pour le pays concerné</a></div>
+	</div>
+	<footer class="post-footer"></footer>
+</form>
+</article>

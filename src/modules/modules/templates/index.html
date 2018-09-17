@@ -1,239 +1,85 @@
 <div class="thumbs-list">
-  <div class="row">
-    <div class="col-xs-6">
-      <article class="post-article thumbs-desc thumbs-id-dismoi">
-        <header class="post-header">
-          <span class="md-icon"></span><span>2/50</span>
-          <a type="button" class="btn btn-option pull-right" href="/forms/inbox" role="button">Utiliser</a>
-        </header>
-        <div class="post-content">
-          <h1>Dismoi?</h1>
-          Créer et gérer vos formulaires (contact, recrutement, sondage,...) entièrement paramétrables.
-        </div>
-        <footer class="post-footer"></footer>
-      </article>
-    </div>
-    <div class="col-xs-6">
-      <article class="post-article thumbs-desc thumbs-id-discount">
-        <header class="post-header">
-          <span class="md-icon"></span>
-          <a type="button" class="btn btn-option pull-right" href="/modules/vouchers" role="button">Utiliser</a>
-        </header>
-        <div class="post-content">
-          <h1>Bons de réduction</h1>
-          Créer et gérer vos bons de réductions pour vos animations commerciales.
-        </div>
-        <footer class="post-footer"></footer>
-      </article>
-    </div>
-    <div class="col-xs-6">
-      <article class="post-article thumbs-desc thumbs-id-fedelity">
-        <header class="post-header">
-          <span class="md-icon"></span>
-          <a type="button" class="btn btn-option pull-right" href="/modules/fidelity" role="button">Utiliser</a>
-        </header>
-        <div class="post-content">
-          <h1>Points de fidélité</h1>
-          Attribuer des points de fidélité à vos meilleurs clients pour leur faire bénéficier de remises sur vos produits.
-        </div>
-        <footer class="post-footer"></footer>
-      </article>
-    </div>
-    <div class="col-xs-6">
-      <article class="post-article thumbs-desc thumbs-id-importproducts">
-        <header class="post-header">
-          <span class="md-icon"></span>
-          <a type="button" class="btn btn-option pull-right" href="/modules/import/products" role="button">Utiliser</a>
-        </header>
-        <div class="post-content">
-          <h1>Import dans le Catalogue</h1>
-          Importer des produits dans le Catalogue.
-        </div>
-        <footer class="post-footer"></footer>
-      </article>
-    </div>
-    <div class="col-xs-6">
-      <article class="post-article thumbs-desc thumbs-id-newsletter">
-        <header class="post-header">
-          <span class="md-icon"></span>
-          <a type="button" class="btn btn-option pull-right" href="/modules/subscribers" role="button">Utiliser</a>
-        </header>
-        <div class="post-content">
-          <h1>Abonnés à la newsletter</h1>
-          Exporter tout ou partie de vos abonnés à votre newsletter pour les utiliser avec votre plateforme d'emailing favorite.
-        </div>
-        <footer class="post-footer"></footer>
-      </article>
-    </div>
-    <div class="col-xs-6">
-      <article class="post-article thumbs-desc thumbs-id-backup">
-        <header class="post-header">
-          <span class="md-icon"></span>
-          <a type="button" class="btn btn-option pull-right" href="/modules/backups" role="button">Utiliser</a>
-        </header>
-        <div class="post-content">
-          <h1>Gestion des sauvegardes</h1>
-          Restaurez des points de sauvegarde ou créez-en à votre convenance pour sécurier les données de votre site.
-        </div>
-        <footer class="post-footer"></footer>
-      </article>
-    </div>
-  </div>
+	<div class="row">
+
+		<% _.each(spotlights, function(module){ %>
+
+		<div class="col-6 <% if(!module.has_scope || !module.has_feature) { %>disabled<% } %>">
+			<article class="post-article thumbs-desc <%- module.icon %>">
+				<header class="post-header">
+					<span class="md-icon"></span><% if(module.quota) { %><span><%- module.quota %></span><% } %>
+					<% if(module.has_scope && module.has_feature) { %>
+					<a class="btn btn-primary float-right" href="<%- module.href %>">Utiliser</a>
+					<% } else { %>
+					<span class="badge px-0 float-right" href="#">Indisponible</span>
+					<% } %>
+				</header>
+				<div class="post-content">
+					<h1><%- module.name %></h1>
+					<%= module.desc %>
+				</div>
+				<footer class="post-footer"></footer>
+			</article>
+		</div>
+
+		<% }) %>
+
+	</div>
 </div>
 
 <article class="post-article">
-  <header class="post-header">
-    <h1>Autres modules</h1>
-  </header>
-  <div class="post-content post-list">
-    <div class="list-item visible-btn">
-      <div class="row">
-        <div class="col-xs-10">
-          <div class="media">
-            <div class="media-body">
-              <h4>Redirections 301</h4>
-              Définissez les redirections d'URL permanentes à utiliser sur votre site.
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-2"><a class="btn btn-option pull-right" href="/modules/redirections" role="button">Utiliser</a></div>
-      </div>
-    </div>
-    <div class="list-item visible-btn">
-      <div class="row">
-        <div class="col-xs-10">
-          <div class="media">
-            <div class="media-body">
-              <h4>Injection de code</h4>
-              Injectez des scripts et du code avant <code>&lt;/head&gt;</code> et <code>&lt;/body&gt;</code> sur l'ensemble de votre site.
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-2"><a class="btn btn-option pull-right" href="/modules/injectcode" role="button">Utiliser</a></div>
-      </div>
-    </div>
-    <div class="list-item visible-btn">
-      <div class="row">
-        <div class="col-xs-10">
-          <div class="media">
-            <div class="media-body">
-              <h4>Import dans le Site Web</h4>
-              Importez des billets dans les pages de votre site web.
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-2"><a class="btn btn-option pull-right" href="/modules/import/posts" role="button">Utiliser</a></div>
-      </div>
-    </div>
-    <div class="list-item visible-btn">
-      <div class="row">
-        <div class="col-xs-10">
-          <div class="media">
-            <div class="media-body">
-              <h4>Import depuis Wordpress</h4>
-              Importez du contenu depsui Wordpress dans votre site.
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-2"><a class="btn btn-option pull-right" href="/modules/import/wordpress" role="button">Utiliser</a></div>
-      </div>
-    </div>
-    <div class="list-item visible-btn">
-      <div class="row">
-        <div class="col-xs-10">
-          <div class="media">
-            <div class="media-body">
-              <h4>Google Analytics</h4>
-              Paramétrez le tracking de Google Analytics sur votre site.
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-2"><a class="btn btn-option pull-right" href="/modules/analytics" role="button">Utiliser</a></div>
-      </div>
-    </div>
-    <div class="list-item visible-btn">
-      <div class="row">
-        <div class="col-xs-10">
-          <div class="media">
-            <div class="media-body">
-              <h4>Google Merchant Center</h4>
-              Utilisez Google Merchant Center pour importer vos données produits sur Google
-              et les proposer dans Google Shopping ainsi que dans d'autres services Google.
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-2"><a class="btn btn-option pull-right" href="/modules/merchantcenter" role="button">Utiliser</a></div>
-      </div>
-    </div>
-    <div class="list-item visible-btn">
-      <div class="row">
-        <div class="col-xs-10">
-          <div class="media">
-            <div class="media-body">
-              <h4>Lengow</h4>
-              Utilisez Lengow pour créer un flux de données afin de publier vos produits
-              sur les principaux comparateurs de prix, affiliation et marketplaces.
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-2"><a class="btn btn-option pull-right" href="/modules/lengow" role="button">Utiliser</a></div>
-      </div>
-    </div>
-    <div class="list-item visible-btn">
-      <div class="row">
-        <div class="col-xs-10">
-          <div class="media">
-            <div class="media-body">
-              <h4>iAdvize</h4>
-              Configurer iAdvize pour échanger en direct avec vos visiteurs lorsqu'ils visitent votre site.
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-2"><a class="btn btn-option pull-right" href="/modules/iadvize" role="button">Utiliser</a></div>
-      </div>
-    </div>
+	<header class="post-header">
+		<h1>Autres modules</h1>
+	</header>
+	<div class="post-content post-list">
 
-    <div class="list-item visible-btn">
-      <div class="row">
-        <div class="col-xs-10">
-          <div class="media">
-            <div class="media-body">
-              <h4>Avis Vérifiés</h4>
-              Récoltez les avis de vos clients sur vos commandes et vos produits avec la plateforme Avis Vérifiés.
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-2"><a class="btn btn-option pull-right" href="/modules/avisverifies" role="button">Utiliser</a></div>
-      </div>
-    </div>
-  </div>
-  <footer class="post-footer"></footer>
+		<% _.each(list, function(module){ %>
+		<div class="list-item visible-btn <% if(!module.has_scope || !module.has_feature) { %>disabled<% } %>">
+			<div class="row no-gutters">
+				<div class="col item-body">
+					<h4><%- module.name %></h4>
+					<%= module.desc %>
+				</div>
+				<div class="col-auto">
+				<% if(module.has_scope && module.has_feature) { %>
+				<a class="btn btn-primary float-right" href="<%- module.href %>" role="button">Utiliser</a>
+				<% } else { %>
+				<span class="badge px-1 mx-0 float-right" href="#">Indisponible</span>
+				<% } %>
+				</div>
+			</div>
+		</div>
+		<% }) %>
+
+	</div>
+	<footer class="post-footer"></footer>
 </article>
 
 <article class="post-article">
-  <div class="row">
-    <div class="col-xs-6">
-      <header class="post-header">
-        <h1>API Front-Office</h1>
-      </header>
-      <div class="post-content">
-        <p>
-          Pour les intégrateurs et les développeurs Front-End qui ont besoin d'accéder
-          aux données publiques de leurs sites afin de les enrichir avec de nouvelles interactions.
-        </p>
-        <a class="btn btn-option" href="https://aide.kiubi.com/api-front-office.html" target="_blank">En savoir plus</a>
-      </div>
-    </div>
-    <div class="col-xs-6">
-      <header class="post-header">
-        <h1>API Developers</h1>
-      </header>
-      <div class="post-content">
-        <p>Pour les développeurs qui souhaitent interfacer leurs propres applications avec
-          Kiubi grâce à un accès direct et sécurisé aux données de tous les sites.</p>
-          <a class="btn btn-option" href="https://aide.kiubi.com/api-developers.html" target="_blank">En savoir plus</a>
-        </div>
-      </div>
-    </div>
-    <footer class="post-footer"></footer>
-  </article>
+	<div class="row">
+		<div class="col-6">
+			<header class="post-header">
+				<h1>API Front-Office</h1>
+			</header>
+			<div class="post-content">
+				<p>
+					Pour les intégrateurs et les développeurs Front-End qui ont besoin d'accéder
+					aux données publiques de leurs sites afin de les enrichir avec de nouvelles interactions.
+				</p>
+				<a class="btn btn-primary mr-3" href="<%- domain %>/api/v1/" target="_blank">Se connecter</a>
+				<a class="btn btn-info" href="https://aide.kiubi.com/api-front-office.html" target="_blank">En savoir plus</a>
+			</div>
+		</div>
+		<div class="col-6">
+			<header class="post-header">
+				<h1>API Developers</h1>
+			</header>
+			<div class="post-content">
+				<p>Pour les développeurs qui souhaitent interfacer leurs propres applications avec
+					Kiubi grâce à un accès direct et sécurisé aux données de tous les sites.</p>
+				<a class="btn btn-primary mr-3" href="https://api.kiubi.com/" target="_blank">Se connecter</a>
+				<a class="btn btn-info" href="https://aide.kiubi.com/api-developers.html" target="_blank">En savoir plus</a>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>

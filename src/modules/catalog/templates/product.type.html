@@ -6,7 +6,7 @@
 		<div class="form-group">
 			<p>Le type de produit détermine l'apparence de la fiche produit et si des informations complémentaires peuvent y être ajoutées :</p>
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-6">
 					<select id="type" name="type" data-style="selectify">
 						<% _(types).each(function(item){ %>
 							<option value="<%- item.type %>" <%= (item.type == type) ? 'selected="selected"':''  %>><%- item.name %></option>
@@ -23,24 +23,24 @@
 
 		<% switch(field.type){ case 'text': %>
 		<div class="form-group">
-			<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+			<label for="<%- field.field %>"><%- field.name %></label>
 			<input class="form-control" id="<%- field.field %>" name="<%- field.field %>" value="<%- product.get(field.field) %>">
 		</div>
 		<% break; case 'textarea': %>
 		<div class="form-group" data-behavior="countable">
 			<span class="letter-counter"></span>
-			<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+			<label for="<%- field.field %>"><%- field.name %></label>
 			<textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" rows="5"><%- product.get(field.field) %></textarea>
 		</div>
 		<% break; case 'wysiwyg': %>
 		<div class="form-group">
-			<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+			<label for="<%- field.field %>"><%- field.name %></label>
 			<textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" data-role="wysiwyg" rows="21"><%- product.get(field.field) %></textarea>
 		</div>
 		<% break; case 'select': %>
-		<label class="control-label" for="<%- field.field %>"><%- field.name %></label>
+		<label for="<%- field.field %>"><%- field.name %></label>
 		<div class="row">
-			<div class="col-xs-6">
+			<div class="col-6">
 				<div class="form-group">
 					<select id="<%- field.field %>" name="<%- field.field %>" data-style="selectify">
 						<% _(field.options).each(function(option){ %>

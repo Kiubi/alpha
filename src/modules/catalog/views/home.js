@@ -2,23 +2,25 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
+var SeoView = require('kiubi/views/ui/seo.js');
 
-var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
-
-var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/home.html'),
 	className: 'container',
 	service: 'catalog',
 
-	behaviors: [CharCountBehavior, FormBehavior],
+	behaviors: [FormBehavior],
 
 	regions: {
 		layout: {
 			el: "article[data-role='layout']",
+			replaceElement: true
+		},
+		seo: {
+			el: "article[data-role='seo']",
 			replaceElement: true
 		}
 	},
@@ -33,25 +35,31 @@ module.exports = Marionette.View.extend({
 		'js_body'
 	],
 
-	templateContext: function() {
-		return {
-			domain: Session.site.get('domain')
-		};
-	},
-
 	initialize: function(options) {
 		this.mergeOptions(options, ['model']);
 
-		this.layoutSelector = new LayoutSelectorView({
-			layout_id: this.model.get('layout_id'),
-			type: 'catalog-home',
-			apply: this.model.get('category_id'),
-			applyName: this.model.get('name')
-		});
+		if (this.getOption('enableLayout')) {
+			this.layoutSelector = new LayoutSelectorView({
+				layout_id: this.model.get('layout_id'),
+				type: 'catalog-home',
+				apply: this.model.get('category_id'),
+				applyName: this.model.get('name')
+			});
+		}
+
+		// Seo
+		if (this.getOption('enableSeo')) {
+			this.showChildView('seo', new SeoView({
+				slug_prefix: false,
+				model: this.model
+			}));
+		}
 	},
 
 	onRender: function() {
-		this.showChildView('layout', this.layoutSelector);
+		if (this.getOption('enableLayout')) {
+			this.showChildView('layout', this.layoutSelector);
+		}
 	},
 
 	onChildviewChangeLayout: function(layout_id) {

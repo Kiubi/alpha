@@ -1,0 +1,36 @@
+<article class="post-article">
+	<header class="post-header">
+		<h1>Coliship</h1>
+	</header>
+	<div class="post-content">
+		<p>Coliship est une plateforme fournie par La Poste pour optimiser la chaîne de travail et notamment l’édition
+			des étiquettes de colisage. Les commandes utilisant ce transporteur peuvent être inclues dans les exports au
+			format Coliship ou Expeditor INET.
+		</p>
+		<div class="row">
+			<div class="col-4">
+				<div class="form-group">
+					<label>Inclure dans l'export Coliship</label>
+					<div class="form-check">
+						<input name="use_coliship" id="use_coliship1" value="1" type="radio" <%= use_coliship ? 'checked="checked"' : ''%>>
+						<label for="use_coliship1">Oui</label>
+						<input name="use_coliship" id="use_coliship0" value="0" type="radio" <%= !use_coliship ? 'checked="checked"' : ''%>>
+						<label for="use_coliship0">Non</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="form-group">
+					<label>Remise contre signature (si possible)</label>
+					<div class="form-check">
+						<input name="coliship_type" id="coliship_type1" value="expert" type="radio" <%= coliship_type == 'expert' ? 'checked="checked"' : ''%>>
+						<label for="coliship_type1">Oui (Colissimo Expert)</label>
+						<input name="coliship_type" id="coliship_type0" value="access" type="radio" <%= coliship_type == 'access' ? 'checked="checked"' : ''%>>
+						<label for="coliship_type0">Non (Colissimo Access)</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>

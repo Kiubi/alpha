@@ -1,52 +1,48 @@
-<div class="row" data-role="list">
-	<div class="col-xs-6 col-md-7">
-		<div class="media">
-			<div class="media-left">
-				<div class="checkbox-inline">
+		<div class="row no-gutters" data-role="list">
+			<div class="col-auto">
 					<input id="catalog_product_<%- product_id %>" name="selection" value="<%- product_id %>" type="checkbox">
 					<label for="catalog_product_<%- product_id %>"></label>
-				</div>
 			</div>
-			<div class="media-left">
+			<div class="col-auto">
 				<div class="media-object md-icon md-image img-default"></div>
 				<% if (main_media_id) { %><div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath('/media/miniature/'+main_media_id) %>" /></div><% } %>
 				<%= is_spotlight ? '<div class="corner-color is-spotlight"><div class="corner-color-content"></div></div>' : '' %>
 			</div>
-			<div class="media-body">
+			<div class="col item-body">
 				<h4><%- name %></h4>
 				<% if(is_visible) { %>
 				<% if(main_category) { %>
-				Rangé dans <a href="/catalog/categories/<%- main_category.category_id %>"><%- main_category.name %></a>
-				<% } %>
+				<a href="/catalog/categories/<%- main_category.category_id %>"><%- main_category.name %></a>
+				<% } else %>
 					<% if(sec_categories.length > 0) { %>
-					et <a href="#" data-toggle="popover" data-placement="right" data-trigger="focus" data-container="#content" data-html="true"
-					data-content="<% _.each(sec_categories, function(category) { %><a href=&quot;/catalog/categories/<%- category.category_id %>&quot;><%- category.name %></a><br/><%  });
-						%>">
-						<%= plural(sec_categories.length, '%d autre catégorie', '%d autres catégories') %></a>
+					et <a href="#" data-toggle="popover" data-placement="right" data-trigger="focus"
+						  data-container="#content" data-html="true"
+						  data-content="<%- sec_categories.join('') %>"><%- sec_categories.length %> +</a>
 					<% } %>
 				<% } else { %>
 				<span class="text-danger">Masqué</span>
 				<% } %>
 			</div>
+			<div class="col-3">
+				<% if (is_virtual) { %>
+					<span class="badge badge-success">Téléchargeable</span>
+				<% } else { %>
+					<%= stock == "yes" ? '<span class="badge badge-success">En stock</span>' : '' %>
+					<%= stock == "no" ? '<span class="badge badge-danger">Rupture</span>' : '' %>
+					<%= stock == "partial" ? '<span class="badge badge-warning">Rupture</span>' : '' %>
+				<% } %>
+			</div>
+			<div class="col-2">
+				<span class="price"><%- price_inc_vat_min_label %>TTC
+					<% if (price_inc_vat_min < price_inc_vat_max) { %><br/><%- price_inc_vat_max_label %>TTC<% } %>
+				</span>
+			</div>
+			<div class="col-auto">
+				<div class="btn-group float-right" role="group"> <a class="btn btn-primary" href="/catalog/products/<%- product_id %>" role="button">Détail</a>
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li><a class="dropdown-item" href="#"data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+					</ul>
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="col-xs-2">
-		<% if (is_virtual) { %>
-			<span class="label label-stockin">Téléchargeable</span>
-		<% } else { %>
-			<%= stock == "yes" ? '<span class="label label-stockin">En stock</span>' : '' %>
-			<%= stock == "no" ? '<span class="label label-stockout">Rupture</span>' : '' %>
-			<%= stock == "partial" ? '<span class="label label-tempstockout">Rupture</span>' : '' %>
-		<% } %>
-	</div>
-	<div class="col-xs-1"><span class="price"><%- price_inc_vat_min_label %>TTC<br/><% if (price_inc_vat_min < price_inc_vat_max) { %><%- price_inc_vat_max_label %>TTC<% } %></span>
-	</div>
-	<div class="col-xs-3 col-md-2">
-		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="/catalog/products/<%- product_id %>" role="button">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span>  </button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="#"data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
