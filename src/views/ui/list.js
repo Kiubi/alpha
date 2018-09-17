@@ -3,16 +3,123 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 require('kiubi/utils/proxy.jquery-ui.js');
 
+var CollectionUtils = require('kiubi/utils/collections.js');
 var InfiniteScrollBehavior = require('kiubi/behaviors/infinite_scroll.js');
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 
 var LoaderTpl = require('kiubi/templates/ui/loader.html');
 
-var FiltersView = Marionette.View.extend({
-	template: require('kiubi/templates/ui/list.filters.html'),
+/* Filtres */
 
-	tagName: 'span',
-	className: '',
+var filterCollection = Backbone.Collection.extend({
+	model: Backbone.Model.extend({
+		defaults: {
+			id: null,
+			title: '',
+			type: 'select',
+			extraClassname: '',
+			collectionPromise: null,
+			collection: null
+		}
+	})
+});
+
+var FilterBtnView = Marionette.View.extend({
+	template: require('kiubi/templates/ui/list.filter.btn.html'),
+
+	className: 'btn-group',
+
+	ui: {
+		'dropdown': '[data-toggle="dropdown"]'
+	},
+
+	events: {
+		'click button': 'onButtonChange',
+		'click li a': 'onSelectChange'
+	},
+
+	oClassname: '',
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['model', 'proxy']);
+
+		if (!this.model.get('collectionPromise')) {
+			this.setCollection(new CollectionUtils.SelectCollection());
+			return;
+		}
+
+		// Test if collectionPromise is a promise or a collection
+		// No .then() => Collection. Meh ! Close enough...
+		if (this.model.get('collectionPromise').then) {
+			this.model.get('collectionPromise').done(function(collection) {
+				this.setCollection(collection);
+				this.render();
+			}.bind(this));
+		} else {
+			this.setCollection(this.model.get('collectionPromise'));
+		}
+
+	},
+
+	setCollection: function(collection) {
+		this.collection = collection;
+		this.listenTo(this.collection, 'update', this.render);
+		this.listenTo(this.collection, 'reset', this.render);
+	},
+
+	overrideExtraClassname: function(classnames) {
+		this.oClassname = classnames;
+	},
+
+	templateContext: function() {
+		return {
+			extraClassname: this.oClassname ? this.oClassname : this.model.get('extraClassname'),
+			collection: this.collection.toJSON()
+		};
+	},
+
+	/* DropDown */
+
+	toggleDropdown: function() {
+		this.getUI('dropdown').dropdown('toggle');
+	},
+
+	/* Events */
+
+	onRender: function() {
+		this.getUI('dropdown').dropdown();
+	},
+
+	onButtonChange: function(event) {
+		this.proxy.triggerMethod('filter:change', {
+			index: this.model.collection.indexOf(this.model),
+			model: this.model,
+			value: null,
+			view: this
+		});
+
+		event.stopPropagation(); // needed
+		event.preventDefault(); // needed
+		return false;
+	},
+
+	onSelectChange: function(event) {
+		var $link = Backbone.$(event.currentTarget, this.el);
+
+		this.proxy.triggerMethod('filter:change', {
+			index: this.model.collection.indexOf(this.model),
+			model: this.model,
+			value: $link.data('value'),
+			view: this
+		});
+	}
+
+});
+
+var FilterSelectView = Marionette.View.extend({
+	template: require('kiubi/templates/ui/list.filter.select.html'),
+
+	className: 'btn-group',
 
 	behaviors: [SelectifyBehavior],
 
@@ -20,25 +127,29 @@ var FiltersView = Marionette.View.extend({
 		'change select': 'onSelectChange'
 	},
 
-	filters: [],
+	collection: null,
 
 	initialize: function(options) {
+		this.mergeOptions(options, ['model', 'proxy']);
 
-		this.mergeOptions(options, ['filters']);
-		var that = this;
+		if (!this.model.get('collectionPromise')) return;
 
-		_.each(this.filters, function(filter, index) {
-			if (!filter.collectionPromise) return;
-			filter.collectionPromise.done(function(collection) {
-				that.filters[index].collection = collection;
-				that.render();
-			});
-		});
+		// Test if collectionPromise is a promise or a collection
+		// No .then() => Collection. Meh ! Close enough...
+		if (this.model.get('collectionPromise').then) {
+			this.model.get('collectionPromise').done(function(collection) {
+				this.collection = collection;
+				this.render();
+			}.bind(this));
+		} else {
+			this.collection = this.model.get('collectionPromise');
+		}
+
 	},
 
 	templateContext: function() {
 		return {
-			filters: this.filters,
+			collection: this.collection ? this.collection.toJSON() : null,
 			indent2Space: function(indent) {
 				if (indent == 0) return '';
 				var str = '';
@@ -53,18 +164,226 @@ var FiltersView = Marionette.View.extend({
 	onSelectChange: function(event) {
 		var $select = Backbone.$(event.currentTarget, this.el);
 
-		if ($select.data('id') > this.filters.length) {
-			return;
-		}
-
-		// var filter = this.filters[$select.data('id')];
-		this.triggerMethod('filter:change', {
-			index: $select.data('id'),
-			value: $select.val()
+		this.proxy.triggerMethod('filter:change', {
+			index: this.model.collection.indexOf(this.model),
+			model: this.model,
+			value: $select.val(),
+			view: this
 		});
 	}
 
 });
+
+var FilterSearchView = Marionette.View.extend({
+	template: require('kiubi/templates/ui/list.filter.search.html'),
+
+	tagName: 'div',
+	className: 'btn-group dropdown',
+
+	ui: {
+		'label': 'span[data-role="label"]',
+		'li': 'li[data-role="selection"]',
+		'clear': 'span[data-role="clear"]',
+		'input': 'input[data-role="input"]',
+		'dropdown-menu': '.dropdown-menu'
+	},
+
+	/**
+	 * change : {label, value}
+	 * input : term, view
+	 */
+	events: {
+
+		'shown.bs.dropdown': function(event) {
+			this.getUI('input').focus();
+		},
+
+		'click @ui.li': function(event) {
+			var index = parseInt(Backbone.$(event.currentTarget).data('index'));
+
+			if (isNaN(index) || index > this.suggestions.length) return;
+
+			this.setCurrent(this.suggestions[index]);
+
+			this.proxy.triggerMethod('filter:change', {
+				model: this.model,
+				value: this.current.value,
+				view: this
+			});
+		},
+
+		'keyup @ui.input': _.debounce(function() {
+			this.term = this.getUI('input').val();
+
+			this.proxy.triggerMethod('filter:input', {
+				model: this.model,
+				value: this.term,
+				view: this
+			});
+
+		}, 300),
+
+		'click @ui.clear': function(event) {
+
+			if (this.current.value == null) return;
+
+			event.preventDefault();
+
+			this.setCurrent({
+				label: this.model.get('title'),
+				value: null
+			});
+
+			this.proxy.triggerMethod('filter:change', {
+				model: this.model,
+				value: null,
+				view: this
+			});
+
+			return false;
+		}
+	},
+
+	term: '',
+	current: {
+		label: '',
+		value: null
+	},
+	suggestions: null,
+	searchPlaceholder: 'Rechercher',
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['model', 'proxy']);
+		this.current = {
+			label: this.model.get('title'),
+			value: null
+		};
+	},
+
+	/**
+	 *
+	 * @param {Object} current :
+	 * 					{Number} value
+	 * 					{String} label
+	 */
+	setCurrent: function(current) {
+		this.current = current;
+		this.getUI('label').text(current.label || '');
+
+		if (this.current.value == null) {
+			this.getUI('clear').removeClass('md-cancel');
+		} else {
+			this.getUI('clear').addClass('md-cancel');
+		}
+
+	},
+
+	/**
+	 *
+	 * @param {Array} results
+	 * @param {Object} xtra
+	 * 					{String} title
+	 * 					{String} iconClass
+	 * 					{String} eventName
+	 */
+	showResults: function(results, xtra) {
+		this.suggestions = results;
+
+		var list = '';
+		if (results.length > 0) {
+			list = _.reduce(results, function(memo, result, index) {
+				return memo + '<li data-role="selection" data-index="' + index + '"><a href="#">' + result.label + '</a></li>';
+			}, '<li role="separator" class="divider"></li>');
+		} else {
+			list = '<li role="separator" class="divider"></li><li><a href="#">-- Aucun résultat --</a></li>';
+		}
+
+		this.emptyList(this.getUI('dropdown-menu')).append(list);
+		this.getUI('input').focus();
+	},
+
+	templateContext: function() {
+		return {
+			'term': this.term,
+			'searchPlaceholder': this.searchPlaceholder,
+			'current': this.current
+		};
+	},
+
+	emptyList: function($dropdown) {
+		var $first = $dropdown.children().eq(0).detach();
+		return $dropdown.empty().append($first);
+	}
+
+});
+
+var FilterInputView = Marionette.View.extend({
+	template: require('kiubi/templates/ui/list.filter.input.html'),
+
+	className: 'form-group has-feedback',
+
+	ui: {
+		'term': 'input[name="term"]'
+	},
+
+	currentTerm: '',
+
+	events: {
+		'keyup @ui.term': _.debounce(function(e) {
+			var term = this.getUI('term').val();
+			if (term == this.currentTerm) {
+				return;
+			}
+			this.currentTerm = term;
+			this.onInputChange(term);
+		}, 300)
+	},
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['model', 'proxy']);
+	},
+
+	/* Events */
+
+	onInputChange: function(term) {
+		this.proxy.triggerMethod('filter:change', {
+			model: this.model,
+			value: term,
+			view: this
+		});
+	}
+
+});
+
+var FiltersView = Marionette.CollectionView.extend({
+
+	tagName: 'span',
+	childView: FilterSelectView, // mandatory... but why oO ?
+
+	buildChildView: function(child, ChildViewClass, childViewOptions) {
+
+		// build the final list of options for the childView class
+		var options = _.extend({
+			model: child
+		}, childViewOptions);
+
+		switch (child.get('type')) {
+			case 'select':
+			default:
+				return new FilterSelectView(options);
+			case 'button':
+				return new FilterBtnView(options);
+			case 'search':
+				return new FilterSearchView(options);
+			case 'input':
+				return new FilterInputView(options);
+		}
+
+	}
+
+});
+
+/* Listing */
 
 var NoChildrenView = Marionette.View.extend({
 	template: _.template(
@@ -189,6 +508,86 @@ module.exports = Marionette.View.extend({
 		'click @ui.row-select': 'selectRow'
 	},
 
+	initialize: function(options) {
+		this.mergeOptions(options, ['rowView', 'newRowView']);
+
+		this.listenTo(this.getOption('collection'), 'request', this.onCollectionRequest);
+		this.listenTo(this.getOption('collection'), 'sync', this.onCollectionSync);
+		this.listenTo(this.getOption('collection'), 'sync update', this.selectRow);
+	},
+
+	templateContext: function() {
+		return {
+			title: this.getOption('title'),
+			order: this.getOption('order'),
+			filterModal: this.getOption('filterModal'),
+			selection: this.getOption('selection'),
+			extraClassname: this.getOption('extraClassname')
+		};
+	},
+
+	getChildren: function() {
+		return this.getChildView('list').children;
+	},
+
+	/**
+	 * Update counter text
+	 *
+	 * @param {String} text
+	 */
+	setCounterText: function(text) {
+		this.getUI('counter').text(text);
+	},
+
+	onRender: function() {
+
+		var childViewOptions = _.extend({
+			proxy: this
+		}, this.getOption('childViewOptions'));
+		this.showChildView('list', new ListView({
+			collection: this.getOption('collection'),
+			childView: this.rowView,
+			childViewOptions: childViewOptions,
+			extraListClassname: this.getOption('extraListClassname')
+		}));
+
+		if (this.getOption('filters').length > 0) {
+
+			this.showChildView('filters', new FiltersView({
+				collection: new filterCollection(this.getOption('filters')),
+				childViewOptions: {
+					proxy: this
+				}
+			}));
+
+		}
+		if (this.newRowView != null) {
+
+			var options = _.extend({
+				proxy: this,
+				collection: this.getOption('collection')
+			}, this.getOption('childViewOptions'));
+
+			this.showChildView('new', new this.newRowView(options));
+		}
+		if (this.getOption('detailView')) {
+			this.showChildView('detail', this.getOption('detailView'));
+		}
+	},
+
+	/** Collection events **/
+
+	onCollectionRequest: function(event, xhr, options) {
+		if (!event.models) return; // not a collection event
+		this.getUI('loading').show();
+	},
+
+	onCollectionSync: function(event) {
+		this.getUI('loading').hide();
+	},
+
+	/** Order events **/
+
 	/**
 	 * Triggered when a new order is selected
 	 *
@@ -210,78 +609,19 @@ module.exports = Marionette.View.extend({
 			this.is_active = this == o;
 		});
 
-		this.render();
-		this.collection.fetch({
-			data: o.data
+		this.getUI('order').each(function() {
+			var $li = Backbone.$(this);
+			if ($li.data('id') == id) {
+				$li.addClass('active');
+			} else {
+				$li.removeClass('active');
+			}
 		});
+
+		this.triggerMethod('change:order', o.value);
 	},
 
-	initialize: function(options) {
-		this.mergeOptions(options, ['collection', 'rowView', 'newRowView']);
-
-		this.listenTo(this.getOption('collection'), 'request', this.onCollectionRequest);
-		this.listenTo(this.getOption('collection'), 'sync', this.onCollectionSync);
-		this.listenTo(this.getOption('collection'), 'sync update', this.selectRow);
-	},
-
-	onCollectionRequest: function(event, xhr, options) {
-		if (!event.models) return; // not a collection event
-		this.getUI('loading').show();
-	},
-
-	onCollectionSync: function(event) {
-		this.getUI('loading').hide();
-	},
-
-	templateContext: function() {
-		return {
-			title: this.getOption('title'),
-			order: this.getOption('order'),
-			filterModal: this.getOption('filterModal'),
-			selection: this.getOption('selection'),
-			extraClassname: this.getOption('extraClassname')
-		};
-	},
-
-	onRender: function() {
-
-		var childViewOptions = _.extend({
-			proxy: this
-		}, this.getOption('childViewOptions'));
-		this.showChildView('list', new ListView({
-			collection: this.collection,
-			childView: this.rowView,
-			childViewOptions: childViewOptions,
-			extraListClassname: this.getOption('extraListClassname')
-		}));
-
-		if (this.getOption('filters').length > 0) {
-			this.showChildView('filters', new FiltersView({
-				filters: this.getOption('filters')
-			}));
-		}
-		if (this.newRowView != null) {
-
-			var options = _.extend({
-				proxy: this,
-				collection: this.collection
-			}, this.getOption('childViewOptions'));
-
-			this.showChildView('new', new this.newRowView(options));
-		}
-		if (this.getOption('detailView')) {
-			this.showChildView('detail', this.getOption('detailView'));
-		}
-	},
-
-	/**
-	 * Update counter text
-	 *
-	 * @param {String} text
-	 */
-	setCounterText: function(text) {
-		this.getUI('counter').text(text);
-	},
+	/** Row events **/
 
 	selectRow: function() {
 
@@ -399,11 +739,6 @@ module.exports = Marionette.View.extend({
 			});
 	},
 
-	onChildviewFilterChange: function(filter) {
-		// Pass to parent view !
-		this.triggerMethod('filter:change', filter);
-	},
-
 	// Catch row sort:change event and add an ordered list of all rows
 	onChildviewSortChange: function(data) {
 
@@ -414,10 +749,6 @@ module.exports = Marionette.View.extend({
 
 		// Pass to parent view !
 		this.triggerMethod('sort:change', data);
-	},
-
-	getChildren: function() {
-		return this.getChildView('list').children;
 	}
 
 });

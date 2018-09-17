@@ -21,7 +21,8 @@ module.exports = Backbone.Model.extend({
 		allow_login: false,
 		validation: 'captcha',
 		default_group_id: null,
-		terms: ''
+		terms: '',
+		processing_purposes: ''
 	}
 
 });

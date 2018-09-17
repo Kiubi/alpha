@@ -1,8 +1,8 @@
 <label class="control-label"><%- fieldLabel %></label>
 
-<% if(comment) { %><p><%- comment %></p><% } %>
+<% if(comment) { %><p class="form-control-static"><%- comment %></p><% } %>
 
-<p><a href="#" data-role="select"><%- file ? file.name : 'Accéder à la médiathèque' %></a>
+<p class="form-control-static"><a href="#" data-role="select"><%- file ? file.name : 'Accéder à la médiathèque' %></a>
 <% if(file) { %>
 <a href="#" data-role="clear" class="md-icon md-delete"></a></p>
 <% } %>

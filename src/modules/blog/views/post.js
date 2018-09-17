@@ -197,11 +197,17 @@ module.exports = Marionette.View.extend({
 			selected: this.model.get('category_id'),
 			name: 'category_id'
 		}));
-		this.showChildView('type', new TypeSelectorView({
-			type: this.model.get('type'),
-			post: this.model,
-			typesSource: this.typesSource
-		}));
+
+		this.typesSource.done(function(types) {
+			if (types.length == 0) return;
+
+			this.showChildView('type', new TypeSelectorView({
+				type: this.model.get('type'),
+				post: this.model,
+				typesSource: this.typesSource
+			}));
+		}.bind(this));
+
 		this.showChildView('image', new FilePickerView({
 			fieldname: 'media_id',
 			fieldLabel: 'Image',

@@ -1,0 +1,50 @@
+
+<form>
+	<div class="alert alert-warning" role="alert">
+	  Grâce au système d'import de thèmes graphiques de Kiubi,
+		vous pouvez importer d'un clic l'ensemble d'un thème graphique existant.
+		Une fois ajouté à votre site, vous pouvez le personnaliser à votre convenance.
+
+	</div>
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Paramètres d'import</h1>
+		</header>
+		<div class="post-content">
+			<div class="form-group">
+				<label class="control-label" for="UA">Fichier d'import (format .thm)</label>
+				<input name="f" id="f" type="file">
+			</div>
+			<div class="form-group">
+				<label class="control-label">Importer le contenu</label>
+				<div class="radio-group">
+					<input name="is_visible" id="is_visible1" value="1" type="radio">
+					<label for="is_visible1" class="">Oui, je souhaite remplacer le contenu actuel du site par celui du thème</label>
+					<input name="is_visible" id="is_visible0" value="0" checked="checked" type="radio">
+					<label for="is_visible0" class="">Non, je souhaite conserver le contenu actuel du site</label>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="checkbox">
+					<input id="toto" value="option1" type="checkbox">
+					<label for="toto" class="">Je reconnais avoir acquis l'ensemble des droits nécessaires à l'utilisation des éléments importés</label>
+				</div>
+			</div>
+
+
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-cancel" data-role="return">Retour</button>
+		<button type="button" class="btn btn-action btn-save pull-right" data-role="save">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"> </footer>

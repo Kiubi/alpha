@@ -216,6 +216,9 @@ new ModulesRoute();
 var PrefsRoute = require('./modules/prefs/router');
 new PrefsRoute();
 
+var ThemesRoute = require('./modules/themes/router');
+new ThemesRoute();
+
 // Tracker GA
 if (Cfg.get('ga_tracker')) {
 	var script = document.createElement('script');

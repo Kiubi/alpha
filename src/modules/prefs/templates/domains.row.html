@@ -15,7 +15,7 @@
 		<button type="button" class="btn btn-option pull-right" role="button" data-role="action" data-action="<%- actions[0].action %>" data-confirm="<%- actions[0].confirm %>"><%- actions[0].label %></button>
 		<% } else if (actions.length > 1) { %>
 		<div class="btn-group pull-right" role="group"> <button type="button" class="btn btn-option" role="button" data-role="action" data-action="<%- actions[0].action %>"><%- actions[0].label %></button>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Menu</span> </button>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span>  </button>
 			<ul class="dropdown-menu dropdown-menu-right">
 				<% _.each(actions, function(action, index){ if (index==0) return; %>
 				<li><a href="#" data-role="action" data-action="<%- action.action %>" data-confirm="<%- action.confirm %>"><%- action.label %></a></li>

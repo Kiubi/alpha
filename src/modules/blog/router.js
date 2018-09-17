@@ -115,6 +115,7 @@ var SidebarMenuView = Marionette.View.extend({
 		this.is_loaded = false;
 
 		this.listenTo(ControllerChannel, 'refresh:categories', this.onRefreshCategories);
+		this.listenTo(ControllerChannel, 'refresh:posts', this.onRefreshPosts);
 
 		this.fetchAndRender();
 	},
@@ -149,6 +150,23 @@ var SidebarMenuView = Marionette.View.extend({
 		).done(function() {
 			this.render();
 		}.bind(this));
+	},
+
+	onRefreshPosts: function(count) {
+		if (count == null) {
+			this.overview.fetch().done(function() {
+				this.render();
+			}.bind(this));
+			return;
+		}
+
+		if (this.overview.get('posts_count') + count < 0) {
+			this.overview.set('posts_count', 0);
+		} else {
+			this.overview.set('posts_count', this.overview.get('posts_count') + count);
+		}
+
+		this.render();
 	}
 
 });
@@ -196,6 +214,10 @@ var BlogController = Controller.extend({
 				categories: new Categories()
 			});
 
+			this.listenTo(c, 'bulk:delete', function(action) {
+				this.triggerSidebarMenu('refresh:posts', -action.ids.length);
+			});
+
 			this.navigationController.showContent(view);
 			view.start();
 			this.setHeader({
@@ -236,6 +258,7 @@ var BlogController = Controller.extend({
 				}
 			}.bind(this));
 			this.listenTo(m, 'destroy', function() {
+				this.triggerSidebarMenu('refresh:posts', -1);
 				this.navigationController.showOverlay(300);
 				this.navigationController.navigate('/blog');
 			});
@@ -282,6 +305,7 @@ var BlogController = Controller.extend({
 			});
 
 			return m.save().done(function() {
+				that.triggerSidebarMenu('refresh:posts', 1);
 				that.navigationController.showOverlay(300);
 				that.navigationController.navigate('/blog/posts/' + m.get('post_id'));
 			}).fail(function(xhr) {

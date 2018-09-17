@@ -62,6 +62,7 @@
 		<p>
 			Les visiteurs du site peuvent poster une évaluation pour chacun des produits,
 			en leur donnant une note de 1 à 10, assortie qu'un commentaire.
+			Si un visiteur est identifé, son évaluation sera ajoutée à son compte en tant que membre du site.
 		</p>
 		<div class="row">
 			<div class="col-xs-4">
@@ -77,23 +78,23 @@
 			</div>
 			<div class="col-xs-4">
 				<div class="form-group">
-					<label class="control-label" for="">Évaluations anonymes</label>
-					<div class="radio-group">
-						<input name="comments_anonymous" id="comments_anonymous1" value="1" <%= comments_anonymous ? 'checked="checked"' : '' %> type="radio">
-						<label for="comments_anonymous1">Oui</label>
-						<input name="comments_anonymous" id="comments_anonymous0" value="0" <%= !comments_anonymous ? 'checked="checked"' : '' %> type="radio">
-						<label for="comments_anonymous0">Non</label>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<div class="form-group">
 					<label class="control-label" for="">Publication immédiate</label>
 					<div class="radio-group">
 						<input name="comments_autopublish" id="comments_autopublish1" value="1" <%= comments_autopublish ? 'checked="checked"' : '' %> type="radio">
 						<label for="comments_autopublish1">Oui</label>
 						<input name="comments_autopublish" id="comments_autopublish0" value="0" <%= !comments_autopublish ? 'checked="checked"' : '' %> type="radio">
 						<label for="comments_autopublish0">Non</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="form-group">
+					<label class="control-label" for="">Identification requise</label>
+					<div class="radio-group">
+						<input name="comments_anonymous" id="comments_anonymous0" value="0" <%= !comments_anonymous ? 'checked="checked"' : '' %> type="radio">
+						<label for="comments_anonymous0">Oui</label>
+						<input name="comments_anonymous" id="comments_anonymous1" value="1" <%= comments_anonymous ? 'checked="checked"' : '' %> type="radio">
+						<label for="comments_anonymous1">Non</label>
 					</div>
 				</div>
 			</div>

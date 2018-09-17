@@ -265,14 +265,14 @@ module.exports = Marionette.View.extend({
 			if (t.type == 'customer') {
 				allow_customers.push(t.value);
 			} else {
-				allow_groups.push(t.value)
+				allow_groups.push(t.value);
 			}
 		});
 		_.each(this.getChildView('denied_customers').getTags(), function(t) {
 			if (t.type == 'customer') {
 				deny_customers.push(t.value);
 			} else {
-				deny_groups.push(t.value)
+				deny_groups.push(t.value);
 			}
 		});
 
@@ -281,14 +281,14 @@ module.exports = Marionette.View.extend({
 				if (t.type == 'product') {
 					allow_products.push(t.value);
 				} else {
-					allow_categories.push(t.value)
+					allow_categories.push(t.value);
 				}
 			});
 			_.each(this.getChildView('denied_products').getTags(), function(t) {
 				if (t.type == 'product') {
 					deny_products.push(t.value);
 				} else {
-					deny_categories.push(t.value)
+					deny_categories.push(t.value);
 				}
 			});
 		}

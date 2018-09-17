@@ -17,7 +17,8 @@ module.exports = Marionette.View.extend({
 		'allow_login',
 		'validation',
 		'default_group_id',
-		'terms'
+		'terms',
+		'processing_purposes'
 	],
 
 	regions: {

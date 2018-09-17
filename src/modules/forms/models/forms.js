@@ -34,7 +34,10 @@ var Form = Backbone.Model.extend({
 		"replies_unread_count": 0,
 		"creation_date": "",
 		"modification_date": "",
-		"form_key": ""
+		"form_key": "",
+		"processing_purposes": "",
+		is_consent_required: false
+
 	}
 });
 
@@ -67,7 +70,6 @@ module.exports = Backbone.Collection.extend({
 				collector.push({
 					'value': model.get('form_id'),
 					'label': model.get('name'),
-					// 'indent': 0,
 					'selected': selected && model.get('form_id') == selected
 				});
 			});

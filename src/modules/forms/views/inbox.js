@@ -6,6 +6,8 @@ var format = require('kiubi/utils/format.js');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 
+var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 var DetailView = Marionette.View.extend({
 	template: require('../templates/inbox.detail.html'),
 	className: 'post-content answer-detail',
@@ -14,6 +16,7 @@ var DetailView = Marionette.View.extend({
 		return {
 			'response_id': this.model ? this.model.get('response_id') : '',
 			creation_date: format.formatDateTime(this.model.get('creation_date')),
+			convertMediaPath: Session.convertMediaPath.bind(Session),
 			nl2br: function(text) {
 				return _.escape('' + text).replace(/(\r\n|\n\r|\r|\n)+/g, '<br />');
 			}
@@ -88,13 +91,15 @@ module.exports = Marionette.View.extend({
 	},
 
 	detailView: null,
-	filters: {
-		'id': null,
-		'u': null // [null,1] => all, only unread
-	},
+	filters: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['collection', 'filters']);
+		this.mergeOptions(options, ['collection']);
+
+		this.filters = {
+			'id': null,
+			'is_read': null
+		};
 
 		this.empty = new this.collection.model();
 
@@ -117,11 +122,22 @@ module.exports = Marionette.View.extend({
 
 	onRender: function() {
 
-		var c = new CollectionUtils.SelectCollection();
-		c.add({
+		var c_state = new CollectionUtils.SelectCollection();
+		c_state.add([{
+			'value': 'read',
+			'label': 'Lues',
+			'selected': this.filters.is_read == 1
+		}, {
 			'value': 'unread',
 			'label': 'Non-lues',
-			'selected': this.filters.u == 1
+			'selected': this.filters.is_read == 0
+		}]);
+
+		var c_export = new CollectionUtils.SelectCollection();
+		c_export.add({
+			'value': 'export',
+			'label': 'Exporter les réponses',
+			'selected': false
 		});
 
 		this.showChildView('list', new ListView({
@@ -145,26 +161,33 @@ module.exports = Marionette.View.extend({
 				confirm: true
 			}],
 			filters: [{
-				selectExtraClassname: 'select-category',
+				extraClassname: 'select-category',
 				title: 'Tous les formulaires',
 				collectionPromise: this.getOption('forms').promisedSelect(this.filters.id)
 			}, {
-				selectExtraClassname: 'select-state',
-				title: 'États',
-				collection: c
+				extraClassname: 'select-state',
+				title: 'Tous les états',
+				collectionPromise: c_state
+			}, {
+				extraClassname: 'md-export',
+				type: 'button',
+				collectionPromise: c_export
 			}]
 		}));
 	},
 
 	start: function() {
+		var data = {
+			form_id: this.filters.id,
+			extra_fields: 'forms'
+		};
+		if (this.filters.is_read != null) {
+			data.is_read = this.filters.is_read;
+		}
+
 		this.collection.fetch({
-			data: {
-				form_id: this.filters.id,
-				unread_only: this.filters.u == '1' ? 1 : null,
-				extra_fields: 'forms'
-			}
-		}, {
-			reset: true
+			reset: true,
+			data: data
 		});
 	},
 
@@ -186,6 +209,54 @@ module.exports = Marionette.View.extend({
 			this.filters.id = filter.value == '' ? null : filter.value;
 		} else if (filter.index == 1) {
 			this.filters.u = filter.value == 'unread' ? '1' : null;
+		} else if (filter.index == 2) {
+			if (!filter.view) return;
+			var view = filter.view;
+
+			if (filter.value == 'export') {
+
+				if (view.collection.length > 1) {
+					return;
+				}
+
+				if (!this.filters.id) {
+					var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+					navigationController.showErrorModal('Veuillez choisir un formulaire');
+					return;
+				}
+
+				view.overrideExtraClassname('md-loading');
+				view.render();
+				this.collection.exportAll({
+					form_id: this.filters.id
+				}).done(function(data) {
+					view.overrideExtraClassname('');
+					view.collection.add([{
+						value: null,
+						label: '---'
+					}, {
+						value: data.url,
+						label: 'Télécharger le fichier',
+						extraClassname: 'md-export'
+					}]);
+					view.toggleDropdown(); // open
+				}.bind(this)).fail(function(xhr) {
+					var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+					navigationController.showErrorModal(xhr);
+
+					view.overrideExtraClassname('');
+					while (view.collection.length > 1) {
+						view.collection.pop();
+					}
+				}.bind(this));
+
+			} else {
+				view.toggleDropdown(); // close
+				view.overrideExtraClassname('');
+				while (view.collection.length > 1) {
+					view.collection.pop();
+				}
+			}
 		}
 
 		this.start();

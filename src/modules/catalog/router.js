@@ -186,6 +186,8 @@ var CatalogController = Controller.extend({
 				var c = new Products();
 				var view = new ProductsView({
 					collection: c,
+					categories: new Categories(),
+					tags: new Tags(),
 					category_id: category_id ? category_id : null
 				});
 				this.navigationController.showContent(view);

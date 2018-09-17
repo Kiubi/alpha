@@ -18,7 +18,9 @@ module.exports = Marionette.View.extend({
 		'recipient',
 		'subject',
 		'copy_to_sender',
-		'message'
+		'message',
+		'processing_purposes',
+		'is_consent_required'
 	],
 
 	onSave: function() {

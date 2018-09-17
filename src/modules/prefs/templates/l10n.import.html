@@ -1,0 +1,67 @@
+<% if(step == 0) { %>
+
+<form>
+
+	<div class="alert alert-warning" role="alert">
+		<a href="https://aide.kiubi.com/documentation/gestion-des-traductions.html" class="md-icon md-help pull-right" target="_blank"></a>
+		Vous pouvez <strong>importer des traductions</strong> pour modifier les messages générés automatiquement par Kiubi.
+		Nous vous encourageons avant tout import de traductions de <a href="https://aide.kiubi.com/documentation/gestion-des-traductions.html" target="_blank">consulter la documentation
+		en ligne</a> et à <a href="/modules/backups" target="_blank">réaliser un point de sauvegarde</a>.
+	</div>
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Paramètres d'import</h1>
+		</header>
+		<div class="post-content">
+			<div class="form-group">
+				<label class="control-label" for="file">Fichier d'import</label>
+
+				<p>Vous pouvez télécharger un exemple de modèle de fichier de traduction
+					(<a href="#TODO" target="_blank">FR</a> ou
+					<a href="#TODO" target="_blank">EN</a>)
+					pour vous aider à préparer votre propre fichier.
+				</p>
+				<input name="file" id="file" type="file">
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-action pull-right" data-role="save">Importer</button>
+	</div>
+</div>
+
+<% } else { %>
+
+	<% if (report.errors && report.errors.length > 0) { %>
+	<div class="alert alert-danger">
+		<strong>L'import n'a pas été réalisé</strong>, il y a des erreurs dans le fichier.<br/><br/>
+		<ul>
+			<% _.each(report.errors, function(msg){ %>
+			<li><%= msg %></li>
+			<% }); %>
+		</ul>
+	</div>
+	<% } else { %>
+	<div class="alert alert-success">
+		<strong>Import réussi</strong>, les traductions ont été correctement importées !
+	</div>
+	<% } %>
+
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-cancel" data-role="cancel">Retour</button>
+	</div>
+</div>
+
+<% } %>
+
+<footer class="footer"></footer>

@@ -1,0 +1,14 @@
+<button type="button" title="<%- title %>" class="btn btn-icon md-icon <%= collection.length ? 'dropdown-toggle' : '' %> <%- extraClassname %>" <%= collection.length ? 'data-toggle="dropdown"' : '' %> aria-haspopup="true" aria-expanded="false"></button>
+<% if(collection.length) { %>
+<ul class="dropdown-menu dropdown-control">
+	<% _(collection).each(function(option){ %>
+		<% if (option.label == '---')  { %>
+			<li role="separator" class="divider"></li>
+		<% } else { %>
+			<li class="<%= option.selected ? 'active' : '' %>"><a data-value="<%- option.value %>"
+			<% if(option.value.match(/^http/)) { %>href="<%= option.value %>" target="_blank"<% } else { %>href="#" <% } %>
+			><% if (option.extraClassname) { %><span class="md-icon <%- option.extraClassname %> pull-right"></span><% } %><%- option.label %></a></li>
+		<% } %>
+	<%}) %>
+</ul>
+<% } %>

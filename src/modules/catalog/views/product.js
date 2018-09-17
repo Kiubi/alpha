@@ -497,6 +497,12 @@ var ImageRowView = Marionette.View.extend({
 
 });
 
+var EmptyImageRowView = Marionette.View.extend({
+	template: _.template(
+		'<div class="list-item-empty">Ce produit n\'a pas d\'illustration...</div>'
+	)
+});
+
 var ImagesView = Marionette.View.extend({
 	template: require('../templates/product.images.html'),
 	className: 'post-article',
@@ -526,7 +532,8 @@ var ImagesView = Marionette.View.extend({
 		this.showChildView('list', new Marionette.CollectionView({
 			className: 'btn-group',
 			collection: this.collection,
-			childView: ImageRowView
+			childView: ImageRowView,
+			emptyView: EmptyImageRowView
 		}));
 
 		this.showChildView('add', new FileSelectorView());

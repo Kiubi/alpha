@@ -120,7 +120,6 @@ module.exports = Backbone.Model.extend({
 					collector.push({
 						'value': type.type,
 						'label': type.name,
-						'indent': null,
 						'selected': selected && type.type == selected
 					});
 				});

@@ -9,12 +9,15 @@
 			</div>
 			<div class="media-body">
 				<h4><%- name %></h4>
-				<% if(reference) { %>Réf. : <%- reference %><% } %>
+				<% if(reference) { %>Réf.&nbsp;:&nbsp;<%- reference %><% } %>
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-2"><%- current_price_ex_vat_label%>HT<br/>
-		<%- current_price_inc_vat_label%>TTC
+	<div class="col-xs-2">
+		<span class="price">
+			<%- current_price_ex_vat_label%>HT<br/>
+			<%- current_price_inc_vat_label%>TTC
+		</span>
 	</div>
 	<div class="col-xs-2">
 		<% if(is_stock_unlimited) { %>
@@ -25,7 +28,7 @@
 	</div>
 	<div class="col-xs-3">
 		<div class="btn-group pull-right" role="group"> <a class="btn btn-option" href="#" role="button" data-role="action" data-action="editRow">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> </button>
 			<ul class="dropdown-menu dropdown-menu-right">
 				<li><a href="#" data-role="action" data-action="duplicateRow">Dupliquer</a></li>
 				<li><a href="#" data-role="action" data-action="deleteRow" data-confirm="warning">Supprimer</a></li>

@@ -26,7 +26,7 @@ var SidebarMenuView = Marionette.View.extend({
 
 	templateContext: function() {
 		var c = this.forms.reduce(function(memo, model) {
-			return memo + model.get('replies_unread_count')
+			return memo + model.get('replies_unread_count');
 		}, 0);
 
 		return {

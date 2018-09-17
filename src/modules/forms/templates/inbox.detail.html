@@ -7,14 +7,22 @@
 	<% _.each(fields, function(field){ %>
 	<div class="form-group">
 		<label class="control-label"><%- field.name %></label>
-		<p><%= nl2br(field.value) %></p>
+		<p class="form-control-static">
+      <% if(field.value && field.type == 'text') { %>
+        <%= nl2br(field.value) %>
+	  <% } else if(field.value && field.type == 'file') { %>
+			<a target="_blank" href="<%= convertMediaPath('/media/multiform/'+field.value.media_id+'.'+field.value.ext) %>"><%- field.value.name %></a>
+      <% } else { %>
+        <em class="text-muted">Non renseigné</em>
+      <% } %>
+    </p>
 	</div>
 	<% }) %>
 
     <div class="form-group">
       <label class="control-label">IP | Host</label>
-      <p><%- ip %> | <%- reverse_host %></p>
+      <p class="form-control-static"><%- ip %> | <%- reverse_host %></p>
     </div>
 <% } else { %>
-	
+
 <% } %>

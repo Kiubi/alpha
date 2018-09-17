@@ -2,7 +2,6 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var _ = require('underscore');
-var _string = require('underscore.string');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 

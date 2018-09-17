@@ -67,7 +67,7 @@ module.exports = Backbone.Collection.extend({
 	 */
 	promisedSelect: function(options, selected) {
 
-		var options = _.extend({
+		options = _.extend({
 			'exclude_pickup': false
 		}, options);
 

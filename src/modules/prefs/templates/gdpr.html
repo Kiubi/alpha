@@ -1,0 +1,262 @@
+<form>
+
+  <div class="alert alert-warning" role="alert">
+    Le "<a href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees" target="_blank">Réglement
+      Général sur la Protection des Données personnelles (RGPD)</a>"
+      impose à toute personne morale le respect des principes et des règles régissant
+      la protection des personnes physiques à l'égard du <strong>traitement des données à caractère personnel</strong>.
+      <br/><br/>
+      Vous trouverez ci-dessous des informations et des procédures afin d'appliquer à
+      ce site Internet cette réglementation européenne. Les procédures proposées le sont <strong>à titre indicatif
+        et concernent uniquement les données personnelles collectées par Kiubi</strong>.
+        Elles doivent être adaptées par vos soins en fonction de votre activité et de l'évolution de la législation.
+        <br/><br/>
+        <strong class="text-danger">Important :</strong> Si vous utilisez un thème graphique personnalisé
+        vous devez mettre à jour votre thème en vous reportant à <a href="https://aide.kiubi.com/les-patch-pour-vos-themes.html" target="_blank">la release note correspondante</a>
+        et <a href="https://rgpd.kiubi-web.com/" target="_blank">au site de démonstration</a>
+        dédiés.
+      </div>
+
+      <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+      <article class="post-article">
+        <header class="post-header">
+          <h1>Engagements pris pour la protection des données personnelles</h1>
+        </header>
+        <div class="post-content">
+          <p>
+            Il est obligatoire d'indiquer dans <strong>une page web dédiée et publiquement
+              accessible</strong> les engagements que vous avez pris pour la protection des données personnelles,
+              en y précisant notamment :
+            </p>
+            <ul>
+              <li>Le responsable des traitements</li>
+              <li>Les finalités de traitements</li>
+              <li>Les données personnelles collectées</li>
+              <li>La durée de conservation des données</li>
+              <li>Les destinataires</li>
+              <li>La procédure de retrait de consentement</li>
+              <li>La procédure d'application du droit d'accès aux données</li>
+            </ul>
+
+            <p>
+              Les engagements pris pour la protection des données personnelles indiqués dans cette
+              page web concernent non seulement ce site Internet mais également l'ensemble des services de votre société,
+              de vos filiales, de vos sous-traitants, etc. ayant accès aux données personnelles collectées.
+            </p>
+
+            <p>
+              Exemple : si des adresses emails collectées via ce site sont transmises à
+              une plateforme de gestion commerciale et utilisées dans le cadre d'opérations marketing,
+              il est obligatoire d'inclure dans vos engagements toutes les informations concernant
+              cette finalité de traitements ainsi que toutes les informations sur leurs destinataires
+              (c'est-à-dire les coordonnées de la plateforme de gestion commerciale ainsi
+              que tous autres tiers et sous-traitants concernés).
+            </p>
+
+            <p>
+              Kiubi met à votre disposition une page web dédiée aux engagements pris pour la
+              protection des données personnelles. Cette page web est à <strong>compléter et modifier
+                par vos soins</strong> en fonction de votre activité, de vos sous-traitants et de l'évolution de la législation.
+              </p>
+
+              <p>
+                Si vous ne disposez pas encore d'une page web dédiée aux engagements pris pour
+                la protection des données personnelles, vous devez <a href="/cms">la créer</a> en lui donnant comme
+                adresse <code>/donnees-personnelles.html</code>. Vous pouvez en consulter et en télécharger
+                un exemple aux adresses suivantes :
+              </p>
+
+              <ul>
+                <li>Exemple de <a href="https://rgpd.kiubi-web.com/donnees-personnelles.html" target="_blank">page web</a></li>
+                <li>Exemple de <a href="https://cdn.kiubi-admin.com/documents/contenu_page_donnees_personnelles.xls" target="_blank">contenu à télécharger</a> pour y être <a href="/modules/import/posts">importé dans votre site</a>
+                </li>
+              </ul>
+            </div>
+            <footer class="post-footer"></footer>
+          </article>
+
+          <article class="post-article">
+            <header class="post-header">
+              <h1>Finalités de traitements et Consentement préalable</h1>
+            </header>
+            <div class="post-content">
+              <p>
+                À chaque fois que des données personnelles sont collectées,
+                il est obligatoire de faire figurer au moment de leur collecte :
+              </p>
+
+              <ol>
+                <li>Une demande de consentement préalable, c'est-à-dire une case à cocher (ou tout autre processus)
+                  qui valide l'utilisation des données personnelles collectées.
+                  Si la case n'est pas cochée par l'internaute, les données ne peuvent être collectées</li>
+                  <li>Les finalités de traitements des données collectées</li>
+                  <li>Un lien vers la page web dédiée aux engagements pris pour la protection des données personnelles</li>
+                </ol>
+                <p>
+                  Ces éléments doivent être présents directement dans les templates des widgets correspondants. Vous pouvez alors activer la demande de consentement préalable :
+                </p>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Création de compte d'un membre (Inscription au site)</label>
+                  <p>
+                    Le texte précisant les données personnelles collectées
+                    à la création d'un compte d'un membre et leurs finalités de traitements peut être personnalisé dans <a href="/customers/settings">les paramètres des membres</a>.
+                    Ce texte, ainsi que la demande de consentement, doivent obligatoirement être
+                    placés dans une zone clairement distincte de la validation de conditions d'utilisation du site.
+                  </p>
+                  <div class="radio-group">
+                    <input name="is_customers_consent_required" id="is_customers_consent_required1" value="1" type="radio" <%= (is_customers_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_customers_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
+                    <input name="is_customers_consent_required" id="is_customers_consent_required0" value="0" type="radio" <%= (!is_customers_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_customers_consent_required0" class="not-visible">Désactiver le consentement préalable</label>
+                  </div>
+                </div>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Poster un commentaire dans le blog</label>
+                  <div class="radio-group">
+                    <input name="is_comments_consent_required" id="is_comments_consent_required1" value="1" type="radio" <%= (is_comments_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_comments_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
+                    <input name="is_comments_consent_required" id="is_comments_consent_required0" value="0" type="radio" <%= (!is_comments_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_comments_consent_required0" class="not-visible">Désactiver le consentement préalable</label>
+                  </div>
+                </div>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Poster une évaluation de produit</label>
+                  <div class="radio-group">
+                    <input name="is_evaluations_consent_required" id="is_evaluations_consent_required1" value="1" type="radio" <%= (is_evaluations_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_evaluations_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
+                    <input name="is_evaluations_consent_required" id="is_evaluations_consent_required0" value="0" type="radio" <%= (!is_evaluations_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_evaluations_consent_required0" class="not-visible">Désactiver le consentement préalable</label>
+                  </div>
+                </div>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Inscription à la newsletter</label>
+                  <div class="radio-group">
+                    <input name="is_newsletter_consent_required" id="is_newsletter_consent_required1" value="1" type="radio" <%= (is_newsletter_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_newsletter_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
+                    <input name="is_newsletter_consent_required" id="is_newsletter_consent_required0" value="0" type="radio" <%= (!is_newsletter_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_newsletter_consent_required0" class="not-visible">Désactiver le consentement préalable</label>
+                  </div>
+                </div>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Choix de l'adresse de livraison d'une commande</label>
+                  <div class="radio-group">
+                    <input name="is_checkout_consent_required" id="is_checkout_consent_required1" value="1" type="radio"<%= (is_checkout_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_checkout_consent_required1" class="visible">Activer le consentement préalable (recommandé)</label>
+                    <input name="is_checkout_consent_required" id="is_checkout_consent_required0" value="0" type="radio"<%= (!is_checkout_consent_required) ? 'checked="checked"' : '' %>>
+                    <label for="is_checkout_consent_required0" class="not-visible">Désactiver le consentement préalable</label>
+                  </div>
+                </div>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Formulaires Dismoi? (Gestionnaire de formulaires)</label>
+                  <p class="form-control-static">
+                    Les finalités de traitements et le consentement préalable sont propres à chaque
+                    formulaire et doivent être configurés dans les paramètres du formulaire en question.
+                  </p>
+                </div>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Gestion du compte d'un membre</label>
+                  <p class="form-control-static">
+                    La demande de consentement ayant été faite à l'inscription au site,
+                    elle n'est plus nécessaire dans la gestion du compte du membre.
+                  </p>
+                </div>
+
+
+              </div>
+              <footer class="post-footer"></footer>
+            </article>
+
+            <article class="post-article">
+              <header class="post-header">
+                <h1>Procédure de retrait de consentement et Droit d'accès aux données</h1>
+              </header>
+              <div class="post-content">
+                <p>
+                  Kiubi ne collecte que le minimum de données nécessaires au bon fonctionnement
+                  du service fourni par le site Internet (principe de minimisation de la collecte de données).
+                  Le RGPD impose cependant de permettre à un internaute de
+                  <a href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article21" target="_blank">retirer son consentement</a>
+                  à l'utilisation de ses données personnelles ainsi
+                  qu'<a href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article15" target="_blank">un droit d'accès</a>
+                  et de <a href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article16" target="_blank">rectification de ses données</a>.
+                </p>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Gestion du compte d'un membre</label>
+                  <p class="form-control-static">
+                    Un membre inscrit peut mettre à jour ou supprimer librement les données non obligatoires à la
+                    bonne marche du service proposé par le site directement en se connectant à son compte. Les commandes qu'un membre a passé sur le site
+                    sont librement téléchargeables dans la gestion de son compte.
+                  </p>
+                </div>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Suppression du compte d'un membre</label>
+                  <p class="form-control-static">
+                    Si un membre inscrit souhaite retirer l'ensemble de son consentement, il peut supprimer son compte.
+                    Cela supprimera toutes ses informations personnelles ainsi que tous les commentaires postés en étant identifié sur le site.
+                    Ses commandes seront cependant conservées.
+                    Le propriétaire du site est averti par email que le compte a été supprimé de Kiubi
+                    et est invité à supprimer toutes autres informations concernant ce membre.
+                  </p>
+                </div>
+                <div class="form-group post-group">
+                  <label class="control-label">Portabilités des données personnelles</label>
+                  <p class="form-control-static">
+                    Toutes les données personnelles peuvent être supprimées et exportées dans
+                    des fichiers au format CSV ou Excel dans les différents services de la console d'adminstration
+                    (<a href="/customers">membres</a>, <a href="/checkout">commandes</a>,
+                    <a href="/modules/subscribers">abonnés à la newsletter</a> et <a href="/forms/inbox">Dismoi?</a>).
+                  </p>
+                </div>
+
+                <div class="form-group post-group">
+                  <label class="control-label">Chiffrage des mots de passe des membres</label>
+                  <p class="form-control-static">
+                    Les mots de passe des membres sont chiffrés et ne peuvent ni être lus en clair ni être transmis (principe de sécurité).
+                    La demande de renvoi de mot de passe génère automatiquement un nouveau mot de passe temporaire.
+                    À la connexion du membre dans le laps de temps imparti, ce nouveau mot de passe remplace
+                    le précédent et le membre est redirigé vers le formulaire de changement de mot de passe pour en choisir un nouveau, s'il le souhaite.
+                  </p>
+                </div>
+
+              </div>
+              <footer class="post-footer"></footer>
+            </article>
+
+            <article class="post-article">
+              <header class="post-header">
+                <h1>Demande de confirmation du consentement </h1>
+              </header>
+              <div class="post-content">
+                <p>
+                  Tous les membres inscrits sur le site Internet <strong>avant la mise en place de la demande de consentement</strong>
+                  au moment de leur inscription au site doivent être contactés afin qu'ils autorisent l'utilisation de leurs données personnelles.
+                  Il est conseillé de réaliser un emailling vers tous les membres du site concernés pour les inviter à :
+                </p>
+                <ul>
+                  <li>Consulter la page web dédiée aux engagements pris pour la protection des données personnelles</li>
+                  <li>Se connecter à leur compte pour mettre à jour leurs informations personnelles</li>
+                  <li>Ou supprimer leur compte si ils souhaitent retirer l'ensemble de leur consentement</li>
+                </ul>
+              </div>
+              <footer class="post-footer"></footer>
+            </article>
+
+          </form>
+
+          <div class="save">
+            <div class="btn-toolbar" role="toolbar">
+              <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+            </div>
+          </div>
+
+          <footer class="footer"> </footer>

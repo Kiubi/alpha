@@ -245,6 +245,16 @@ var Session = Backbone.Model.extend({
 		}
 
 		return path;
+	},
+
+	/**
+	 * Convert path to allow rendering in browser
+	 *
+	 * @param {String} path. Ex : /themes/theme/illustration.jpg
+	 * @returns {String}
+	 */
+	convertThemePath: function(path) {
+		return 'https://' + this.site.get('backoffice') + path + '?sign=' + this.hashMedia(path);
 	}
 
 });

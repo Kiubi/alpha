@@ -33,15 +33,17 @@ module.exports = Marionette.View.extend({
 	className: 'container-fluid',
 	service: 'blog',
 
-	initialize: function(options) {
-		this.mergeOptions(options, ['collection']);
-	},
-
 	regions: {
 		list: {
 			el: "article[data-role='list']",
 			replaceElement: true
 		}
+	},
+
+	sortOrder: '-publication',
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['collection']);
 	},
 
 	onRender: function() {
@@ -53,15 +55,11 @@ module.exports = Marionette.View.extend({
 			order: [{
 				title: 'Publication',
 				is_active: true,
-				data: {
-					sort: '-publication'
-				}
+				value: '-publication'
 			}, {
 				title: 'Modification',
 				is_active: false,
-				data: {
-					sort: '-modification'
-				}
+				value: '-modification'
 			}],
 			// TODO : filterModal: '#filtersblog',
 			selection: [{
@@ -76,7 +74,7 @@ module.exports = Marionette.View.extend({
 				confirm: true
 			}],
 			filters: [{
-				selectExtraClassname: 'select-category',
+				extraClassname: 'select-category',
 				title: 'Toutes les catégories',
 				collectionPromise: this.getOption('categories').promisedSelect(this.collection.category_id)
 			}]
@@ -84,7 +82,12 @@ module.exports = Marionette.View.extend({
 	},
 
 	start: function() {
-		this.collection.fetch();
+		this.collection.fetch({
+			reset: true,
+			data: {
+				sort: this.sortOrder ? this.sortOrder : null
+			}
+		});
 	},
 
 	showPosts: function(ids) {
@@ -108,7 +111,12 @@ module.exports = Marionette.View.extend({
 			if (this.collection.category_id == null) return;
 			this.collection.category_id = null;
 		}
-		this.collection.fetch();
+		this.start();
+	},
+
+	onChildviewChangeOrder: function(order) {
+		this.sortOrder = order;
+		this.start();
 	}
 
 });

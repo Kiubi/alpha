@@ -1,0 +1,38 @@
+<form>
+
+<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+<article class="post-article">
+  <header class="post-header">
+    <h1>Messages de confirmation</h1>
+  </header>
+  <div class="post-content">
+    <div class="form-group">
+      <label class="control-label" for="registration_success_msg">Si l'inscription est validée</label>
+      <input class="form-control" id="registration_success_msg" name="registration_success_msg" value="<%- registration_success_msg %>" placeholder="" type="text">
+    </div>
+	<div class="form-group">
+	  <label class="control-label" for="unregistration_success_msg">Si la désinscription est validée</label>
+	  <input class="form-control" id="unregistration_success_msg" name="unregistration_success_msg" value="<%- unregistration_success_msg %>" placeholder="" type="text">
+	</div>
+	<div class="form-group">
+	  <label class="control-label" for="registration_error_msg">Si l'abonné est déjà inscrit</label>
+	  <input class="form-control" id="registration_error_msg" name="registration_error_msg" value="<%- registration_error_msg %>" placeholder="" type="text">
+	</div>
+	<div class="form-group">
+	  <label class="control-label" for="unregistration_error_msg">Si l'abonné n'est pas encore inscrit</label>
+	  <input class="form-control" id="unregistration_error_msg" name="unregistration_error_msg" value="<%- unregistration_error_msg %>" placeholder="" type="text">
+	</div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+</form>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

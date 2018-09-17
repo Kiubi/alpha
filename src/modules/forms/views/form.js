@@ -197,17 +197,13 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	childViewEvents: {
-		'childview:sort:change': 'onChildViewSortChange'
-	},
-
 	initialize: function(options) {
-		this.mergeOptions(options, ['model']);
+		this.mergeOptions(options, ['model', 'fields']);
 	},
 
 	onRender: function() {
 		this.showChildView('list', new ListView({
-			collection: this.getOption('fields'),
+			collection: this.fields,
 			rowView: RowView,
 			newRowView: NewRowView,
 
@@ -232,7 +228,7 @@ module.exports = Marionette.View.extend({
 		});
 	},
 
-	onChildViewSortChange: function(data) {
+	onChildviewSortChange: function(data) {
 		this.fields.reOrder(data.list);
 	}
 

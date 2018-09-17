@@ -44,13 +44,12 @@ function selectify(selector, customOptions) {
 		_select.find('option, optgroup').each(function() {
 			var li;
 			var indent = Backbone.$(this).data('indent');
+			var indent_class = (indent != undefined && indent != null && indent != '') ? 'page-level-' + indent : '';
 			if (this.tagName == 'OPTGROUP') { // this.class == disabled
-				li = '<li ' + (indent != undefined ? 'class="page-level-' + indent + '"' : '') + '><span class="disabled">' +
-					this.label + '</span></li>';
+				li = '<li class="' + indent_class + '"><span class="disabled">' + this.label + '</span></li>';
 			} else {
-				li = '<li class="' + (indent != undefined ? 'page-level-' + indent + ' ' : '') + (option_index == select_index ?
-						'active' : '') + '"><a data-index="' + this.index +
-					'" href="#">' + $(this).text() + '</a></li>';
+				li = '<li class="' + indent_class + (option_index == select_index ? ' active' : '') + '"><a data-index="' +
+					this.index + '" href="#">' + $(this).text() + '</a></li>';
 				option_index++;
 			}
 			dropdown_menu.append(li);

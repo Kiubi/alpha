@@ -88,7 +88,7 @@ var RowView = Marionette.View.extend({
 });
 
 var ListView = Marionette.CollectionView.extend({
-	className: 'row',
+	className: 'row flex-row',
 	childView: RowView
 });
 

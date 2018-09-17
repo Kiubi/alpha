@@ -39,10 +39,13 @@ function getHeadersAction(options) {
 		});
 	}
 
-	if (options.addPage) {
+	if (options.addPageInMenu || options.addPage) {
+		var data = {};
+		if (options.addPageInMenu) data.menu_id = options.addPageInMenu;
+		if (options.addPage) data.page_parent_id = options.addPage;
 		actions.push({
 			title: 'Ajouter une page libre',
-			callback: ['actionNewPage', options.addPage] // menu_id
+			callback: ['actionNewPage', data]
 		});
 	}
 
@@ -235,8 +238,8 @@ var CMSController = Controller.extend({
 				title: m.get('name')
 			}, getHeadersAction({
 				preview: m,
-				addPost: m.get('page_id'),
-				addPage: m.get('menu_id')
+				addPost: m.get('page_id')
+				//addPageInMenu: m.get('menu_id')
 			}));
 			view.start();
 		}.bind(this)).fail(function() {
@@ -283,7 +286,7 @@ var CMSController = Controller.extend({
 			this.setHeader({
 				title: m.get('name')
 			}, getHeadersAction({
-				addPage: m.get('menu_id')
+				addPageInMenu: m.get('menu_id')
 			}));
 		}.bind(this)).fail(function() {
 			this.notFound();
@@ -348,9 +351,10 @@ var CMSController = Controller.extend({
 			this.setHeader({
 				title: m.get('name')
 			}, getHeadersAction({
-				preview: m,
+				preview: m.get('page_type') == 'page' ? m : false,
 				addPost: m.get('page_type') == 'page' ? m.get('page_id') : false,
-				addPage: m.get('menu_id')
+				addPage: m.get('page_parent_id') > 0 ? m.get('page_parent_id') : false,
+				addPageInMenu: m.get('page_parent_id') == 0 ? m.get('menu_id') : false
 			}));
 		}.bind(this)).fail(function() {
 			this.notFound();
@@ -360,37 +364,51 @@ var CMSController = Controller.extend({
 		}.bind(this));
 	},
 
-	actionNewPage: function(menu_id) {
-
-		var that = this;
-		var menu = new Menu({
-			menu_id: menu_id
+	actionNewPage: function(position) {
+		var m = new Page({
+			title: 'Intitulé par défaut',
+			slug: 'intitule-par-defaut',
+			is_visible: false,
+			page_type: 'page' //,
+			//menu_id: menu.get('menu_id')
 		});
 
-		return menu.fetch().then(function() {
+		var done = function() {
+			this.navigationController.showOverlay(300);
+			this.navigationController.navigate('/cms/pages/' + m.get('page_id'));
+			this.triggerSidebarMenu('refresh:menus');
+		}.bind(this);
 
-			var m = new Page({
-				title: 'Intitulé par défaut',
-				slug: 'intitule-par-defaut',
-				is_visible: false,
-				page_type: 'page',
-				menu_id: menu.get('menu_id')
+		var fail = function(xhr) {
+			this.navigationController.showErrorModal(xhr);
+		}.bind(this);
+
+		if (position.menu_id) {
+			var menu = new Menu({
+				menu_id: position.menu_id
 			});
 
-			return m.save().done(function() {
-				that.navigationController.showOverlay(300);
-				that.navigationController.navigate('/cms/pages/' + m.get('page_id'));
-				that.triggerSidebarMenu('refresh:menus');
-			}).fail(function(xhr) {
-				that.navigationController.showErrorModal(xhr);
-			});
+			return menu.fetch().then(function() {
+				m.set('menu_id', menu.get('menu_id'));
+				return m.save().done(done).fail(fail);
+			}, fail);
+		}
+
+		var parent = new Page({
+			page_id: position.page_parent_id
 		});
+
+		return parent.fetch().then(function() {
+			m.set('page_parent_id', parent.get('page_id'));
+			return m.save().done(done).fail(fail);
+		}, fail);
+
 	},
 
-	actionNewInternalLink: function(menu_id) {
+	actionNewInternalLink: function(position) {
 		var that = this;
 		var menu = new Menu({
-			menu_id: menu_id
+			menu_id: position.menu_id
 		});
 
 		return menu.fetch().then(function() {
@@ -410,13 +428,15 @@ var CMSController = Controller.extend({
 			}).fail(function(xhr) {
 				that.navigationController.showErrorModal(xhr);
 			});
+		}, function(xhr) {
+			that.navigationController.showErrorModal(xhr);
 		});
 	},
 
-	actionNewExternalLink: function(menu_id) {
+	actionNewExternalLink: function(position) {
 		var that = this;
 		var menu = new Menu({
-			menu_id: menu_id
+			menu_id: position.menu_id
 		});
 
 		return menu.fetch().then(function() {
@@ -435,13 +455,15 @@ var CMSController = Controller.extend({
 			}).fail(function(xhr) {
 				that.navigationController.showErrorModal(xhr);
 			});
+		}, function(xhr) {
+			that.navigationController.showErrorModal(xhr);
 		});
 	},
 
-	actionNewSeparator: function(menu_id) {
+	actionNewSeparator: function(position) {
 		var that = this;
 		var menu = new Menu({
-			menu_id: menu_id
+			menu_id: position.menu_id
 		});
 
 		return menu.fetch().then(function() {
@@ -459,6 +481,8 @@ var CMSController = Controller.extend({
 			}).fail(function(xhr) {
 				that.navigationController.showErrorModal(xhr);
 			});
+		}, function(xhr) {
+			that.navigationController.showErrorModal(xhr);
 		});
 	},
 

@@ -1,176 +1,262 @@
-<form>
+<% if(step == 0) { %>
 
-  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+	<form>
+
+		<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+		<article class="post-article">
+			<header class="post-header">
+				<h1>Conditions préalables</h1>
+			</header>
+			<div class="post-content">
+				<p>Vous pouvez importer l’intégralité d’un site WordPress dans ce site Kiubi : pages, billets, catégories,
+					commentaires, médias,
+					tout le contenu est automatiquement analysé et ajouté à ce site Kiubi.
+				</p>
+
+				<p>Afin de correctement préparer l'import, vous devez :</p>
+				<ul>
+					<li>Soit vous rendre dans la console d'administration du site WordPress et télécharger
+						le fichier XML d'export disponible dans la rubrique Outils / Export (méthode recommandée)
+					</li>
+					<li>Soit vous munir de l'adresse Web du site WordPress ainsi que de son identifiant et de son mot de
+						passe administrateur
+					</li>
+					<li>Dans tous les cas, <a href="/modules/backups" target="_blank">réaliser préalablement un point de sauvegarde</a> du site
+						Internet.
+					</li>
+				</ul>
+				<p>L'import est limité à 3000 billets, 300 commentaires par billet, 30 catégories, 50 pages et 10 000
+					médias.
+					Le fichier XML d'export ne peut pas dépasser un poids de 7Mo et le format d'export WordPress doit être
+					en version 1.0, 1.1 ou 1.2.
+				</p>
+
+				<p>Pendant le processus d'import, le contenu du site WordPress n'est <strong>jamais modifié ou
+					altéré</strong> et les accès administrateurs ne sont <strong>jamais stockés ou communiqués</strong> à
+					un service tiers.
+				</p>
+
+				<p>L'import depuis WordPress est une fonctionnalité en béta qui n'est pas compatible avec toutes les
+					configurations de WordPress. Pour ces raisons, nous ne pouvons assurer de support en cas d'import
+					impossible ou incomplet.
+				</p>
+			</div>
+			<footer class="post-footer"></footer>
+		</article>
+
+		<article class="post-article">
+			<header class="post-header">
+				<h1>Source d'import</h1>
+			</header>
+			<div class="post-content">
+				<p>Deux sources différentes sont disponibles pour importer le contenu d'un site WordPress dans ce site
+					Kiubi. Vous devez utiliser un des deux sources, au choix :</p>
+
+				<div class="form-group">
+					<label class="control-label" for="file">Source 1 : fichier XML d'export du site WordPress (recommandé)</label>
+					<input name="file" id="file" type="file">
+				</div>
+				<hr/>
+				<div class="form-group">
+					<label class="control-label" for="url">Source 2 : accéder directement au site WordPress</label>
+					<input class="form-control" id="url" name="url" value="" placeholder="Adresse du site WordPress de la forme https://www.mon-site-wordpress.com" type="text">
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label" for="login">Identifiant administrateur</label>
+							<input class="form-control" id="login" name="login" value="" placeholder="" type="text">
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label" for="password">Mot de passe administrateur</label>
+							<input class="form-control" id="password" name="password" value="" placeholder="" type="password">
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="post-footer"></footer>
+		</article>
 
 
-  <article class="post-article">
-    <header class="post-header">
-      <h1>Conditions préalables</h1>
-    </header>
-    <div class="post-content">
-      <p>Vous pouvez importer l’intégralité d’un site WordPress dans ce site Kiubi : pages, billets, catégories, commentaires, médias,
-        tout le contenu est automatiquement analysé et ajouté à ce site Kiubi.
-      </p>
-      <p>Afin de correctement préparer l'import, vous devez :</p>
-      <ul>
-        <li>Soit vous rendre dans la console d'administration du site WordPress et télécharger
-          le fichier XML d'export disponible dans la rubrique Outils / Export (méthode recommandée)
-        </li>
-        <li>Soit vous munir de l'adresse Web du site WordPress ainsi que de son identifiant et de son mot de passe administrateur
-        </li>
-        <li>Dans tous les cas, <a href="#"
-          target="_blank" >réaliser préalablement un point de sauvegarde</a> du site Internet.
-        </li>
-      </ul>
-      <p>L'import est limité à 3000 billets, 300 commentaires par billet, 30 catégories, 50 pages et 10 000 médias.
-        Le fichier XML d'export ne peut pas dépasser un poids de 7Mo et le format d'export WordPress doit être en version 1.0, 1.1 ou 1.2.
-      </p>
-      <p>Pendant le processus d'import, le contenu du site WordPress n'est <strong>jamais modifié ou altéré</strong>
-        et les accès administrateurs ne sont <strong>jamais stockés ou communiqués</strong> à un service tiers.
-      </p>
-      <p>L'import depuis WordPress est une fonctionnalité en béta qui n'est pas compatible avec toutes les configurations de WordPress.
-        Pour ces raisons, nous ne pouvons assurer de support en cas d'import impossible ou incomplet.
-      </p>
-    </div>
-    <footer class="post-footer"></footer>
-  </article>
+		<article class="post-article">
+			<header class="post-header">
+				<h1>Paramètres d'import</h1>
+			</header>
+			<div class="post-content">
 
-  <article class="post-article">
-    <header class="post-header">
-      <h1>Source d'import</h1>
-    </header>
-    <div class="post-content">
-      <p>Deux sources différentes sont disponibles pour importer le contenu d'un site WordPress dans ce site Kiubi. Vous devez utiliser un des deux sources, au choix :</p>
-      <div class="form-group">
-        <label class="control-label" for="UA">Source 1 : fichier XML d'export du site WordPress (recommandé)</label>
-        <input name="f" id="f" type="file">
-      </div>
-      <hr/>
-      <div class="form-group">
-        <label class="control-label" for="meta_title">Source 2 : accéder directement au site WordPress</label>
-        <input class="form-control" id="meta_title" name="meta_title" value="" placeholder="Adresse du site WordPress de la forme https://www.mon-site-wordpress.com" type="text">
-      </div>
-      <div class="row">
-        <div class="col-xs-6">
-          <div class="form-group">
-            <label class="control-label" for="meta_title">Identifiant administrateur</label>
-            <input class="form-control" id="meta_title" name="meta_title" value="" placeholder="" type="text">
-          </div>
-        </div><div class="col-xs-6">
-          <div class="form-group">
-            <label class="control-label" for="meta_title">Mot de passe administrateur</label>
-            <input class="form-control" id="meta_title" name="meta_title" value="" placeholder="" type="password">
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="post-footer"></footer>
-  </article>
+				<div class="form-group">
+					<label class="control-label">Importer les médias</label>
+
+					<div class="radio-group">
+						<input name="import_media" id="import_media1" value="1" type="radio" checked="checked">
+						<label for="import_media1" class="">Oui</label>
+						<input name="import_media" id="import_media0" value="0" type="radio">
+						<label for="import_media0" class="">Non</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Importer les pages</label>
+
+					<div class="radio-group">
+						<input name="import_pages" id="import_pages1" value="1" type="radio" checked="checked">
+						<label for="import_pages1" class="">Oui</label>
+						<input name="import_pages" id="import_pages0" value="0" type="radio">
+						<label for="import_pages0" class="">Non</label>
+					</div>
+				</div>
+				<!--<div class="form-group has-feedback">
+					<label for="type" class="control-label">Correspondance avec l'auteur</label>
+
+					<div class="row">
+						<div class="col-xs-6">
+							<select class="form-control" id="type" name="type">
+								<option value="post_simple">Marc BEYER</option>
+								<option value="post_img_left">Sébastien BRAUN</option>
+							</select>
+
+							<div class="form-control-feedback md-feedback md-select"></div>
+						</div>
+					</div>
+				</div>-->
+				<div class="form-group">
+					<label for="type" class="control-label">Type de billet par défaut</label>
+
+					<div class="row">
+						<div class="col-xs-6">
+
+							<div data-role="type"></div>
+
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="type" class="control-label">Correspondance de la taille des images miniatures</label>
+
+					<div class="row">
+						<div class="col-xs-6">
+							<select class="form-control" id="thumbnail" name="thumbnail" data-style="selectify">
+								<option value="miniature">Miniature</option>
+								<option value="g_miniature" selected="selected">Grande miniature</option>
+								<option value="vignette">Vignette</option>
+								<option value="g_vignette">Grande vignette</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="medium" class="control-label">Correspondance de la taille des images moyennes</label>
+
+					<div class="row">
+						<div class="col-xs-6">
+							<select class="form-control" id="medium" name="medium" data-style="selectify">
+								<option value="miniature">Miniature</option>
+								<option value="g_miniature">Grande miniature</option>
+								<option value="vignette" selected="selected">Vignette</option>
+								<option value="g_vignette">Grande vignette</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="large" class="control-label">Correspondance de la taille des grandes images</label>
+
+					<div class="row">
+						<div class="col-xs-6">
+							<select class="form-control" id="large" name="large" data-style="selectify" data-direction="up">
+								<option value="miniature">Miniature</option>
+								<option value="g_miniature">Grande miniature</option>
+								<option value="vignette">Vignette</option>
+								<option value="g_vignette" selected="selected">Grande vignette</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="post-footer"></footer>
+		</article>
+
+	</form>
 
 
-  <article class="post-article">
-    <header class="post-header">
-      <h1>Paramètres d'import</h1>
-    </header>
-    <div class="post-content">
+	<div class="save">
+		<div class="btn-toolbar" role="toolbar">
+			<button type="button" class="btn btn-action pull-right" data-role="save">Importer</button>
+		</div>
+	</div>
 
-      <div class="form-group">
-        <label class="control-label">Importer les médias</label>
-        <div class="radio-group">
-          <input name="is_enabled" id="is_enabled1" value="1" type="radio" checked="checked">
-          <label for="is_enabled1" class="">Oui</label>
-          <input name="is_enabled" id="is_enabled0" value="0" type="radio">
-          <label for="is_enabled0" class="">Non</label>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label">Importer les pages</label>
-        <div class="radio-group">
-          <input name="is_enabled" id="is_enabled1" value="1" type="radio" checked="checked">
-          <label for="is_enabled1" class="">Oui</label>
-          <input name="is_enabled" id="is_enabled0" value="0" type="radio">
-          <label for="is_enabled0" class="">Non</label>
-        </div>
-      </div>
-      <div class="form-group has-feedback">
-        <label for="type" class="control-label">Correspondance avec l'auteur</label>
-        <div class="row">
-          <div class="col-xs-6">
-            <select class="form-control" id="type" name="type">
-              <option value="post_simple">Marc BEYER</option>
-              <option value="post_img_left">Sébastien BRAUN</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group has-feedback">
-        <label for="type" class="control-label">Type de billet par défaut</label>
-        <div class="row">
-          <div class="col-xs-6">
-            <select class="form-control" id="type" name="type">
-              <option value="post_simple">Titres et texte</option>
-              <option value="post_img_left">Titres, texte et image (à gauche)</option>
-              <option value="post_img_right">Titres, texte et image (à droite)</option>
-              <option value="post_2_col">Titres et textes sur 2 colonnes</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group has-feedback">
-        <label for="type" class="control-label">Correspondance de la taille des images miniatures</label>
-        <div class="row">
-          <div class="col-xs-6">
-            <select class="form-control" id="type" name="type">
-              <option value="miniature">Miniature</option>
-              <option value="g_miniature" selected="selected">Grande miniature</option>
-              <option value="vignette">Vignette</option>
-              <option value="g_vignette">Grande vignette</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group has-feedback">
-        <label for="type" class="control-label">Correspondance de la taille des images moyennes</label>
-        <div class="row">
-          <div class="col-xs-6">
-            <select class="form-control" id="type" name="type">
-              <option value="miniature">Miniature</option>
-              <option value="g_miniature">Grande miniature</option>
-              <option value="vignette" selected="selected">Vignette</option>
-              <option value="g_vignette">Grande vignette</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group has-feedback">
-        <label for="type" class="control-label">Correspondance de la taille des grandes images</label>
-        <div class="row">
-          <div class="col-xs-6">
-            <select class="form-control" id="type" name="type">
-              <option value="miniature">Miniature</option>
-              <option value="g_miniature">Grande miniature</option>
-              <option value="vignette">Vignette</option>
-              <option value="g_vignette" selected="selected">Grande vignette</option>
-            </select>
-            <div class="form-control-feedback md-feedback md-select"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class="post-footer"></footer>
-  </article>
+<% } else if(step == 1) { %>
 
-</form>
+	<% if (report.warnings && report.warnings.length > 0) { %>
+	<div class="alert alert-warning">
+		<strong>Il y a des alertes</strong>
+		<% if(!report.errors || report.errors.length == 0) { %>mais vous pouvez quand même valider l'import de données du catalogue<% } %>.<br/>
+		Il est cependant conseillé avant de valider un import d'<a href="/modules/backups" target="_blank">effectuer un
+		point de sauvegarde</a> de son site.<br/><br/>
+		<ul>
+			<% _.each(report.warnings, function(msg){ %>
+			<li><%= msg %></li>
+			<% }); %>
+		</ul>
+	</div>
+	<% } %>
 
-<div class="save">
-  <div class="btn-toolbar" role="toolbar">
-    <a class="btn btn-cancel" href="/modules">Retour</a>
-    <button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
-  </div>
-</div>
+	<% if (report.errors && report.errors.length > 0) { %>
+	<div class="alert alert-danger">
+		<strong>Il y a des erreurs dans le fichier</strong>, vous ne pouvez pas valider l'import de données du catalogue.
+		Veuillez <a
+			href="https://aide.kiubi.com/documentation/Modules/import-de-produits.html"
+			target="_blank" class="alert-link">consulter la documentation en ligne</a> afin de corriger ces erreurs.<br/><br/>
+		<ul>
+			<% _.each(report.errors, function(msg){ %>
+			<li><%= msg %></li>
+			<% }); %>
+		</ul>
+	</div>
+	<% } %>
 
-<footer class="footer"> </footer>
+	<% if(!report.errors || report.errors.length == 0) { %>
+	<div class="alert alert-info">
+		<strong>Les données sont prêtes à être importées.</strong><br/>
+		Il est cependant conseillé avant de valider un import d'<a href="/modules/backups" target="_blank" class="alert-link">effectuer un point de sauvegarde</a>
+		de son site.
+	</div>
+	<% } %>
+
+	<div class="save">
+		<div class="btn-toolbar" role="toolbar">
+			<button type="button" class="btn btn-cancel" data-role="cancel">Retour</button>
+			<% if(!report.errors || report.errors.length == 0) { %>
+			<button type="button" class="btn btn-action pull-right" data-role="save">Importer</button>
+			<% } %>
+		</div>
+	</div>
+
+<% } else { %>
+
+	<% if (report.errors && report.errors.length > 0) { %>
+	<div class="alert alert-danger">
+		<strong>L'import a été réalisé</strong>, mais il y a eu des erreurs :<br/><br/>
+		<ul>
+			<% _.each(report.errors, function(msg){ %>
+			<li><%= msg %></li>
+			<% }); %>
+		</ul>
+	</div>
+	<% } else { %>
+	<div class="alert alert-success">
+		<strong>Import réussi</strong>, les données du catalogue ont été correctement importées !
+	</div>
+	<% } %>
+
+	<div class="save">
+		<div class="btn-toolbar" role="toolbar">
+			<button type="button" class="btn btn-cancel" data-role="cancel">Retour</button>
+		</div>
+	</div>
+
+<% } %>
+
+<footer class="footer"></footer>

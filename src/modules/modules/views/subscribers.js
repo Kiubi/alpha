@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var format = require('kiubi/utils/format.js');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
@@ -23,10 +24,6 @@ module.exports = Marionette.View.extend({
 	className: 'container',
 	service: 'modules',
 
-	initialize: function(options) {
-		this.mergeOptions(options, ['collection']);
-	},
-
 	regions: {
 		list: {
 			el: "article[data-role='list']",
@@ -34,7 +31,29 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
+	sortOrder: 'date',
+	filters: null,
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['collection']);
+		this.filters = {
+			is_registered: null
+		};
+	},
+
 	onRender: function() {
+
+		var c = new CollectionUtils.SelectCollection();
+		c.add([{
+			'value': 'registred',
+			'label': 'Inscrits',
+			'selected': this.filters.is_registered == 'true'
+		}, {
+			'value': 'unregistred',
+			'label': 'Désinscrits',
+			'selected': this.filters.is_registered == 'false'
+		}]);
+
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
@@ -43,15 +62,11 @@ module.exports = Marionette.View.extend({
 			order: [{
 				title: 'Inscription',
 				is_active: true,
-				data: {
-					sort: 'email'
-				}
+				value: 'date'
 			}, {
 				title: 'Email',
 				is_active: false,
-				data: {
-					sort: 'date'
-				}
+				value: 'email'
 			}],
 			selection: [{
 				title: 'Désinscrire',
@@ -64,16 +79,26 @@ module.exports = Marionette.View.extend({
 				callback: this.deleteEmail.bind(this),
 				confirm: true
 			}],
-			/*filters: [{
-				selectExtraClassname: 'select-category',
-				title: 'Toutes les catégories',
-				collectionPromise: this.getOption('categories').promisedSelect(this.collection.category_id)
-			}]*/
+			filters: [{
+				extraClassname: 'select-state',
+				title: 'Tous les états',
+				collectionPromise: c
+			}]
 		}));
 	},
 
 	start: function() {
-		this.collection.fetch();
+		var data = {
+			sort: this.sortOrder ? this.sortOrder : null
+		};
+		if (this.filters.is_registered != null) {
+			data.is_registered = this.filters.is_registered
+		}
+
+		this.collection.fetch({
+			reset: true,
+			data: data
+		});
 	},
 
 	subscribeEmail: function(ids) {
@@ -89,12 +114,19 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChildviewFilterChange: function(filter) {
-		// Only one filter, so assume it is the category filter
-		this.collection.fetch({
-			data: {
-				order: filter.value
-			}
-		});
+		if (filter.value == 'registred') {
+			this.filters.is_registered = 'true';
+		} else if (filter.value == 'unregistred') {
+			this.filters.is_registered = 'false';
+		} else {
+			this.filters.is_registered = null;
+		}
+		this.start();
+	},
+
+	onChildviewChangeOrder: function(order) {
+		this.sortOrder = order;
+		this.start();
 	}
 
 });

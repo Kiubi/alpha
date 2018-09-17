@@ -1,0 +1,66 @@
+<form>
+	<div class="alert alert-warning" role="alert">
+		<a href="https://doc.kiubi.com/generalites.html" class="md-icon md-help pull-right" target="_blank"></a>
+
+		Le thème graphique personnalisé permet de créer un look sur mesure pour votre un site Internet,
+		en vous donnant <strong>un accès complet aux templates</strong> qui le composent. Aucune limitation technique
+		particulière ne vous est alors imposée.
+		<br/><br/>
+		Afin de répondre aux exigences de qualité et de performance d'un site Internet professionnel,
+		<strong>la maîtrise des standards du Web</strong> tels que le HTML, le CSS et le javascript est nécessaire. Le
+		<a href="https://doc.kiubi.com/" target="_blank">guide du webdesigner</a> est à votre disposition
+		pour vous aider à exploiter les possibilités de personnalisation offertes par Kiubi.<br><br>
+		Activer le thème graphique personnalisé va également <strong>réinitialiser tous les fichiers</strong> de votre
+		espace FTP, dont l'accès vous sera donné après l'activation du thème.
+	</div>
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Configuration du thème</h1>
+		</header>
+		<div class="post-content">
+			<div class="form-group">
+				<label class="control-label required" for="name">Intitulé du thème</label>
+				<input class="form-control" id="name" name="name" value="" type="text"
+					   placeholder="Intitulé du thème tel qu'il apparaîtra dans la console d'administration">
+			</div>
+			<div class="form-group">
+				<label class="control-label">Mise en page</label>
+
+				<p></p>
+
+				<div class="radio-group">
+					<input name="reuse_layouts" id="reuse_layouts1" value="1" checked="checked" type="radio">
+					<label for="reuse_layouts1" class="">Conserver la mise en page actuelle qui est déjà personnalisé pour ce site</label>
+					<input name="reuse_layouts" id="reuse_layouts0" value="0" type="radio">
+					<label for="reuse_layouts0" class="">Remplacer la mise en page actuelle par la mise en page par défaut du thème</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label for="code" class="control-label">Thème à copier</label>
+						<select id="code" name="code" data-style="selectify">
+							<% _.each(themes, function(theme){ %>
+							<option value="<%- theme.code %>"><%- theme.name %></option>
+							<%}) %>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<a class="btn btn-cancel" href="/themes">Retour</a>
+		<button type="button" class="btn btn-action pull-right" data-role="save">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"></footer>

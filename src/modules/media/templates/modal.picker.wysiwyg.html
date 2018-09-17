@@ -35,14 +35,8 @@
 						</div>
 						<% if(integration == 'inline') { %>
 						<div class="form-group">
-							<label class="control-label" for="m_image_variant">Taille de l'image</label>
-							<select id="m_image_variant" name="image_variant" data-style="selectify">
-								<option value="full" selected="selected">Taille d'origine : <%- width %> x <%- height %>px</option>
-								<option value="g_vignette">Grande vignette : 960 x 960px</option>
-								<option value="vignette">Vignette : 420 x 420px</option>
-								<option value="g_miniature">Grande miniature : 240 x 240px</option>
-								<option value="miniature">Miniature : 120 x 120px</option>
-							</select>
+							<label class="control-label">Taille de l'image</label>
+							<div data-role="image_variant"></div>
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="m_image_align">Alignement</label>

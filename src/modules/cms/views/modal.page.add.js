@@ -15,16 +15,24 @@ module.exports = Marionette.View.extend({
 
 	events: {
 		'click @ui.select-page': function() {
-			this.trigger('select:page', this.getOption('menu_id'));
+			this.trigger('select:page', {
+				menu_id: this.getOption('menu_id')
+			});
 		},
 		'click @ui.select-intlink': function() {
-			this.trigger('select:intLink', this.getOption('menu_id'));
+			this.trigger('select:intLink', {
+				menu_id: this.getOption('menu_id')
+			});
 		},
 		'click @ui.select-extlink': function() {
-			this.trigger('select:extLink', this.getOption('menu_id'));
+			this.trigger('select:extLink', {
+				menu_id: this.getOption('menu_id')
+			});
 		},
 		'click @ui.select-separator': function() {
-			this.trigger('select:separator', this.getOption('menu_id'));
+			this.trigger('select:separator', {
+				menu_id: this.getOption('menu_id')
+			});
 		}
 	},
 

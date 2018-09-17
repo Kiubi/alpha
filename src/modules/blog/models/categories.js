@@ -41,7 +41,6 @@ module.exports = Backbone.Collection.extend({
 				collector.push({
 					'value': model.get('category_id'),
 					'label': model.get('name'),
-					'indent': 0,
 					'selected': selected && model.get('category_id') == selected
 				});
 			});

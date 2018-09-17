@@ -163,7 +163,7 @@ module.exports = Marionette.Object.extend({
 				is_active: false
 			}, {
 				name: "Thèmes",
-				path: "#",
+				path: "/themes",
 				className: 'md-theme',
 				type: "main",
 				is_active: false

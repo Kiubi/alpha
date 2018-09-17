@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
 var format = require('kiubi/utils/format.js');
 
@@ -17,7 +18,6 @@ var RowView = Marionette.View.extend({
 				return (nb > 1 ? plural : singular).replace('%d', nb);
 			},
 			convertMediaPath: Session.convertMediaPath.bind(Session),
-			preview: Session.site.get('domain') + '/catalogue/' + this.model.get('slug') + '.html',
 			main_category: _.find(this.model.get('categories'), function(category) {
 				return category.is_main;
 			}),
@@ -41,12 +41,6 @@ module.exports = Marionette.View.extend({
 	className: 'container-fluid',
 	service: 'catalog',
 
-	category_id: null,
-
-	initialize: function(options) {
-		this.mergeOptions(options, ['collection', 'category_id']);
-	},
-
 	regions: {
 		list: {
 			el: "article[data-role='list']",
@@ -54,7 +48,57 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
+	category_id: null,
+	sortOrder: 'name',
+	filters: null,
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['collection', 'categories', 'tags', 'category_id']);
+		this.filters = {
+			stock: null,
+			category_id: null,
+			tag_id: null
+		};
+	},
+
 	onRender: function() {
+
+
+		var filters = [];
+		if (this.category_id == null) {
+			filters.push({
+				id: 'categories',
+				title: 'Toutes les catégories',
+				type: 'search'
+			});
+		}
+		var c = new CollectionUtils.SelectCollection();
+		c.add([{
+				'value': 'yes',
+				'label': 'En stock',
+				'selected': this.filters.stock == 'yes'
+			},
+			{
+				'value': 'partial',
+				'label': 'En rupture partielle',
+				'selected': this.filters.stock == 'partial'
+			}, {
+				'value': 'no',
+				'label': 'En rupture totale',
+				'selected': this.filters.stock == 'no'
+			}
+		]);
+		filters.push({
+			id: 'tag',
+			title: 'Tous les tags',
+			type: 'search'
+		});
+		filters.push({
+			id: 'stock',
+			extraClassname: 'select-state',
+			title: 'États',
+			collectionPromise: c
+		});
 
 		this.showChildView('list', new ListView({
 			collection: this.collection,
@@ -64,29 +108,17 @@ module.exports = Marionette.View.extend({
 			order: [{
 				title: 'Produit',
 				is_active: true,
-				data: {
-					sort: 'name',
-					category_id: this.category_id,
-					extra_fields: 'price_label,categories'
-				}
+				value: 'name'
 			}, {
 				title: 'Prix minimum',
 				is_active: false,
-				data: {
-					sort: 'price_min',
-					category_id: this.category_id,
-					extra_fields: 'price_label,categories'
-				}
+				value: 'price_min'
 			}, {
 				title: 'Prix maximum',
 				is_active: false,
-				data: {
-					sort: '-price_max',
-					category_id: this.category_id,
-					extra_fields: 'price_label,categories'
-				}
+				value: '-price_max'
 			}],
-			//filterModal: '#filterscatalog',
+			// filterModal: '#filterscatalog',
 			selection: [{
 				title: 'Afficher',
 				callback: this.showProducts.bind(this)
@@ -97,23 +129,22 @@ module.exports = Marionette.View.extend({
 				title: 'Supprimer',
 				callback: this.deleteProducts.bind(this),
 				confirm: true
-			}]
-			/*,
-						filters: [{
-							selectExtraClassname: 'select-category',
-							title: 'Catégories',
-							collection: this.getOption('categories'),
-							selected: this.collection.category_id
-						}]*/
+			}],
+			filters: filters
 		}));
 	},
 
 	start: function() {
 		var data = {
-			extra_fields: 'price_label,categories'
+			extra_fields: 'price_label,categories',
+			sort: this.sortOrder ? this.sortOrder : null
 		};
 		if (this.category_id) data.category_id = this.category_id;
+		if (this.filters.stock != null) data.stock = this.filters.stock;
+		if (this.filters.category_id != null) data.category_id = this.filters.category_id;
+		if (this.filters.tag_id != null) data.tag_id = this.filters.tag_id;
 		this.collection.fetch({
+			reset: true,
 			data: data
 		});
 	},
@@ -128,18 +159,73 @@ module.exports = Marionette.View.extend({
 
 	deleteProducts: function(ids) {
 		return this.collection.bulkDelete(ids);
-	}
+	},
 
-	/*onChildviewFilterChange: function(filter) {
-		// Only one filter, so assume it is the category filter
-		if (filter.value) {
-			if (this.collection.category_id == filter.value) return;
-			this.collection.category_id = filter.value;
-		} else {
-			if (this.collection.category_id == null) return;
-			this.collection.category_id = null;
+	onChildviewFilterChange: function(filter) {
+		if (filter.model.get('id') == 'categories') {
+			this.filters.category_id = filter.value;
+		} else if (filter.model.get('id') == 'tag') {
+			this.filters.tag_id = filter.value;
+		} else if (filter.model.get('id') == 'stock') {
+			if (filter.value == 'yes') {
+				this.filters.stock = 'yes';
+			} else if (filter.value == 'no') {
+				this.filters.stock = 'no';
+			} else if (filter.value == 'partial') {
+				this.filters.stock = 'partial';
+			} else {
+				this.filters.stock = null;
+			}
 		}
-		this.collection.fetch();
-	}*/
+
+		this.start();
+	},
+
+	onChildviewFilterInput: function(filter) {
+
+		if (!filter.view || !filter.view.showResults) return;
+
+
+		if (filter.model.get('id') == 'categories') {
+
+			this.categories.fetch({
+				data: {
+					limit: 5,
+					term: filter.value
+				}
+			}).done(function() {
+				var results = _.map(this.categories.toJSON(), function(categ) {
+					return {
+						label: categ.name,
+						value: categ.category_id
+					};
+				});
+
+				filter.view.showResults(results);
+			}.bind(this));
+		} else {
+			this.tags.fetch({
+				data: {
+					limit: 5,
+					term: filter.value
+				}
+			}).done(function() {
+				var results = _.map(this.tags.toJSON(), function(tag) {
+					return {
+						label: tag.name,
+						value: tag.tag_id
+					};
+				});
+
+				filter.view.showResults(results);
+			}.bind(this));
+		}
+
+	},
+
+	onChildviewChangeOrder: function(order) {
+		this.sortOrder = order;
+		this.start();
+	}
 
 });

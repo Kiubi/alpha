@@ -22,11 +22,11 @@
         <label class="control-label">Accès au site Internet</label>
         <div class="radio">
           <input name="is_site_open" id="is_site_open1" value="1" type="radio" <%= site.is_site_open ? 'checked="checked"' : '' %>>
-          <label for="is_site_open1" class="visible">Le site est ouvert, ses pages sont publiquement accessibles</label>
+          <label for="is_site_open1" class="visible">Le site est ouvert, tous les services sont publiquement accessibles</label>
         </div>
         <div class="radio">
           <input name="is_site_open" id="is_site_open0" value="0" type="radio" <%= !site.is_site_open ? 'checked="checked"' : '' %>>
-          <label for="is_site_open0" class="not-visible">Le site est fermé, aucune page n'est accessible sauf pour les utilisateurs de la console d'administration</label>
+          <label for="is_site_open0" class="not-visible">Le site est fermé, aucun service n'est accessible, sauf pour les utilisateurs de la console d'administration</label>
         </div>
       </div>
     </div>
@@ -62,15 +62,6 @@
               <label for="is_catalog_enabled0" class="not-visible">Désactivé</label>
             </div>
           </div>
-		  <div class="form-group">
-		  <label class="control-label">API Front-office</label>
-		    <div class="radio-group">
-			  <input name="is_api_enabled" id="is_api_enabled1" value="1" type="radio" <%= site.is_api_enabled ? 'checked="checked"' : '' %>>
-			  <label for="is_api_enabled1" class="visible">Activée</label>
-			  <input name="is_api_enabled" id="is_api_enabled0" value="0" type="radio" <%= !site.is_api_enabled ? 'checked="checked"' : '' %>>
-			  <label for="is_api_enabled0" class="not-visible">Désactivée</label>
-		    </div>
-		  </div>
         </div>
         <div class="col-xs-5">
           <div class="form-group">
@@ -99,6 +90,28 @@
 
   <article class="post-article">
     <header class="post-header">
+      <h1>API Front-Office</h1>
+    </header>
+    <div class="post-content">
+      <p>
+        En activant l'API Front-Office vous ouvrez <a href="http://www.kiubi.com/api/v1/" target="_blank">des points d'accès dédiés et structurés</a> aux données de votre site.
+        Ce paramètre n'impacte pas l'accès aux données du site par l'API Developers.
+      </p>
+      <div class="form-group">
+      <label class="control-label">Utilisation de l'API Front-office</label>
+        <div class="radio-group">
+        <input name="is_api_enabled" id="is_api_enabled1" value="1" type="radio" <%= site.is_api_enabled ? 'checked="checked"' : '' %>>
+        <label for="is_api_enabled1" class="visible">Activée</label>
+        <input name="is_api_enabled" id="is_api_enabled0" value="0" type="radio" <%= !site.is_api_enabled ? 'checked="checked"' : '' %>>
+        <label for="is_api_enabled0" class="not-visible">Désactivée</label>
+        </div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article">
+    <header class="post-header">
       <h1>Accès restreint</h1>
     </header>
     <div class="post-content">
@@ -117,7 +130,7 @@
     </div>
     <footer class="post-footer"></footer>
   </article>
-  
+
   <article class="post-article">
     <header class="post-header">
       <h1>Bloc-marque</h1>

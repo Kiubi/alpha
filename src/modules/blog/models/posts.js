@@ -70,7 +70,7 @@ module.exports = Backbone.Collection.extend({
 
 		return CollectionUtils.bulkAction(this, function(model) {
 			return model.destroy();
-		}, ids);
+		}, ids, 'delete');
 
 	}
 });

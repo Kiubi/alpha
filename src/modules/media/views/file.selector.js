@@ -11,6 +11,9 @@ var SelectModalView = require('kiubi/modules/media/views/modal.picker.js');
 module.exports = Marionette.View.extend({
 	template: _.template('Ajouter une image'),
 	tagName: 'a',
+	attributes: {
+		"href": "#"
+	},
 
 	type: 'image', // image || file
 

@@ -8,12 +8,7 @@ var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 var HomeRowView = Marionette.View.extend({
 	template: require('../templates/categories.row.home.html'),
-	className: 'list-item',
-	templateContext: function() {
-		return {
-			preview: Session.site.get('domain') + '/catalogue/' // TODO fix custom breadcrum
-		};
-	}
+	className: 'list-item'
 });
 
 var RowView = Marionette.View.extend({

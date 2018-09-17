@@ -8,9 +8,10 @@ var _ = require('underscore');
  * @param {Backbone.Collection} collection
  * @param {Function} action
  * @param {Integer[]} ids
+ * @param {String} eventName
  * @returns {Promise}
  */
-function bulkAction(collection, action, ids) {
+function bulkAction(collection, action, ids, eventName) {
 
 	var models = _.compact(_.map(ids, function(id) {
 		return collection.get(id);
@@ -18,15 +19,23 @@ function bulkAction(collection, action, ids) {
 
 	return models.map(action).reduce(function(prev, curr) {
 		return prev.then(curr);
-	}, Backbone.$.Deferred().resolve());
+	}, Backbone.$.Deferred().resolve()).done(function(things) {
+		// Trigger bulk event
+		// WARNING ! actions are not yet resolved
+		collection.trigger(eventName ? 'bulk:' + eventName : 'bulk', {
+			action: action,
+			ids: ids
+		});
+	});
 }
 
 var Option = Backbone.Model.extend({
 	defaults: {
 		label: '',
 		value: null,
-		indent: 0,
-		selected: false
+		indent: null,
+		selected: false,
+		extraClassname: null
 	}
 });
 

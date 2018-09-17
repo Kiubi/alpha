@@ -1,0 +1,8 @@
+<select class="<%- extraClassname ? extraClassname : '' %>" data-style="selectify">
+	<option value=""><%- title %></option>
+	<% if(collection) { %>
+	<% _(collection).each(function(option){%>
+	<option value="<%- option.value %>" <%= option.selected ? 'selected="selected"' : '' %>><%= indent2Space(option.indent || 0) %><%- option.label %></option>
+	<%}) %>
+	<% } %>
+</select>

@@ -4,7 +4,7 @@
 			<div class="media-left">
 				<div class="media-object md-icon md-image img-default"></div>
 				<% if (main_media_id) { %><div class="media-object no-ratio"><img alt="" src="<%= convertMediaPath('/media/miniature/'+main_media_id) %>" /></div><% } %>
-				<%= is_spotlight ? '<span class="md-icon md-upsell"></span>' : '' %>
+				<%= is_spotlight ? '<div class="corner-color is-spotlight"><div class="corner-color-content"></div></div>' : '' %>
 			</div>
 			<div class="media-body">
 				<h4><%- name %></h4>

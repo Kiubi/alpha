@@ -1,5 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var moment = require('moment');
+var _ = require('underscore');
 
 var Controller = require('kiubi/controller.js');
 
@@ -8,6 +10,7 @@ var Injectcode = require('../prefs/models/meta');
 var Analytics = require('./models/analytics');
 var Redirections = require('./models/redirections');
 var Subscribers = require('./models/subscribers');
+var Newsletter = require('kiubi/modules/prefs/models/newsletter');
 var Vouchers = require('./models/vouchers');
 var Customers = require('kiubi/modules/customers/models/customers');
 var Groups = require('kiubi/modules/customers/models/groups');
@@ -22,6 +25,7 @@ var Backups = require('./models/backups');
 var MerchantCenter = require('kiubi/modules/prefs/models/merchantcenter');
 var ImportProducts = require('./models/import.products');
 var ImportPosts = require('./models/import.posts');
+var ImportWordpress = require('./models/import.wordpress');
 var Menus = require('kiubi/modules/cms/models/menus');
 var Post = require('kiubi/modules/cms/models/post');
 
@@ -33,6 +37,8 @@ var FidelityView = require('./views/fidelity');
 var AnalyticsView = require('./views/analytics');
 var VouchersView = require('./views/vouchers');
 var VoucherView = require('./views/voucher');
+var VoucherAddModalView = require('./views/modal.voucher.add');
+var NewsletterView = require('./views/subscribers.settings');
 var SubscribersView = require('./views/subscribers');
 var ImportPostsView = require('./views/import.posts');
 var ImportProductsView = require('./views/import.products');
@@ -42,6 +48,48 @@ var LengowView = require('./views/lengow');
 var IadvizeView = require('./views/iadvize');
 var AvisVerifiesView = require('./views/avisverifies');
 var BackupsView = require('./views/backups');
+
+
+/* Actions */
+function getHeadersActionVouchers(options) {
+
+	options = options || {};
+	var actions = [{
+		title: 'Ajouter une réduction',
+		callback: 'showVoucherAdd'
+	}];
+
+	if (options.addSave) {
+
+		var saveAction = {
+			title: 'Enregistrer',
+			callback: 'actionSave',
+			activateOnEvent: 'modified:content',
+			bubbleOnEvent: 'modified:content'
+		};
+
+		if (actions.length <= 1) {
+			actions.push(saveAction);
+		} else {
+			actions.splice(1, 0, saveAction);
+		}
+
+	}
+
+	return actions;
+}
+
+/* Tabs  */
+function HeaderTabsSubscribers() {
+
+	return [{
+		title: 'Liste des abonnés',
+		url: '/modules/subscribers'
+	}, {
+		title: 'Paramètres',
+		url: '/modules/subscribers/settings'
+	}];
+}
 
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
@@ -158,7 +206,9 @@ var ModulesController = Controller.extend({
 		view.start();
 		this.setHeader({
 			title: 'Tous les bons de réduction'
-		});
+		}, getHeadersActionVouchers({
+			addSave: false
+		}));
 	},
 
 	showVoucher: function(id) {
@@ -198,16 +248,70 @@ var ModulesController = Controller.extend({
 				title: 'Bons de réduction'
 			}, {
 				title: m.get('code')
-			}], [{
-				title: 'Enregistrer',
-				callback: 'actionSave'
-			}]);
+			}], getHeadersActionVouchers({
+				addSave: true
+			}));
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
 				title: 'Bon de réduction introuvable'
 			});
 		}.bind(this));
+	},
+
+	actionNewVoucher: function(type) {
+		var c = new Vouchers();
+
+		var data = {
+			type: type,
+			code: 'BON', // default code
+			start_date: moment().format('YYYY-MM-DD'),
+			end_date: moment().add(1, 'years').format('YYYY-MM-DD')
+		};
+
+		switch (type) {
+			case 'amount':
+				data.value = '1'; // 1 currency discount by default
+				data.threshold = '10'; // at least 10 currency order
+				break;
+			case 'percent':
+				data.value = '1'; // 1% discount by default
+				break;
+			case 'shipping':
+				data.carrier_id = null; // TODO
+				break;
+		}
+
+		var m = new c.model(data);
+
+		// handlers
+		var done = function() {
+			this.navigationController.showOverlay(300);
+			this.navigationController.navigate('/modules/vouchers/' + m.get('voucher_id'));
+		}.bind(this);
+		var fail = function(xhr) {
+			this.navigationController.showErrorModal(xhr);
+		}.bind(this);
+
+		if (type == 'shipping') {
+			// Search first carrier
+			var ca = new Carriers();
+			return ca.fetch().then(function(data) {
+
+				var selection = ca.find(function(model) {
+					return model.get('type') != 'magasin';
+				});
+				if (!selection) {
+					this.navigationController.showErrorModal('Aucun transporteur trouvé');
+					return Backbone.$.Deferred.reject();
+				}
+
+				m.set('carrier_id', selection.get('carrier_id'));
+				return m.save().done(done).fail(fail);
+			}.bind(this), fail);
+		} else {
+			return m.save().done(done).fail(fail);
+		}
 	},
 
 	showSubscribers: function() {
@@ -219,8 +323,28 @@ var ModulesController = Controller.extend({
 		view.start();
 		this.setHeader({
 			title: 'Abonnés à la newsletter'
-		});
+		}, null, HeaderTabsSubscribers());
 
+	},
+
+	showSubscribersSettings: function() {
+		var m = new Newsletter();
+		m.fetch().done(function() {
+			this.navigationController.showContent(new NewsletterView({
+				model: m
+			}));
+			this.setHeader({
+				title: 'Abonnés à la newsletter'
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}], HeaderTabsSubscribers());
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Paramètres introuvables'
+			});
+		}.bind(this));
 	},
 
 	showImportPosts: function() {
@@ -245,9 +369,10 @@ var ModulesController = Controller.extend({
 	},
 
 	showImportWordpress: function() {
-		console.log('ModulesController, showImportWordpress');
-
-		this.navigationController.showContent(new ImportWordpressView());
+		this.navigationController.showContent(new ImportWordpressView({
+			model: new ImportWordpress(),
+			post: new Post()
+		}));
 		this.setHeader({
 			title: 'Import depuis Wordpress'
 		});
@@ -370,6 +495,23 @@ var ModulesController = Controller.extend({
 			this.navigationController.showErrorModal(xhr);
 		}.bind(this));
 
+	},
+
+	/*
+	 * Modal
+	 */
+
+	showVoucherAdd: function(menu_id) {
+		var contentView = new VoucherAddModalView();
+
+		this.listenTo(contentView, 'select:amount', this.actionNewVoucher);
+		this.listenTo(contentView, 'select:percent', this.actionNewVoucher);
+		this.listenTo(contentView, 'select:shipping', this.actionNewVoucher);
+
+		this.navigationController.showInModal(contentView, {
+			title: 'Ajouter une réduction',
+			modalClass: 'modal-pagetype-add'
+		});
 	}
 
 });
@@ -385,6 +527,7 @@ module.exports = Marionette.AppRouter.extend({
 		'modules/vouchers': 'showVouchers',
 		'modules/vouchers/:id': 'showVoucher',
 		'modules/subscribers': 'showSubscribers',
+		'modules/subscribers/settings': 'showSubscribersSettings',
 		'modules/import/posts': 'showImportPosts',
 		'modules/import/products': 'showImportProducts',
 		'modules/import/wordpress': 'showImportWordpress',

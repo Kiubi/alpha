@@ -33,6 +33,7 @@ var Name = Backbone.Model.extend({
 			}
 		}).done(function() {
 			this.set('name', name);
+			this.trigger('sync'); // trigger manualy sync event
 		}.bind(this));
 	}
 

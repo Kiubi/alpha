@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
 
-	url: 'sites/@site/prefs/medias',
+	url: 'sites/@site/prefs/newsletter',
 
 	parse: function(response) {
 		if ('data' in response) {
@@ -17,7 +17,10 @@ module.exports = Backbone.Model.extend({
 	},
 
 	defaults: {
-		// TODO
+		registration_success_msg: '',
+		unregistration_success_msg: '',
+		registration_error_msg: '',
+		unregistration_error_msg: ''
 	}
 
 });

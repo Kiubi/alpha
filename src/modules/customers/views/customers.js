@@ -28,15 +28,17 @@ module.exports = Marionette.View.extend({
 	className: 'container-fluid',
 	service: 'customers',
 
-	initialize: function(options) {
-		this.mergeOptions(options, ['collection']);
-	},
-
 	regions: {
 		list: {
 			el: "article[data-role='list']",
 			replaceElement: true
 		}
+	},
+
+	sortOrder: '-date',
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['collection']);
 	},
 
 	onRender: function() {
@@ -45,26 +47,48 @@ module.exports = Marionette.View.extend({
 			rowView: RowView,
 
 			title: 'Tous les membres',
-			selection: [{
-				title: 'Exporter',
-				callback: this.exportCustomer.bind(this)
+			order: [{
+				title: 'Nom',
+				is_active: false,
+				value: 'name'
 			}, {
-				title: 'Autoriser',
-				callback: this.enableCustomer.bind(this)
-			}, {
-				title: 'Bloquer',
-				callback: this.disableCustomer.bind(this)
-			}, {
-				title: 'Supprimer',
-				callback: this.deleteCustomer.bind(this),
-				confirm: true
-			}]
+				title: 'Inscription',
+				is_active: true,
+				value: '-date'
+			}],
+			selection: [
+				/*{
+								title: 'Exporter',
+								callback: this.exportCustomer.bind(this)
+							},*/
+				{
+					title: 'Autoriser',
+					callback: this.enableCustomer.bind(this)
+				}, {
+					title: 'Bloquer',
+					callback: this.disableCustomer.bind(this)
+				}, {
+					title: 'Supprimer',
+					callback: this.deleteCustomer.bind(this),
+					confirm: true
+				}
+			]
 		}));
 	},
 
-	exportCustomer: function(ids) {
-		//return this.collection.bulkShow(ids);
+	start: function() {
+		this.collection.fetch({
+			reset: true,
+			data: {
+				sort: this.sortOrder ? this.sortOrder : null,
+				extra_fields: 'orders'
+			}
+		});
 	},
+
+	/*exportCustomer: function(ids) {
+		//return this.collection.bulkShow(ids);
+	},*/
 
 	enableCustomer: function(ids) {
 		return this.collection.bulkEnable(ids);
@@ -78,11 +102,8 @@ module.exports = Marionette.View.extend({
 		return this.collection.bulkDelete(ids);
 	},
 
-	start: function() {
-		this.collection.fetch({
-			data: {
-				extra_fields: 'orders'
-			}
-		});
+	onChildviewChangeOrder: function(order) {
+		this.sortOrder = order;
+		this.start();
 	}
 });

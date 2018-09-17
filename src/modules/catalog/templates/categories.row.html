@@ -20,7 +20,7 @@
 				<% if(!is_visible) { %>
 				<span class="text-danger">Masqué</span>
 				<% } else { %>
-					<%= short_desc ? short_desc : 'La catégorie n\'a pas de description' %>
+					<%= short_desc ? short_desc : '<span class="text-muted">La catégorie n\'a pas de description</span>' %>
 				<% } %>
 			</div>
 		</div>
@@ -28,9 +28,8 @@
 	<div class="col-xs-3"><a href="/catalog/categories/<%- category_id %>/products"><%= plural(product_count, '%d produit en vente', '%d produits en vente') %></a></div>
 	<div class="col-xs-3 col-md-2">
 		<div class="btn-group pull-right" role="group"><a class="btn btn-option" href="/catalog/categories/<%- category_id %>" role="button">Détail</a>
-			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span> <span class="sr-only">Menu</span></button>
+			<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span> </button>
 			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="<%- preview %>" target="_blank">Aperçu</a></li>
 				<li><a href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
 			</ul>
 		</div>

@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var format = require('kiubi/utils/format.js');
 
 var ControllerChannel = Backbone.Radio.channel('controller');
@@ -32,13 +33,23 @@ module.exports = Marionette.View.extend({
 	className: 'container-fluid',
 	service: 'media',
 
+	regions: {
+		list: {
+			el: "article[data-role='list']",
+			replaceElement: true
+		}
+	},
+
+	filters: null,
+	sortOrder: '-date',
+
 	initialize: function(options) {
 		this.mergeOptions(options, ['collection', 'folders']);
-		this.collection.fetch({
-			data: {
-				sort: '-date'
-			}
-		});
+		this.filters = {
+			folder_id: null
+		};
+
+		this.start();
 
 		// Refetch when files have being uploaded in this folder
 		this.listenTo(ControllerChannel, 'uploaded:files',
@@ -46,14 +57,66 @@ module.exports = Marionette.View.extend({
 				if (folder_id != this.collection.folder_id) {
 					return;
 				}
-				this.collection.fetch({
-					data: {
-						sort: '-date'
-					}
-				});
+				this.start();
 			}.bind(this));
 
 		this.listenTo(this.collection, 'sync', this.onSync);
+	},
+
+	onRender: function() {
+
+		var c_export = new CollectionUtils.SelectCollection();
+		c_export.add({
+			'value': 'export',
+			'label': 'Exporter les fichiers',
+			'selected': false
+		});
+
+		this.showChildView('list', new ListView({
+			collection: this.collection,
+			rowView: RowView,
+
+			title: 'Liste des fichiers',
+			order: [{
+				title: 'Intitulé',
+				is_active: false,
+				value: 'name'
+			}, {
+				title: 'Modification',
+				is_active: true,
+				value: '-date'
+			}],
+			selection: [{
+					title: 'Déplacer',
+					callback: this.movePosts.bind(this)
+				},
+				{
+					title: 'Supprimer',
+					callback: this.deletePosts.bind(this),
+					confirm: true
+				}
+			],
+			filters: [{
+                id: 'folder',
+				extraClassname: 'select-category',
+				title: 'Destination',
+				collectionPromise: this.folders.promisedSelect(this.collection.folder_id)
+			}, {
+                id: 'export',
+				extraClassname: 'md-export',
+				type: 'button',
+				collectionPromise: c_export
+			}]
+		}));
+	},
+
+	start: function() {
+		this.collection.fetch({
+			reset: true,
+			data: {
+				sort: this.sortOrder ? this.sortOrder : null
+			}
+		});
 	},
 
 	onSync: function(model) {
@@ -67,70 +130,69 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	regions: {
-		list: {
-			el: "article[data-role='list']",
-			replaceElement: true
-		}
-	},
-
-	filterFolderID: null,
-
-	onRender: function() {
-		this.showChildView('list', new ListView({
-			collection: this.collection,
-			rowView: RowView,
-
-			title: 'Liste des fichiers',
-			order: [{
-				title: 'Intitulé',
-				is_active: false,
-				data: {
-					sort: 'name'
-				}
-			}, {
-				title: 'Modification',
-				is_active: true,
-				data: {
-					sort: '-date'
-				}
-			}],
-			selection: [{
-					title: 'Déplacer',
-					callback: this.movePosts.bind(this)
-				},
-				/*, {
-					title: 'Télécharger',
-					callback: this.hidePosts.bind(this)
-				},*/
-				{
-					title: 'Supprimer',
-					callback: this.deletePosts.bind(this),
-					confirm: true
-				}
-			],
-			filters: [{
-				selectExtraClassname: 'select-category',
-				title: 'Destination',
-				collectionPromise: this.folders.promisedSelect(this.collection.folder_id)
-			}]
-		}));
-	},
-
-	onChildviewFilterChange: function(filter) {
-		this.filterFolderID = filter.value;
-	},
-
 	movePosts: function(ids) {
-		if (this.filterFolderID == '' || this.filterFolderID == null) return;
+		if (this.filters.folder_id == '' || this.filters.folder_id == null) return;
 
 		var currentFolder = this.collection.folder_id;
 
-		return this.collection.bulkMove(ids, this.filterFolderID);
+		return this.collection.bulkMove(ids, this.filters.folder_id);
 	},
 
 	deletePosts: function(ids) {
 		return this.collection.bulkDelete(ids);
+	},
+
+	onChildviewFilterChange: function(filter) {
+		if (filter.model.get('id') == 'folder') {
+			this.filters.folder_id = filter.value;
+		} else if (filter.model.get('id') == 'export') {
+			if (!filter.view) return;
+			var view = filter.view;
+
+			if (filter.value == 'export') {
+
+				if (view.collection.length > 1) {
+					return;
+				}
+
+				view.overrideExtraClassname('md-loading');
+				view.render();
+				this.collection.exportAll({
+					folder_id: this.collection.folder_id
+				}).done(function(data) {
+					view.overrideExtraClassname('');
+					view.collection.add([{
+						value: null,
+						label: '---'
+					}, {
+						value: data.url,
+						label: 'Télécharger le fichier',
+						extraClassname: 'md-export'
+					}]);
+					view.toggleDropdown(); // open
+				}.bind(this)).fail(function(xhr) {
+					var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+					navigationController.showErrorModal(xhr);
+
+					view.overrideExtraClassname('');
+					while (view.collection.length > 1) {
+						view.collection.pop();
+					}
+				}.bind(this));
+
+			} else {
+				view.toggleDropdown(); // close
+				view.overrideExtraClassname('');
+				while (view.collection.length > 1) {
+					view.collection.pop();
+				}
+			}
+		}
+	},
+
+	onChildviewChangeOrder: function(order) {
+		this.sortOrder = order;
+		this.start();
 	}
 
 });

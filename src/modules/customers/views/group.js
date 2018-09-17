@@ -107,7 +107,7 @@ module.exports = Marionette.View.extend({
 					var value = target.is_linkable ? target.target_page + '@@' + target.target_key : null;
 					var indent = 0;
 					if (target.depth && target.depth > 0) {
-						indent += target.depth - 1;
+						indent += target.depth;
 					}
 
 					return {

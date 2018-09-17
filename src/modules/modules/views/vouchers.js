@@ -31,15 +31,17 @@ module.exports = Marionette.View.extend({
 	className: 'container-fluid',
 	service: 'modules',
 
-	initialize: function(options) {
-		this.mergeOptions(options, ['collection']);
-	},
-
 	regions: {
 		list: {
 			el: "article[data-role='list']",
 			replaceElement: true
 		}
+	},
+
+	sortOrder: '-start_date',
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['collection']);
 	},
 
 	onRender: function() {
@@ -51,15 +53,11 @@ module.exports = Marionette.View.extend({
 			order: [{
 				title: 'Date de validité',
 				is_active: true,
-				data: {
-					sort: '-start_date'
-				}
+				value: '-start_date'
 			}, {
 				title: 'Code',
 				is_active: false,
-				data: {
-					sort: 'code'
-				}
+				value: 'code'
 			}],
 			selection: [{
 				title: 'Activer',
@@ -71,20 +69,15 @@ module.exports = Marionette.View.extend({
 				title: 'Supprimer',
 				callback: this.deleteVouchers.bind(this),
 				confirm: true
-			}],
-			/* TODO
-			filters: [{
-				selectExtraClassname: 'select-category',
-				title: 'État',
-				collectionPromise: ...
-			}]*/
+			}]
 		}));
 	},
 
 	start: function() {
 		this.collection.fetch({
+			reset: true,
 			data: {
-				sort: '-start_date'
+				sort: this.sortOrder ? this.sortOrder : null
 			}
 		});
 	},
@@ -101,8 +94,9 @@ module.exports = Marionette.View.extend({
 		return this.collection.bulkDelete(ids);
 	},
 
-	/*onChildviewFilterChange: function(filter) {
-		this.collection.fetch();
-	}*/
+	onChildviewChangeOrder: function(order) {
+		this.sortOrder = order;
+		this.start();
+	}
 
 });

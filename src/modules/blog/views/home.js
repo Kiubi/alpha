@@ -1,8 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
-var LayoutSelectorView = require(
-	'kiubi/modules/appearance/views/layout.selector.js');
+var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
 
 var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
@@ -19,8 +18,7 @@ var RowView = Marionette.View.extend({
 		return {
 			plural: function(nb, singular, plural) {
 				return (nb > 1 ? plural : singular).replace('%d', nb);
-			},
-			preview: Session.site.get('domain') + '/blog/' + this.model.get('slug') + '/' // TODO fix custom breadcrum
+			}
 		};
 	},
 
