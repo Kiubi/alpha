@@ -37,15 +37,23 @@ function getPageTitle(view) {
 	if (!Session) return 'Kiubi';
 
 	var service;
-	if (view.pageTitle) {
+	if (view && view.pageTitle) {
 		service = '  •  ' + view.pageTitle;
-	} else if (view.service) {
+	} else if (view && view.service) {
 		service = '  •  ' + view.service[0].toUpperCase() + view.service.slice(1);
 	} else {
 		service = '';
 	}
 
 	return 'ALPHA • ' + Session.site.get('name') + service + ' • Kiubi';
+}
+
+/**
+ *
+ * @param {Marionette.view} view
+ */
+function updateTitle(view) {
+	document.title = getPageTitle(view);
 }
 
 /**
@@ -58,6 +66,10 @@ module.exports = Marionette.Object.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['layoutView', 'application']);
+
+		this.listenTo(this.application.session.site, 'change:site', function() {
+			updateTitle(this.layoutView.getChildView('content'));
+		}.bind(this));
 	},
 
 
@@ -191,7 +203,7 @@ module.exports = Marionette.Object.extend({
 			},
 			{
 				name: "Aide & support",
-				path: "#",
+				path: "https://aide.kiubi.com/",
 				className: 'md-help',
 				type: "tools"
 			}
@@ -280,7 +292,7 @@ module.exports = Marionette.Object.extend({
 		} catch (error) {
 			console.error(error);
 		}
-		document.title = getPageTitle(view);
+		updateTitle(view);
 	},
 
 	/**

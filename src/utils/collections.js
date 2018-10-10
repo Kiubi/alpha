@@ -17,11 +17,7 @@ function bulkAction(collection, action, ids, eventName) {
 		return collection.get(id);
 	}));
 
-	return models.map(action).reduce(function(prev, curr) {
-		return prev.then(curr);
-	}, Backbone.$.Deferred().resolve()).done(function(things) {
-		// Trigger bulk event
-		// WARNING ! actions are not yet resolved
+	return Backbone.$.when.apply(Backbone.$, models.map(action)).done(function(things) {
 		collection.trigger(eventName ? 'bulk:' + eventName : 'bulk', {
 			action: action,
 			ids: ids

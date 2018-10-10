@@ -1,7 +1,66 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var format = require('kiubi/utils/format.js');
 
 var Builder = require('../models/builder');
+
+function mapPage(page, count) {
+
+	var link;
+
+	switch (page) {
+		case 'cms-home':
+			link = {
+				link: count > 0 ? '/cms' : '#',
+				label: count > 0 ? 'Page d\'accueil' : 'Aucune page'
+			};
+			break;
+		case 'cms-page':
+			link = {
+				link: '#', // TODO
+				label: count > 0 ? format.plural(count, '%d page', ' %d pages') : 'Aucune page'
+			};
+			break;
+		case 'blog-category':
+			link = {
+				link: '#', // TODO
+				label: count > 0 ? format.plural(count, '%d catégorie', ' %d catégories') : 'Aucune catégorie'
+			};
+			break;
+		case 'blog-post':
+			link = {
+				link: '#', // TODO
+				label: count > 0 ? format.plural(count, '%d billet', ' %d billets') : 'Aucun billet'
+			};
+			break;
+		case 'catalog-home':
+			link = {
+				link: count > 0 ? '/catalog/home' : '#',
+				label: count > 0 ? 'Page d\'accueil' : 'Aucune page'
+			};
+			break;
+		case 'catalog-category':
+			link = {
+				link: '#', // TODO
+				label: count > 0 ? format.plural(count, '%d catégorie', ' %d catégories') : 'Aucune categorie'
+			};
+			break;
+		case 'catalog-product':
+			link = {
+				link: '#', // TODO
+				label: count > 0 ? format.plural(count, '%d produit', ' %d produits') : 'Aucun produit'
+			};
+			break;
+		default:
+			link = {
+				link: '#',
+				label: count > 0 ? format.plural(count, '%d page', ' %d pages') : 'Aucune page'
+			};
+			break;
+	}
+
+	return link;
+}
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/layouts.row.html'),
@@ -19,7 +78,12 @@ var RowView = Marionette.View.extend({
 	},
 
 	templateContext: function() {
+
+		var usage = mapPage(this.model.get('page'), this.model.get('usage_count'));
+
 		return {
+			usage_link: usage.link,
+			usage_label: usage.label,
 			structure: this.getStructure(this.model)
 		};
 	},

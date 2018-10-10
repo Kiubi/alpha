@@ -91,7 +91,8 @@ function HeaderTabscategory(category_id, nb) {
 		title: 'Détail de la catégorie',
 		url: '/catalog/categories/' + category_id
 	}, {
-		title: nb + ' ' + (nb > 1 ? 'produits en vente' : 'produit en vente'),
+		//title: nb + ' ' + (nb > 1 ? 'produits en vente' : 'produit en vente'),
+		title: 'Produits en vente',
 		url: '/catalog/categories/' + category_id + '/products'
 	}];
 }
@@ -105,7 +106,7 @@ function HeaderTabsProduct(product_id, nb, rate) {
 		title: 'Produits associés',
 		url: '/catalog/products/' + product_id + '/linked'
 	}, {
-		title: nb + ' ' + (nb > 1 ? 'évaluations' : 'évaluation'),
+		title: nb + ' ' + (nb > 1 ? 'Évaluations' : 'Évaluation'),
 		url: '/catalog/products/' + product_id + '/comments',
 		icon: (rate ? 'rating md-rating-' + Math.round(rate) : '')
 	}];
@@ -137,6 +138,12 @@ var SidebarMenuView = Marionette.View.extend({
 		this.fetchAndRender();
 	},
 
+	templateContext: function() {
+		return {
+			overview: this.overview.toJSON()
+		};
+	},
+
 	fetchAndRender: function() {
 		Backbone.$.when(
 			this.overview.fetch()
@@ -148,11 +155,23 @@ var SidebarMenuView = Marionette.View.extend({
 		});
 	},
 
-	templateContext: function() {
-		return {
-			overview: this.overview.toJSON()
-		};
+	onRefreshProducts: function(count) {
+		if (count == null) {
+			this.overview.fetch().done(function() {
+				this.render();
+			}.bind(this));
+			return;
+		}
+
+		if (this.overview.get('products_count') + count < 0) {
+			this.overview.set('products_count', 0);
+		} else {
+			this.overview.set('products_count', this.overview.get('products_count') + count);
+		}
+
+		this.render();
 	}
+
 });
 
 var CatalogController = Controller.extend({
@@ -180,7 +199,8 @@ var CatalogController = Controller.extend({
 	showGlobalProducts: function(queryString, category_id) {
 
 		var qs = this.parseQueryString(queryString, {
-			'term': null
+			'term': null,
+			'stock': null
 		});
 
 		var promise, m;
@@ -203,6 +223,11 @@ var CatalogController = Controller.extend({
 					category_id: category_id ? category_id : null,
 					filters: qs
 				});
+
+				this.listenTo(c, 'bulk:delete', function(action) {
+					this.triggerSidebarMenu('refresh:products', -action.ids.length);
+				});
+
 				this.navigationController.showContent(view);
 				view.start();
 				this.setHeader({
@@ -257,6 +282,7 @@ var CatalogController = Controller.extend({
 				}
 			}.bind(this));
 			this.listenTo(m, 'destroy', function() {
+				this.triggerSidebarMenu('refresh:products', -1);
 				this.navigationController.showOverlay(300);
 				this.navigationController.navigate('/catalog');
 			});
@@ -287,9 +313,9 @@ var CatalogController = Controller.extend({
 		});
 
 		return m.save().done(function() {
+			this.triggerSidebarMenu('refresh:products', 1);
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/catalog/products/' + m.get('product_id'));
-			//ControllerChannel.trigger('refresh:categories');
 		}.bind(this)).fail(function(xhr) {
 			this.navigationController.showErrorModal(xhr);
 		}.bind(this));

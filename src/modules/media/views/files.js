@@ -87,13 +87,6 @@ module.exports = Marionette.View.extend({
 
 	onRender: function() {
 
-		var c_export = new CollectionUtils.SelectCollection();
-		c_export.add({
-			'value': 'export',
-			'label': 'Exporter les fichiers',
-			'selected': false
-		});
-
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
@@ -124,15 +117,19 @@ module.exports = Marionette.View.extend({
 				title: 'Destination',
 				collectionPromise: this.folders.promisedSelect(this.collection.folder_id)
 			}, {
-				id: 'export',
-				extraClassname: 'md-export',
-				type: 'button',
-				collectionPromise: c_export
-			}, {
 				id: 'term',
 				title: 'Rechercher',
 				type: 'input',
 				value: this.filters.term
+			}, {
+				id: 'export',
+				extraClassname: 'md-export',
+				type: 'button',
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					'value': 'export',
+					'label': 'Exporter les fichiers',
+					'selected': false
+				}])
 			}]
 		}));
 	},
@@ -174,53 +171,72 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChildviewFilterChange: function(filter) {
-		if (filter.model.get('id') == 'folder') {
-			this.filters.folder_id = filter.value;
-		} else if (filter.model.get('id') == 'export') {
-			if (!filter.view) return;
-			var view = filter.view;
 
-			if (filter.value == 'export') {
+		switch (filter.model.get('id')) {
+			case 'folder':
+				this.onFolderFilterChange(filter);
+				break;
+			case 'term':
+				this.onTermFilterChange(filter);
+				break;
+			case 'export':
+				this.onExportFilterChange(filter);
+				break;
+		}
 
-				if (view.collection.length > 1) {
-					return;
-				}
+	},
 
-				view.overrideExtraClassname('md-loading');
-				view.render();
-				this.collection.exportAll({
-					folder_id: this.collection.folder_id
-				}).done(function(data) {
-					view.overrideExtraClassname('');
-					view.collection.add([{
-						value: null,
-						label: '---'
-					}, {
-						value: data.url,
-						label: 'Télécharger le fichier',
-						extraClassname: 'md-export'
-					}]);
-					view.toggleDropdown(); // open
-				}.bind(this)).fail(function(xhr) {
-					var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-					navigationController.showErrorModal(xhr);
+	onFolderFilterChange: function(filter) {
+		this.filters.folder_id = filter.value;
+		this.start();
+	},
 
-					view.overrideExtraClassname('');
-					while (view.collection.length > 1) {
-						view.collection.pop();
-					}
-				}.bind(this));
+	onTermFilterChange: function(filter) {
+		this.filters.term = filter.value != '' ? filter.value : null;
+		this.start();
+	},
 
-			} else {
-				view.toggleDropdown(); // close
+	onExportFilterChange: function(filter) {
+		if (!filter.view) return;
+		var view = filter.view;
+
+		if (filter.value == 'export') {
+
+			if (view.collection.length > 1) {
+				return;
+			}
+
+			view.overrideExtraClassname('md-loading');
+			view.render();
+			this.collection.exportAll({
+				folder_id: this.collection.folder_id
+			}).done(function(data) {
+				view.overrideExtraClassname('');
+				view.collection.add([{
+					value: null,
+					label: '---'
+				}, {
+					value: data.url,
+					label: 'Télécharger le fichier',
+					extraClassname: 'md-export'
+				}]);
+				view.toggleDropdown(); // open
+			}.bind(this)).fail(function(xhr) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal(xhr);
+
 				view.overrideExtraClassname('');
 				while (view.collection.length > 1) {
 					view.collection.pop();
 				}
+			}.bind(this));
+
+		} else {
+			view.toggleDropdown(); // close
+			view.overrideExtraClassname('');
+			while (view.collection.length > 1) {
+				view.collection.pop();
 			}
-		} else if (filter.model.get('id') == 'term') {
-			this.filters.term = filter.value != '' ? filter.value : null;
-			this.start();
 		}
 	},
 

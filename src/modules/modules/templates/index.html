@@ -1,21 +1,21 @@
-<div class="thumbs-list">
+<div class="module-list mt-2 mb-4">
 	<div class="row">
 
 		<% _.each(spotlights, function(module){ %>
 
 		<div class="col-6 <% if(!module.has_scope || !module.has_feature) { %>disabled<% } %>">
-			<article class="post-article thumbs-desc <%- module.icon %>">
+			<article class="post-article thumbs-desc">
 				<header class="post-header">
-					<span class="md-icon"></span><% if(module.quota) { %><span><%- module.quota %></span><% } %>
-					<% if(module.has_scope && module.has_feature) { %>
-					<a class="btn btn-primary float-right" href="<%- module.href %>">Utiliser</a>
-					<% } else { %>
-					<span class="badge px-0 float-right" href="#">Indisponible</span>
-					<% } %>
+					<span class="md-icon md-icon-module <%- module.icon %> rounded-circle"></span><% if(module.quota) { %><span class="d-none"><%- module.quota %></span><% } %>
 				</header>
 				<div class="post-content">
 					<h1><%- module.name %></h1>
-					<%= module.desc %>
+					<p><%= module.desc %></p>
+					<% if(module.has_scope && module.has_feature) { %>
+					<a class="btn btn-primary" href="<%- module.href %>">Utiliser</a>
+					<% } else { %>
+					<span class="badge px-0" href="#">Indisponible</span>
+					<% } %>
 				</div>
 				<footer class="post-footer"></footer>
 			</article>
@@ -30,11 +30,14 @@
 	<header class="post-header">
 		<h1>Autres modules</h1>
 	</header>
-	<div class="post-content post-list">
+	<div class="post-content post-list no-hover module-list">
 
 		<% _.each(list, function(module){ %>
 		<div class="list-item visible-btn <% if(!module.has_scope || !module.has_feature) { %>disabled<% } %>">
 			<div class="row no-gutters">
+				<div class="col-auto mr-3">
+					<span class="md-icon md-icon-module <%- module.icon %> rounded-circle"></span>
+				</div>
 				<div class="col item-body">
 					<h4><%- module.name %></h4>
 					<%= module.desc %>
@@ -54,32 +57,56 @@
 	<footer class="post-footer"></footer>
 </article>
 
-<article class="post-article">
-	<div class="row">
-		<div class="col-6">
-			<header class="post-header">
-				<h1>API Front-Office</h1>
-			</header>
-			<div class="post-content">
-				<p>
-					Pour les intégrateurs et les développeurs Front-End qui ont besoin d'accéder
-					aux données publiques de leurs sites afin de les enrichir avec de nouvelles interactions.
-				</p>
-				<a class="btn btn-primary mr-3" href="<%- domain %>/api/v1/" target="_blank">Se connecter</a>
-				<a class="btn btn-info" href="https://aide.kiubi.com/api-front-office.html" target="_blank">En savoir plus</a>
-			</div>
-		</div>
-		<div class="col-6">
-			<header class="post-header">
-				<h1>API Developers</h1>
-			</header>
-			<div class="post-content">
-				<p>Pour les développeurs qui souhaitent interfacer leurs propres applications avec
-					Kiubi grâce à un accès direct et sécurisé aux données de tous les sites.</p>
-				<a class="btn btn-primary mr-3" href="https://api.kiubi.com/" target="_blank">Se connecter</a>
-				<a class="btn btn-info" href="https://aide.kiubi.com/api-developers.html" target="_blank">En savoir plus</a>
-			</div>
-		</div>
+
+<article class="post-article post-acticle-empty mt-5 text-center">
+	<header class="post-header">
+		<h1>Les APIs pour les développements d'applications</h1>
+	</header>
+
+	<div class="post-content">
+		<p class="lead">
+			Permettre aux développeurs web d'enrichir leurs projets avec de nouvelles fonctionnalités et applications
+		</p>
 	</div>
+
 	<footer class="post-footer"></footer>
 </article>
+
+<div class="module-list">
+	<div class="row">
+		<div class="col-6">
+			<article class="post-article thumbs-desc">
+				<header class="post-header">
+					<span class="md-icon md-icon-module md-module-apipfo rounded-circle mr-3"></span>
+				</header>
+				<div class="post-content">
+					<h1>API Front-Office</h1>
+					<p>
+						Pour les intégrateurs Front-End qui ont besoin d'accéder
+						aux données publiques de leurs sites afin de les enrichir avec de nouvelles interactions.
+						<a href="https://aide.kiubi.com/api-front-office.html" target="_blank">En savoir plus</a>
+					</p>
+					<a class="btn btn-primary" href="<%- domain %>/api/v1/" target="_blank">Se connecter</a>
+				</div>
+				<footer class="post-footer"></footer>
+			</article>
+		</div>
+		<div class="col-6">
+			<article class="post-article thumbs-desc">
+				<header class="post-header">
+					<span class="md-icon md-icon-module md-module-apibdo rounded-circle mr-3"></span>
+				</header>
+				<div class="post-content">
+					<h1>API Developers</h1>
+					<p>
+						Pour les développeurs qui souhaitent interfacer leurs propres applications avec
+						Kiubi grâce à un accès direct et sécurisé aux données de leurs sites.
+						<a href="https://aide.kiubi.com/api-developers.html" target="_blank">En savoir plus</a>
+					</p>
+					<a class="btn btn-primary" href="https://api.kiubi.com/" target="_blank">Se connecter</a>
+				</div>
+				<footer class="post-footer"></footer>
+			</article>
+		</div>
+	</div>
+</div>

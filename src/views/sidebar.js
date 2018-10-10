@@ -54,15 +54,14 @@ module.exports = Marionette.View.extend({
 			is_active: true
 		});
 
-		var root = '/' + (data.path + "/").split(/\//)[1];
-
+		var root = '/' + (data.path + "/").split(/\/|\?/)[1];
 		if (activeItem && activeItem.get('path') == root) {
 			// no change needed
 			return;
 		}
 
 		var model = this.collection.findWhere({
-			path: '/' + (data.path + "/").split(/\//)[1]
+			path: root
 		});
 		if (!model) {
 			return;

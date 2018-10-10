@@ -302,7 +302,7 @@ module.exports = Marionette.View.extend({
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 			navigationController.showInModal(contentView, {
 				title: 'Paramètres du widget',
-				modalClass: 'modal-right',
+				modalClass: 'modal-right modal-widget',
 				action: {
 					title: 'Valider'
 				}

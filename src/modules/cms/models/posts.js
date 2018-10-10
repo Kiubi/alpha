@@ -29,6 +29,8 @@ var Post = Backbone.Model.extend({
 	defaults: {
 		post_id: null,
 		page_id: '',
+		page_name: '',
+		is_home: false,
 		type: '',
 		type_name: '',
 		type_pos: 1,
@@ -241,6 +243,38 @@ module.exports = Backbone.Collection.extend({
 			return model.destroy();
 		}, ids);
 
+	},
+
+	/**
+	 * Suggest posts
+	 *
+	 * @param {String} term
+	 * @param {Number[]} limit
+	 * @returns {Promise}
+	 */
+	suggest: function(term, limit) {
+		return Backbone.ajax({
+			url: 'sites/@site/suggest/cms/posts',
+			data: {
+				term: term,
+				limit: limit || 5
+			}
+		}).then(function(response) {
+			return _.map(response.data, function(post) {
+
+				var label = 'Billet sans titre';
+				if (post.title) {
+					label = post.title;
+				} else if (post.subtitle) {
+					label = post.subtitle;
+				}
+
+				return {
+					post_id: post.post_id,
+					label: label
+				};
+			});
+		});
 	}
 
 });

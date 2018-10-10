@@ -5,14 +5,14 @@
 			<% _(widget.settings).each(function(field, name){ %>
 
 				<% switch(field.ctl){ case 1: %>
-				<div class="col-<%= (field.size && field.size == 'small') ? '6':'12'  %>">
+				<div class="col-<%= (field.size && field.size == 'small') ? '12':'12'  %>">
 					<div class="form-group">
 						<label for="field_<%- name %>"><%- field.label %></label>
 						<input class="form-control" id="field_<%- name %>" name="<%- name %>" value="<%- field.value %>" placeholder="<%- field.desc %>" type="text">
 					</div>
 				</div>
 				<% break; case 2: %>
-				<div class="col-6">
+				<div class="col-12">
 					<div class="form-group">
 						<label for="field_<%- name %>"><%- field.label %></label>
 						<select class="form-control" id="field_<%- name %>" name="<%- name %>" data-style="selectify">
@@ -22,7 +22,6 @@
 						</select>
 					</div>
 				</div>
-				<div class="col-6"></div>
 				<% break; case 3: %>
 				<div class="col-12">
 					<label><%- field.label %></label>

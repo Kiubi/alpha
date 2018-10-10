@@ -6,6 +6,62 @@ var createHash = require('sha.js');
 
 var Site = require('./site.js');
 
+/* Storage */
+
+var CookieStorage = function() {
+
+	this.getItem = function(label) {
+		return Backbone.$.cookie(label);
+	};
+	this.setItem = function(label, value, inSession) {
+		Backbone.$.cookie(label, value, {
+			path: '/'
+		});
+	};
+	this.clearItem = function(label) {
+		Backbone.$.removeCookie(label);
+	};
+};
+
+var LocalStorage = function() {
+
+	var localStorage = window.localStorage;
+	var sessionStorage = window.sessionStorage;
+
+	this.getItem = function(label) {
+		var value = sessionStorage.getItem(label);
+		if (value === null) {
+			value = localStorage.getItem(label);
+		}
+		return value;
+	};
+	this.setItem = function(label, value, inSession) {
+		localStorage.setItem(label, value);
+		if (inSession) {
+			sessionStorage.setItem(label, value);
+		}
+	};
+	this.clearItem = function(label) {
+		localStorage.removeItem(label);
+		sessionStorage.removeItem(label);
+	};
+};
+
+function storageFactory() {
+
+	try {
+		var storage = window['localStorage'],
+			x = '__storage_test__';
+		storage.setItem(x, x);
+		storage.removeItem(x);
+		return new LocalStorage();
+	} catch (e) {
+		return new CookieStorage();
+	}
+}
+
+/* Auth */
+
 /**
  * Test token validity
  * 
@@ -61,58 +117,9 @@ function pickFirstSite() {
 	return d.promise();
 }
 
-/**
- * Store current token in cookie and setup ajax client
- *
- * @param {String} token
- */
-function storeToken(token) {
-	Backbone.$.cookie('AccesToken', token, {
-		path: '/'
-	});
-	api.access_token = token;
-}
-
-/**
- * Return last used code site
- *
- * @param {Number} user_id
- * @returns {undefined|String}
- */
-function getLastSite(user_id) {
-	var cookie = Backbone.$.cookie('LastSite');
-
-	if (!cookie) return;
-	cookie = cookie.split(',');
-
-	if (cookie[0] == '' + user_id) {
-		return cookie[1];
-	}
-}
-
-/**
- * Store last used code site
- *
- * @param {String} code_site
- * @param {Number} user_id
- */
-function storeLastSite(code_site, user_id) {
-	Backbone.$.cookie('LastSite', user_id + ',' + code_site, {
-		path: '/'
-	});
-}
-
-/**
- * Clear token stored in cookie and reset ajax client access
- */
-function clearToken() {
-	Backbone.$.removeCookie('AccesToken');
-	api.access_token = null;
-}
-
 function setCredidentials(AuthPromise, Session) {
 	return AuthPromise.done(function(meta, data) {
-		storeToken(data.token);
+		Session.storeToken(data.token);
 		Session.set('token_media', data.token_media);
 
 		Session.user.set('user_id', data.user.user_id);
@@ -135,12 +142,11 @@ function setSiteContext(SitePromise, Session) {
 		if (Session.site && site.code_site == Session.site.get('code_site')) return;
 		Session.site.set(site);
 
-		storeLastSite(Session.site.get('code_site'), Session.user.get('user_id'));
-
+		Session.storeLastSite();
 		api.current_site = Session.site.get('code_site');
 		Session.site.trigger('change:site');
 	}).fail(function() {
-		Backbone.$.removeCookie('LastSite');
+		Session.clearLastSite();
 		api.current_site = null;
 	});
 }
@@ -151,6 +157,7 @@ var Session = Backbone.Model.extend({
 	initialize: function(options) {
 		this.user = options.user;
 		this.site = new Site();
+		this.storage = storageFactory();
 	},
 
 	defaults: {
@@ -161,20 +168,19 @@ var Session = Backbone.Model.extend({
 	},
 
 	/**
-	 * Test current cookie token validity
+	 * Test current token validity
 	 *
 	 * @returns {Promise}
 	 */
 	start: function() {
-		var token = Backbone.$.cookie('AccesToken');
+		var token = this.storage.getItem('AccesToken');
 		if (!token) {
 			return Backbone.$.Deferred().reject();
 		}
 
 		return setCredidentials(isTokenValid(token), this).then(function() {
-			var promise = getLastSite(this.user.get('user_id')) ?
-				allowedSite(getLastSite(this.user.get('user_id'))) :
-				pickFirstSite();
+			var lastSite = this.getLastSite();
+			var promise = lastSite ? allowedSite(lastSite) : pickFirstSite();
 			return setSiteContext(promise, this);
 		}.bind(this));
 	},
@@ -187,19 +193,20 @@ var Session = Backbone.Model.extend({
 	 * @returns Promise
 	 */
 	authenticate: function(login, password) {
-		clearToken();
+		this.clearToken();
 
 		return setCredidentials(api.post('auth/token', {
 			login: login,
 			password: password
 		}), this).then(function() {
 			var promise;
+			var lastSite = this.getLastSite();
 
-			if (getLastSite(this.user.get('user_id'))) {
-				// try last site stored in cookie
+			if (lastSite) {
+				// try last site 
 				// fallback => first allowed site
 				promise = Backbone.$.Deferred();
-				allowedSite(getLastSite(this.user.get('user_id'))).done(function(meta, data) {
+				allowedSite(lastSite).done(function(meta, data) {
 					promise.resolve(meta, data);
 				}).fail(function() {
 					pickFirstSite().done(function(meta, data) {
@@ -242,13 +249,15 @@ var Session = Backbone.Model.extend({
 	 * Convert path to allow rendering in browser
 	 *
 	 * @param {String} path. Ex : /media/123
+	 * @param {boolean} forceDownload
 	 * @returns {String}
 	 */
-	convertMediaPath: function(path) {
+	convertMediaPath: function(path, forceDownload) {
 
 		var id = path.match(/(^|\/)([0-9]+)($|\/|\.)/);
 		if (id) {
-			return 'https://' + this.site.get('backoffice') + path + '?sign=' + this.hashMedia(parseInt(id[2]));
+			var params = forceDownload ? '&a=download' : '';
+			return 'https://' + this.site.get('backoffice') + path + '?sign=' + this.hashMedia(parseInt(id[2])) + params;
 		}
 
 		return path;
@@ -288,6 +297,57 @@ var Session = Backbone.Model.extend({
 		if (!this.site.get('features')) return false;
 
 		return (this.site.get('features')[name] === true);
+	},
+
+	/**
+	 * Return last used code site
+	 *
+	 * @returns {undefined|String}
+	 */
+	getLastSite: function() {
+
+		var user_id = this.user.get('user_id');
+		var lastSite = this.storage.getItem('LastSite');
+
+		if (!lastSite) return;
+		lastSite = lastSite.split(',');
+
+		if (lastSite[0] == '' + user_id) {
+			return lastSite[1];
+		}
+	},
+
+	/**
+	 * Store last used code site
+	 *
+	 */
+	storeLastSite: function() {
+		this.storage.setItem('LastSite', this.user.get('user_id') + ',' + this.site.get('code_site'), true);
+	},
+
+	/**
+	 * Clear last used code site
+	 */
+	clearLastSite: function() {
+		this.storage.clearItem('LastSite');
+	},
+
+	/**
+	 * Store current token and setup ajax client
+	 *
+	 * @param {String} token
+	 */
+	storeToken: function(token) {
+		this.storage.setItem('AccesToken', token);
+		api.access_token = token;
+	},
+
+	/**
+	 * Clear token stored and reset ajax client access
+	 */
+	clearToken: function() {
+		this.storage.clearItem('AccesToken');
+		api.access_token = null;
 	}
 
 });

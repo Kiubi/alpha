@@ -15,6 +15,7 @@ var IndexView = require('./views/index');
 var MenuView = require('./views/menu');
 var PageView = require('./views/page');
 var PostView = require('./views/post');
+var PostsView = require('./views/posts');
 var PageAddModalView = require('./views/modal.page.add');
 var MenuTree = require('kiubi/views/ui/menuTree.js');
 
@@ -678,6 +679,28 @@ var CMSController = Controller.extend({
 			title: 'Ajouter une page',
 			modalClass: 'modal-pagetype-add'
 		});
+	},
+
+	showPosts: function(queryString) {
+
+		var qs = this.parseQueryString(queryString, {
+			'term': null
+		});
+
+		this.triggerSidebarMenu('change:page', null);
+
+		var view = new PostsView({
+			collection: new Posts(),
+			filters: qs
+		});
+
+		this.navigationController.showContent(view);
+
+		view.start();
+
+		this.setHeader({
+			title: 'Recherche'
+		});
 	}
 
 });
@@ -688,7 +711,8 @@ module.exports = Marionette.AppRouter.extend({
 		'cms': 'showIndex',
 		'cms/menus/:id': 'showMenu',
 		'cms/pages/:id': 'showPage',
-		'cms/posts/:id': 'showPost'
+		'cms/posts/:id': 'showPost',
+		'cms/posts': 'showPosts'
 	},
 
 	onRoute: function(name, path, args) {

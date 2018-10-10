@@ -18,7 +18,11 @@ echo "Bundle assets"
 echo " - src"
 cp ./src/index.html "./$dest"
 mkdir -p ./$dest/{locales,vendor,assets/css,assets/img}
-cat ./src/assets/css/*.css > "./$dest/assets/css/app.css"
+if [ "$1" = "--no-map" ]; then
+	uglifycss ./src/assets/css/*.css > "./$dest/assets/css/app.css"
+else 
+	cat ./src/assets/css/*.css > "./$dest/assets/css/app.css"
+fi 
 cp -r ./src/assets/img/* "./$dest/assets/img/"
 
 echo " - bootstrap"
@@ -29,8 +33,13 @@ cat ./node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepick
 echo " - tinymce"
 mkdir -p ./$dest/vendor/tinymce/skins
 cp -r ./node_modules/tinymce/skins/lightgray ./$dest/vendor/tinymce/skins/
-cat ./src/vendor/tinymce/skins/lightgray/content.css >> ./$dest/vendor/tinymce/skins/lightgray/content.min.css
-cat ./src/vendor/tinymce/skins/lightgray/skin.css >> ./$dest/vendor/tinymce/skins/lightgray/skin.min.css
+if [ "$1" = "--no-map" ]; then
+	uglifycss ./src/vendor/tinymce/skins/lightgray/content.css >> ./$dest/vendor/tinymce/skins/lightgray/content.min.css
+	uglifycss ./src/vendor/tinymce/skins/lightgray/skin.css >> ./$dest/vendor/tinymce/skins/lightgray/skin.min.css
+else
+	cat ./src/vendor/tinymce/skins/lightgray/content.css >> ./$dest/vendor/tinymce/skins/lightgray/content.min.css
+	cat ./src/vendor/tinymce/skins/lightgray/skin.css >> ./$dest/vendor/tinymce/skins/lightgray/skin.min.css
+fi
 
 echo "Bundle locales"
 

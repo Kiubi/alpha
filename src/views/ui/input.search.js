@@ -57,7 +57,19 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
+	/*
+	 * Suggestions
+	 * {
+	 * 	is_header: boolean
+	 * 	label: string
+	 * 	icon: string
+	 * 	href: string
+	 * 	disable_escaping: boolean
+	 * }
+	 * 
+	 */
 	suggestions: null,
+
 	term: null,
 
 	searchPlaceholder: 'Rechercher',
@@ -96,23 +108,25 @@ module.exports = Marionette.View.extend({
 
 	showResults: function(results, options) {
 		this.suggestions = results;
+		options = options || {};
 
 		var list = '';
 		if (results.length > 0) {
 			list = _.reduce(results, function(acc, result, index) {
 
 				if (result.is_header) {
-					return acc + '<li class="dropdown-header">' + result.label + '</li>'; // TODO escape ?
+					return acc + '<li class="dropdown-header">' + _.escape(result.label) + '</li>';
 				}
 
 				var icon = result.icon ? '<span class="md-icon ' + result.icon + '"></span>' : '';
+				var label = result.disable_escaping ? result.label : _.escape(result.label);
 
 				if (result.href) {
 					return acc + '<li><a class="dropdown-item" href="' + result.href + '">' +
-						icon + result.label + '</a></li>'; // TODO escape ?
+						icon + label + '</a></li>';
 				} else {
 					return acc + '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' +
-						icon + result.label + '</a></li>'; // TODO escape ?
+						icon + label + '</a></li>';
 				}
 
 			}, '');

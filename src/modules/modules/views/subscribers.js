@@ -43,8 +43,7 @@ module.exports = Marionette.View.extend({
 
 	onRender: function() {
 
-		var c = new CollectionUtils.SelectCollection();
-		c.add([{
+		var c = new CollectionUtils.SelectCollection([{
 			'value': 'registred',
 			'label': 'Inscrits',
 			'selected': this.filters.is_registered == 'true'
@@ -80,9 +79,19 @@ module.exports = Marionette.View.extend({
 				confirm: true
 			}],
 			filters: [{
+				id: 'registred',
 				extraClassname: 'select-state',
 				title: 'Tous les états',
 				collectionPromise: c
+			}, {
+				id: 'export',
+				extraClassname: 'md-export',
+				type: 'button',
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					'value': 'export',
+					'label': 'Exporter les abonnés',
+					'selected': false
+				}])
 			}]
 		}));
 	},
@@ -114,6 +123,17 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChildviewFilterChange: function(filter) {
+		switch (filter.model.get('id')) {
+			case 'registred':
+				this.onRegistredFilterChange(filter);
+				break;
+			case 'export':
+				this.onExportFilterChange(filter);
+				break;
+		}
+	},
+
+	onRegistredFilterChange: function(filter) {
 		if (filter.value == 'registred') {
 			this.filters.is_registered = 'true';
 		} else if (filter.value == 'unregistred') {
@@ -122,6 +142,52 @@ module.exports = Marionette.View.extend({
 			this.filters.is_registered = null;
 		}
 		this.start();
+	},
+
+	onExportFilterChange: function(filter) {
+		if (!filter.view) return;
+		var view = filter.view;
+
+		if (filter.value == 'export') {
+
+			if (view.collection.length > 1) {
+				return;
+			}
+
+			view.overrideExtraClassname('md-loading');
+			view.render();
+
+			var data = {};
+			if (this.filters.is_registered != null) data.is_registered = this.filters.is_registered;
+
+			this.collection.exportAll(data).done(function(data) {
+				view.overrideExtraClassname('');
+				view.collection.add([{
+					value: null,
+					label: '---'
+				}, {
+					value: data.url,
+					label: 'Télécharger le fichier',
+					extraClassname: 'md-export'
+				}]);
+				view.toggleDropdown(); // open
+			}.bind(this)).fail(function(xhr) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal(xhr);
+
+				view.overrideExtraClassname('');
+				while (view.collection.length > 1) {
+					view.collection.pop();
+				}
+			}.bind(this));
+
+		} else {
+			view.toggleDropdown(); // close
+			view.overrideExtraClassname('');
+			while (view.collection.length > 1) {
+				view.collection.pop();
+			}
+		}
 	},
 
 	onChildviewChangeOrder: function(order) {

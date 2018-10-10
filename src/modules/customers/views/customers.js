@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var format = require('kiubi/utils/format.js');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
@@ -50,6 +51,8 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
+
+
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
@@ -86,6 +89,15 @@ module.exports = Marionette.View.extend({
 				title: 'Rechercher',
 				type: 'input',
 				value: this.filters.term
+			}, {
+				id: 'export',
+				extraClassname: 'md-export',
+				type: 'button',
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					'value': 'export',
+					'label': 'Exporter les membres',
+					'selected': false
+				}])
 			}]
 		}));
 	},
@@ -125,12 +137,69 @@ module.exports = Marionette.View.extend({
 		this.start();
 	},
 
-	onChildviewFilterChange: function(filter) {
-		if (filter.model.get('id') == 'term') {
-			this.filters.term = filter.value != '' ? filter.value : null;
-		}
+	/* Filters */
 
+	onChildviewFilterChange: function(filter) {
+		switch (filter.model.get('id')) {
+			case 'term':
+				this.onTermFilterChange(filter);
+				break;
+			case 'export':
+				this.onExportFilterChange(filter);
+				break;
+		}
+	},
+
+	onTermFilterChange: function(filter) {
+		this.filters.term = filter.value != '' ? filter.value : null;
 		this.start();
+	},
+
+	onExportFilterChange: function(filter) {
+		if (!filter.view) return;
+		var view = filter.view;
+
+		if (filter.value == 'export') {
+
+			if (view.collection.length > 1) {
+				return;
+			}
+
+			view.overrideExtraClassname('md-loading');
+			view.render();
+
+
+			var data = {};
+			if (this.filters.term != null) data.term = this.filters.term;
+
+			this.collection.exportAll(data).done(function(data) {
+				view.overrideExtraClassname('');
+				view.collection.add([{
+					value: null,
+					label: '---'
+				}, {
+					value: data.url,
+					label: 'Télécharger le fichier',
+					extraClassname: 'md-export'
+				}]);
+				view.toggleDropdown(); // open
+			}.bind(this)).fail(function(xhr) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal(xhr);
+
+				view.overrideExtraClassname('');
+				while (view.collection.length > 1) {
+					view.collection.pop();
+				}
+			}.bind(this));
+
+		} else {
+			view.toggleDropdown(); // close
+			view.overrideExtraClassname('');
+			while (view.collection.length > 1) {
+				view.collection.pop();
+			}
+		}
 	}
 
 });

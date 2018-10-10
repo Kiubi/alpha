@@ -24,11 +24,7 @@
 					<% } %>
 				</div>
 				<div class="col-4">
-					<% if(product_count > 0) { %>
-						<a href="/catalog/categories/<%- category_id %>/products"><%= plural(product_count, '%d produit', '%d produits') %></a>
-					<% } else { %>
-						<span class="text-muted">—</span>
-					<% } %>
+					<span class="text-muted">—</span><!-- #TODO <span>Nombre de produits</span> -->
 				</div>
 				<div class="col-auto">
 					<div class="btn-group float-right" role="group"><a class="btn btn-primary" href="/catalog/categories/<%- category_id %>" role="button">Détail</a>

@@ -119,6 +119,10 @@ function currencyEntity(code) {
 
 }
 
+function plural(nb, singular, plural) {
+	return (nb > 1 ? plural : singular).replace('%d', nb);
+}
+
 
 module.exports.formatDate = formatDate;
 module.exports.formatDateTime = formatDateTime;
@@ -128,3 +132,4 @@ module.exports.formatBytes = formatBytes;
 module.exports.formatFloat = formatFloat;
 module.exports.unformatFloat = unformatFloat;
 module.exports.currencyEntity = currencyEntity;
+module.exports.plural = plural;

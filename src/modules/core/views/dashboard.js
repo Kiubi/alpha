@@ -167,10 +167,14 @@ var GraphView = Marionette.View.extend({
 	},
 
 	templateContext: function() {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 		return {
 			title: getGraphTitle(this.stat),
 			startDate: this.startDate.format('DD/MM/YYYY'),
-			endDate: this.endDate.format('DD/MM/YYYY')
+			endDate: this.endDate.format('DD/MM/YYYY'),
+			stats_url: 'https://' + Session.site.get('backoffice') + '/awstats/'
 		};
 	},
 
@@ -222,6 +226,7 @@ var GraphView = Marionette.View.extend({
 		$datepickers.each(function(i, el) {
 
 			var $el = Backbone.$(el);
+			$el.data('DateTimePicker').showTodayButton(false);
 
 			if (el.name == 'start_date') {
 				$el.data('DateTimePicker').maxDate(moment().add(-1, 'days'));

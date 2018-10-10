@@ -59,8 +59,13 @@ module.exports = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['collection', 'categories', 'tags', 'category_id']);
+
+		var stock = this.getOption('filters') && this.getOption('filters').stock ? this.getOption('filters').stock : null;
+		if (stock != 'yes' && stock != 'partial' && stock != 'no') {
+			stock = null;
+		}
 		this.filters = {
-			stock: null,
+			stock: stock,
 			category_id: null,
 			tag_id: null,
 			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
@@ -110,6 +115,16 @@ module.exports = Marionette.View.extend({
 			title: 'Rechercher',
 			type: 'input',
 			value: this.filters.term
+		});
+		filters.push({
+			id: 'export',
+			extraClassname: 'md-export',
+			type: 'button',
+			collectionPromise: new CollectionUtils.SelectCollection([{
+				'value': 'export',
+				'label': 'Exporter les produits',
+				'selected': false
+			}])
 		});
 
 		this.showChildView('list', new ListView({
@@ -174,27 +189,110 @@ module.exports = Marionette.View.extend({
 		return this.collection.bulkDelete(ids);
 	},
 
+	/* Filters */
+
 	onChildviewFilterChange: function(filter) {
-		if (filter.model.get('id') == 'categories') {
-			this.filters.category_id = filter.value;
-		} else if (filter.model.get('id') == 'tag') {
-			this.filters.tag_id = filter.value;
-		} else if (filter.model.get('id') == 'stock') {
-			if (filter.value == 'yes') {
-				this.filters.stock = 'yes';
-			} else if (filter.value == 'no') {
-				this.filters.stock = 'no';
-			} else if (filter.value == 'partial') {
-				this.filters.stock = 'partial';
-			} else {
-				this.filters.stock = null;
-			}
-		} else if (filter.model.get('id') == 'term') {
-			this.filters.term = filter.value != '' ? filter.value : null;
+		switch (filter.model.get('id')) {
+			case 'term':
+				this.onTermFilterChange(filter);
+				break;
+			case 'categories':
+				this.onCategoriesFilterChange(filter);
+				break;
+			case 'tag':
+				this.onTagFilterChange(filter);
+				break;
+			case 'stock':
+				this.onStockFilterChange(filter);
+				break;
+			case 'export':
+				this.onExportFilterChange(filter);
+				break;
 		}
 
-		this.start();
 	},
+
+	onTermFilterChange: function(filter) {
+		this.filters.term = filter.value != '' ? filter.value : null;
+		this.start();
+
+	},
+
+	onCategoriesFilterChange: function(filter) {
+		this.filters.category_id = filter.value;
+		this.start();
+
+	},
+
+	onTagFilterChange: function(filter) {
+		this.filters.tag_id = filter.value;
+		this.start();
+
+	},
+
+	onStockFilterChange: function(filter) {
+		if (filter.value == 'yes') {
+			this.filters.stock = 'yes';
+		} else if (filter.value == 'no') {
+			this.filters.stock = 'no';
+		} else if (filter.value == 'partial') {
+			this.filters.stock = 'partial';
+		} else {
+			this.filters.stock = null;
+		}
+		this.start();
+
+	},
+
+	onExportFilterChange: function(filter) {
+		if (!filter.view) return;
+		var view = filter.view;
+
+		if (filter.value == 'export') {
+
+			if (view.collection.length > 1) {
+				return;
+			}
+
+			view.overrideExtraClassname('md-loading');
+			view.render();
+
+			var data = {};
+			if (this.filters.category_id != null) data.category_id = this.filters.category_id;
+			if (this.filters.tag_id != null) data.tag_id = this.filters.tag_id;
+			if (this.filters.stock != null) data.stock = this.filters.stock;
+			if (this.filters.term != null) data.term = this.filters.term;
+
+			this.collection.exportAll(data).done(function(data) {
+				view.overrideExtraClassname('');
+				view.collection.add([{
+					value: null,
+					label: '---'
+				}, {
+					value: data.url,
+					label: 'Télécharger le fichier',
+					extraClassname: 'md-export'
+				}]);
+				view.toggleDropdown(); // open
+			}.bind(this)).fail(function(xhr) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal(xhr);
+
+				view.overrideExtraClassname('');
+				while (view.collection.length > 1) {
+					view.collection.pop();
+				}
+			}.bind(this));
+
+		} else {
+			view.toggleDropdown(); // close
+			view.overrideExtraClassname('');
+			while (view.collection.length > 1) {
+				view.collection.pop();
+			}
+		}
+	},
+
 
 	onChildviewFilterInput: function(filter) {
 

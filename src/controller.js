@@ -171,6 +171,15 @@ module.exports = Marionette.Object.extend({
 	},
 
 	/**
+	 * Open url in new tab/window
+	 *
+	 * @param {String} url
+	 */
+	actionOpenURL: function(url) {
+		window.open(url);
+	},
+
+	/**
 	 * Parse a query string. Only expected params are returned.
 	 * 
 	 * @param {String} queryString

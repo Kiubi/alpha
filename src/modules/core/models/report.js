@@ -1,4 +1,6 @@
 var Backbone = require('backbone');
+var moment = require('moment');
+
 
 module.exports = Backbone.Model.extend({
 
@@ -45,19 +47,26 @@ module.exports = Backbone.Model.extend({
 	 */
 	compare: function(firstDate, secDate, interval) {
 
+		var hier = moment().add(-1, 'days');
+		var firstEnd = firstDate.clone().add(interval, 'days');
+		var secEnd = secDate.clone().add(interval, 'days');
+
+		firstEnd = hier.diff(firstEnd, 'days') >= 0 ? firstEnd : hier;
+		secEnd = hier.diff(secEnd, 'days') >= 0 ? secEnd : hier;
+
 		return Backbone.$.when(
 			Backbone.ajax({
 				url: this.url,
 				data: {
 					start_date: firstDate.format('DD/MM/YYYY'),
-					end_date: firstDate.clone().add(interval, 'days').format('DD/MM/YYYY')
+					end_date: firstEnd.format('DD/MM/YYYY')
 				}
 			}),
 			Backbone.ajax({
 				url: this.url,
 				data: {
 					start_date: secDate.format('DD/MM/YYYY'),
-					end_date: secDate.clone().add(interval, 'days').format('DD/MM/YYYY')
+					end_date: secEnd.format('DD/MM/YYYY')
 				}
 			})
 		).then(function(firstResponse, secResponse) {

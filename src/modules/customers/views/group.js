@@ -53,24 +53,32 @@ module.exports = Marionette.View.extend({
 		'discount'
 	],
 
+	enableDiscount: false,
+
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'page', 'discount']);
 
-		this.discounts = new Backbone.Collection();
-		this.discounts.model = Backbone.Model.extend({
-			defaults: {
-				discount: null,
-				group_discount: null,
-				category_id: null,
-				category_name: ''
-			}
-		});
-		this.discounts.add(this.discount.get('categories'));
+		if (this.discount) {
+			this.discounts = new Backbone.Collection();
+			this.discounts.model = Backbone.Model.extend({
+				defaults: {
+					discount: null,
+					group_discount: null,
+					category_id: null,
+					category_name: ''
+				}
+			});
+			this.discounts.add(this.discount.get('categories'));
+			this.enableDiscount = true;
+		} else {
+			this.enableDiscount = false;
+		}
 	},
 
 	templateContext: function() {
 		return {
-			discount: format.formatFloat(this.discount.get('discount'))
+			enableDiscount: this.enableDiscount,
+			discount: this.enableDiscount ? format.formatFloat(this.discount.get('discount')) : null
 		};
 	},
 
@@ -88,9 +96,11 @@ module.exports = Marionette.View.extend({
 			name: 'target_type'
 		}));
 
-		this.showChildView('discounts', new ListView({
-			collection: this.discounts
-		}));
+		if (this.enableDiscount) {
+			this.showChildView('discounts', new ListView({
+				collection: this.discounts
+			}));
+		}
 	},
 
 	onChildviewChange: function(value, field) {
@@ -134,18 +144,29 @@ module.exports = Marionette.View.extend({
 		data.target_key = s[1];
 
 		// Discounts
-		var collectionView = this.getChildView('discounts');
-		var dataD = {};
-		dataD.discount = (data.discount == '') ? null : data.discount;
-		delete data.discount;
-		dataD.categories = {};
-		this.discounts.each(function(model) {
-			var rowView = collectionView.children.findByModel(model);
-			if (!rowView) return;
-			if (rowView.getUI('discount').val() == '' || !model.get('category_id')) return;
+		var promise;
+		if (this.enableDiscount) {
+			var collectionView = this.getChildView('discounts');
+			var dataD = {};
+			dataD.discount = (data.discount == '') ? null : data.discount;
+			delete data.discount;
+			dataD.categories = {};
+			this.discounts.each(function(model) {
+				var rowView = collectionView.children.findByModel(model);
+				if (!rowView) return;
+				if (rowView.getUI('discount').val() == '' || !model.get('category_id')) return;
 
-			dataD.categories[model.get('category_id')] = rowView.getUI('discount').val();
-		});
+				dataD.categories[model.get('category_id')] = rowView.getUI('discount').val();
+			});
+			promise = this.discount.save(
+				dataD, {
+					patch: true,
+					wait: true
+				}
+			);
+		} else {
+			promise = Backbone.$.Deferred().resolve();
+		}
 
 		return Backbone.$.when(
 			this.model.save(
@@ -154,13 +175,7 @@ module.exports = Marionette.View.extend({
 					wait: true
 				}
 			),
-			this.discount.save(
-				dataD, {
-					patch: true,
-					wait: true
-				}
-			)
-		);
+			promise);
 	},
 
 	onDelete: function() {

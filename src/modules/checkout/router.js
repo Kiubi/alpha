@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var Controller = require('kiubi/controller.js');
+var ControllerChannel = Backbone.Radio.channel('controller');
 
 /* Models */
 var Checkout = require('./models/checkout');
@@ -39,11 +40,11 @@ function getCarriersAction(options) {
 
 	actions = actions.concat(
 		[{
+			title: 'Ajouter un transporteur',
+			callback: ['actionNewCarrier', 'tranchespoids']
+		}, {
 			title: 'Ajouter un transporteur local',
 			callback: ['actionNewCarrier', 'local']
-		}, {
-			title: 'Ajouter un transporteur par tranches de poids',
-			callback: ['actionNewCarrier', 'tranchespoids']
 		}]
 	);
 
@@ -81,6 +82,48 @@ function getCarriersAction(options) {
 	return actions;
 }
 
+function getOrderAction(options) {
+
+	options = options || {};
+	var actions = [];
+
+	if (options.form) {
+		actions.push({
+			title: 'Version imprimable',
+			callback: ['actionOpenURL', options.form]
+		});
+	}
+
+	if (options.xls) {
+		actions.push({
+			title: 'Exporter pour Excel',
+			callback: ['actionOpenURL', options.xls]
+		});
+	}
+
+	if (options.coliship) {
+		actions.push({
+			title: 'Exporter pour Coliship',
+			callback: ['actionOpenURL', options.coliship]
+		});
+	}
+
+	var saveAction = {
+		title: 'Enregistrer',
+		callback: 'actionSave',
+		activateOnEvent: 'modified:content',
+		bubbleOnEvent: 'modified:content'
+	};
+
+	if (actions.length <= 1) {
+		actions.push(saveAction);
+	} else {
+		actions.splice(1, 0, saveAction);
+	}
+
+	return actions;
+}
+
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
 	template: require('./templates/sidebarMenu.html'),
@@ -109,6 +152,12 @@ var SidebarMenuView = Marionette.View.extend({
 		return {
 			overview: this.overview.toJSON()
 		};
+	},
+
+	onRefreshOrders: function() {
+		this.overview.fetch().done(function() {
+			this.render();
+		}.bind(this));
 	}
 });
 
@@ -122,11 +171,20 @@ var CheckoutController = Controller.extend({
 		href: '/checkout'
 	}],
 
+	redirectToPending: function(queryString) {
+		this.navigationController.navigate('/checkout/orders?status=pending');
+	},
+
 	showOrders: function(queryString) {
 		var qs = this.parseQueryString(queryString, {
-			'status': 'pending',
+			'status': null,
 			'term': null
 		});
+
+		if (!qs.status) {
+			this.navigationController.navigate('/checkout/orders?status=pending');
+			return;
+		}
 
 		var view = new OrdersView({
 			collection: new Orders(),
@@ -134,6 +192,10 @@ var CheckoutController = Controller.extend({
 		});
 		this.navigationController.showContent(view);
 		view.start();
+
+		this.listenTo(view.collection, 'bulk', function(action) {
+			this.triggerSidebarMenu('refresh:orders');
+		});
 
 		var title;
 		switch (qs.status) {
@@ -172,16 +234,18 @@ var CheckoutController = Controller.extend({
 				extra_fields: 'activity,price_label'
 			}
 		}).done(function() {
+
 			var view = new OrderView({
 				model: m
 			});
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: 'Commande #' + m.get('reference')
-			}, [{
-				title: 'Enregistrer',
-				callback: 'actionSave'
-			}]);
+			}, getOrderAction({
+				xls: m.get('download')['xls'] ? m.get('download')['xls'] : null,
+				coliship: m.get('download')['coliship'] ? m.get('download')['coliship'] : null,
+				form: m.get('download')['form'] ? m.get('download')['form'] : null
+			}));
 		}.bind(this)).fail(function() {
 			this.notFound();
 			this.setHeader({
@@ -518,7 +582,7 @@ var CheckoutController = Controller.extend({
 module.exports = Marionette.AppRouter.extend({
 	controller: new CheckoutController(),
 	appRoutes: {
-		'checkout': 'showOrders',
+		'checkout': 'redirectToPending',
 		'checkout/orders': 'showOrders',
 		'checkout/orders/:id': 'showOrder',
 		'checkout/aborted': 'showAborted',

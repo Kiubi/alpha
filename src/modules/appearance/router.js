@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var _ = require('underscore');
 
 var Controller = require('kiubi/controller.js');
 var ControllerChannel = Backbone.Radio.channel('controller');
@@ -8,7 +9,7 @@ var Builder = require('./models/builder');
 var Layout = require('./models/layout');
 var Layouts = require('./models/layouts');
 
-var IndexView = require('./views/index');
+// var IndexView = require('./views/index');
 var LayoutsView = require('./views/layouts');
 var LayoutView = require('./views/layout');
 
@@ -62,11 +63,9 @@ var SidebarMenuLayoutView = Marionette.View.extend({
 	tree: [],
 	models: [],
 	folder_id: null,
-	category_id: null,
 
 	ui: {
 		'folderSelector': "select[data-role='select-folder']",
-		'categorySelector': "select[data-role='select-category']",
 		'modelSelector': "select[data-role='select-model']",
 		'inputName': "input[data-role='name']"
 	},
@@ -74,11 +73,6 @@ var SidebarMenuLayoutView = Marionette.View.extend({
 	events: {
 		'change @ui.folderSelector': function(event) {
 			this.folder_id = Backbone.$(event.currentTarget).val();
-			this.category_id = 0; // reset category
-			this.render();
-		},
-		'change @ui.categorySelector': function(event) {
-			this.category_id = Backbone.$(event.currentTarget).val();
 			this.render();
 		},
 		'change @ui.modelSelector': function(event) {
@@ -95,7 +89,6 @@ var SidebarMenuLayoutView = Marionette.View.extend({
 		this.models = [];
 		this.builder = null;
 		this.folder_id = 0;
-		this.category_id = 0;
 
 		this.listenTo(ControllerChannel, 'refresh:widgets', function(widgets, models, builder) {
 			this.tree = widgets;
@@ -115,15 +108,14 @@ var SidebarMenuLayoutView = Marionette.View.extend({
 		if (this.folder_id != null && folders[this.folder_id]) {
 			categories = folders[this.folder_id].categories;
 		}
-		if (this.category_id != null && categories[this.category_id]) {
-			widgets = categories[this.category_id].widgets;
-		}
+		_.each(categories, function(category) {
+			widgets = widgets.concat(category.widgets);
+		});
 
 		return {
 			folders: folders,
 			folder_id: this.folder_id,
 			categories: categories,
-			category_id: this.category_id,
 			widgets: widgets,
 			models: this.models,
 			name: this.builder ? this.builder.get('name') : '',

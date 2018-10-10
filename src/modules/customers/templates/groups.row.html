@@ -12,7 +12,7 @@
 
 
 						<% if(customer_count > 0) { %>
-							<a href="/customers/groups/<%- group_id %>"><%- plural(customer_count, '%d membre', '%d membres') %></a>
+							<%- plural(customer_count, '%d membre', '%d membres') %>
 							<% } else { %>
 								<span class="text-muted">—</span>
 								<% } %>

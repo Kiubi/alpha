@@ -31,7 +31,9 @@ var RowView = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
-			label: this.model.getLabel()
+			label: this.model.getLabel(),
+			showType: true,
+			canMove: true
 		};
 	}
 

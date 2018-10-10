@@ -155,7 +155,7 @@ var KiubiApp = Marionette.Application.extend({
 			});
 		}
 		Backbone.Radio.channel('navigation').trigger('change:url', {
-			path: window.location.pathname
+			path: window.location.pathname + window.location.search
 		});
 	},
 

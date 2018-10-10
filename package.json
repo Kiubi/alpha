@@ -44,7 +44,8 @@
     "jshint": "^2.9.5",
     "jstify": "^0.14.0",
     "minifyify": "^7.3.5",
-    "po2json": "^0.4.5"
+    "po2json": "^0.4.5",
+    "uglifycss": "^0.0.29"
   },
   "browserify": {
     "transform": [

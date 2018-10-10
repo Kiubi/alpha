@@ -1,23 +1,25 @@
 <h2>Activités en attente</h2>
 <ul class="nav nav-sidebar flex-column">
 	<% if(pending_orders != null) { %>
-	<li class="nav-item"><a class="nav-link" href="/checkout"><span class="badge"><%- pending_orders %></span>Commandes à traiter</a></li>
+	<li class="nav-item"><a class="nav-link" href="/checkout/orders?status=pending"><span class="badge"><%- pending_orders %></span>Commandes à traiter</a></li>
 	<% } %>
 	<% if(pending_orders != null) { %>
-	<li class="nav-item"><a class="nav-link" href="/catalog"><span class="badge"><%- stock_shortage_count %></span>Ruptures de stock</a></li>
+	<li class="nav-item"><a class="nav-link" href="/catalog?stock=no"><span class="badge"><%- stock_shortage_count %></span>Ruptures de stock</a></li>
 	<% } %>
 	<!-- <li class="nav-item"><a class="nav-link" href="/catalog/comments"><span class="badge">0</span>Évaluations</a></li> -->
 	<% if(pending_orders != null) { %>
-	<li class="nav-item"><a class="nav-link" href="/forms/inbox"><span class="badge"><%- unread_responses %></span>Réponses non lues</a></li>
+	<li class="nav-item"><a class="nav-link" href="/forms/inbox?is_read=0"><span class="badge"><%- unread_responses %></span>Réponses non lues</a></li>
 	<% } %>
 	<!-- <li class="nav-item"><a class="nav-link" href="/blog/comments"><span class="badge">0</span>Commentaires</a></li> -->
 </ul>
 
 
 <p class="dashboard-alert">
-	Vous utilisez une version alpha de la console d'administration de Kiubi qui peut rencontrer certains dysfonctionnements.<br><br>
-	Par conséquent, il est conseillé de n'y utiliser qu'un site Internet dédié aux tests.<br><br>
-	Plusieurs modules ne sont pas encore disponibles ou fictifs et seront ajoutés ultérieurement.</p>
+Vous utilisez une version non finalisée de la nouvelle console d'administration de Kiubi.
+<br><br>Tous les modules ne sont pas encore disponibles et certains peuvent rencontrer des dysfonctionnements.
+<br><br>Vous pouvez revenir à la version précédente en cliquant sur le bouton ci-dessous.
+<a href="<%- domain %>" class="btn btn-info text-white w-100 mt-3">Version précédente</a>
+</p>
 <!-- #TODO
 <div class="quotas">
 	<h4>Espace disque <span class="pull-right quotas-detail">500Mo / 2Go</span></h4>

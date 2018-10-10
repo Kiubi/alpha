@@ -18,11 +18,19 @@
 		<h4>
 			<%- name %>
 		</h4>
+
+		<% if (is_multi_layouts) { %>
 		<div class="row no-gutters">
 			<div class="col-4"><span class="data-label">Appliqué à</span></div>
-			<div class="col"><a href="#">
-				<%- usage_count %> pages</a></div>
+			<div class="col">
+				<% if(usage_link != '#') { %>
+				<a href="<%- usage_link %>"><%- usage_label %></a>
+				<% } else { %>
+				<%- usage_label %>
+				<% } %>
+			</div>
 		</div>
+		<% } %>
 
 		<div class="row no-gutters">
 			<div class="col-4"><span class="data-label">Template</span></div>

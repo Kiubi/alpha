@@ -30,10 +30,12 @@ var SidebarMenuView = Marionette.View.extend({
 	},
 
 	templateContext: function() {
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		return {
 			pending_orders: this.stat.get('checkout') ? this.stat.get('checkout').pending_orders : null,
 			stock_shortage_count: this.stat.get('catalog') ? this.stat.get('catalog').stock_shortage_count : null,
-			unread_responses: this.stat.get('forms') ? this.stat.get('forms').unread_responses : null
+			unread_responses: this.stat.get('forms') ? this.stat.get('forms').unread_responses : null,
+			domain: 'https://' + Session.site.get('backoffice')
 		};
 	}
 

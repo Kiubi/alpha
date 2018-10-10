@@ -1,7 +1,20 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
-
 var CollectionUtils = require('kiubi/utils/collections.js');
+
+var Job = require('kiubi/modules/modules/models/job');
+
+function checkExport(job) {
+
+	var token = job.get('result');
+
+	return Backbone.ajax({
+		url: 'sites/@site/export/account/customers/' + token,
+		method: 'GET'
+	}).then(function(response) {
+		return response.data;
+	});
+}
 
 var Customer = Backbone.Model.extend({
 	urlRoot: 'sites/@site/account/customers',
@@ -134,6 +147,27 @@ module.exports = Backbone.Collection.extend({
 					lastname: customer.lastname,
 					firstname: customer.firstname
 				};
+			});
+		});
+	},
+
+	/**
+	 * @param {Object} data
+	 * @returns {Promise}
+	 */
+	exportAll: function(data) {
+		return Backbone.ajax({
+			url: 'sites/@site/export/account/customers',
+			method: 'POST',
+			data: data
+		}).then(function(response) {
+
+			var job = new Job({
+				job_id: response.data.job_id
+			});
+
+			return job.watch().then(function() {
+				return checkExport(job);
 			});
 		});
 	}

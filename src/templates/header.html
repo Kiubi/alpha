@@ -29,7 +29,7 @@
 <ul class="nav">
 	<% _(tabs).each(function(tab){ %>
 	<li role="presentation" class="nav-item <%= tab.is_active ? 'active' : '' %>">
-		<a href="<%- tab.url %>" class="nav-link">
+		<a href="<%- tab.url %>" target="<%- tab.target ? tab.target : '' %>" class="nav-link">
 		<%- tab.title %>
 		<% if(tab.icon) { %>
 		<span class="md-icon <%- tab.icon %>"></span>

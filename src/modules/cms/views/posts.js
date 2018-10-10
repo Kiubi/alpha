@@ -1,37 +1,33 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var format = require('kiubi/utils/format.js');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
-
-var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/posts.row.html'),
 	className: 'list-item',
-	templateContext: function() {
-		return {
-			plural: function(nb, singular, plural) {
-				return (nb > 1 ? plural : singular).replace('%d', nb);
-			},
-			publication_date: format.formatLongDateTime(this.model.get('publication_date')),
-			convertMediaPath: Session.convertMediaPath.bind(Session)
-		};
-	},
 
 	behaviors: [RowActionsBehavior],
 
 	onActionDelete: function() {
 		return this.model.destroy();
-	}
-});
+	},
 
+	templateContext: function() {
+		return {
+			label: this.model.getLabel(),
+			showType: false,
+			canMove: false
+		};
+	}
+
+});
 var ListView = require('kiubi/views/ui/list.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/posts.html'),
 	className: 'container-fluid',
-	service: 'blog',
+	service: 'cms',
 
 	regions: {
 		list: {
@@ -40,32 +36,23 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	sortOrder: '-publication',
 	filters: null,
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['collection']);
+
 		this.filters = {
 			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
 		};
 	},
 
 	onRender: function() {
+
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
 
 			title: 'Liste des billets',
-			order: [{
-				title: 'Publication',
-				is_active: true,
-				value: '-publication'
-			}, {
-				title: 'Modification',
-				is_active: false,
-				value: '-modification'
-			}],
-			// TODO : filterModal: '#filtersblog',
 			selection: [{
 				title: 'Afficher',
 				callback: this.showPosts.bind(this)
@@ -78,11 +65,6 @@ module.exports = Marionette.View.extend({
 				confirm: true
 			}],
 			filters: [{
-				id: 'category',
-				extraClassname: 'select-category',
-				title: 'Toutes les catégories',
-				collectionPromise: this.getOption('categories').promisedSelect(this.collection.category_id)
-			}, {
 				id: 'term',
 				title: 'Rechercher',
 				type: 'input',
@@ -92,9 +74,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	start: function() {
-		var data = {
-			sort: this.sortOrder ? this.sortOrder : null
-		};
+		var data = {};
 		if (this.filters.term != null) data.term = this.filters.term;
 
 		this.collection.fetch({
@@ -115,40 +95,18 @@ module.exports = Marionette.View.extend({
 		return this.collection.bulkDelete(ids);
 	},
 
-	/* Filers */
+	/* Filters */
 
 	onChildviewFilterChange: function(filter) {
-
 		switch (filter.model.get('id')) {
-			case 'category':
-				this.onCategoryFilterChange(filter);
-				break;
 			case 'term':
 				this.onTermFilterChange(filter);
 				break;
 		}
-		this.start();
-	},
-
-	onCategoryFilterChange: function(filter) {
-		// Only one filter, so assume it is the category filter
-		if (filter.value) {
-			if (this.collection.category_id == filter.value) return;
-			this.collection.category_id = filter.value;
-		} else {
-			if (this.collection.category_id == null) return;
-			this.collection.category_id = null;
-		}
-		this.start();
 	},
 
 	onTermFilterChange: function(filter) {
 		this.filters.term = filter.value != '' ? filter.value : null;
-		this.start();
-	},
-
-	onChildviewChangeOrder: function(order) {
-		this.sortOrder = order;
 		this.start();
 	}
 

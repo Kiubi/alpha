@@ -59,18 +59,21 @@ module.exports = Marionette.View.extend({
 		return {
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			render_counter: this.render_counter++, // Hack to force image reload on upload
-			creation_date: format.formatLongDateTime(this.model.get('creation_date'))
+			creation_date: format.formatLongDateTime(this.model.get('creation_date')),
+			enableExtranet: this.getOption('enableExtranet')
 		};
 	},
 
 	onRender: function() {
-		this.showChildView('groups', new SelectView({
-			emptyLabel: 'Aucun groupe',
-			collection: this.groups,
-			selected: this.model.get('group_id'),
-			name: 'group_id',
-			direction: 'up'
-		}));
+		if (this.getOption('enableExtranet')) {
+			this.showChildView('groups', new SelectView({
+				emptyLabel: 'Aucun groupe',
+				collection: this.groups,
+				selected: this.model.get('group_id'),
+				name: 'group_id',
+				direction: 'up'
+			}));
+		}
 		this.showChildView('file', new FileView({
 			name: 'avatar'
 		}));

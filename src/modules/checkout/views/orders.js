@@ -113,6 +113,11 @@ module.exports = Marionette.View.extend({
 				className: 'confirm-success',
 				confirm: true
 			}, {
+				title: 'Est Traitée',
+				callback: this.changeStatusProcessed.bind(this),
+				className: 'confirm-success',
+				confirm: true
+			}, {
 				title: 'Est Expediée',
 				callback: this.changeStatusShipped.bind(this),
 				className: 'confirm-success',
@@ -151,29 +156,20 @@ module.exports = Marionette.View.extend({
 					title: 'Rechercher',
 					type: 'input',
 					value: this.filters.term
+				}, {
+					id: 'export',
+					extraClassname: 'md-export',
+					type: 'button',
+					collectionPromise: new CollectionUtils.SelectCollection([{
+						'value': 'export',
+						'label': 'Exporter les commandes',
+						'selected': false
+					}, {
+						'value': 'export-coliship',
+						'label': 'Exporter pour Coliship',
+						'selected': false
+					}])
 				}
-				/*, {
-								id: 'delivery',
-								title: 'Livraison',
-								collectionPromise: new CollectionUtils.SelectCollection([{
-									'value': 'delivery',
-									'label': 'À livrer',
-									'selected': false
-								}, {
-									'value': 'pickup',
-									'label': 'À retirer',
-									'selected': false
-								}])
-							}, {
-								id: 'export',
-								extraClassname: 'md-export',
-								type: 'button',
-								collectionPromise: new CollectionUtils.SelectCollection({
-									'value': 'export',
-									'label': 'Exporter les commandes',
-									'selected': false
-								})
-							}*/
 			]
 		}));
 	},
@@ -222,27 +218,23 @@ module.exports = Marionette.View.extend({
 		this.start();
 	},
 
-	/* Filers */
+	/* Filters */
 
 	onChildviewFilterChange: function(filter) {
 		switch (filter.model.get('id')) {
 			case 'is_paid':
-				this.onStatusFilterChange(filter);
+				this.onPaidFilterChange(filter);
 				break;
-				/*case 'delivery':
-					this.onDeliveryFilterChange(filter);
-					break;
-				case 'export':
-					this.onEportFilterChange(filter);
-					break;*/
 			case 'term':
-				this.filters.term = filter.value != '' ? filter.value : null;
+				this.onTermFilterChange(filter);
+				break;
+			case 'export':
+				this.onExportFilterChange(filter);
 				break;
 		}
-		this.start();
 	},
 
-	onStatusFilterChange: function(filter) {
+	onPaidFilterChange: function(filter) {
 		if (filter.value == 'paid') {
 			this.filters.is_paid = true;
 		} else if (filter.value == 'unpaid') {
@@ -250,16 +242,63 @@ module.exports = Marionette.View.extend({
 		} else {
 			this.filters.is_paid = null;
 		}
-	}
-
-	/*onDeliveryFilterChange: function(filter) {
-		console.log('onDeliveryFilterChange TODO');
-
+		this.start();
 	},
 
-	onEportFilterChange: function(filter) {
-		console.log('onEportFilterChange TODO');
+	onTermFilterChange: function(filter) {
+		this.filters.term = filter.value != '' ? filter.value : null;
+		this.start();
+	},
+
+	onExportFilterChange: function(filter) {
+
+		if (!filter.view) return;
+		var view = filter.view;
+
+		if (filter.value == 'export' || filter.value == 'export-coliship') {
+
+			if (view.collection.length > 2) {
+				return;
+			}
+
+			view.overrideExtraClassname('md-loading');
+			view.render();
+
+			var data = {};
+			if (this.filters.status != null) data.status = this.filters.status;
+			if (this.filters.is_paid != null) data.is_paid = this.filters.is_paid;
+			if (this.filters.term != null) data.term = this.filters.term;
+			if (filter.value == 'export-coliship') data.type = 'coliship';
+
+			this.collection.exportAll(data).done(function(data) {
+				view.overrideExtraClassname('');
+				view.collection.add([{
+					value: null,
+					label: '---'
+				}, {
+					value: data.url,
+					label: 'Télécharger le fichier',
+					extraClassname: 'md-export'
+				}]);
+				view.toggleDropdown(); // open
+			}.bind(this)).fail(function(xhr) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal(xhr);
+
+				view.overrideExtraClassname('');
+				while (view.collection.length > 2) {
+					view.collection.pop();
+				}
+			}.bind(this));
+
+		} else {
+			view.toggleDropdown(); // close
+			view.overrideExtraClassname('');
+			while (view.collection.length > 2) {
+				view.collection.pop();
+			}
+		}
 
 	}
-*/
+
 });

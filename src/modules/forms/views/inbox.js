@@ -238,65 +238,79 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChildviewFilterChange: function(filter) {
+		switch (filter.model.get('id')) {
+			case 'form':
+				this.onFormFilterChange(filter);
+				break;
+			case 'read':
+				this.onReadFilterChange(filter);
+				break;
+			case 'export':
+				this.onExportFilterChange(filter);
+				break;
+		}
+	},
 
-		if (filter.model.get('id') == 'form') {
-			this.filters.id = filter.value == '' ? null : filter.value;
-			this.start();
-		} else if (filter.model.get('id') == 'read') {
+	onFormFilterChange: function(filter) {
+		this.filters.id = filter.value == '' ? null : filter.value;
+		this.start();
+	},
 
-			if (filter.value === '' || filter.value === null) {
-				this.filters.is_read = null;
-			} else {
-				this.filters.is_read = (filter.value == 'read') ? '1' : '0';
+	onReadFilterChange: function(filter) {
+		if (filter.value === '' || filter.value === null) {
+			this.filters.is_read = null;
+		} else {
+			this.filters.is_read = (filter.value == 'read') ? '1' : '0';
+		}
+		this.start();
+	},
+
+	onExportFilterChange: function(filter) {
+		if (!filter.view) return;
+		var view = filter.view;
+
+		if (filter.value == 'export') {
+
+			if (view.collection.length > 1) {
+				return;
 			}
-			this.start();
-		} else if (filter.model.get('id') == 'export') {
-			if (!filter.view) return;
-			var view = filter.view;
 
-			if (filter.value == 'export') {
+			if (!this.filters.id) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal('Veuillez choisir un formulaire');
+				return;
+			}
 
-				if (view.collection.length > 1) {
-					return;
-				}
+			view.overrideExtraClassname('md-loading');
+			view.render();
+			this.collection.exportAll({
+				form_id: this.filters.id
+			}).done(function(data) {
+				view.overrideExtraClassname('');
+				view.collection.add([{
+					value: null,
+					label: '---'
+				}, {
+					value: data.url,
+					label: 'Télécharger le fichier',
+					extraClassname: 'md-export'
+				}]);
+				view.toggleDropdown(); // open
+			}.bind(this)).fail(function(xhr) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal(xhr);
 
-				if (!this.filters.id) {
-					var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-					navigationController.showErrorModal('Veuillez choisir un formulaire');
-					return;
-				}
-
-				view.overrideExtraClassname('md-loading');
-				view.render();
-				this.collection.exportAll({
-					form_id: this.filters.id
-				}).done(function(data) {
-					view.overrideExtraClassname('');
-					view.collection.add([{
-						value: null,
-						label: '---'
-					}, {
-						value: data.url,
-						label: 'Télécharger le fichier',
-						extraClassname: 'md-export'
-					}]);
-					view.toggleDropdown(); // open
-				}.bind(this)).fail(function(xhr) {
-					var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-					navigationController.showErrorModal(xhr);
-
-					view.overrideExtraClassname('');
-					while (view.collection.length > 1) {
-						view.collection.pop();
-					}
-				}.bind(this));
-
-			} else {
-				view.toggleDropdown(); // close
 				view.overrideExtraClassname('');
 				while (view.collection.length > 1) {
 					view.collection.pop();
 				}
+			}.bind(this));
+
+		} else {
+			view.toggleDropdown(); // close
+			view.overrideExtraClassname('');
+			while (view.collection.length > 1) {
+				view.collection.pop();
 			}
 		}
 	},

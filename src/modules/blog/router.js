@@ -73,7 +73,7 @@ function HeaderTabsPost(post_id, nb) {
 		title: 'Détail du billet',
 		url: '/blog/posts/' + post_id
 	}, {
-		title: nb + ' ' + (nb > 1 ? 'commentaires' : 'commentaire'),
+		title: nb + ' ' + (nb > 1 ? 'Commentaires' : 'Commentaire'),
 		url: '/blog/posts/' + post_id + '/comments'
 	}];
 }
@@ -83,7 +83,7 @@ function HeaderTabscategory(category_id, nb) {
 		title: 'Détail de la catégorie',
 		url: '/blog/categories/' + category_id
 	}, {
-		title: nb + ' ' + (nb > 1 ? 'billets postés' : 'billet posté'),
+		title: nb + ' ' + (nb > 1 ? 'Billets postés' : 'Billet posté'),
 		url: '/blog/categories/' + category_id + '/posts'
 	}];
 }
@@ -113,7 +113,6 @@ var SidebarMenuView = Marionette.View.extend({
 		this.is_loaded = false;
 
 		this.listenTo(ControllerChannel, 'refresh:categories', this.onRefreshCategories);
-		this.listenTo(ControllerChannel, 'refresh:posts', this.onRefreshPosts);
 
 		this.fetchAndRender();
 	},

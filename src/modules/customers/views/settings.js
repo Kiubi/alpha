@@ -32,13 +32,21 @@ module.exports = Marionette.View.extend({
 		this.mergeOptions(options, ['model', 'groups']);
 	},
 
+	templateContext: function() {
+		return {
+			enableExtranet: this.getOption('enableExtranet')
+		};
+	},
+
 	onRender: function() {
-		this.showChildView('groups', new SelectView({
-			collection: this.groups,
-			selected: this.model.get('default_group_id'),
-			name: 'default_group_id',
-			emptyLabel: 'Aucun groupe'
-		}));
+		if (this.getOption('enableExtranet')) {
+			this.showChildView('groups', new SelectView({
+				collection: this.groups,
+				selected: this.model.get('default_group_id'),
+				name: 'default_group_id',
+				emptyLabel: 'Aucun groupe'
+			}));
+		}
 	},
 
 	onSave: function() {

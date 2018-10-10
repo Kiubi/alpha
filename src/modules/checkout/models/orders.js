@@ -2,6 +2,20 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
+var Job = require('kiubi/modules/modules/models/job');
+
+function checkExport(job) {
+
+	var token = job.get('result');
+
+	return Backbone.ajax({
+		url: 'sites/@site/export/checkout/orders/' + token,
+		method: 'GET'
+	}).then(function(response) {
+		return response.data;
+	});
+}
+
 var Order = Backbone.Model.extend({
 
 	urlRoot: 'sites/@site/checkout/orders',
@@ -138,7 +152,12 @@ var Order = Backbone.Model.extend({
 				"user": "string"
 			}*/
 		],
-		"fidelity_reward": 0
+		"fidelity_reward": 0,
+		"download": [
+			// "form": "string",
+			// "xls": "string",
+			// "coliship": "string",
+		]
 
 	}
 });
@@ -212,8 +231,30 @@ module.exports = Backbone.Collection.extend({
 			return _.map(response.data, function(order) {
 				return {
 					order_id: order.order_id,
-					reference: order.reference
+					reference: order.reference,
+					status: order.status
 				};
+			});
+		});
+	},
+
+	/**
+	 * @param {Object} data
+	 * @returns {Promise}
+	 */
+	exportAll: function(data) {
+		return Backbone.ajax({
+			url: 'sites/@site/export/checkout/orders',
+			method: 'POST',
+			data: data
+		}).then(function(response) {
+
+			var job = new Job({
+				job_id: response.data.job_id
+			});
+
+			return job.watch().then(function() {
+				return checkExport(job);
 			});
 		});
 	}

@@ -23,24 +23,33 @@ module.exports = Marionette.Behavior.extend({
 	 */
 	activateLink: function(path) {
 
-		Backbone.$('li a', this.view.el).parent().removeClass('active');
+		var links = Backbone.$('li a', this.view.el);
+		links.parent().removeClass('active');
 
 		// Limit path matching to first maxDepth directories
-		var split = path.split('/', this.getOption('maxDepth') + 1);
-
-		// Try matching longest path first then remove parts one by one
-		var links = [];
-		while (split.length > 1 && links.length == 0) {
-			path = split.join('/');
-			links = Backbone.$('li a[href="' + path + '"]', this.view.el);
+		var split = path.split("?")[0].split(/\/|\?/, this.getOption('maxDepth') + 1);
+		var tests = [document.location.origin + path];
+		while (split.length > 1) {
+			tests.push(document.location.origin + split.join('/'));
 			split.pop();
 		}
-		if (links.length) links.parent().addClass('active');
+
+		// Try matching longest path first then remove parts one by one
+		var aLinks;
+		for (var i = 0; i < tests.length; i++) {
+			aLinks = links.filter(function(index) {
+				return this.href == tests[i];
+			});
+			if (aLinks.length) {
+				aLinks.parent().addClass('active');
+				return;
+			}
+		}
 	},
 
 	onRender: function() {
 		// make sure that we highlight url
-		this.activateLink(document.location.pathname);
+		this.activateLink(window.location.pathname + window.location.search);
 	}
 
 });

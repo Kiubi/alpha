@@ -32,7 +32,15 @@ var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
 	template: require('./templates/sidebarMenu.html'),
 	service: 'customers',
-	behaviors: [ActiveLinksBehaviors]
+	behaviors: [ActiveLinksBehaviors],
+
+	templateContext: function() {
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
+		return {
+			has_feature_extranet: Session.hasFeature('extranet')
+		};
+	}
 });
 
 /* Actions */
@@ -71,24 +79,38 @@ function getHeadersAction(options) {
 /* Tabs  */
 function HeaderTabsCustomer(customer_id) {
 
+	var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 	var tabs = [{
 		title: 'Détail du membre',
 		url: '/customers/' + customer_id
-	}, {
-		title: 'Commentaires',
-		url: '/customers/' + customer_id + '/blog_comments'
-	}, {
-		title: 'Évaluations',
-		url: '/customers/' + customer_id + '/catalog_comments'
-	}, {
-		title: 'Commandes',
-		url: '/customers/' + customer_id + '/orders'
-	}, {
-		title: 'Remises',
-		url: '/customers/' + customer_id + '/discount'
 	}];
 
-	var Session = Backbone.Radio.channel('app').request('ctx:session');
+	if (Session.hasScope('site:blog')) {
+		tabs.push({
+			title: 'Commentaires',
+			url: '/customers/' + customer_id + '/blog_comments'
+		});
+	}
+
+	if (Session.hasFeature('catalog') && Session.hasScope('site:catalog')) {
+		tabs.push({
+			title: 'Évaluations',
+			url: '/customers/' + customer_id + '/catalog_comments'
+		});
+	}
+
+	if (Session.hasFeature('checkout') && Session.hasScope('site:checkout')) {
+		tabs.push({
+			title: 'Commandes',
+			url: '/customers/' + customer_id + '/orders'
+		});
+		tabs.push({
+			title: 'Remises',
+			url: '/customers/' + customer_id + '/discount'
+		});
+	}
+
 	if (Session.hasFeature('fidelity')) {
 		tabs.push({
 			title: 'Fidelité',
@@ -127,16 +149,22 @@ var CustomersController = Controller.extend({
 	},
 
 	showCustomer: function(id) {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		var m = new Customers().add({
 			customer_id: id
 		});
 
 		var groups = new Groups();
 
-		Backbone.$.when(m.fetch(), groups.fetch()).done(function() {
+		Backbone.$.when(
+			m.fetch(),
+			Session.hasFeature('extranet') ? groups.fetch() : Backbone.$.Deferred().resolve()
+		).done(function() {
 			var view = new CustomerView({
 				model: m,
-				groups: groups
+				groups: groups,
+				enableExtranet: Session.hasFeature('extranet')
 			});
 
 			this.listenTo(m, 'change', function(model) {
@@ -301,16 +329,19 @@ var CustomersController = Controller.extend({
 
 	showSettings: function() {
 
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 		var m = new Settings();
 		var g = new Groups();
 
 		Backbone.$.when(
 			m.fetch(),
-			g.fetch()
+			Session.hasFeature('extranet') ? g.fetch() : Backbone.$.Deferred().resolve()
 		).done(function() {
 			var view = new SettingsView({
 				model: m,
-				groups: g
+				groups: g,
+				enableExtranet: Session.hasFeature('extranet')
 			});
 
 			this.navigationController.showContent(view);
@@ -352,10 +383,19 @@ var CustomersController = Controller.extend({
 		var m = new c.model({
 			group_id: id
 		});
-		var discount = new GrpDiscount();
-		discount.group_id = id;
 
-		Backbone.$.when(m.fetch(), discount.fetch()).done(function() {
+		var promise;
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		if (Session.hasFeature('checkout') && Session.hasScope('site:checkout')) {
+			var discount;
+			discount = new GrpDiscount();
+			discount.group_id = id;
+			promise = discount.fetch()
+		} else {
+			promise = Backbone.$.Deferred().resolve();
+		}
+
+		Backbone.$.when(m.fetch(), promise).done(function() {
 			var view = new GroupView({
 				model: m,
 				page: new Page(),
@@ -439,6 +479,11 @@ module.exports = Marionette.AppRouter.extend({
 		}
 
 		if (name == 'showFidelity' && !Session.hasFeature('fidelity')) {
+			this.controller.navigationController.navigate('/');
+			return;
+		}
+
+		if ((name == 'showGroups' || name == 'showGroup') && !Session.hasFeature('extranet')) {
 			this.controller.navigationController.navigate('/');
 			return;
 		}

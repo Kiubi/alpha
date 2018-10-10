@@ -9,6 +9,7 @@ var BlogPosts = require('kiubi/modules/blog/models/posts');
 var Customers = require('kiubi/modules/customers/models/customers');
 var Orders = require('kiubi/modules/checkout/models/orders');
 var Files = require('kiubi/modules/media/models/files');
+var CmsPosts = require('kiubi/modules/cms/models/posts');
 
 function getTypeIcon(type) {
 	switch (type) {
@@ -34,12 +35,36 @@ function searchConfig(type) {
 
 	var icon = getTypeIcon(type);
 
-	// => TODO
-	// cms
+	var Session = Backbone.Radio.channel('app').request('ctx:session');
+	var def = (Session.hasFeature('catalog') && Session.hasScope('site:catalog')) ? 'catalog' : 'cms';
+
+	if (type == 'catalog' && (!Session.hasFeature('catalog') || !Session.hasScope('site:catalog'))) {
+		type = def;
+	} else if (type == 'checkout' && (!Session.hasFeature('checkout') || !Session.hasScope('site:checkout'))) {
+		type = def;
+	} else if (type == 'customers' && (!Session.hasScope('site:account'))) {
+		type = def;
+	}
 
 	switch (type) {
+		default: return searchConfig(def);
+
+		case 'cms':
+				collection = CmsPosts;
+			mapSuggestion = function(post) {
+				return {
+					label: post.label,
+					href: '/cms/posts/' + post.post_id,
+					icon: icon
+				}
+			};
+			header = 'Résultats dans le site web';
+			service = 'Site web';
+			serviceURL = '/cms/posts?';
+			break;
+
 		case 'catalog':
-		default:
+				type = 'catalog';
 			collection = Products;
 			mapSuggestion = function(product) {
 				return {
@@ -50,11 +75,11 @@ function searchConfig(type) {
 			};
 			header = 'Résultats dans le catalogue';
 			service = 'Catalogue';
-			serviceURL = '/catalog';
+			serviceURL = '/catalog?';
 			break;
 
 		case 'customers':
-			collection = Customers;
+				collection = Customers;
 			mapSuggestion = function(customer) {
 				return {
 					label: customer.firstname + ' ' + customer.lastname,
@@ -64,11 +89,11 @@ function searchConfig(type) {
 			};
 			header = 'Résultats dans les membres';
 			service = 'Membres';
-			serviceURL = '/customers';
+			serviceURL = '/customers?';
 			break;
 
 		case 'blog':
-			collection = BlogPosts;
+				collection = BlogPosts;
 			mapSuggestion = function(post) {
 				return {
 					label: post.title,
@@ -78,25 +103,25 @@ function searchConfig(type) {
 			};
 			header = 'Résultats dans le blog';
 			service = 'Blog';
-			serviceURL = '/blog';
+			serviceURL = '/blog?';
 			break;
 
 		case 'checkout':
-			collection = Orders;
+				collection = Orders;
 			mapSuggestion = function(order) {
 				return {
-					label: order.reference,
+					label: order.reference, // TODO show order.status
 					href: '/checkout/orders/' + order.order_id,
 					icon: icon
 				}
 			};
 			header = 'Résultats dans les commandes';
 			service = 'Commandes';
-			serviceURL = '/checkout';
+			serviceURL = '/checkout/orders?status=pending&';
 			break;
 
 		case 'media':
-			collection = Files;
+				collection = Files;
 			mapSuggestion = function(file) {
 				return {
 					label: file.name,
@@ -106,7 +131,7 @@ function searchConfig(type) {
 			};
 			header = 'Résultats dans la médiathèque';
 			service = 'Médiathèque';
-			serviceURL = '/media';
+			serviceURL = '/media?';
 			break;
 	}
 
@@ -115,7 +140,8 @@ function searchConfig(type) {
 		collection: collection,
 		mapSuggestion: mapSuggestion,
 		service: service,
-		serviceURL: serviceURL
+		serviceURL: serviceURL,
+		type: type
 	};
 
 }
@@ -166,6 +192,14 @@ module.exports = Marionette.View.extend({
 	},
 
 	addSearch: function(search) {
+
+		if (_.findWhere(this.searchStack, {
+				term: search.term,
+				service: search.service
+			})) {
+			return;
+		}
+
 		if (this.searchStack.length >= 3) {
 			this.searchStack.shift();
 		}
@@ -182,50 +216,59 @@ module.exports = Marionette.View.extend({
 
 		this.getUI('input-search').on('keyup', _.debounce(this.onChange.bind(this), 300));
 
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		var footer = [{
+			label: 'Site web',
+			icon: 'md-website',
+			id: 'cms',
+			className: null
+		}, {
+			label: 'Blog',
+			icon: 'md-blog',
+			id: 'blog',
+			className: null
+		}];
+
+		if (Session.hasFeature('catalog') && Session.hasScope('site:catalog')) {
+			footer.push({
+				label: 'Catalogue',
+				icon: 'md-product',
+				id: 'catalog',
+				className: null
+			});
+		}
+
+		if (Session.hasFeature('checkout') && Session.hasScope('site:checkout')) {
+			footer.push({
+				label: 'Commandes',
+				icon: 'md-order',
+				id: 'checkout',
+				className: null
+			});
+		}
+		if (Session.hasScope('site:account')) {
+			footer.push({
+				label: 'Membres',
+				icon: 'md-member',
+				id: 'customers',
+				className: null
+			});
+		}
+
+		footer.push({
+			label: 'Médiathèque',
+			icon: 'md-media',
+			id: 'media',
+			className: null
+		});
+
 		this.showChildView('term', new AutocompleteInputView({
 			searchPlaceholder: 'Recherche',
 			name: 'term',
 			extraDropdownClassname: 'form-group has-feedback sidebar-search mb-0',
 			extraDropdownMenuClassname: 'sidebar-search-results',
 			extraInputClassname: 'form-control-sidebar dropdown-toggle',
-			footer: [
-				/*{
-									label: 'Site web',
-									icon: 'md-website',
-									id: 'cms',
-									className: null
-								},*/
-				{
-					label: 'Blog',
-					icon: 'md-blog',
-					id: 'blog',
-					className: null
-				},
-				{
-					label: 'Catalogue',
-					icon: 'md-product',
-					id: 'catalog',
-					className: null
-				},
-				{
-					label: 'Commandes',
-					icon: 'md-order',
-					id: 'checkout',
-					className: null
-				},
-				{
-					label: 'Membres',
-					icon: 'md-member',
-					id: 'customers',
-					className: null
-				},
-				{
-					label: 'Médiathèque',
-					icon: 'md-media',
-					id: 'media',
-					className: null
-				}
-			]
+			footer: footer
 		}));
 	},
 
@@ -285,8 +328,7 @@ module.exports = Marionette.View.extend({
 		if (term == '') return;
 
 		var footer = view.getActiveFooter();
-		var currentService = footer ? footer.id : this.service;
-		var config = searchConfig(currentService);
+		var config = searchConfig(footer ? footer.id : this.service);
 
 		var c = new config.collection();
 		c.suggest(term, 5).done(function(suggestions) {
@@ -302,13 +344,14 @@ module.exports = Marionette.View.extend({
 				});
 				results.push({
 					label: 'Tous les résultats',
-					href: config.serviceURL + '?term=' + term,
+					href: config.serviceURL + 'term=' + term,
 					icon: 'md-search'
 				});
 			} else {
 				results.push({
-					label: '<span class="md-icon md-no-result"></span> Aucun résultat',
-					href: '#'
+					label: 'Aucun résultat',
+					href: '#',
+					icon: 'md-no-result'
 				});
 			}
 
@@ -319,20 +362,21 @@ module.exports = Marionette.View.extend({
 				});
 				_.each(this.searchStack, function(search) {
 					results.push({
-						label: search.service + '<span class="md-icon md-next"></span>' + search.term, // TODO escape
+						label: search.service + '<span class="md-icon md-next"></span>' + _.escape(search.term),
 						href: search.href,
-						icon: 'md-search'
+						icon: 'md-search',
+						disable_escaping: true
 					});
 				});
 			}
 
 			view.showResults(results, {
-				activeFooter: currentService
+				activeFooter: config.type
 			});
 
 			this.addSearch({
 				term: term,
-				href: config.serviceURL + '?term=' + term,
+				href: config.serviceURL + 'term=' + term,
 				service: config.service
 			});
 		}.bind(this));

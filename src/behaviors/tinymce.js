@@ -218,7 +218,7 @@ module.exports = Marionette.Behavior.extend({
 					'colorpicker', 'link', 'anchor', 'table', 'charmap', 'code'
 				];
 				toolbar = [
-					'formatselect fontsizeselect | bold italic underline strikethrough superscript | align alignleft aligncenter alignright alignjustify | forecolor backcolor | numlist bullist | outdent indent | pastetext | link unlink | kiubi_media media table | removeformat undo redo | code'
+					'formatselect fontsizeselect | bold italic underline strikethrough superscript | alignleft aligncenter alignright alignjustify | forecolor backcolor | numlist bullist | outdent indent | pastetext | link unlink | kiubi_media media table | removeformat undo redo | code'
 				];
 				adjusted_height -= 102;
 				break;

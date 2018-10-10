@@ -37,15 +37,11 @@ module.exports = Marionette.View.extend({
 	behaviors: [FormBehavior],
 
 	ui: {
-		'selectPaid': 'select[name="is_paid"]',
 		'selectStatus': 'select[name="status"]',
 		'notify': 'div[data-role="notify"]'
 	},
 
 	events: {
-		'change @ui.selectPaid': function() {
-			this.getUI('notify').show();
-		},
 		'change @ui.selectStatus': function() {
 			this.getUI('notify').show();
 		}
