@@ -13,7 +13,7 @@ var FilesView = require('./views/files');
 var FolderView = require('./views/folder');
 var FileView = require('./views/file');
 var PublishModalView = require('./views/modal.publish');
-var MenuTree = require('kiubi/views/ui/menuTree.js');
+var MenuTree = require('kiubi/core/views/ui/menuTree.js');
 
 /* Actions */
 function getHeadersAction(options) {

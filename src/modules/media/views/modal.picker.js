@@ -3,7 +3,7 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 var format = require('kiubi/utils/format.js');
 
-var SelectView = require('kiubi/views/ui/select.js');
+var SelectView = require('kiubi/core/views/ui/select.js');
 
 var Folders = require('kiubi/modules/media/models/folders.js');
 

@@ -11,6 +11,7 @@ var Files = require('kiubi/modules/media/models/files');
 var Page = require('kiubi/modules/cms/models/page');
 
 var WysiwygChannel = Backbone.Radio.channel('wysiwyg');
+var ControllerChannel = Backbone.Radio.channel('controller');
 var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 
@@ -255,7 +256,7 @@ module.exports = Marionette.Behavior.extend({
 				editor.on('KeyDown', function(e) {
 					if (e.key == 's' && e.metaKey) {
 						e.preventDefault();
-						that.view.triggerMethod('save');
+						ControllerChannel.trigger('meta:s:shortcut');
 						return false;
 					}
 				});

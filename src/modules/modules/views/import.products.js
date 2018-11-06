@@ -2,8 +2,8 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
-var AutocompleteView = require('kiubi/views/ui/select.search.js');
-var FileView = require('kiubi/views/ui/input.file.js');
+var AutocompleteView = require('kiubi/core/views/ui/select.search.js');
+var FileView = require('kiubi/core/views/ui/input.file.js');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');

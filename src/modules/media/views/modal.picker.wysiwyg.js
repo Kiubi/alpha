@@ -6,7 +6,7 @@ var Forms = require('kiubi/utils/forms.js');
 
 var Prefs = require('kiubi/modules/prefs/models/medias');
 
-var SelectView = require('kiubi/views/ui/select.js');
+var SelectView = require('kiubi/core/views/ui/select.js');
 
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 

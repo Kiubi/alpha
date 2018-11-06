@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
-var AutocompleteView = require('kiubi/views/ui/select.search.js');
+var AutocompleteView = require('kiubi/core/views/ui/select.search.js');
 var PopoverBehavior = require('kiubi/behaviors/popover.js');
 
 var Session = Backbone.Radio.channel('app').request('ctx:session');
@@ -138,7 +138,7 @@ var RowView = Marionette.View.extend({
 	}
 });
 
-var ListView = require('kiubi/views/ui/list.js');
+var ListView = require('kiubi/core/views/ui/list.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/linked.html'),

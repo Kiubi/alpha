@@ -17,7 +17,7 @@ var PageView = require('./views/page');
 var PostView = require('./views/post');
 var PostsView = require('./views/posts');
 var PageAddModalView = require('./views/modal.page.add');
-var MenuTree = require('kiubi/views/ui/menuTree.js');
+var MenuTree = require('kiubi/core/views/ui/menuTree.js');
 
 /* Actions */
 function getHeadersAction(options) {

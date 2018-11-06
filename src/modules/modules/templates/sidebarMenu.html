@@ -40,6 +40,11 @@
 	<% } else { %>
 	<li class="nav-item"><span class="nav-link disabled">Dans le Site Web</span></li>
 	<% } %>
+	<% if(has_feature_advanced_media) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/import/files">Dans la Médiathèque</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Dans la Médiathèque</span></li>
+	<% } %>
 	<% if(has_scope_catalog && has_feature_catalog) { %>
 	<li class="nav-item"><a class="nav-link" href="/modules/import/products">Dans le Catalogue</a></li>
 	<% } else { %>

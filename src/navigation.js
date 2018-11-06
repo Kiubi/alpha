@@ -2,13 +2,13 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
-var SidebarView = require('./views/sidebar');
-var SidebarMenuView = require('./views/sidebarMenu');
-var HeaderView = require('./views/header');
-var ModalView = require('./views/ui/modal');
+var SidebarView = require('kiubi/core/views/sidebar');
+var SidebarMenuView = require('kiubi/core/views/sidebarMenu');
+var HeaderView = require('kiubi/core/views/header');
+var ModalView = require('kiubi/core/views/ui/modal');
 
 var OverlayView = Marionette.View.extend({
-	template: require('./templates/ui/loader.html'),
+	template: require('kiubi/core/templates/ui/loader.html'),
 	tagName: 'div',
 	className: 'overlay'
 });

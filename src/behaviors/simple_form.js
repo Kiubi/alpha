@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 var Forms = require('../utils/forms');
 
-var LoaderTpl = require('../templates/ui/loader.html');
+var LoaderTpl = require('kiubi/core/templates/ui/loader.html');
 
 var ControllerChannel = Backbone.Radio.channel('controller');
 
@@ -40,23 +40,11 @@ module.exports = Marionette.Behavior.extend({
 		this.lockSave = false;
 		this.lockDelete = false;
 
-		this.keyListener = Backbone.Radio.channel('app').request('ctx:keyListener');
+		this.listenTo(ControllerChannel, 'meta:s:shortcut', this.onSave.bind(this));
 	},
 
 	onFieldChange: function() {
 		ControllerChannel.trigger('modified:content');
-	},
-
-	onAttach: function() {
-		this.keyListener.register_combo({
-			"keys": "meta s",
-			"is_exclusive": true,
-			"on_keydown": this.onSave.bind(this)
-		});
-	},
-
-	onDestroy: function() {
-		this.keyListener.unregister_combo("meta s");
 	},
 
 	/**

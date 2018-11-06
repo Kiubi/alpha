@@ -7,7 +7,7 @@ var CollectionUtils = require('kiubi/utils/collections.js');
 var InfiniteScrollBehavior = require('kiubi/behaviors/infinite_scroll.js');
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 
-var LoaderTpl = require('kiubi/templates/ui/loader.html');
+var LoaderTpl = require('kiubi/core/templates/ui/loader.html');
 
 /* Filtres */
 
@@ -26,7 +26,7 @@ var filterCollection = Backbone.Collection.extend({
 });
 
 var FilterBtnView = Marionette.View.extend({
-	template: require('kiubi/templates/ui/list.filter.btn.html'),
+	template: require('kiubi/core/templates/ui/list.filter.btn.html'),
 
 	className: 'btn-group',
 
@@ -118,7 +118,7 @@ var FilterBtnView = Marionette.View.extend({
 });
 
 var FilterSelectView = Marionette.View.extend({
-	template: require('kiubi/templates/ui/list.filter.select.html'),
+	template: require('kiubi/core/templates/ui/list.filter.select.html'),
 
 	className: 'btn-group',
 
@@ -176,7 +176,7 @@ var FilterSelectView = Marionette.View.extend({
 });
 
 var FilterSearchView = Marionette.View.extend({
-	template: require('kiubi/templates/ui/list.filter.search.html'),
+	template: require('kiubi/core/templates/ui/list.filter.search.html'),
 
 	tagName: 'div',
 	className: 'btn-group dropdown',
@@ -330,7 +330,7 @@ var FilterSearchView = Marionette.View.extend({
 });
 
 var FilterInputView = Marionette.View.extend({
-	template: require('kiubi/templates/ui/list.filter.input.html'),
+	template: require('kiubi/core/templates/ui/list.filter.input.html'),
 
 	className: 'btn-group has-feedback',
 
@@ -448,7 +448,7 @@ var ListView = Marionette.CollectionView.extend({
 });
 
 module.exports = Marionette.View.extend({
-	template: require('kiubi/templates/ui/list.html'),
+	template: require('kiubi/core/templates/ui/list.html'),
 
 	regions: {
 		list: {

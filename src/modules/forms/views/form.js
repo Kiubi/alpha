@@ -7,7 +7,7 @@ var Forms = require('kiubi/utils/forms.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 
-var ListView = require('kiubi/views/ui/list.js');
+var ListView = require('kiubi/core/views/ui/list.js');
 
 var NewRowView = Marionette.View.extend({
 	template: require('../templates/form.new.html'),

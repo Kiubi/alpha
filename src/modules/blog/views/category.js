@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
-var SeoView = require('kiubi/views/ui/seo.js');
+var SeoView = require('kiubi/core/views/ui/seo.js');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');

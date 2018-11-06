@@ -25,7 +25,13 @@ module.exports = Backbone.Model.extend({
 		g_miniature_width: null,
 		g_miniature_height: null,
 		miniature_width: null,
-		miniature_height: null
+		miniature_height: null,
+
+		// advanced_media
+		is_resize_enabled: false,
+		max_width: null,
+		max_height: null,
+		jpg_compression: 85
 	},
 
 	/**

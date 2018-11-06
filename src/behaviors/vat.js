@@ -13,7 +13,7 @@ module.exports = Marionette.Behavior.extend({
 		'keyup @ui.price_vat': 'onPriceChange'
 	},
 
-	defaults: {
+	options: {
 		proxy: null
 	},
 

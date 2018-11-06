@@ -6,7 +6,7 @@ var format = require('kiubi/utils/format.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 
-var AutocompleteView = require('kiubi/views/ui/select.search.js');
+var AutocompleteView = require('kiubi/core/views/ui/select.search.js');
 var Categories = require('kiubi/modules/catalog/models/categories');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 

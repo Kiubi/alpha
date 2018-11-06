@@ -88,10 +88,10 @@ var ServiceProvider = Marionette.Object.extend({
 var SP = new ServiceProvider();
 SP.registerConfig(Cfg);
 
-var LayoutView = require('./views/layout');
-var AppRouter = require('./modules/core/router');
-var User = require('./models/user');
-var Session = require('./models/session');
+var LayoutView = require('kiubi/core/views/layout');
+var AppRouter = require('kiubi/core/router');
+var User = require('kiubi/core/models/user');
+var Session = require('kiubi/core/models/session');
 var NavigationController = require('./navigation');
 var api = require('./utils/api.client');
 var keypressContainer = require('keypress.js');
@@ -135,6 +135,7 @@ var KiubiApp = Marionette.Application.extend({
 			application.navigationController.navigate(path);
 		});
 	},
+
 	/**
 	 * Callback de demarage de l'application, le module authentication
 	 * substitue temporairement ce callback le temps de vérifier le token
@@ -156,6 +157,17 @@ var KiubiApp = Marionette.Application.extend({
 		}
 		Backbone.Radio.channel('navigation').trigger('change:url', {
 			path: window.location.pathname + window.location.search
+		});
+
+		// Register KeyCombo
+		var keyListener = SP.getKeyListener();
+		keyListener.register_combo({
+			"keys": "meta s",
+			"is_exclusive": true,
+			"on_keydown": function() {
+				var ControllerChannel = Backbone.Radio.channel('controller');
+				ControllerChannel.trigger('meta:s:shortcut');
+			}
 		});
 	},
 

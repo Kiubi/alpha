@@ -14,7 +14,7 @@
         dans le contenu ou les templates graphiques du site.
       </p>
       <div class="row">
-        <div class="col-7">
+        <div class="col-8">
           <div class="form-group">
             <label for="">Taille maximum des grandes vignettes</label>
             <div class="row">
@@ -35,7 +35,7 @@
             </div>
           </div>
         </div>
-        <div class="col-7">
+        <div class="col-8">
           <div class="form-group">
             <label for="">Taille maximum des vignettes</label>
             <div class="row">
@@ -56,7 +56,7 @@
             </div>
           </div>
         </div>
-        <div class="col-7">
+        <div class="col-8">
           <div class="form-group">
             <label for="">Taille maximum des grandes miniatures</label>
             <div class="row">
@@ -77,7 +77,7 @@
             </div>
           </div>
         </div>
-        <div class="col-7">
+        <div class="col-8">
           <div class="form-group">
             <label for="">Taille maximum des miniatures</label>
             <div class="row">
@@ -102,6 +102,72 @@
     </div>
     <footer class="post-footer"></footer>
   </article>
+
+<% if(enableAdvanced) { %>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Traitement des images</h1>
+		</header>
+		<div class="post-content">
+			<p>
+				Quand une image est publiée dans la médiathèque,
+				Kiubi peut la redimensionner automatiquement
+        si elle est plus grande que la taille indiquée.
+        L'image originale n'est pas conservée et remplacée par
+        sa version redimensionnée.
+			</p>
+			<div class="row">
+				<div class="col-12">
+					<div class="form-group">
+						<label>Redimensionnement automatique</label>
+						<div class="form-check">
+							<input name="is_resize_enabled" id="is_resize_enabled1" value="1" type="radio" <%= is_resize_enabled ? 'checked="checked"' : '' %>>
+							<label for="is_resize_enabled1" class="visible">Activé</label>
+							<input name="is_resize_enabled" id="is_resize_enabled0" value="0" type="radio" <%= !is_resize_enabled ? 'checked="checked"' : '' %>>
+							<label for="is_resize_enabled0" class="not-visible">Désactivé</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-8">
+					<div class="form-group">
+						<label for="">Taille maximum des images</label>
+						<div class="row">
+							<div class="col-6">
+								<div class="input-group">
+									<div class="input-group-prepend"><span class="input-group-text"></span></div>
+									<input class="form-control" name="max_width" value="<%- max_width %>" placeholder="Taille d'origine">
+									<div class="input-group-append"><span class="input-group-text">pixels de largeur</span></div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="input-group">
+									<div class="input-group-prepend"><span class="input-group-text"></span></div>
+									<input class="form-control" name="max_height" value="<%- max_height %>" placeholder="Taille d'origine">
+									<div class="input-group-append"><span class="input-group-text">pixels de hauteur</span></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-4">
+					<div class="form-group">
+						<label for="">Qualité des JPEG</label>
+							<div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"></span></div>
+							  <input class="form-control" name="jpg_compression" value="<%- jpg_compression %>" placeholder="85">
+                <div class="input-group-append"><span class="input-group-text">sur 100</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+<% } %>
 
   <article class="post-article">
     <header class="post-header">

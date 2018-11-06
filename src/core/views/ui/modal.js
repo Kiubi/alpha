@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 module.exports = Marionette.View.extend({
-	template: require('kiubi/templates/ui/modal.html'),
+	template: require('kiubi/core/templates/ui/modal.html'),
 	tagName: 'div',
 	className: 'overlay fade',
 

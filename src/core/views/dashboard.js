@@ -10,7 +10,7 @@ var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var Session; // Must wait because this model is loaded BEFORE session start
 var Datepicker = require('kiubi/behaviors/datepicker.js');
 
-var ListView = require('kiubi/views/ui/list.js');
+var ListView = require('kiubi/core/views/ui/list.js');
 var RowView = Marionette.View.extend({
 	template: require('../templates/dashboard.row.html'),
 	className: 'list-item',

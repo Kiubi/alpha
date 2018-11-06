@@ -1,55 +1,66 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var _ = require('underscore');
 
 var SelectView = require('kiubi/core/views/ui/select.js');
+
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 
 module.exports = Marionette.View.extend({
-	template: require('../templates/l10n.import.html'),
+	template: require('../templates/import.files.html'),
 	className: 'container',
 	service: 'modules',
 
 	behaviors: [FormBehavior],
 
-	events: {
-		"change input[type=file]": "dropFile"
+	regions: {
+		folder: {
+			el: "div[data-role='folder']",
+			replaceElement: true
+		}
 	},
 
 	fields: [
-		'type'
+		'url',
+		'folder_id',
+		'unzip',
+		'max_width',
+		'max_height',
+		'jpg_compression'
 	],
 
 	step: 0,
-	tempfileUpload: null,
 	report: null,
+	folders: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['model']);
+		this.mergeOptions(options, ['model', 'folders', 'prefs']);
 	},
 
 	templateContext: function() {
 		return {
 			report: this.report,
-			step: this.step
+			step: this.step,
+			max_width: this.prefs.get('max_width') ? this.prefs.get('max_width') : '',
+			max_height: this.prefs.get('max_height') ? this.prefs.get('max_height') : '',
+			jpg_compression: this.prefs.get('jpg_compression') ? this.prefs.get('jpg_compression') : ''
 		};
 	},
 
-	dropFile: function(event) {
-		if (Backbone.$(event.target).is('input[type=file]')) {
-			// stop la propagation de l'event
-			event.stopPropagation();
-		}
+	onRender: function() {
 
-		event.preventDefault();
+		if (this.step > 0) return;
 
-		var dataTransfer = event.originalEvent.dataTransfer;
-		var files = (dataTransfer ? dataTransfer.files : event.originalEvent.target.files);
+		this.showChildView('folder', new SelectView({
+			collection: this.folders,
+			name: 'folder_id'
+		}));
+		this.folders.fetch({
+			data: {
+				extra_fields: 'recursive'
+			}
+		});
 
-		_.each(files, function(File) {
-			this.tempfileUpload = File;
-		}.bind(this));
 	},
 
 	onSave: function() {
@@ -58,7 +69,6 @@ module.exports = Marionette.View.extend({
 		navigationController.showOverlay();
 
 		var data = Forms.extractFields(this.fields, this);
-		data.file = this.tempfileUpload;
 
 		return this.model.import(data).done(function(report) {
 			this.step = 1;
@@ -78,7 +88,6 @@ module.exports = Marionette.View.extend({
 		} else {
 			this.step = 0;
 			this.report = null;
-			this.tempfileUpload = null;
 			this.render();
 		}
 

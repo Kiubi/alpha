@@ -4,11 +4,11 @@ var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector');
-var SelectView = require('kiubi/views/ui/select.js');
+var SelectView = require('kiubi/core/views/ui/select.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 var RestrictionsView = require('kiubi/modules/customers/views/restrictions');
-var SeoView = require('kiubi/views/ui/seo.js');
+var SeoView = require('kiubi/core/views/ui/seo.js');
 
 var Posts = require('../models/posts');
 var Restrictions = require('kiubi/modules/customers/models/restrictions');
@@ -38,7 +38,7 @@ var RowView = Marionette.View.extend({
 	}
 
 });
-var ListView = require('kiubi/views/ui/list.js');
+var ListView = require('kiubi/core/views/ui/list.js');
 var PageView = Marionette.View.extend({
 	template: require('../templates/page.page.html'),
 

@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 // Configuration
-var Config = require('./models/config');
+var Config = require('kiubi/core/models/config');
 
 var Cfg = new Config();
 

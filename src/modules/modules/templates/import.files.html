@@ -1,0 +1,122 @@
+<% if(step == 0) { %>
+<form>
+
+	<div class="alert alert-warning" role="alert">
+		<a href="https://aide.kiubi.com/documentation/mediatheque-avancee.html" class="md-icon md-help float-right"
+			 target="_blank"></a>
+		Vous pouvez <strong>importer des fichiers à partir d'une adresse web</strong> pour remplir votre médiathèque.
+		Nous vous conseillons avant tout import de fichiers de
+		<a href="https://aide.kiubi.com/documentation/mediatheque-avancee.html" target="_blank">consulter la documentation en ligne</a>
+		et de <a href="/modules/backups" target="_blank">réaliser un point de	sauvegarde</a>.
+	</div>
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Paramètres d'import</h1>
+		</header>
+		<div class="post-content">
+
+			<div class="form-group">
+				<label for="url" class="required">URL du fichier ou de l'archive</label>
+				<input class="form-control" id="url" name="url" value=""
+					   placeholder="http://www.example.org/fichier.pdf ou http://www.example.org/archive.zip">
+			</div>
+
+			<div class="form-group has-feedback">
+				<div class="row">
+					<div class="col-6">
+						<label class="required">Dossier de destination</label>
+						<div data-role="folder"></div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Décompresser l'archive</label>
+
+				<p>Décompresse une archive .zip et importe individuellement chaque fichier de l'archive dans la médiathèque.</p>
+
+				<div class="form-check">
+					<input name="unzip" id="unzip1" value="1" type="radio">
+					<label for="unzip1" class="">Oui</label>
+					<input name="unzip" id="unzip0" value="0" type="radio" checked="checked">
+					<label for="unzip0" class="">Non</label>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+
+				<label for="">Taille maximum des images</label>
+
+				<p>Redimensionne automatiquement les images importées qui sont plus grandes que la taille indiquée.</p>
+
+				<div class="row">
+					<div class="col-4">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
+							<input class="form-control" name="max_width" value="<%- max_width %>" placeholder="Taille d'origine">
+							<div class="input-group-append"><span class="input-group-text">pixels de largeur</span></div>
+						</div>
+					</div>
+					<div class="col-4">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
+							<input class="form-control" name="max_height" value="<%- max_height %>" placeholder="Taille d'origine">
+							<div class="input-group-append"><span class="input-group-text">pixels de hauteur</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="jpg_compression">Qualité des JPEG</label>
+				<div class="row">
+					<div class="col-4">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text"></span></div>
+							<input class="form-control" id="jpg_compression" name="jpg_compression" value="<%- jpg_compression %>" placeholder="85">
+							<div class="input-group-append"><span class="input-group-text">sur 100</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Importer</button>
+	</div>
+</div>
+
+<% } else { %>
+
+	<% if (report.errors && report.errors.length > 0) { %>
+	<div class="alert alert-danger">
+		<strong>L'import n'a pas été réalisé</strong>, il y a eu des erreurs.<br/><br/>
+		<ul>
+			<% _.each(report.errors, function(msg){ %>
+			<li><%= msg %></li>
+			<% }); %>
+		</ul>
+	</div>
+	<% } else { %>
+	<div class="alert alert-success">
+		<strong>Import réussi</strong>, les fichiers ont été correctement importés !
+	</div>
+	<% } %>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel">Retour</button>
+	</div>
+</div>
+
+<% } %>
+
+<footer class="footer"></footer>

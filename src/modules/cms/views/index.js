@@ -5,12 +5,12 @@ var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector');
-var SeoView = require('kiubi/views/ui/seo.js');
+var SeoView = require('kiubi/core/views/ui/seo.js');
 
 var Forms = require('kiubi/utils/forms.js');
 var Posts = require('../models/posts');
 
-var ListView = require('kiubi/views/ui/list.js');
+var ListView = require('kiubi/core/views/ui/list.js');
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/posts.row.html'),

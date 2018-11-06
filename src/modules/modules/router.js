@@ -26,8 +26,11 @@ var MerchantCenter = require('kiubi/modules/prefs/models/merchantcenter');
 var ImportProducts = require('./models/import.products');
 var ImportPosts = require('./models/import.posts');
 var ImportWordpress = require('./models/import.wordpress');
+var ImportFiles = require('./models/import.files');
 var Menus = require('kiubi/modules/cms/models/menus');
 var Posts = require('kiubi/modules/cms/models/posts');
+var Folders = require('kiubi/modules/media/models/folders');
+var Medias = require('kiubi/modules/prefs/models/medias');
 
 /* Views */
 var IndexView = require('./views/index');
@@ -43,6 +46,7 @@ var SubscribersView = require('./views/subscribers');
 var ImportPostsView = require('./views/import.posts');
 var ImportProductsView = require('./views/import.products');
 var ImportWordpressView = require('./views/import.wordpress');
+var ImportFilesView = require('./views/import.files');
 var MerchantCenterView = require('./views/merchantcenter');
 var LengowView = require('./views/lengow');
 var IadvizeView = require('./views/iadvize');
@@ -133,6 +137,8 @@ function ctlFeature(name) {
 			return 'checkout';
 		case 'showImportProducts':
 			return 'catalog';
+		case 'showImportFiles':
+			return 'advanced_media';
 	}
 	return null;
 }
@@ -158,7 +164,8 @@ var SidebarMenuView = Marionette.View.extend({
 
 			has_feature_catalog: Session.hasFeature('catalog'),
 			has_feature_checkout: Session.hasFeature('checkout'),
-			has_feature_fidelity: Session.hasFeature('fidelity')
+			has_feature_fidelity: Session.hasFeature('fidelity'),
+			has_feature_advanced_media: Session.hasFeature('advanced_media')
 		};
 	}
 
@@ -446,6 +453,23 @@ var ModulesController = Controller.extend({
 		});
 	},
 
+	showImportFiles: function() {
+
+		var m = new Medias();
+
+		m.fetch().always(function() {
+			this.navigationController.showContent(new ImportFilesView({
+				model: new ImportFiles(),
+				folders: new Folders(),
+				prefs: m
+			}));
+			this.setHeader({
+				title: 'Import de fichiers dans la Médiathèque'
+			});
+		}.bind(this));
+
+	},
+
 	showMerchantCenter: function() {
 		var m = new MerchantCenter();
 		m.fetch().done(function() {
@@ -599,6 +623,7 @@ module.exports = Marionette.AppRouter.extend({
 		'modules/import/posts': 'showImportPosts',
 		'modules/import/products': 'showImportProducts',
 		'modules/import/wordpress': 'showImportWordpress',
+		'modules/import/files': 'showImportFiles',
 		'modules/merchantcenter': 'showMerchantCenter',
 		'modules/lengow': 'showLengow',
 		'modules/iadvize': 'showIadvize',

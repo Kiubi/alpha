@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
-var AutocompleteInputView = require('kiubi/views/ui/input.search.js');
+var AutocompleteInputView = require('kiubi/core/views/ui/input.search.js');
 
 var Products = require('kiubi/modules/catalog/models/products');
 var BlogPosts = require('kiubi/modules/blog/models/posts');

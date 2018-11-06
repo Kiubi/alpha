@@ -4,14 +4,14 @@ var _ = require('underscore');
 require('kiubi/utils/proxy.jquery-ui.js');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
-var SelectView = require('kiubi/views/ui/select.js');
+var SelectView = require('kiubi/core/views/ui/select.js');
 var FilePickerView = require('kiubi/modules/media/views/file.picker.js');
 var FileSelectorView = require('kiubi/modules/media/views/file.selector.js');
-var AutocompleteView = require('kiubi/views/ui/select.search.js');
-var AutocompleteInputView = require('kiubi/views/ui/input.search.js');
-var TagView = require('kiubi/views/ui/tag.search.js');
-var ListView = require('kiubi/views/ui/list.js');
-var SeoView = require('kiubi/views/ui/seo.js');
+var AutocompleteView = require('kiubi/core/views/ui/select.search.js');
+var AutocompleteInputView = require('kiubi/core/views/ui/input.search.js');
+var TagView = require('kiubi/core/views/ui/tag.search.js');
+var ListView = require('kiubi/core/views/ui/list.js');
+var SeoView = require('kiubi/core/views/ui/seo.js');
 
 var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');

@@ -2770,12 +2770,14 @@ media-detail
 	margin: 0;
 }
 
+.media-detail .media-object.file {
+	font-size: 100px;
+}
+
 .media-detail .media-object + .file-type {
-  position: relative;
 	font-size: 14px;
-	top: auto;
-	margin-top: -42px;
-	width: 100%;
+	top: 145px;
+	width: calc(100% - 30px);
 	height: auto;
 	line-height: normal;
 }

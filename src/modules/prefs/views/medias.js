@@ -31,16 +31,23 @@ module.exports = Marionette.View.extend({
 		'g_miniature_width',
 		'g_miniature_height',
 		'miniature_width',
-		'miniature_height'
+		'miniature_height',
+
+		// enableAdvanced
+		'max_height',
+		'max_width',
+		'is_resize_enabled',
+		'jpg_compression'
 	],
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['model', 'ftp']);
+		this.mergeOptions(options, ['model', 'ftp', 'enableAdvanced']);
 	},
 
 	templateContext: function() {
 		return {
-			ftp: this.ftp.toJSON()
+			ftp: this.ftp.toJSON(),
+			enableAdvanced: this.enableAdvanced
 		};
 	},
 

@@ -3,9 +3,9 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
-var SelectView = require('kiubi/views/ui/select.js');
+var SelectView = require('kiubi/core/views/ui/select.js');
 var FilePickerView = require('kiubi/modules/media/views/file.picker.js');
-var SeoView = require('kiubi/views/ui/seo.js');
+var SeoView = require('kiubi/core/views/ui/seo.js');
 
 var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');

@@ -6,7 +6,7 @@ var format = require('kiubi/utils/format.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var VatBehavior = require('kiubi/behaviors/vat.js');
 var Forms = require('kiubi/utils/forms.js');
-var SelectView = require('kiubi/views/ui/select.js');
+var SelectView = require('kiubi/core/views/ui/select.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/option.html'),

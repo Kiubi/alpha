@@ -3,7 +3,7 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 var format = require('kiubi/utils/format.js');
 
-var TagView = require('kiubi/views/ui/tag.search.js');
+var TagView = require('kiubi/core/views/ui/tag.search.js');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');

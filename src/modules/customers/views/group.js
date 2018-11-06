@@ -6,7 +6,7 @@ var CollectionUtils = require('kiubi/utils/collections.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 var format = require('kiubi/utils/format.js');
-var SelectView = require('kiubi/views/ui/select.js');
+var SelectView = require('kiubi/core/views/ui/select.js');
 var ListView = require('./discounts.list.js');
 
 module.exports = Marionette.View.extend({

@@ -1,7 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
-var ListView = require('kiubi/views/ui/list.js');
+var ListView = require('kiubi/core/views/ui/list.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 var format = require('kiubi/utils/format');
 

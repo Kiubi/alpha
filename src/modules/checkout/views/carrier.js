@@ -9,9 +9,9 @@ var Forms = require('kiubi/utils/forms.js');
 var Session = Backbone.Radio.channel('app').request('ctx:session');
 var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
 
-var SelectView = require('kiubi/views/ui/select.js');
+var SelectView = require('kiubi/core/views/ui/select.js');
 var StepsView = require('./carrier.steps.js');
-var TagView = require('kiubi/views/ui/tag.search.js');
+var TagView = require('kiubi/core/views/ui/tag.search.js');
 
 /*
  * Magasin

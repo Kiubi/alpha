@@ -122,6 +122,15 @@
 				<option value="sha256" <%= config.hash == 'sha256' ? 'selected="selected"' : '' %>>SHA-256</option>
 			</select>
 		</div>
+
+		<div class="form-group">
+			<label for="banque">Banque</label>
+			<select class="form-control" id="banque" name="banque" data-style="selectify">
+				<option value="systempay" <%= config.banque == 'systempay' ? 'selected="selected"' : '' %> >Multi-banques</option>
+				<option value="sogecommerce" <%= config.banque == 'sogecommerce' ? 'selected="selected"' : '' %>>Sogecommerce</option>
+			</select>
+		</div>
+		
 		<div class="form-group">
 			<label>Mode</label>
 			<div class="form-check">

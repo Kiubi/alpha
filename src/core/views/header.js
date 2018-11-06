@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
-var LoaderTpl = require('../templates/ui/loader.html');
+var LoaderTpl = require('kiubi/core/templates/ui/loader.html');
 
 var ControllerChannel = Backbone.Radio.channel('controller');
 

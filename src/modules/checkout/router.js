@@ -14,8 +14,8 @@ var Taxes = require('kiubi/modules/catalog/models/taxes');
 var Carriers = require('./models/carriers');
 var CarriersCountries = require('./models/carriers.countries');
 var CarriersZones = require('./models/carriers.zones');
-var Countries = require('kiubi/models/countries');
-var Search = require('kiubi/models/geo.search');
+var Countries = require('kiubi/core/models/countries');
+var Search = require('kiubi/core/models/geo.search');
 var Payments = require('./models/payments');
 
 /* Views */
@@ -48,12 +48,13 @@ function getCarriersAction(options) {
 		}]
 	);
 
-	/*if (???) {
+	var Session = Backbone.Radio.channel('app').request('ctx:session');
+	if (Session.hasFeature('multi_pickup')) {
 		actions.push({
-			title: 'Dupliquer le transporteur',
-	 		callback: ['actionDuplicateCarrier', 'magasin']
+			title: 'Ajouter un retrait en magasin',
+			callback: ['actionNewCarrier', 'magasin']
 		});
-	}*/
+	}
 
 	/*if (options.duplicateCarrier) {
 		actions.push({

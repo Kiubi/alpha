@@ -54,7 +54,7 @@ var RowView = Marionette.View.extend({
 
 });
 
-var ListView = require('kiubi/views/ui/list.js');
+var ListView = require('kiubi/core/views/ui/list.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/l10n.html'),

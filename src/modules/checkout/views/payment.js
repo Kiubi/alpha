@@ -5,12 +5,16 @@ var _ = require('underscore');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Session = Backbone.Radio.channel('app').request('ctx:session');
 var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
+var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 
 var Forms = require('kiubi/utils/forms.js');
 
-var FileView = require('kiubi/views/ui/input.file.js');
+var FileView = require('kiubi/core/views/ui/input.file.js');
+
 var systempayView = Marionette.View.extend({
 	template: require('../templates/payment/systempay.html'),
+
+	behaviors: [WysiwygBehavior, SelectifyBehavior],
 
 	fields: [
 		'intitule_long',
@@ -18,6 +22,7 @@ var systempayView = Marionette.View.extend({
 		'mode',
 		'tpe',
 		'key',
+		'banque',
 		'message'
 	],
 
@@ -35,6 +40,8 @@ var systempayView = Marionette.View.extend({
 });
 var chequeView = Marionette.View.extend({
 	template: require('../templates/payment/cheque.html'),
+
+	behaviors: [WysiwygBehavior],
 
 	fields: [
 		'intitule_long',
@@ -56,7 +63,7 @@ var chequeView = Marionette.View.extend({
 var atosView = Marionette.View.extend({
 	template: require('../templates/payment/atos.html'),
 
-	behaviors: [WysiwygBehavior],
+	behaviors: [WysiwygBehavior, SelectifyBehavior],
 
 	regions: {
 		file: {
@@ -115,7 +122,7 @@ var atosView = Marionette.View.extend({
 var payboxView = Marionette.View.extend({
 	template: require('../templates/payment/paybox.html'),
 
-	behaviors: [WysiwygBehavior],
+	behaviors: [WysiwygBehavior, SelectifyBehavior],
 
 	ui: {
 		'hmac': '[date-role="hmac"]',
@@ -181,7 +188,7 @@ var paypalView = Marionette.View.extend({
 var cmcicView = Marionette.View.extend({
 	template: require('../templates/payment/cm_cic.html'),
 
-	behaviors: [WysiwygBehavior],
+	behaviors: [WysiwygBehavior, SelectifyBehavior],
 
 	fields: [
 		'intitule_long',
@@ -207,6 +214,8 @@ var cmcicView = Marionette.View.extend({
 });
 var virementView = Marionette.View.extend({
 	template: require('../templates/payment/virement.html'),
+
+	behaviors: [WysiwygBehavior],
 
 	fields: [
 		'intitule_long',
@@ -250,11 +259,10 @@ module.exports = Marionette.View.extend({
 		'is_enabled'
 	],
 
+	subView: null,
+	
 	initialize: function(options) {
 		this.mergeOptions(options, ['model']);
-	},
-
-	onRender: function() {
 
 		var viewClass;
 		switch (this.model.get('type')) {
@@ -281,13 +289,18 @@ module.exports = Marionette.View.extend({
 				break;
 		}
 
-		var view = new viewClass({
+		this.subView = new viewClass({
 			model: this.model
 		});
 		this.listenTo(this.model, 'sync', function() {
-			view.render()
+			this.subView.render()
 		});
-		this.showChildView('form', view);
+	},
+
+	onRender: function() {
+		if (!this.getChildView('form')) {
+			this.showChildView('form', this.subView);
+		}
 	},
 
 	onSave: function() {

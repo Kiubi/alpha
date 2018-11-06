@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
-var SelectView = require('kiubi/views/ui/select.js');
+var SelectView = require('kiubi/core/views/ui/select.js');
 var FilePickerView = require('kiubi/modules/media/views/file.picker.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');

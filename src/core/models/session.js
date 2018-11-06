@@ -1,7 +1,7 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
 require('jquery.cookie');
-var api = require('../utils/api.client.js');
+var api = require('kiubi/utils/api.client.js');
 var createHash = require('sha.js');
 
 var Site = require('./site.js');
