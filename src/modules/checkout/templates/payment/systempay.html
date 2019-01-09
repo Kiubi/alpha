@@ -115,22 +115,28 @@
 				<label for="is_enabled0" class="not-visible">Désactivé</label>
 			</div>
 		</div>
-		<div class="form-group">
-			<label for="hash">Algorithme de hachage</label>
-			<select class="form-control" id="hash" name="hash" data-style="selectify">
-				<option value="sha1" <%= config.hash != 'sha256' ? 'selected="selected"' : '' %>>SHA-1</option>
-				<option value="sha256" <%= config.hash == 'sha256' ? 'selected="selected"' : '' %>>SHA-256</option>
-			</select>
+
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<label for="banque">Banque</label>
+					<select class="form-control" id="banque" name="banque" data-style="selectify">
+						<option value="systempay" <%= config.banque == 'systempay' ? 'selected="selected"' : '' %> >Multi-banques</option>
+						<option value="sogecommerce" <%= config.banque == 'sogecommerce' ? 'selected="selected"' : '' %>>Sogecommerce</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-6">
+				<div class="form-group">
+					<label for="hash">Algorithme de hachage</label>
+					<select class="form-control" id="hash" name="hash" data-style="selectify">
+						<option value="sha1" <%= config.hash != 'sha256' ? 'selected="selected"' : '' %>>SHA-1</option>
+						<option value="sha256" <%= config.hash == 'sha256' ? 'selected="selected"' : '' %>>SHA-256</option>
+					</select>
+				</div>
+			</div>
 		</div>
 
-		<div class="form-group">
-			<label for="banque">Banque</label>
-			<select class="form-control" id="banque" name="banque" data-style="selectify">
-				<option value="systempay" <%= config.banque == 'systempay' ? 'selected="selected"' : '' %> >Multi-banques</option>
-				<option value="sogecommerce" <%= config.banque == 'sogecommerce' ? 'selected="selected"' : '' %>>Sogecommerce</option>
-			</select>
-		</div>
-		
 		<div class="form-group">
 			<label>Mode</label>
 			<div class="form-check">

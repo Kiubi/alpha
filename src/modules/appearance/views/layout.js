@@ -166,7 +166,7 @@ var ModalView = Marionette.View.extend({
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/layout.html'),
-	className: 'container-fluid',
+	className: 'container container-large',
 	service: 'layout',
 
 	behaviors: [FormBehavior],

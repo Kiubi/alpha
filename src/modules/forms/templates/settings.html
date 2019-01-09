@@ -7,81 +7,51 @@
 			<h1>Paramètres généraux</h1>
 		</header>
 		<div class="post-content">
+			<div class="form-group">
+				<label class="required" for="message">Message de confirmation</label>
+				<p>Le message de confirmation s'affiche une fois le formulaire validé.</p>
+				<textarea class="form-control" id="message" name="message" placeholder="" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- message %></textarea>
+			</div>
+			<div class="form-group">
+				<label>Identifiant API Front-office</label>
+				<p class="form-control-static"><%- form_key %></p>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Emails de notification</h1>
+		</header>
+		<div class="post-content">
+			<div class="alert alert-warning shadow-none p-3" role="alert">
+				<span class="md-icon md-warning align-middle mr-2"></span>Les emails de notifications sont envoyés uniquement <strong>si le captcha est activé</strong>.
+
+		 </div>
+
 			<p>À chaque nouvelle réponse au formulaire, une copie peut être envoyée par email à plusieurs
 				destinataires de votre choix ainsi qu'à l'expéditeur de la réponse, si ce dernier a renseigné une
 				adresse email valide.
 			</p>
-
+			<div class="form-group">
+				<label for="subject">Sujet de l'email</label>
+				<input class="form-control" id="subject" name="subject" value="<%- subject %>" placeholder="Sujet de l'email lors d'une nouvelle réponse" type="text">
+			</div>
 			<div class="form-group">
 				<label for="recipient">Destinataires</label>
-
 				<p>Saisissez les emails des destinataires, séparés par des virgules, qui seront en copie des nouvelles
 					réponses.</p>
 				<input class="form-control" id="recipient" name="recipient" value="<%- recipient %>" placeholder="Emails des destinataires séparés par des virgules" type="text">
 			</div>
 			<div class="form-group">
 				<label for="">Envoyer une copie à l'expéditeur (si possible)</label>
-
 				<div class="form-check">
 					<input name="copy_to_sender" id="copy_to_sender1" value="1" type="radio" <%= copy_to_sender ? 'checked="checked" ' : '' %>>
 					<label for="copy_to_sender1" class="">Oui</label>
 					<input name="copy_to_sender" id="copy_to_sender0" value="0" type="radio" <%= !copy_to_sender ? 'checked="checked" ' : '' %>>
 					<label for="copy_to_sender0" class="">Non</label>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="subject">Sujet de l'email</label>
-				<input class="form-control" id="subject" name="subject" value="<%- subject %>" placeholder="Sujet de l'email lors d'une nouvelle réponse" type="text">
-			</div>
-			<div class="form-group">
-				<label class="required" for="message">Message de confirmation</label>
-
-				<p>Le message de confirmation s'affiche une fois le formulaire validé.</p>
-				<textarea class="form-control" id="message" name="message" placeholder="" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- message %></textarea>
-			</div>
-			<div class="form-group">
-				<label>Identifiant API Front-office</label>
-
-				<p class="form-control-static"><%- form_key %></p>
-			</div>
-		</div>
-
-		<footer class="post-footer"></footer>
-	</article>
-
-	<article class="post-article">
-		<header class="post-header">
-			<h1>Collecte de données personnelles</h1>
-		</header>
-		<div class="post-content">
-			<p>
-				Le "<a href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees" target="_blank">Réglement
-				Général sur la Protection des Données personnelles (RGPD)</a>"
-				impose à toute personne morale le respect des principes et des règles régissant
-				la protection des personnes physiques à l'égard du <strong>traitement des données à caractère personnel</strong>.
-				Si ce formulaire collecte ce type de données, il est obligatoire :
-		</p>
-		<ol>
-			<li>D'activer la demande de consentement préalable</li>
-			<li>De préciser les finalités de traitements des données collectées</li>
-			<li>D'ajouter un lien vers la page web dédiée aux engagements pris pour la protection des données personnelles</li>
-		</ol>
-
-			<div class="form-group">
-				<label for="">Consentement préalable</label>
-
-				<div class="form-check">
-					<input name="is_consent_required" id="is_consent_required1" value="1" type="radio" <%= (is_consent_required) ? 'checked="checked"' : '' %>>
-					<label for="is_consent_required1" class="visible">Activé</label>
-					<input name="is_consent_required" id="is_consent_required0" value="0" type="radio" <%= (!is_consent_required) ? 'checked="checked"' : '' %>>
-					<label for="is_consent_required0" class="not-visible">Désactivé</label>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="required" for="processing_purposes">Finalités de traitements</label>
-
-				<p>Les finalités de traitements s'affichent à la fin du formulaire.</p>
-				<textarea class="form-control" id="processing_purposes" name="processing_purposes" placeholder="" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- processing_purposes %></textarea>
 			</div>
 		</div>
 		<footer class="post-footer"></footer>
@@ -93,14 +63,12 @@
 		</header>
 		<div class="post-content">
 			<p>
-				Le "captcha" est une sorte d'anti-spam pour se prémunir contre l'usage
-				abusif des formulaires : un champ de validation requiert de l'internaute
-				qu'il réponde à une question aléatoirement posée pour valider le formulaire.
+				Le "captcha" est un système anti-spam pour se prémunir contre l'usage
+				abusif des formulaires. Plusieurs captchas différents sont disponibles :
+				une validation manuelle par l'internaute ou le système invisible Google reCaptcha.
 			</p>
-
 			<div class="form-group">
 				<label for="">Utilisation du captcha</label>
-
 				<div class="form-check">
 					<input name="use_captcha" id="use_captcha1" value="1" type="radio" <%= use_captcha ? 'checked="checked" ' : '' %>>
 					<label for="use_captcha1" class="visible">Activé</label>

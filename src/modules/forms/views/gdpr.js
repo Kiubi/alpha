@@ -7,18 +7,15 @@ var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
 var Forms = require('kiubi/utils/forms.js');
 
 module.exports = Marionette.View.extend({
-	template: require('../templates/settings.html'),
+	template: require('../templates/gdpr.html'),
 	className: 'container',
 	service: 'forms',
 
 	behaviors: [FormBehavior, WysiwygBehavior],
 
 	fields: [
-		'use_captcha',
-		'recipient',
-		'subject',
-		'copy_to_sender',
-		'message'
+		'processing_purposes',
+		'is_consent_required'
 	],
 
 	onSave: function() {

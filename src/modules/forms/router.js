@@ -12,6 +12,7 @@ var FormsView = require('./views/forms');
 var InboxView = require('./views/inbox');
 var FormView = require('./views/form');
 var SettingsView = require('./views/settings');
+var GdprView = require('./views/gdpr');
 
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
@@ -66,6 +67,9 @@ function HeaderTabsForm(form_id) {
 	}, {
 		title: 'Paramètres',
 		url: '/forms/' + form_id + '/settings'
+	}, {
+		title: 'Données personnelles',
+		url: '/forms/' + form_id + '/gdpr'
 	}];
 }
 
@@ -170,6 +174,32 @@ var FormsController = Controller.extend({
 		}.bind(this));
 	},
 
+	showGdpr: function(id) {
+		var c = new Forms();
+		var m = new c.model({
+			form_id: id
+		});
+
+		m.fetch().done(function() {
+			var view = new GdprView({
+				model: m
+			});
+
+			this.navigationController.showContent(view);
+			this.setHeader({
+				title: m.get('name')
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}], HeaderTabsForm(id));
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Formulaire introuvable'
+			});
+		}.bind(this));
+	},
+
 	showSettings: function(id) {
 		var c = new Forms();
 		var m = new c.model({
@@ -204,7 +234,8 @@ module.exports = Marionette.AppRouter.extend({
 		'forms/inbox': 'showInbox',
 		'forms': 'showForms',
 		'forms/:id': 'showForm',
-		'forms/:id/settings': 'showSettings'
+		'forms/:id/settings': 'showSettings',
+		'forms/:id/gdpr': 'showGdpr'
 	},
 
 	onRoute: function(name, path, args) {

@@ -1,0 +1,16 @@
+<div class="row no-gutters">
+	<div class="col-auto mr-3">
+		<span class="md-icon md-icon-module rounded-circle"><%- icon %></span>
+	</div>
+	<div class="col item-body">
+		<h4><%- name %></h4>
+		<%= desc %>
+	</div>
+	<div class="col-auto">
+	<% if(has_scope && has_feature) { %>
+	<a class="btn btn-primary float-right" href="<%- href %>" role="button">Utiliser</a>
+	<% } else { %>
+	<span class="badge px-1 mx-0 float-right" href="#">Indisponible</span>
+	<% } %>
+	</div>
+</div>

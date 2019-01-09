@@ -1,15 +1,13 @@
 <h2>Activités en attente</h2>
 <ul class="nav nav-sidebar flex-column">
-	<% if(pending_orders != null) { %>
+	<% if (show_checkout) { %>
 	<li class="nav-item"><a class="nav-link" href="/checkout/orders?status=pending"><span class="badge"><%- pending_orders %></span>Commandes à traiter</a></li>
 	<% } %>
-	<% if(pending_orders != null) { %>
+	<% if (show_catalog) { %>
 	<li class="nav-item"><a class="nav-link" href="/catalog?stock=no"><span class="badge"><%- stock_shortage_count %></span>Ruptures de stock</a></li>
 	<% } %>
 	<!-- <li class="nav-item"><a class="nav-link" href="/catalog/comments"><span class="badge">0</span>Évaluations</a></li> -->
-	<% if(pending_orders != null) { %>
 	<li class="nav-item"><a class="nav-link" href="/forms/inbox?is_read=0"><span class="badge"><%- unread_responses %></span>Réponses non lues</a></li>
-	<% } %>
 	<!-- <li class="nav-item"><a class="nav-link" href="/blog/comments"><span class="badge">0</span>Commentaires</a></li> -->
 </ul>
 

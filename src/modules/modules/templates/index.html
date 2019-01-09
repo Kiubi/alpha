@@ -1,66 +1,37 @@
-<div class="module-list mt-2 mb-4">
-	<div class="row">
+<article class="post-article post-acticle-empty text-center">
+	<header class="post-header">
+		<h1>Les modules disponibles sur votre site et dans vos espaces de travail</h1>
+	</header>
 
-		<% _.each(spotlights, function(module){ %>
-
-		<div class="col-6 <% if(!module.has_scope || !module.has_feature) { %>disabled<% } %>">
-			<article class="post-article thumbs-desc">
-				<header class="post-header">
-					<span class="md-icon md-icon-module <%- module.icon %> rounded-circle"></span><% if(module.quota) { %><span class="d-none"><%- module.quota %></span><% } %>
-				</header>
-				<div class="post-content">
-					<h1><%- module.name %></h1>
-					<p><%= module.desc %></p>
-					<% if(module.has_scope && module.has_feature) { %>
-					<a class="btn btn-primary" href="<%- module.href %>">Utiliser</a>
-					<% } else { %>
-					<span class="badge px-0" href="#">Indisponible</span>
-					<% } %>
-				</div>
-				<footer class="post-footer"></footer>
-			</article>
-		</div>
-
-		<% }) %>
-
+	<div class="post-content">
+		<p class="lead">
+			Optimiser votre site, fidéliser vos clients, améliorer votre référencement et booster votre productivité
+		</p>
 	</div>
+
+	<footer class="post-footer"></footer>
+</article>
+
+<div class="module-list mt-2 mb-4">
+	
+	<div data-role="spotlights"></div>
+	
 </div>
 
 <article class="post-article">
 	<header class="post-header">
-		<h1>Autres modules</h1>
+		<h1>Autres modules disponibles</h1>
 	</header>
-	<div class="post-content post-list no-hover module-list">
-
-		<% _.each(list, function(module){ %>
-		<div class="list-item visible-btn <% if(!module.has_scope || !module.has_feature) { %>disabled<% } %>">
-			<div class="row no-gutters">
-				<div class="col-auto mr-3">
-					<span class="md-icon md-icon-module <%- module.icon %> rounded-circle"></span>
-				</div>
-				<div class="col item-body">
-					<h4><%- module.name %></h4>
-					<%= module.desc %>
-				</div>
-				<div class="col-auto">
-				<% if(module.has_scope && module.has_feature) { %>
-				<a class="btn btn-primary float-right" href="<%- module.href %>" role="button">Utiliser</a>
-				<% } else { %>
-				<span class="badge px-1 mx-0 float-right" href="#">Indisponible</span>
-				<% } %>
-				</div>
-			</div>
-		</div>
-		<% }) %>
-
-	</div>
+	
+	<div data-role="modules"></div>
+	
 	<footer class="post-footer"></footer>
 </article>
 
 
 <article class="post-article post-acticle-empty mt-5 text-center">
 	<header class="post-header">
-		<h1>Les APIs pour les développements d'applications</h1>
+		<h1>Les APIs pour développer de nouvelles applications</h1>
 	</header>
 
 	<div class="post-content">
@@ -86,7 +57,7 @@
 						aux données publiques de leurs sites afin de les enrichir avec de nouvelles interactions.
 						<a href="https://aide.kiubi.com/api-front-office.html" target="_blank">En savoir plus</a>
 					</p>
-					<a class="btn btn-primary" href="<%- domain %>/api/v1/" target="_blank">Se connecter</a>
+					<a class="btn btn-outline-primary" href="<%- domain %>/api/v1/" target="_blank">Se connecter</a>
 				</div>
 				<footer class="post-footer"></footer>
 			</article>
@@ -103,7 +74,7 @@
 						Kiubi grâce à un accès direct et sécurisé aux données de leurs sites.
 						<a href="https://aide.kiubi.com/api-developers.html" target="_blank">En savoir plus</a>
 					</p>
-					<a class="btn btn-primary" href="https://api.kiubi.com/" target="_blank">Se connecter</a>
+					<a class="btn btn-outline-primary" href="https://api.kiubi.com/" target="_blank">Se connecter</a>
 				</div>
 				<footer class="post-footer"></footer>
 			</article>

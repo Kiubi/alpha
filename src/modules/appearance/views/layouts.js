@@ -64,7 +64,7 @@ function mapPage(page, count) {
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/layouts.row.html'),
-	className: 'col',
+	className: 'col-auto d-flex',
 
 	ui: {
 		'duplicate': '[data-role="duplicate"]',

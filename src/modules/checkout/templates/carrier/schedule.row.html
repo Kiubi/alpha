@@ -1,0 +1,17 @@
+<div class="col-3">
+	<div class="form-group">
+		<label><%- name %></label>
+		<select name="open_days[<%- day_of_week %>][is_open]" data-style="selectify">
+			<option value="0" <%= !is_open ? 'selected="selected"' : '' %>>Fermé</option>
+			<option value="1" <%= is_open ? 'selected="selected"' : '' %>>Ouvert</option>
+		</select>
+	</div>
+</div>
+<% if (require_scheduling == 'datetime') { %>
+<div class="col-9">
+	<div class="form-group">
+		<label class="required">Heures d'ouverture</label>
+		<input class="form-control" name="open_days[<%- day_of_week %>][time_frames]" value="<%- frames %>" placeholder="Jusqu'à 4 plages horaires (hh-hh) séparées par des virgules (ex. : 9-12,14-18)">
+	</div>
+</div>
+<% } %>

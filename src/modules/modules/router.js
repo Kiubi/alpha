@@ -31,6 +31,7 @@ var Menus = require('kiubi/modules/cms/models/menus');
 var Posts = require('kiubi/modules/cms/models/posts');
 var Folders = require('kiubi/modules/media/models/folders');
 var Medias = require('kiubi/modules/prefs/models/medias');
+var Captcha = require('kiubi/modules/prefs/models/captcha');
 
 /* Views */
 var IndexView = require('./views/index');
@@ -52,6 +53,7 @@ var LengowView = require('./views/lengow');
 var IadvizeView = require('./views/iadvize');
 var AvisVerifiesView = require('./views/avisverifies');
 var BackupsView = require('./views/backups');
+var CaptchaView = require('./views/captcha');
 
 
 /* Actions */
@@ -95,6 +97,18 @@ function HeaderTabsSubscribers() {
 	}];
 }
 
+/*
+function HeaderTabsAppStore() {
+
+	return [{
+		title: 'Modules installés',
+		url: '/modules'
+	}, {
+		title: 'App Store',
+		url: '/modules/appstore'
+	}];
+}
+*/
 
 function ctlScope(name) {
 	switch (name) {
@@ -161,11 +175,13 @@ var SidebarMenuView = Marionette.View.extend({
 			has_scope_catalog: Session.hasScope('site:catalog'),
 			has_scope_blog: Session.hasScope('site:blog'),
 			has_scope_backup: Session.hasScope('site:backup'),
-
+			has_scope_pref: Session.hasScope('site:pref'),
+			has_feature_extranet: Session.hasFeature('extranet'),
 			has_feature_catalog: Session.hasFeature('catalog'),
 			has_feature_checkout: Session.hasFeature('checkout'),
 			has_feature_fidelity: Session.hasFeature('fidelity'),
-			has_feature_advanced_media: Session.hasFeature('advanced_media')
+			has_feature_advanced_media: Session.hasFeature('advanced_media'),
+			has_feature_multi_pickup: Session.hasFeature('multi_pickup')
 		};
 	}
 
@@ -182,8 +198,6 @@ var ModulesController = Controller.extend({
 	}],
 
 	showIndex: function() {
-		console.log('ModulesController, showIndex');
-
 		this.navigationController.showContent(new IndexView());
 		this.setHeader({
 			title: 'Tous les modules'
@@ -551,6 +565,26 @@ var ModulesController = Controller.extend({
 		}.bind(this));
 	},
 
+	showCaptcha: function() {
+		var m = new Captcha();
+		m.fetch().done(function() {
+			this.navigationController.showContent(new CaptchaView({
+				model: m
+			}));
+			this.setHeader({
+				title: 'Google reCaptcha'
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}]);
+		}.bind(this)).fail(function() {
+			this.notFound();
+			this.setHeader({
+				title: 'Paramètres introuvables'
+			});
+		}.bind(this));
+	},
+
 	showBackups: function() {
 
 		var view = new BackupsView({
@@ -628,6 +662,7 @@ module.exports = Marionette.AppRouter.extend({
 		'modules/lengow': 'showLengow',
 		'modules/iadvize': 'showIadvize',
 		'modules/avisverifies': 'showAvisVerifies',
+		'modules/captcha': 'showCaptcha',
 		'modules/backups': 'showBackups'
 	},
 

@@ -32,6 +32,8 @@ var SidebarMenuView = Marionette.View.extend({
 	templateContext: function() {
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		return {
+			show_catalog: Session.hasFeature('catalog') && Session.hasScope('site:catalog'),
+			show_checkout: Session.hasFeature('checkout') && Session.hasScope('site:checkout'),
 			pending_orders: this.stat.get('checkout') ? this.stat.get('checkout').pending_orders : null,
 			stock_shortage_count: this.stat.get('catalog') ? this.stat.get('catalog').stock_shortage_count : null,
 			unread_responses: this.stat.get('forms') ? this.stat.get('forms').unread_responses : null,

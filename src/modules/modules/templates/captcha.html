@@ -1,0 +1,57 @@
+<form>
+
+  <div class="alert alert-warning" role="alert">
+    <a href="https://aide.kiubi.com/documentation/google-recaptcha.html" class="md-icon md-help float-right" target="_blank"></a>
+    Google reCaptha est <strong>le service de protection</strong> contre les robots (anti-spam) proposé par Google.
+    Pour bénéficier de ces fonctionnalités, vous devez vous
+    <a href="https://www.google.com/recaptcha/intro/v3.html" target="_blank">ouvrir un compte
+    sur Google reCaptcha</a> et suivre les instructions fournies pour <strong>la version 3</strong>.<br><br>
+    Seules la clé du site et la clé secrète sont nécessaires pour configurer Google reCaptcha.
+    Une fois activé, <strong>il remplace le captcha par défaut</strong>
+    de Kiubi et affiche un badge <em>protection par reCAPTCHA</em> sur les pages concernées.
+  </div>
+
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Configuration de Google reCaptcha</h1>
+    </header>
+    <div class="post-content">
+
+		<div class="form-group">
+			<label class="required" for="recaptcha_key">Clé du site</label>
+       <p>La clés du site est obtenue après avoir enregistré un reCaptcha version 3 pour les noms de domaine du site auprès de Google.</p>
+			<input id="recaptcha_key" name="recaptcha_key" class="form-control" value="<%- recaptcha_key %>">
+		</div>
+
+		<div class="form-group">
+			<label class="required" for="recaptcha_secret">Clé secrète</label>
+      <p>La clés secrète est obtenue après avoir enregistré un reCaptcha version 3 pour les noms de domaine du site auprès de Google.</p>
+			<input id="recaptcha_secret" name="recaptcha_secret" class="form-control" value="<%- recaptcha_secret %>">
+		</div>
+
+    <div class="form-group">
+      <label>Utilisation</label>
+      <div class="form-check">
+        <input name="type" id="type_recaptcha" value="recaptcha" <%= type == 'recaptcha' ? 'checked="checked"' : '' %> type="radio">
+        <label for="type_recaptcha" class="visible">Activé</label>
+        <input name="type" id="type_kiubi" value="kiubi" <%= type == 'kiubi' ? 'checked="checked"' : '' %> type="radio">
+        <label for="type_kiubi" class="not-visible">Désactivé</label>
+      </div>
+    </div>
+
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+</form>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <a class="btn btn-lg btn-primary btn-cancel" href="/modules">Retour</a>
+    <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

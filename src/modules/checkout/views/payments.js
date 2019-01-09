@@ -18,7 +18,7 @@ var RowView = Marionette.View.extend({
 				break;
 			case 'cm_cic':
 				type_label =
-					"Paiement par carte bancaire distribué par les banques : <br/> Crédit Mutuel - CyberMUT, OBC, Groupe CIC - P@iement CIC";
+					"Paiement par carte bancaire distribué par les banques : <br/> Crédit Mutuel (CyberMUT), OBC, Groupe CIC (P@iement CIC)";
 				break;
 			case 'paypal':
 				type_label = "Paiement par PayPal";
@@ -28,13 +28,13 @@ var RowView = Marionette.View.extend({
 				break;
 			case 'atos':
 				type_label =
-					"Paiement par carte bancaire distribué par les banques suivantes : <br/> Société Générale - Sogénactif / Agora, Crédit Lyonnais - Sherlock, HSBC, CCF - Elysnet, Crédit du Nord - Webaffaires, La Poste - Scellius, Crédit Agricole - e-Transactions, BNP Paribas - Merc@net";
+					"Paiement par carte bancaire distribué par les banques : <br/> Société Générale (Sogénactif / Agora), Crédit Lyonnais (Sherlock), HSBC, CCF (Elysnet), Crédit du Nord (Webaffaires), La Poste (Scellius), Crédit Agricole (e-Transactions), BNP Paribas (Merc@net)";
 				break;
 			case 'cheque':
 				type_label = "Paiement par chèque";
 				break;
 			case 'systempay':
-				type_label = "Paiement par carte bancaire distribué par la Banque Populaire (Cyberplus Paiement)";
+				type_label = "Paiement par carte bancaire distribué par les banques : Banque Populaire (Cyberplus Paiement), Société générale (Sogecommerce)";
 				break;
 			default:
 				break;

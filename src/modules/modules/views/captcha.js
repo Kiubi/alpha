@@ -2,23 +2,19 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
-var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
-
 var Forms = require('kiubi/utils/forms.js');
 
 module.exports = Marionette.View.extend({
-	template: require('../templates/settings.html'),
+	template: require('../templates/captcha.html'),
 	className: 'container',
-	service: 'forms',
+	service: 'modules',
 
-	behaviors: [FormBehavior, WysiwygBehavior],
+	behaviors: [FormBehavior],
 
 	fields: [
-		'use_captcha',
-		'recipient',
-		'subject',
-		'copy_to_sender',
-		'message'
+		'type',
+		'recaptcha_key',
+		'recaptcha_secret'
 	],
 
 	onSave: function() {

@@ -1,0 +1,21 @@
+<article class="post-article thumbs-desc w-100">
+	<header class="post-header">
+		<span class="md-icon md-icon-module rounded-circle" style="background-color: <%- color %>;"><%- icon %></span><% if(quota) { %><span class="d-none"><%- quota %></span><% } %>
+		<% if(false) { %><span class="md-icon md-icon-subscription rounded-circle"></span><% } %>
+	</header>
+	<div class="post-content">
+		<h1><%- name %></h1>
+		<p>
+			<%= desc %>
+			<% if(doc) { %><a target="_blank" href="<%- doc %>">En savoir plus</a><% } %>
+		</p>
+		<% if(has_scope && has_feature) { %>
+		<a class="btn btn-outline-primary" href="<%- href %>">Utiliser</a>
+		<% } else if(has_scope && !has_feature) { %>
+		<a class="btn btn-outline-primary" target="_blank" href="https://www.kiubi-admin.com/sites/options.html?code_site=<%- code_site %>"><%- price %></a>
+		<% } else { %>
+		<span class="btn btn-outline-primary disabled">Indisponible</span>
+		<% } %>
+	</div>
+	<footer class="post-footer"></footer>
+</article>

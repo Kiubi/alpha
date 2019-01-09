@@ -1,0 +1,51 @@
+<form>
+
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Collecte de données personnelles</h1>
+		</header>
+		<div class="post-content">
+			<p>
+				Le "<a href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees" target="_blank">Réglement
+				Général sur la Protection des Données personnelles (RGPD)</a>"
+				impose à toute personne morale le respect des principes et des règles régissant
+				la protection des personnes physiques à l'égard du <strong>traitement des données à caractère personnel</strong>.
+				Si ce formulaire collecte ce type de données, il est obligatoire :
+		</p>
+		<ol>
+			<li>D'activer la demande de consentement préalable</li>
+			<li>De préciser les finalités de traitements des données collectées</li>
+			<li>D'ajouter un lien vers la page web dédiée aux engagements pris pour la protection des données personnelles</li>
+		</ol>
+
+			<div class="form-group">
+				<label for="">Consentement préalable</label>
+
+				<div class="form-check">
+					<input name="is_consent_required" id="is_consent_required1" value="1" type="radio" <%= (is_consent_required) ? 'checked="checked"' : '' %>>
+					<label for="is_consent_required1" class="visible">Activé</label>
+					<input name="is_consent_required" id="is_consent_required0" value="0" type="radio" <%= (!is_consent_required) ? 'checked="checked"' : '' %>>
+					<label for="is_consent_required0" class="not-visible">Désactivé</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="required" for="processing_purposes">Finalités de traitements</label>
+
+				<p>Les finalités de traitements s'affichent à la fin du formulaire.</p>
+				<textarea class="form-control" id="processing_purposes" name="processing_purposes" placeholder="" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- processing_purposes %></textarea>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+</form>
+
+<div class="save">
+	<div class="btn-toolbar" role="toolbar">
+		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
+	</div>
+</div>
+
+<footer class="footer"></footer>
