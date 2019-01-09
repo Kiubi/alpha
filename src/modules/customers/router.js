@@ -44,7 +44,7 @@ var SidebarMenuView = Marionette.View.extend({
 });
 
 /* Actions */
-function getHeadersAction(options) {
+function getGroupHeadersAction(options) {
 
 	options = options || {};
 	var actions = [];
@@ -55,6 +55,34 @@ function getHeadersAction(options) {
 			callback: 'actionNewGroup'
 		});
 	}
+
+	if (options.addSave) {
+
+		var saveAction = {
+			title: 'Enregistrer',
+			callback: 'actionSave',
+			activateOnEvent: 'modified:content',
+			bubbleOnEvent: 'modified:content'
+		};
+
+		if (actions.length <= 1) {
+			actions.push(saveAction);
+		} else {
+			actions.splice(1, 0, saveAction);
+		}
+
+	}
+
+	return actions;
+}
+
+function getCustomerHeadersAction(options) {
+
+	options = options || {};
+	var actions = [{
+		title: 'Ajouter un membre',
+		callback: 'actionNewCustomer'
+	}];
 
 	if (options.addSave) {
 
@@ -133,19 +161,23 @@ var CustomersController = Controller.extend({
 
 	showCustomers: function(queryString) {
 
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 		var qs = this.parseQueryString(queryString, {
 			'term': null
 		});
 
 		var view = new CustomersView({
 			collection: new Customers(),
+			groups: new Groups(),
+			enableExtranet: Session.hasFeature('extranet'),
 			filters: qs
 		});
 		this.navigationController.showContent(view);
 		view.start();
 		this.setHeader({
 			title: 'Tous les membres'
-		});
+		}, getCustomerHeadersAction());
 	},
 
 	showCustomer: function(id) {
@@ -183,16 +215,39 @@ var CustomersController = Controller.extend({
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: m.get('firstname') + ' ' + m.get('lastname')
-			}, [{
-				title: 'Enregistrer',
-				callback: 'actionSave'
-			}], HeaderTabsCustomer(id));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Membre introuvable'
+			}, getCustomerHeadersAction({
+				addSave: true
+			}), HeaderTabsCustomer(id));
+		}.bind(this)).fail(this.failHandler('Membre introuvable'));
+	},
+
+	actionNewCustomer: function() {
+		this.navigationController.navigate('/customers/new');
+	},
+
+	showNewCustomer: function(id) {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		var m = new Customers().add({});
+
+		var groups = new Groups();
+
+		Backbone.$.when(
+			Session.hasFeature('extranet') ? groups.fetch() : Backbone.$.Deferred().resolve()
+		).done(function() {
+			var view = new CustomerView({
+				model: m,
+				groups: groups,
+				enableExtranet: Session.hasFeature('extranet')
 			});
-		}.bind(this));
+
+			this.navigationController.showContent(view);
+			this.setHeader({
+				title: 'Nouveau membre'
+			}, getCustomerHeadersAction({
+				addSave: true
+			}));
+		}.bind(this)).fail(this.failHandler('Membre introuvable'));
 	},
 
 	showBlogComments: function(id) {
@@ -213,12 +268,7 @@ var CustomersController = Controller.extend({
 			this.setHeader({
 				title: m.get('firstname') + ' ' + m.get('lastname')
 			}, null, HeaderTabsCustomer(id));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Membre introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Membre introuvable'));
 	},
 
 	showCommentsCatalog: function(id) {
@@ -239,12 +289,7 @@ var CustomersController = Controller.extend({
 			this.setHeader({
 				title: m.get('firstname') + ' ' + m.get('lastname')
 			}, null, HeaderTabsCustomer(id));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Membre introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Membre introuvable'));
 	},
 
 	showOrders: function(id) {
@@ -261,12 +306,7 @@ var CustomersController = Controller.extend({
 			this.setHeader({
 				title: m.get('firstname') + ' ' + m.get('lastname')
 			}, null, HeaderTabsCustomer(id));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Membre introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Membre introuvable'));
 	},
 
 	showDiscount: function(id) {
@@ -289,12 +329,7 @@ var CustomersController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}], HeaderTabsCustomer(id));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Membre introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Membre introuvable'));
 	},
 
 	showFidelity: function(id) {
@@ -315,12 +350,7 @@ var CustomersController = Controller.extend({
 			this.setHeader({
 				title: m.get('firstname') + ' ' + m.get('lastname')
 			}, null, HeaderTabsCustomer(id));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Membre introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Membre introuvable'));
 	},
 
 	/*
@@ -351,12 +381,7 @@ var CustomersController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	/**
@@ -372,7 +397,7 @@ var CustomersController = Controller.extend({
 		view.start();
 		this.setHeader({
 			title: 'Extranet'
-		}, getHeadersAction({
+		}, getGroupHeadersAction({
 			addGrp: true
 		}));
 	},
@@ -424,11 +449,12 @@ var CustomersController = Controller.extend({
 				href: '/customers/groups'
 			}, {
 				title: m.get('name')
-			}], getHeadersAction({
+			}], getGroupHeadersAction({
 				addGrp: true,
 				addSave: true
 			}));
 		}.bind(this)).fail(function() {
+			// TODO refactorisation with failHandler
 			this.notFound();
 			this.setHeader([{
 				title: 'Extranet',
@@ -462,6 +488,7 @@ module.exports = Marionette.AppRouter.extend({
 		'customers/settings': 'showSettings',
 		'customers/groups': 'showGroups',
 		'customers/groups/:id': 'showGroup',
+		'customers/new': 'showNewCustomer',
 		'customers/:id': 'showCustomer',
 		'customers/:id/blog_comments': 'showBlogComments',
 		'customers/:id/catalog_comments': 'showCommentsCatalog',

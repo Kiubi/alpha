@@ -43,30 +43,11 @@ module.exports = Marionette.View.extend({
 
 	onRender: function() {
 
-		var c = new CollectionUtils.SelectCollection([{
-			'value': 'registred',
-			'label': 'Inscrits',
-			'selected': this.filters.is_registered == 'true'
-		}, {
-			'value': 'unregistred',
-			'label': 'Désinscrits',
-			'selected': this.filters.is_registered == 'false'
-		}]);
-
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
 
 			title: 'Liste des abonnés à la newsletter',
-			order: [{
-				title: 'Inscription',
-				is_active: true,
-				value: 'date'
-			}, {
-				title: 'Email',
-				is_active: false,
-				value: 'email'
-			}],
 			selection: [{
 				title: 'Désinscrire',
 				callback: this.unsubscribeEmail.bind(this)
@@ -82,8 +63,17 @@ module.exports = Marionette.View.extend({
 				id: 'registred',
 				extraClassname: 'select-state',
 				title: 'Tous les états',
-				collectionPromise: c
-			}, {
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					'value': 'registred',
+					'label': 'Inscrits',
+					'selected': this.filters.is_registered == 'true'
+				}, {
+					'value': 'unregistred',
+					'label': 'Désinscrits',
+					'selected': this.filters.is_registered == 'false'
+				}])
+			}],
+			xtra: [{
 				id: 'export',
 				extraClassname: 'md-export',
 				type: 'button',
@@ -92,7 +82,21 @@ module.exports = Marionette.View.extend({
 					'label': 'Exporter les abonnés',
 					'selected': false
 				}])
+			}, {
+				id: 'sort',
+				extraClassname: 'md-sort',
+				type: 'button',
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					label: 'Inscription',
+					selected: true,
+					value: 'date'
+				}, {
+					label: 'Email',
+					selected: false,
+					value: 'email'
+				}])
 			}]
+
 		}));
 	},
 
@@ -123,14 +127,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChildviewFilterChange: function(filter) {
-		switch (filter.model.get('id')) {
-			case 'registred':
-				this.onRegistredFilterChange(filter);
-				break;
-			case 'export':
-				this.onExportFilterChange(filter);
-				break;
-		}
+		this.triggerMethod(filter.model.get('id') + ':filter:change', filter);
 	},
 
 	onRegistredFilterChange: function(filter) {
@@ -190,8 +187,9 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	onChildviewChangeOrder: function(order) {
-		this.sortOrder = order;
+	onSortFilterChange: function(filter) {
+		filter.view.activeItem(filter.value);
+		this.sortOrder = filter.value;
 		this.start();
 	}
 

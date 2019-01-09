@@ -110,7 +110,7 @@ body {
 	font-weight: 400;
 	line-height: 1.6;
 	color: #363636;
-	background: #f2f2f2 url(/assets/img/bg_body.jpg) fixed;
+	background: #ebecf0;
 	overflow: hidden;
 }
 
@@ -358,6 +358,7 @@ btn (boutons)
 .btn-secondary.dropdown-toggle::after,
 .dropup .btn-secondary.dropdown-toggle::after {
 	margin: -1px 0 0 -18px;
+	max-width: 18px;
 	color: #B3B3B3;
 }
 
@@ -523,7 +524,8 @@ btn (boutons)
 	color: #363636 !important;
 }
 
-.btn + .md-cancel {
+.btn + .md-cancel,
+.input-group .md-cancel {
 	position: relative;
 	top: -27px;
 	right: 13px;
@@ -537,8 +539,18 @@ btn (boutons)
 
 .btn-group .btn + .md-cancel {
 	top: 7px;
-	right: 30px;
+	right: 28px;
 	margin-right: -20px;
+}
+
+.btn-group .dropdown {
+	display: inline-flex;
+}
+
+.input-group .md-cancel {
+	top: 0;
+	right: -5px;
+	margin-left: -5px;
 }
 
 .btn .fake-selected {
@@ -593,7 +605,7 @@ header
 	border-radius: 0;
 	padding: 30px 25px 0 0;
 	height: 110px;
-	background: #f2f2f2 url(/assets/img/bg_body.jpg) fixed;
+	background: #ebecf0;
 	border-bottom: 1px solid #ccc;
 	z-index: 1000;
 	/*box-shadow: 0 8px 11px -10px rgba(0, 0, 0, 0.2);*/
@@ -1501,7 +1513,9 @@ breadcrumb (dans header)
 	right: 0;
 	width: 100px;
 	height: 42px;
-	background: url(/assets/img/breadcrumb_gradient.png) center right;
+	background: -moz-linear-gradient(left, rgba(235,236,240,0) 0%, rgba(235,236,240,1) 66%);
+	background: -webkit-linear-gradient(left, rgba(235,236,240,0) 0%,rgba(235,236,240,1) 66%);
+	background: linear-gradient(to right, rgba(235,236,240,0) 0%,rgba(235,236,240,1) 66%);
 }
 
 .breadcrumb .gradient::before {
@@ -1688,11 +1702,11 @@ dropdown-menu (menu deliant)
 	font-feature-settings: 'liga';
 }
 
-.dropdown-toggle.cancel::after {
+.dropdown-toggle.reset-toogle::after {
 	display: none;
 }
 
-.dropdown-toggle.cancel > .fake-selected {
+.dropdown-toggle.reset-toogle > .fake-selected {
 	padding-right: 30px;
 }
 
@@ -2228,6 +2242,10 @@ post-article
 	width: 140px !important;
 }
 
+.post-header .filter-add {
+	border-style: dashed;
+}
+
 .post-header input[type="checkbox"],
 .post-header input[type="checkbox"] + label::before  {
 	top: 9px;
@@ -2240,6 +2258,10 @@ post-article
 
 .post-header input[type="radio"]:last-of-type  + label {
 	margin: 0;
+}
+
+.post-header .input-group .form-control:not(:first-child):not(:last-child) {
+	max-width: 120px;
 }
 
 .post-header .form-check {
@@ -2269,10 +2291,12 @@ post-article
 	background: none;
 }
 
-@media (min-width: 1440px) {
-	.post-header .filters-options > span {
-		display: flex;
-	}
+.post-header.no-header .btn {
+	background: none;
+}
+
+.sort-options .btn-group:last-child {
+	margin-right: 0;
 }
 
 .post-content {
@@ -2819,19 +2843,22 @@ media-detail
 }
 
 .media-detail .img-avatar {
-  width: 260px;
-  height: 260px;
-  display: block !important;
+	display: block !important;
+  width: 120px;
+  height: 120px;
+	font-size: 64px;
+	line-height: 120px;
   background: none;
 }
 
 .media-detail .img-default + .img-avatar {
 	line-height: normal;
+	margin-top: -120px;
 }
 
 .media-detail .img-avatar img {
-	width: 260px;
-	height: 260px;
+	width: 120px;
+	height: 120px;
   max-width: none;
   max-height: none;
 }
@@ -3181,7 +3208,7 @@ div[class*="col-"] > .md-feedback {
 
 .save .btn-save,
 .save .btn-delete {
-	min-width: 145px;
+	min-width: 150px;
 }
 
 .save .btn {
@@ -4372,7 +4399,7 @@ Dashboard
 	margin-left: -24px;
 }
 
-.dashboard-activity .md-icon {
+.dashboard-activity .list-item .md-icon {
 	font-size: 28px;
 	color: rgba(0,0,0,.15);
 }
@@ -4540,7 +4567,7 @@ modal
 }
 
 .modal-content {
-	background: #f2f2f2 url(/assets/img/bg_body.jpg) fixed;
+	background: #ebecf0;
 	box-shadow: 3px 3px 40px 0 rgba(0, 0, 0, 0.3);
 	border-radius: 4px;
 	border-bottom-right-radius: 0;
@@ -4771,7 +4798,7 @@ mediatheque
 .mediatheque .file-select {
 	display: block;
 	max-width: none;
-	width: 230px;
+	width: 240px;
 	margin: 20px auto 0 auto;
 	text-align: center;
 }
@@ -5040,164 +5067,18 @@ overlay
   width: 50px;
   height: 50px;
 	margin-top: -25px;
+	border-width: 0.45em;
 }
 
 /* ------------------------------------
 loader
 -------------------------------------*/
 
-/*.loader {
-	position: fixed;
-	top: 0;
-	height: 3px;
-	width: 100%;
-	margin: 0;
-	border-radius: 0;
-	z-index: 10000;
-}
-
-.loader .progress-bar {
-	background-color: #6ec33d;
-	box-shadow: none;
-}*/
-
 .loader {
 	position: relative;
   margin: 100px auto;
   width: 40px;
   height: 40px;
-	-webkit-animation: appear .3s linear;
-	animation: appear .3s linear;
-}
-
-.loader .loader-circle {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-  height: 100%;
-}
-
-.loader .loader-circle:before {
-  content: '';
-  display: block;
-  margin: 0 auto;
-  width: 15%;
-  height: 15%;
-  background-color: #333;
-  border-radius: 100%;
-  -webkit-animation: loader-circleFadeDelay 1.2s infinite ease-in-out both;
-          animation: loader-circleFadeDelay 1.2s infinite ease-in-out both;
-}
-
-.loader .loader-circle2 {
-  -webkit-transform: rotate(30deg);
-      -ms-transform: rotate(30deg);
-          transform: rotate(30deg);
-}
-.loader .loader-circle3 {
-  -webkit-transform: rotate(60deg);
-      -ms-transform: rotate(60deg);
-          transform: rotate(60deg);
-}
-.loader .loader-circle4 {
-  -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg);
-}
-.loader .loader-circle5 {
-  -webkit-transform: rotate(120deg);
-      -ms-transform: rotate(120deg);
-          transform: rotate(120deg);
-}
-.loader .loader-circle6 {
-  -webkit-transform: rotate(150deg);
-      -ms-transform: rotate(150deg);
-          transform: rotate(150deg);
-}
-.loader .loader-circle7 {
-  -webkit-transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-          transform: rotate(180deg);
-}
-.loader .loader-circle8 {
-  -webkit-transform: rotate(210deg);
-      -ms-transform: rotate(210deg);
-          transform: rotate(210deg);
-}
-.loader .loader-circle9 {
-  -webkit-transform: rotate(240deg);
-      -ms-transform: rotate(240deg);
-          transform: rotate(240deg);
-}
-.loader .loader-circle10 {
-  -webkit-transform: rotate(270deg);
-      -ms-transform: rotate(270deg);
-          transform: rotate(270deg);
-}
-.loader .loader-circle11 {
-  -webkit-transform: rotate(300deg);
-      -ms-transform: rotate(300deg);
-          transform: rotate(300deg);
-}
-.loader .loader-circle12 {
-  -webkit-transform: rotate(330deg);
-      -ms-transform: rotate(330deg);
-          transform: rotate(330deg);
-}
-.loader .loader-circle2:before {
-  -webkit-animation-delay: -1.1s;
-          animation-delay: -1.1s;
-}
-.loader .loader-circle3:before {
-  -webkit-animation-delay: -1s;
-          animation-delay: -1s;
-}
-.loader .loader-circle4:before {
-  -webkit-animation-delay: -0.9s;
-          animation-delay: -0.9s;
-}
-.loader .loader-circle5:before {
-  -webkit-animation-delay: -0.8s;
-          animation-delay: -0.8s;
-}
-.loader .loader-circle6:before {
-  -webkit-animation-delay: -0.7s;
-          animation-delay: -0.7s;
-}
-.loader .loader-circle7:before {
-  -webkit-animation-delay: -0.6s;
-          animation-delay: -0.6s;
-}
-.loader .loader-circle8:before {
-  -webkit-animation-delay: -0.5s;
-          animation-delay: -0.5s;
-}
-.loader .loader-circle9:before {
-  -webkit-animation-delay: -0.4s;
-          animation-delay: -0.4s;
-}
-.loader .loader-circle10:before {
-  -webkit-animation-delay: -0.3s;
-          animation-delay: -0.3s;
-}
-.loader .loader-circle11:before {
-  -webkit-animation-delay: -0.2s;
-          animation-delay: -0.2s;
-}
-.loader .loader-circle12:before {
-  -webkit-animation-delay: -0.1s;
-          animation-delay: -0.1s;
-}
-
-@-webkit-keyframes loader-circleFadeDelay {
-  0%, 39%, 100% { opacity: 0; }
-  40% { opacity: 1; }
-}
-
-@keyframes loader-circleFadeDelay {
-  0%, 39%, 100% { opacity: 0; }
-  40% { opacity: 1; }
 }
 
 .btn-load,
@@ -5207,7 +5088,7 @@ loader
 }
 
 .btn-load.btn-lg {
-	min-width: 145px;
+	min-width: 150px;
 }
 
 .btn-load-inverse,
@@ -5215,12 +5096,16 @@ loader
 	background: none;
 }
 
-.btn-load .loader-circle:before {
-  background-color: #FFF;
+.btn-load .loader {
+  color: #FFF !important;
 }
 
-.btn-load-inverse .loader-circle:before {
-  background-color: #000;
+.btn-load-inverse .loader {
+  color: #363636 !important;
+}
+
+.btn-secondary .btn-load .loader {
+  color: #B3B3B3 !important;
 }
 
 .btn-load .loader {
@@ -5326,11 +5211,11 @@ icones
 }
 
 .md-product::before {
-	content: "store";
+	content: "shopping_basket";
 }
 
 .md-order::before {
-	content: "shopping_basket";
+	content: "assignment";
 }
 
 .md-member::before {

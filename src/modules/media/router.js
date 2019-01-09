@@ -7,12 +7,15 @@ var Controller = require('kiubi/controller.js');
 /* Models */
 var Folders = require('./models/folders');
 var Files = require('./models/files');
+var Ftp = require('kiubi/modules/modules/models/import.ftp.js');
+
 
 /* Views */
 var FilesView = require('./views/files');
 var FolderView = require('./views/folder');
 var FileView = require('./views/file');
 var PublishModalView = require('./views/modal.publish');
+var ImportFTPView = require('./views/ftp');
 var MenuTree = require('kiubi/core/views/ui/menuTree.js');
 
 /* Actions */
@@ -83,6 +86,7 @@ var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
 	template: require('./templates/sidebarMenu.html'),
 	service: 'media',
+	behaviors: [ActiveLinksBehaviors],
 
 	events: {
 		'show.bs.collapse': function(event) {
@@ -108,6 +112,8 @@ var SidebarMenuView = Marionette.View.extend({
 	initialize: function(options) {
 		this.collection = new Folders();
 
+		this.folder_id = -1;
+
 		this.fetchAndRender();
 
 		var that = this;
@@ -121,6 +127,15 @@ var SidebarMenuView = Marionette.View.extend({
 				};
 			}
 		});
+	},
+
+	templateContext: function() {
+		return {
+			renderMenu: function() {
+				if (this.folder_id == -1) return '';
+				return this.menuTree.render(this.collection.getMenuTree()).html;
+			}.bind(this)
+		};
 	},
 
 	onChangeFolder: function(folder_id) {
@@ -141,17 +156,7 @@ var SidebarMenuView = Marionette.View.extend({
 		}).done(function() {
 			this.render();
 		}.bind(this));
-	},
-
-	templateContext: function() {
-		return {
-			renderMenu: function() {
-				if (this.folder_id == -1) return '';
-				return this.menuTree.render(this.collection.getMenuTree()).html;
-			}.bind(this)
-		};
 	}
-
 
 });
 
@@ -200,13 +205,7 @@ var MediaController = Controller.extend({
 					addFolder: m.get('folder_id')
 				}), HeaderTabsFolder(folder_id));
 			}.bind(this))
-			.fail(function() {
-				// Folder not found !
-				this.notFound();
-				this.setHeader({
-					title: 'Dossier introuvable'
-				});
-			}.bind(this));
+			.fail(this.failHandler('Dossier introuvable'));
 	},
 
 	/*
@@ -258,13 +257,7 @@ var MediaController = Controller.extend({
 					addFolder: m.get('folder_id')
 				}), HeaderTabsFolder(folder_id));
 			}.bind(this))
-			.fail(function() {
-				// Folder not found !
-				this.notFound();
-				this.setHeader({
-					title: 'Dossier introuvable'
-				});
-			}.bind(this));
+			.fail(this.failHandler('Dossier introuvable'));
 	},
 
 	actionNewFolder: function(parent_id) {
@@ -352,15 +345,9 @@ var MediaController = Controller.extend({
 						addDownloadFile: m.get('media_id'),
 						addPublish: m.get('folder_id')
 					}));
-			}.bind(this)).fail(function() {
-
+			}.bind(this)).fail(function(xhr) {
 				this.triggerSidebarMenu('change:folder', null);
-
-				// File not found !
-				this.notFound();
-				this.setHeader({
-					title: 'Fichier introuvable'
-				});
+				this.failHandler('Fichier introuvable')(xhr);
 			}.bind(this));
 	},
 
@@ -383,6 +370,21 @@ var MediaController = Controller.extend({
 	actionDownloadFile: function(media_id) {
 		// TODO
 		console.log('actionDownloadFile', media_id);
+	},
+
+	importFTP: function() {
+		var view = new ImportFTPView({
+			folders: new Folders(),
+			model: new Ftp()
+		});
+		this.navigationController.showContent(view);
+		view.start();
+
+		this.triggerSidebarMenu('change:folder', null);
+
+		this.setHeader({
+			title: 'Import FTP'
+		});
 	}
 
 });
@@ -393,7 +395,8 @@ module.exports = Marionette.AppRouter.extend({
 		'media': 'showIndex',
 		'media/folders/:id/files': 'showFiles',
 		'media/folders/:id': 'showFolder',
-		'media/files/:id': 'showFile'
+		'media/files/:id': 'showFile',
+		'media/ftp': 'importFTP'
 	},
 
 	onRoute: function(name, path, args) {

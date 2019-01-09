@@ -89,7 +89,8 @@ module.exports = Marionette.View.extend({
 			filters: [{
 				id: 'term',
 				title: 'Rechercher',
-				type: 'input'
+				type: 'input',
+				value: ''
 			}, {
 				id: 'export',
 				extraClassname: 'md-export',

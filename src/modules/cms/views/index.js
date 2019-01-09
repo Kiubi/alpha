@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
@@ -98,8 +99,21 @@ module.exports = Marionette.View.extend({
 				callback: this.deletePosts.bind(this),
 				confirm: true
 			}],
-			scrollThreshold: 920 // TODO
-
+			scrollThreshold: 920, // TODO
+			xtra: [{
+				id: 'export',
+				extraClassname: 'md-export',
+				type: 'button',
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					'value': 'export-page',
+					'label': 'Exporter les billets',
+					'selected': false
+				}, {
+					'value': 'export',
+					'label': 'Exporter tout le site web',
+					'selected': false
+				}])
+			}]
 		}));
 		if (this.getOption('enableLayout')) {
 			this.showChildView('layout', this.layoutSelector);
@@ -141,6 +155,61 @@ module.exports = Marionette.View.extend({
 
 	onChildviewSortChange: function(data) {
 		this.collection.reOrder(this.model.get('page_id'), data.list);
+	},
+
+	/* Filters */
+
+	onChildviewFilterChange: function(filter) {
+		this.triggerMethod(filter.model.get('id') + ':filter:change', filter);
+	},
+
+	onExportFilterChange: function(filter) {
+
+		if (!filter.view) return;
+		var view = filter.view;
+
+		if (filter.value == 'export' || filter.value == 'export-page') {
+
+			if (view.collection.length > 2) {
+				return;
+			}
+
+			view.overrideExtraClassname('md-loading');
+			view.render();
+
+			var data = {
+				format: 'xls'
+			};
+			if (filter.value == 'export-page') data.page_id = this.model.get('page_id');
+
+			this.collection.exportAll(data).done(function(data) {
+				view.overrideExtraClassname('');
+				view.collection.add([{
+					value: null,
+					label: '---'
+				}, {
+					value: data.url,
+					label: 'Télécharger le fichier',
+					extraClassname: 'md-export'
+				}]);
+				view.toggleDropdown(); // open
+			}.bind(this)).fail(function(xhr) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal(xhr);
+
+				view.overrideExtraClassname('');
+				while (view.collection.length > 2) {
+					view.collection.pop();
+				}
+			}.bind(this));
+
+		} else {
+			view.toggleDropdown(); // close
+			view.overrideExtraClassname('');
+			while (view.collection.length > 2) {
+				view.collection.pop();
+			}
+		}
 	},
 
 	onSave: function() {

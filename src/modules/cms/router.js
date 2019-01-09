@@ -257,14 +257,9 @@ var CMSController = Controller.extend({
 				//addPageInMenu: m.get('menu_id')
 			}));
 			view.start();
-		}.bind(this)).fail(function() {
-
+		}.bind(this)).fail(function(xhr) {
 			this.triggerSidebarMenu('change:page', null);
-
-			this.notFound();
-			this.setHeader({
-				title: 'Page introuvable'
-			});
+			this.failHandler('Page introuvable')(xhr);
 		}.bind(this));
 	},
 
@@ -304,12 +299,7 @@ var CMSController = Controller.extend({
 			}, getHeadersAction({
 				addPageInMenu: m.get('menu_id')
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Menu introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Menu introuvable'));
 	},
 
 	actionNewMenu: function() {
@@ -383,12 +373,7 @@ var CMSController = Controller.extend({
 				addPageInMenu: m.get('page_parent_id') == 0 ? m.get('menu_id') : false,
 				duplicatePage: m.get('page_type') == 'page' ? m.get('page_id') : false
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Page introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Page introuvable'));
 	},
 
 	actionNewPage: function(position) {
@@ -599,14 +584,9 @@ var CMSController = Controller.extend({
 					addPost: m.get('page_id'),
 					duplicatePost: id
 				}));
-		}.bind(this)).fail(function() {
-
+		}.bind(this)).fail(function(xhr) {
 			this.triggerSidebarMenu('change:page', null);
-
-			this.notFound();
-			this.setHeader({
-				title: 'Billet introuvable'
-			});
+			this.failHandler('Billet introuvable')(xhr);
 		}.bind(this));
 	},
 

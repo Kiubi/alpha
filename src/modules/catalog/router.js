@@ -220,6 +220,7 @@ var CatalogController = Controller.extend({
 					collection: c,
 					categories: new Categories(),
 					tags: new Tags(),
+					brands: new Brands(),
 					category_id: category_id ? category_id : null,
 					filters: qs
 				});
@@ -237,12 +238,7 @@ var CatalogController = Controller.extend({
 				}), category_id ? HeaderTabscategory(category_id, m.get('product_count')) : null);
 
 			}.bind(this))
-			.fail(function() {
-				this.notFound();
-				this.setHeader({
-					title: 'Catégorie introuvable'
-				});
-			}.bind(this));
+			.fail(this.failHandler('Catégorie introuvable'));
 	},
 
 	showProduct: function(id) {
@@ -264,7 +260,9 @@ var CatalogController = Controller.extend({
 			i.product_id = m.get('product_id');
 			var view = new ProductView({
 				model: m,
-				typesSource: m.getTypes(),
+				typesSource: m.getTypes({
+					structure: true
+				}),
 				categories: new Categories(),
 				brands: new Brands(),
 				tags: new Tags(),
@@ -294,12 +292,7 @@ var CatalogController = Controller.extend({
 				addSave: true,
 				duplicateProduct: id
 			}), HeaderTabsProduct(id, m.get('comments_count'), m.get('rate')));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Produit introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Produit introuvable'));
 	},
 
 	actionNewProduct: function(category_id) {
@@ -371,12 +364,7 @@ var CatalogController = Controller.extend({
 				duplicateProduct: id
 			}), HeaderTabsProduct(id, m.get('comments_count'), m.get('rate')));
 
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Produit introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Produit introuvable'));
 	},
 
 	/*
@@ -423,12 +411,7 @@ var CatalogController = Controller.extend({
 				addSave: true,
 				targetCategory: id
 			}), HeaderTabscategory(id, m.get('product_count')));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Catégorie introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Catégorie introuvable'));
 	},
 
 	actionNewCategory: function() {
@@ -479,12 +462,7 @@ var CatalogController = Controller.extend({
 				preview: m,
 				addSave: true
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Accueil du catalogue introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Accueil du catalogue introuvable'));
 	},
 
 	/*
@@ -503,12 +481,7 @@ var CatalogController = Controller.extend({
 			this.setHeader({
 				title: 'Toutes les catégories'
 			}, getHeadersAction());
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Catégories introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Catégories introuvables'));
 	},
 
 	/*
@@ -552,12 +525,7 @@ var CatalogController = Controller.extend({
 				},
 				getHeadersAction(actions),
 				tabs);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Produit introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Produit introuvable'));
 	},
 
 	/*
@@ -576,12 +544,7 @@ var CatalogController = Controller.extend({
 			}, getHeadersAction({
 				addSave: true
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	/*
@@ -602,12 +565,7 @@ var CatalogController = Controller.extend({
 			}, getHeadersAction({
 				addSave: true
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Gestion des taxes introuvables'
-			}, getHeadersAction());
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Gestion des taxes introuvable'));
 	},
 
 	showTags: function() {

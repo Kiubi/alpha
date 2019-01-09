@@ -57,6 +57,7 @@ var RowView = Marionette.View.extend({
 		var creation_date = moment(this.model.get('creation_date'), 'YYYY-MM-DD HH:mm:ss');
 		var diff = moment().diff(creation_date, 'days');
 
+		var creation_date_fromnow;
 		if (diff >= 7) {
 			creation_date_fromnow = format.formatLongDateTime(this.model.get('creation_date'));
 		} else {
@@ -177,7 +178,8 @@ module.exports = Marionette.View.extend({
 					'label': 'Non-lues',
 					'selected': this.filters.is_read == 0
 				}])
-			}, {
+			}],
+			xtra: [{
 				id: 'export',
 				extraClassname: 'md-export',
 				type: 'button',

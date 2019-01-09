@@ -47,10 +47,11 @@ function searchConfig(type) {
 	}
 
 	switch (type) {
-		default: return searchConfig(def);
+		default:
+			return searchConfig(def);
 
 		case 'cms':
-				collection = CmsPosts;
+			collection = CmsPosts;
 			mapSuggestion = function(post) {
 				return {
 					label: post.label,
@@ -64,7 +65,7 @@ function searchConfig(type) {
 			break;
 
 		case 'catalog':
-				type = 'catalog';
+			type = 'catalog';
 			collection = Products;
 			mapSuggestion = function(product) {
 				return {
@@ -79,7 +80,7 @@ function searchConfig(type) {
 			break;
 
 		case 'customers':
-				collection = Customers;
+			collection = Customers;
 			mapSuggestion = function(customer) {
 				return {
 					label: customer.firstname + ' ' + customer.lastname,
@@ -93,7 +94,7 @@ function searchConfig(type) {
 			break;
 
 		case 'blog':
-				collection = BlogPosts;
+			collection = BlogPosts;
 			mapSuggestion = function(post) {
 				return {
 					label: post.title,
@@ -107,7 +108,7 @@ function searchConfig(type) {
 			break;
 
 		case 'checkout':
-				collection = Orders;
+			collection = Orders;
 			mapSuggestion = function(order) {
 				return {
 					label: order.reference, // TODO show order.status
@@ -121,7 +122,7 @@ function searchConfig(type) {
 			break;
 
 		case 'media':
-				collection = Files;
+			collection = Files;
 			mapSuggestion = function(file) {
 				return {
 					label: file.name,

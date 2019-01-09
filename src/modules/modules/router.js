@@ -24,6 +24,7 @@ var Lengow = require('kiubi/modules/prefs/models/lengow');
 var Backups = require('./models/backups');
 var MerchantCenter = require('kiubi/modules/prefs/models/merchantcenter');
 var ImportProducts = require('./models/import.products');
+var ImportColiship = require('./models/import.coliship');
 var ImportPosts = require('./models/import.posts');
 var ImportWordpress = require('./models/import.wordpress');
 var ImportFiles = require('./models/import.files');
@@ -46,6 +47,7 @@ var NewsletterView = require('./views/subscribers.settings');
 var SubscribersView = require('./views/subscribers');
 var ImportPostsView = require('./views/import.posts');
 var ImportProductsView = require('./views/import.products');
+var ImportColishipView = require('./views/import.coliship');
 var ImportWordpressView = require('./views/import.wordpress');
 var ImportFilesView = require('./views/import.files');
 var MerchantCenterView = require('./views/merchantcenter');
@@ -131,6 +133,8 @@ function ctlScope(name) {
 			return 'site:cms';
 		case 'showImportProducts':
 			return 'site:catalog';
+		case 'showImportColiship':
+			return 'site:checkout';
 		case 'showImportWordpress':
 			return 'site:blog';
 		case 'showBackups':
@@ -148,6 +152,7 @@ function ctlFeature(name) {
 		case 'showLengow':
 		case 'showAvisVerifies':
 		case 'showMerchantCenter':
+		case 'showImportColiship':
 			return 'checkout';
 		case 'showImportProducts':
 			return 'catalog';
@@ -216,12 +221,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showRedirections: function() {
@@ -236,12 +236,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showFidelity: function() {
@@ -256,12 +251,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showAnalytics: function() {
@@ -276,12 +266,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showVouchers: function() {
@@ -338,12 +323,7 @@ var ModulesController = Controller.extend({
 			}], getHeadersActionVouchers({
 				addSave: true
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Bon de réduction introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Bon de réduction introuvable'));
 	},
 
 	actionNewVoucher: function(type) {
@@ -426,12 +406,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}], HeaderTabsSubscribers());
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showImportPosts: function() {
@@ -453,6 +428,15 @@ var ModulesController = Controller.extend({
 		}));
 		this.setHeader({
 			title: 'Import de produits dans le catalogue'
+		});
+	},
+
+	showImportColiship: function() {
+		this.navigationController.showContent(new ImportColishipView({
+			model: new ImportColiship()
+		}));
+		this.setHeader({
+			title: 'Import Coliship'
 		});
 	},
 
@@ -496,12 +480,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showLengow: function() {
@@ -517,12 +496,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showIadvize: function() {
@@ -537,12 +511,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showAvisVerifies: function() {
@@ -557,12 +526,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showCaptcha: function() {
@@ -577,12 +541,7 @@ var ModulesController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showBackups: function() {
@@ -656,6 +615,7 @@ module.exports = Marionette.AppRouter.extend({
 		'modules/subscribers/settings': 'showSubscribersSettings',
 		'modules/import/posts': 'showImportPosts',
 		'modules/import/products': 'showImportProducts',
+		'modules/import/coliship': 'showImportColiship',
 		'modules/import/wordpress': 'showImportWordpress',
 		'modules/import/files': 'showImportFiles',
 		'modules/merchantcenter': 'showMerchantCenter',

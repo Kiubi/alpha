@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
 var supported = [
 	'systempay',
@@ -54,6 +55,34 @@ module.exports = Backbone.Collection.extend({
 			data: {
 				order: list
 			}
+		});
+	},
+
+	/**
+	 *
+	 * @param {Object} options Options list ()
+	 * @param {Number} selected
+	 * @returns {Promise} Promised {Backbone.Collection}
+	 */
+	promisedSelect: function(options, selected) {
+
+		options = _.extend({
+			'exclude_pickup': false
+		}, options);
+
+		var that = this;
+		return this.fetch().then(function() {
+
+			var collector = [];
+			that.each(function(model) {
+				collector.push({
+					'value': model.get('payment_id'),
+					'label': model.get('name'),
+					'selected': selected && model.get('payment_id') == selected
+				});
+			});
+
+			return new CollectionUtils.SelectCollection(collector);
 		});
 	}
 

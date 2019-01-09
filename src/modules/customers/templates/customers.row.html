@@ -1,44 +1,37 @@
-		<div class="row no-gutters">
-			<div class="col-auto">
-					<input id="customer_<%- customer_id %>" name="selection" value="<%- customer_id %>" type="checkbox">
-					<label for="customer_<%- customer_id %>"></label>
-			</div>
-			<div class="col-auto">
-				<div class="media-object md-icon md-face img-default rounded-circle img-avatar"></div>
-				<div class="media-object rounded-circle img-avatar">
-					<img alt="" src="<%= convertMediaPath(avatar_thumb_url) %>">
-				</div>
-			</div>
-			<div class="col item-body">
-				<h4><%- gender %>. <%- firstname %> <%- lastname %></h4>
-				#<%- number %>
+<div class="row no-gutters">
+	<div class="col-auto">
+		<input id="customer_<%- customer_id %>" name="selection" value="<%- customer_id %>" type="checkbox">
+		<label for="customer_<%- customer_id %>"></label>
+	</div>
+	<div class="col-auto">
+		<div class="media-object md-icon md-face img-default rounded-circle img-avatar"></div>
+		<div class="media-object rounded-circle img-avatar">
+			<img alt="" src="<%= convertMediaPath(avatar_thumb_url) %>">
+		</div>
+	</div>
+	<div class="col item-body">
+		<h4><%- gender %>. <%- firstname %> <%- lastname %></h4>
+		#<%- number %>
+	</div>
+	<div class="col-2">
+		<% if (is_enabled) { %>
+		<span class="badge badge-success">Activé</span>
+		<% } else { %>
+		<span class="badge badge-danger">Bloqué</span>
+		<% } %>
+	</div>
+	<div class="col-3">
+		<span title="Date d'inscription"><i class="md-icon md-submit-date"></i><%- creation_date %></span>
+	</div>
+	<div class="col-2 no-white-space">
+		<% if(order_count > 0) { %>
+		<%- plural(order_count, '%d commande', '%d commandes') %><% if(order_count > 0) { %><br/><%- order_revenues_label %><% } %>
+		<% } else { %>
+		<span class="text-muted">—</span>
+		<% } %>
+	</div>
+	<div class="col-auto">
+		<a class="btn btn-primary float-right" href="/customers/<%- customer_id %>" role="button">Détail</a>
+	</div>
 
-					</div>
-					<div class="col-2">
-
-						<% if (is_enabled) { %>
-							<span class="badge badge-success">Activé</span>
-							<% } else { %>
-								<span class="badge badge-danger">Bloqué</span>
-						<% } %>
-
-					</div>
-
-					<div class="col-3">
-						<span title="Date d'inscription">
-					<i class="md-icon md-submit-date"></i><%- creation_date %><span>
-				</div>
-					<div class="col-2 no-white-space">
-						<% if(order_count > 0) { %>
-							<%- plural(order_count, '%d commande', '%d commandes') %><% if(order_count > 0) { %><br/><%- order_revenues_label %><% } %>
-							<% } else { %>
-								<span class="text-muted">—</span>
-								<% } %>
-
-
-					</div>
-					<div class="col-auto">
-						<a class="btn btn-primary float-right" href="/customers/<%- customer_id %>" role="button">Détail</a>
-					</div>
-
-				</div>
+</div>

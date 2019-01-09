@@ -166,12 +166,7 @@ var FormsController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}], HeaderTabsForm(id));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Formulaire introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Formulaire introuvable'));
 	},
 
 	showGdpr: function(id) {
@@ -192,12 +187,7 @@ var FormsController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}], HeaderTabsForm(id));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Formulaire introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Formulaire introuvable'));
 	},
 
 	showSettings: function(id) {
@@ -218,12 +208,7 @@ var FormsController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}], HeaderTabsForm(id));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Formulaire introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Formulaire introuvable'));
 	}
 
 });

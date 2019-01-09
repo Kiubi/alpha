@@ -137,10 +137,10 @@ module.exports = Marionette.View.extend({
 		if (!this.isMandatory) {
 			if (this.current.value == null) {
 				this.getUI('clear').removeClass('md-cancel');
-				this.getUI('toggle').removeClass('cancel');
+				this.getUI('toggle').removeClass('reset-toogle');
 			} else {
 				this.getUI('clear').addClass('md-cancel');
-				this.getUI('toggle').addClass('cancel');
+				this.getUI('toggle').addClass('reset-toogle');
 			}
 		}
 	},

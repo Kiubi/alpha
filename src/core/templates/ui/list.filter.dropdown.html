@@ -1,0 +1,11 @@
+<div class="fake-select dropdown">
+	<button type="button" class="btn btn-secondary dropdown-toggle <%- canDelete ? 'reset-toogle' : '' %> <%- extraClassname %>" data-toggle="dropdown">
+		<span data-role="label" class="fake-selected"><%- title %></span>
+	</button>
+	<% if(canDelete) { %><span data-role="feedback" class="md-icon float-right md-cancel"></span><% } %>
+	<ul class="dropdown-menu dropdown-control">
+		<% if(collection) { _(collection).each(function(option, i){ %>
+		<li class="<%= option.selected ? 'active' : '' %>"><a class="dropdown-item" data-index="<%- i %>" href="#"><%- option.label %></a></li>
+		<% })} %>
+	</ul>
+</div>

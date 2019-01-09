@@ -106,12 +106,7 @@ var PrefsController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			}.bind(this));
-		});
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showContact: function() {
@@ -129,12 +124,7 @@ var PrefsController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showHttps: function() {
@@ -147,12 +137,7 @@ var PrefsController = Controller.extend({
 			this.setHeader({
 				title: 'Certificat SSL/TLS et accès HTTPS'
 			});
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showMedias: function() {
@@ -176,12 +161,7 @@ var PrefsController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showMeta: function() {
@@ -197,12 +177,7 @@ var PrefsController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showDomains: function() {
@@ -237,12 +212,7 @@ var PrefsController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showL10n: function() {

@@ -51,14 +51,23 @@ var Post = Backbone.Model.extend({
 	/**
 	 * Return all post types
 	 *
+	 * @param {Object} options :
+	 * 						- {Boolean} structure : fetch structure
+	 * 
 	 * @returns {Promise}
 	 */
-	getTypes: function() {
+	getTypes: function(options) {
+
+		options = options || {};
+
+		var data = {};
+		if (options.structure) {
+			data.extra_fields = 'structure';
+		}
+
 		return Backbone.ajax({
 			url: 'sites/@site/blog/posts_types',
-			data: {
-				extra_fields: 'structure'
-			}
+			data: data
 		}).then(function(response) {
 			return _.map(response.data, function(type) {
 				return {
@@ -75,11 +84,7 @@ var Post = Backbone.Model.extend({
 
 module.exports = Backbone.Collection.extend({
 
-	category_id: null,
-
 	url: function() {
-		if (this.category_id > 0) return 'sites/@site/blog/categories/' + this.category_id +
-			'/posts';
 		return 'sites/@site/blog/posts';
 	},
 

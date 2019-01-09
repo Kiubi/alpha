@@ -4,26 +4,28 @@
 		<%- creation_date %>
 	</div>
 	<div class="col-5">
-		<span><% if(customer_id) { %>
-			<a href="/customers/<%- customer_id %>"><%- billing_address.firstname %> <%- billing_address.lastname %></a>
+		<span>
+			<% if(customer_id) { %>
+				<a href="/customers/<%- customer_id %>"><%- billing_address.firstname %> <%- billing_address.lastname %></a>
 			<% } else { %>
 				<%- billing_address.firstname %> <%- billing_address.lastname %>
+			<% } %>
+
+			<% if(shipping.scheduled) { %>
+				<br><span title="<%- (shipping.type == 'pickup') ? 'Date de retrait' : 'Date de livraison' %>">
+				<% if(shipping.type == 'pickup') { %>
+					<i class="md-icon md-place mr-1"></i>
+				<% } else { %>
+					<i class="md-icon md-local-shipping mr-1"></i>
 				<% } %>
-				<% if(shipping.scheduled) { %>
-					<br>
-					<% if(shipping.type == 'pickup') { %>
-						<span title="Date de retrait"><i class="md-icon md-place mr-1"></i>
-							<% } else { %>
-								<span title="Date de livraison"><i class="md-icon md-local-shipping mr-1"></i>
-									<% } %>
-									<%- scheduled_date %></span>
-									<% } %>
-								</span>
-							</div>
-							<div class="col-2">
-								<span class="price"><%- price_total_inc_vat_label %> TTC<br/></span>
-							</div>
-							<div class="col-auto">
-								<a class="btn btn-primary float-right" data-role="action" data-action="restore" data-confirm="warning" href="#" role="button">Réintégrer</a>
-							</div>
-						</div>
+				<%- scheduled_date %></span>
+			<% } %>
+		</span>
+	</div>
+	<div class="col-2">
+		<span class="price"><%- price_total_inc_vat_label %> TTC<br/></span>
+	</div>
+	<div class="col-auto">
+		<a class="btn btn-primary float-right" data-role="action" data-action="restore" data-confirm="warning" href="#" role="button">Réintégrer</a>
+	</div>
+</div>

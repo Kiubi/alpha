@@ -1,7 +1,7 @@
-<button class="btn btn-secondary dropdown-toggle <%= current.value ? 'cancel' : '' %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+<button class="btn btn-secondary dropdown-toggle <%= current.valuen || canDelete ? 'reset-toogle' : '' %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 	<span data-role="label" class="fake-selected"><%- current.label %></span>
 </button>
-<span data-role="clear" class="md-icon <%= current.value ? 'md-cancel' : '' %> float-right"></span>
+<span data-role="feedback" class="md-icon <%= current.value || canDelete ? 'md-cancel' : '' %> float-right"></span>
 <ul class="dropdown-menu dropdown-control dropdown-control-lg">
 	<li class="dropdown-item">
 		<span class="form-group has-feedback">

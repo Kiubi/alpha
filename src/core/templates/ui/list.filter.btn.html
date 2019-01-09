@@ -1,6 +1,6 @@
 <button type="button" title="<%- title %>" class="btn btn-secondary btn-icon md-icon <%= collection.length ? 'dropdown-toggle' : '' %> <%- extraClassname %>" <%= collection.length ? 'data-toggle="dropdown"' : '' %> aria-haspopup="true" aria-expanded="false"></button>
 <% if(collection.length) { %>
-<ul class="dropdown-menu dropdown-control">
+<ul class="dropdown-menu dropdown-menu-right dropdown-control">
 	<% _(collection).each(function(option){ %>
 		<% if (option.label == '---')  { %>
 			<li class="dropdown-divider"></li>

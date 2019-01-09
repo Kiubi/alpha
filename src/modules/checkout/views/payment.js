@@ -260,7 +260,7 @@ module.exports = Marionette.View.extend({
 	],
 
 	subView: null,
-	
+
 	initialize: function(options) {
 		this.mergeOptions(options, ['model']);
 

@@ -43,7 +43,7 @@ module.exports = Marionette.View.extend({
 	filters: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['collection']);
+		this.mergeOptions(options, ['collection', 'groups']);
 
 		this.filters = {
 			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
@@ -52,44 +52,38 @@ module.exports = Marionette.View.extend({
 
 	onRender: function() {
 
+		var addFilters = new CollectionUtils.SelectCollection([{
+			'value': 'email',
+			'label': 'Email'
+		}, {
+			'value': 'enabled',
+			'label': 'Accès'
+		}, {
+			'value': 'creation',
+			'label': "Date d'inscription"
+		}, {
+			'value': 'mailinglist',
+			'label': 'Abonné newsletter'
+		}, {
+			'value': 'order',
+			'label': 'Nombre de commandes'
+		}, {
+			'value': 'revenues',
+			'label': "Chiffre d'affaire"
+		}]);
+		if (this.getOption('enableExtranet')) {
+			addFilters.add({
+				'value': 'group',
+				'label': 'Groupe extranet'
+			});
+		}
 
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
 
 			title: 'Tous les membres',
-			order: [{
-				title: 'Nom',
-				is_active: false,
-				value: 'name'
-			}, {
-				title: 'Inscription',
-				is_active: true,
-				value: '-date'
-			}],
-			selection: [
-				/*{
-								title: 'Exporter',
-								callback: this.exportCustomer.bind(this)
-							},*/
-				{
-					title: 'Autoriser',
-					callback: this.enableCustomer.bind(this)
-				}, {
-					title: 'Bloquer',
-					callback: this.disableCustomer.bind(this)
-				}, {
-					title: 'Supprimer',
-					callback: this.deleteCustomer.bind(this),
-					confirm: true
-				}
-			],
-			filters: [{
-				id: 'term',
-				title: 'Rechercher',
-				type: 'input',
-				value: this.filters.term
-			}, {
+			xtra: [{
 				id: 'export',
 				extraClassname: 'md-export',
 				type: 'button',
@@ -98,6 +92,43 @@ module.exports = Marionette.View.extend({
 					'label': 'Exporter les membres',
 					'selected': false
 				}])
+			}, {
+				id: 'sort',
+				extraClassname: 'md-sort',
+				type: 'button',
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					label: 'Nom',
+					selected: false,
+					value: 'name'
+				}, {
+					label: 'Inscription',
+					selected: true,
+					value: '-date'
+				}])
+			}],
+			selection: [{
+				title: 'Autoriser',
+				callback: this.enableCustomer.bind(this)
+			}, {
+				title: 'Bloquer',
+				callback: this.disableCustomer.bind(this)
+			}, {
+				title: 'Supprimer',
+				callback: this.deleteCustomer.bind(this),
+				confirm: true
+			}],
+			filters: [{
+				id: 'term',
+				title: 'Rechercher',
+				type: 'input',
+				value: this.filters.term
+			}, {
+				id: 'add',
+				title: 'Ajouter un filtre',
+				extraClassname: 'filter-add',
+				type: 'dropdown',
+				disableLabelUpdate: true,
+				collectionPromise: addFilters
 			}]
 		}));
 	},
@@ -108,17 +139,29 @@ module.exports = Marionette.View.extend({
 			sort: this.sortOrder ? this.sortOrder : null,
 			extra_fields: 'orders'
 		};
-		if (this.filters.term) data.term = this.filters.term;
+		if (this.filters.term != null) data.term = this.filters.term;
+		if (this.filters.email != null) data.email = this.filters.email;
+		if (this.filters.is_enabled != null) data.is_enabled = this.filters.is_enabled;
+		if (this.filters.creation_date != null) {
+			data.creation_date_min = this.filters.creation_date[0];
+			data.creation_date_max = this.filters.creation_date[1];
+		}
+		if (this.filters.is_in_mailinglist != null) data.is_in_mailinglist = this.filters.is_in_mailinglist;
+		if (this.filters.group_id != null) data.group_id = this.filters.group_id;
+		if (this.filters.order_count != null) {
+			data.order_count_min = this.filters.order_count[0];
+			data.order_count_max = this.filters.order_count[1];
+		}
+		if (this.filters.order_revenues != null) {
+			data.order_revenues_min = this.filters.order_revenues[0];
+			data.order_revenues_max = this.filters.order_revenues[1];
+		}
 
 		this.collection.fetch({
 			reset: true,
 			data: data
 		});
 	},
-
-	/*exportCustomer: function(ids) {
-		//return this.collection.bulkShow(ids);
-	},*/
 
 	enableCustomer: function(ids) {
 		return this.collection.bulkEnable(ids);
@@ -132,22 +175,10 @@ module.exports = Marionette.View.extend({
 		return this.collection.bulkDelete(ids);
 	},
 
-	onChildviewChangeOrder: function(order) {
-		this.sortOrder = order;
-		this.start();
-	},
-
 	/* Filters */
 
 	onChildviewFilterChange: function(filter) {
-		switch (filter.model.get('id')) {
-			case 'term':
-				this.onTermFilterChange(filter);
-				break;
-			case 'export':
-				this.onExportFilterChange(filter);
-				break;
-		}
+		this.triggerMethod(filter.model.get('id') + ':filter:change', filter);
 	},
 
 	onTermFilterChange: function(filter) {
@@ -168,9 +199,24 @@ module.exports = Marionette.View.extend({
 			view.overrideExtraClassname('md-loading');
 			view.render();
 
-
 			var data = {};
 			if (this.filters.term != null) data.term = this.filters.term;
+			if (this.filters.email != null) data.email = this.filters.email;
+			if (this.filters.is_enabled != null) data.is_enabled = this.filters.is_enabled;
+			if (this.filters.creation_date != null) {
+				data.creation_date_min = this.filters.creation_date[0];
+				data.creation_date_max = this.filters.creation_date[1];
+			}
+			if (this.filters.is_in_mailinglist != null) data.is_in_mailinglist = this.filters.is_in_mailinglist;
+			if (this.filters.group_id != null) data.group_id = this.filters.group_id;
+			if (this.filters.order_count != null) {
+				data.order_count_min = this.filters.order_count[0];
+				data.order_count_max = this.filters.order_count[1];
+			}
+			if (this.filters.order_revenues != null) {
+				data.order_revenues_min = this.filters.order_revenues[0];
+				data.order_revenues_max = this.filters.order_revenues[1];
+			}
 
 			this.collection.exportAll(data).done(function(data) {
 				view.overrideExtraClassname('');
@@ -200,6 +246,149 @@ module.exports = Marionette.View.extend({
 				view.collection.pop();
 			}
 		}
+	},
+
+	onEmailFilterChange: function(filter) {
+		this.filters.email = filter.value;
+		this.start();
+	},
+
+	onEnabledFilterChange: function(filter) {
+		this.filters.is_enabled = filter.value;
+		this.start();
+	},
+
+	onCreationFilterChange: function(filter) {
+		this.filters.creation_date = filter.value;
+		this.start();
+	},
+
+	onMailinglistFilterChange: function(filter) {
+		this.filters.is_in_mailinglist = filter.value;
+		this.start();
+	},
+
+	onGroupFilterChange: function(filter) {
+		this.filters.group_id = filter.value;
+		this.start();
+	},
+
+	onOrderFilterChange: function(filter) {
+		this.filters.order_count = filter.value;
+		this.start();
+	},
+
+	onRevenuesFilterChange: function(filter) {
+		this.filters.order_revenues = filter.value;
+		this.start();
+	},
+
+	onSortFilterChange: function(filter) {
+		filter.view.activeItem(filter.value);
+		this.sortOrder = filter.value;
+		this.start();
+	},
+
+	onAddFilterChange: function(filter) {
+
+		var cfg;
+		switch (filter.value) {
+			case 'email':
+				cfg = {
+					id: filter.value,
+					title: 'Email',
+					type: 'input',
+					value: '',
+					canDelete: true
+				};
+				break;
+			case 'gender':
+				cfg = {
+					id: filter.value,
+					title: 'Genre',
+					type: 'dropdown',
+					canDelete: true,
+					collectionPromise: new CollectionUtils.SelectCollection([{
+						'value': 'W',
+						'label': 'Femme'
+					}, {
+						'value': 'M',
+						'label': 'Homme'
+					}])
+				};
+				break;
+			case 'enabled':
+				cfg = {
+					id: filter.value,
+					title: 'Accès',
+					type: 'dropdown',
+					canDelete: true,
+					collectionPromise: new CollectionUtils.SelectCollection([{
+						'value': true,
+						'label': 'Actif'
+					}, {
+						'value': false,
+						'label': 'Bloqué'
+					}])
+				};
+				break;
+			case 'creation':
+				cfg = {
+					id: filter.value,
+					title: 'jj/mm/aaaa',
+					type: 'interval',
+					enableDatepicker: 'date',
+					prependText: ['Inscrit entre', 'et'],
+					canDelete: true
+				};
+				break;
+			case 'mailinglist':
+				cfg = {
+					id: filter.value,
+					title: 'Newsletter',
+					type: 'dropdown',
+					canDelete: true,
+					collectionPromise: new CollectionUtils.SelectCollection([{
+						'value': true,
+						'label': 'Inscrit'
+					}, {
+						'value': false,
+						'label': 'Désinscrit'
+					}])
+				};
+				break;
+			case 'group':
+				cfg = {
+					id: filter.value,
+					title: 'Groupe extranet',
+					type: 'dropdown',
+					canDelete: true,
+					collectionPromise: this.groups.promisedSelect()
+				};
+				break;
+			case 'order':
+				cfg = {
+					id: filter.value,
+					title: 'nb de fois',
+					type: 'interval',
+					prependText: ['Commandé entre', 'et'],
+					canDelete: true
+				};
+				break;
+			case 'revenues':
+				cfg = {
+					id: filter.value,
+					title: '',
+					type: 'interval',
+					prependText: ['CA entre', 'et'],
+					canDelete: true
+				};
+				break;
+			default:
+				return;
+		}
+
+		filter.model.collection.add(cfg);
 	}
 
 });

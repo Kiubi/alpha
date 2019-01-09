@@ -75,6 +75,11 @@
 		<% } else { %>
 		<li class="nav-item"><span class="nav-link disabled">Import depuis WordPress</span></li>
 		<% } %>
+		<% if(has_scope_checkout && has_feature_checkout) { %>
+		<li class="nav-item"><a class="nav-link" href="/modules/import/coliship">Import Coliship</a></li>
+		<% } else { %>
+		<li class="nav-item"><span class="nav-link disabled">Import Coliship</span></li>
+		<% } %>
 		<% if(has_scope_backup) { %>
 		<li class="nav-item"><a class="nav-link" href="/modules/backups">Gestion des sauvegardes</a></li>
 		<% } else { %>

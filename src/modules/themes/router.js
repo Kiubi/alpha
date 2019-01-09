@@ -44,12 +44,7 @@ var ThemesController = Controller.extend({
 			this.setHeader({
 				title: 'Thème graphique'
 			});
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	showCustom: function() {
@@ -68,12 +63,7 @@ var ThemesController = Controller.extend({
 			this.setHeader({
 				title: 'Passer en thème personnalisé'
 			});
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 
 	},
 

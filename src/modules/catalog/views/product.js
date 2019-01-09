@@ -251,11 +251,14 @@ var VariantRowView = Marionette.View.extend({
 		'stock'
 	],
 
+	editing: false,
+
 	initialize: function(options) {
 		this.taxes = options.taxes;
 		this.images = options.images;
 		this.names = options.names;
 		this.currency = options.currency;
+		this.editing = false;
 		this.listenTo(this.images, 'add remove', this.onImageSync);
 	},
 
@@ -367,12 +370,14 @@ var VariantRowView = Marionette.View.extend({
 	},
 
 	onActionEditRow: function() {
+		this.editing = true;
 		this.getUI('list').hide();
 		this.getUI('form').show();
 
 	},
 
 	onActionCancelRow: function() {
+		this.editing = false;
 		this.getUI('form').hide();
 		this.getUI('list').show();
 	},
@@ -386,13 +391,16 @@ var VariantRowView = Marionette.View.extend({
 		}
 
 		return this.model.save(
-			data, {
-				patch: true,
-				wait: true
-			}
-		).fail(function(xhr) {
-			Forms.displayErrors(xhr, this.getUI('errors'), this.el);
-		}.bind(this));
+				data, {
+					patch: true,
+					wait: true
+				}
+			).done(function() {
+				this.editing = false;
+			}.bind(this))
+			.fail(function(xhr) {
+				Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+			}.bind(this));
 	}
 
 });
@@ -968,6 +976,14 @@ module.exports = Marionette.View.extend({
 	},
 
 	onSave: function() {
+
+		// Save all current editing
+		this.variantsView.getChildren().each(function(rowView) {
+			if (rowView.editing) {
+				rowView.onActionSaveRow();
+			}
+		});
+
 		var data = Forms.extractFields(this.fields, this, 'form[data-role="part"]');
 		data.brand_id = this.model.get('brand_id') || '';
 		data.tags = _.pluck(this.getChildView('tags').getTags(), 'label'); // API can handle label. Simpler, safer

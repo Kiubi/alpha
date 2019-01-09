@@ -1,19 +1,19 @@
-		<div class="row no-gutters" data-role="list">
-			<div class="col item-body">
-				<h4><%- qt > 0 ? '+'+qt : qt %> points</h4>
-				<%- comment %>
-			</div>
-			<div class="col-4">
-			<% if (qt > 0 ) { %>
-				<span title="Dates de début et de fin de validité">
-					<i class="md-icon md-card-membership"></i><%- value_date %>
-					<i class="md-icon md-from-to mx-2"></i><%- end_date %>
-			<span>
-				<% } else { %>
-					<span title="Date de l'opération">
-						<i class="md-icon md-card-membership"></i><%- value_date %>
-					<span>
-					<% } %>
-			</div>
-			<div class="col-auto"></div>
-		</div>
+<div class="row no-gutters" data-role="list">
+	<div class="col item-body">
+		<h4><%- qt > 0 ? '+'+qt : qt %> points</h4>
+		<%- comment %>
+	</div>
+	<div class="col-4">
+		<% if (qt > 0 ) { %>
+			<span title="Dates de début et de fin de validité">
+				<i class="md-icon md-card-membership"></i><%- value_date %>
+				<i class="md-icon md-from-to mx-2"></i><%- end_date %>
+			</span>
+		<% } else { %>
+			<span title="Date de l'opération">
+				<i class="md-icon md-card-membership"></i><%- value_date %>
+			</span>
+		<% } %>
+	</div>
+	<div class="col-auto"></div>
+</div>

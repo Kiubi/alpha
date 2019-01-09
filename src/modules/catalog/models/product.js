@@ -106,14 +106,22 @@ module.exports = Backbone.Model.extend({
 	/**
 	 * Return all post types
 	 *
+	 * @param {Object} options :
+	 * 						- {Boolean} structure : fetch structure
 	 * @returns {Promise}
 	 */
-	getTypes: function() {
+	getTypes: function(options) {
+
+		options = options || {};
+
+		var data = {};
+		if (options.structure) {
+			data.extra_fields = 'structure';
+		}
+
 		return Backbone.ajax({
 			url: 'sites/@site/catalog/products_types',
-			data: {
-				extra_fields: 'structure'
-			}
+			data: data
 		}).then(function(response) {
 			return _.map(response.data, function(type) {
 				return {

@@ -59,10 +59,10 @@ module.exports = Backbone.Model.extend({
 			switch (this.get('status')) {
 				default: // "todo" or "working"
 					this.timer = setTimeout(this.fetchUntilDone.bind(this), 1500);
-				break;
+					break;
 				case 'done':
-						case 'halt':
-						this.deferred.resolve(this);
+				case 'halt':
+					this.deferred.resolve(this);
 					break;
 			}
 		}.bind(this)).fail(function(xhr) {

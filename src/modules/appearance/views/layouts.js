@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var format = require('kiubi/utils/format.js');
+var moment = require('moment');
 
 var Builder = require('../models/builder');
 
@@ -166,7 +167,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	events: {
-		'click @ui.order': 'changeOrder'
+		'click @ui.order': 'onChangeOrder'
 	},
 
 	regions: {
@@ -180,6 +181,9 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
+
+		this.sortCollection('date');
+
 		this.showChildView('list', new ListView({
 			collection: this.collection
 		}));
@@ -190,7 +194,7 @@ module.exports = Marionette.View.extend({
 	 *
 	 * @param {Event} event
 	 */
-	changeOrder: function(event) {
+	onChangeOrder: function(event) {
 
 		var $li = Backbone.$(event.currentTarget);
 
@@ -200,9 +204,22 @@ module.exports = Marionette.View.extend({
 		this.getUI('order').removeClass('active');
 		$li.addClass('active');
 
-		switch ($li.data('id')) {
+		this.sortCollection($li.data('id'));
+
+	},
+
+	/**
+	 * Triggered when a new order is selected
+	 *
+	 * @param {String} order
+	 */
+	sortCollection: function(order) {
+
+		switch (order) {
 			case 'date':
-				this.collection.comparator = 'layout_id';
+				this.collection.comparator = function(model) {
+					return -1 * moment(model.get('modification_date'), "YYYY-MM-DD HH:mm:ss").format('x');
+				};
 				break;
 			case 'name':
 				this.collection.comparator = 'name';

@@ -5,106 +5,104 @@
 	</div>
 	<div class="col-auto">
 		<div class="media-object md-icon md-face img-default rounded-circle img-avatar"></div>
-		<div class="media-object rounded-circle img-avatar"><img alt="" src="<%= convertMediaPath(avatar_thumb_url) %>" /></div>
+		<div class="media-object rounded-circle img-avatar"><img alt=""
+																 src="<%= convertMediaPath(avatar_thumb_url) %>"/></div>
 	</div>
 	<div class="col item-body">
 		<h4><%- author %>
 			<% if (customer_id > 0) { %>
 				<% if (origin == "admin") { %>
-					<div class="md-icon md-user"></div>
-					<% } else { %>
-						<a href="/customers/<%- customer_id %>" class="md-icon md-person"></a>
-						<% } } %>
-					</h4>
-					<% if(is_visible) { %>
-						<%- date %>
-						<% } else { %>
-							<span class="text-danger">Masqué</span>
-							<% } %>
-							dans <a href="/blog/posts/<%- post_id %>"><%- post_title %></a>
-						</div>
-						<div class="col-auto">
-							<div class="btn-group float-right" role="group"> <a class="btn btn-primary" href="#" role="button" data-role="action" data-action="edit">Détail</a>
-								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li><a href="#" class="dropdown-item" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div data-role="list">
-						<blockquote><%= comment2br %></blockquote>
-					</div>
+				<div class="md-icon md-user"></div>
+				<% } else { %>
+				<a href="/customers/<%- customer_id %>" class="md-icon md-person"></a>
+			<% } } %>
+		</h4>
+		<% if(is_visible) { %><%- date %><% } else { %><span class="text-danger">Masqué</span><% } %>
+		dans <a href="/blog/posts/<%- post_id %>"><%- post_title %></a>
+	</div>
+	<div class="col-auto">
+		<div class="btn-group float-right" role="group"><a class="btn btn-primary" href="#" role="button" data-role="action" data-action="edit">Détail</a>
+			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="#" class="dropdown-item" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div data-role="list">
+	<blockquote><%= comment2br %></blockquote>
+</div>
 
 
+<form style="display: none;" data-role="edit">
 
-					<form style="display: none;" data-role="edit">
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
 
-						<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+	<div class="form-group">
+		<label>Informations générales</label>
 
-						<div class="form-group">
-							<label>Informations générales</label>
-							<p class="form-control-static">Posté le <%- date %> dans <a href="/blog/posts/<%- post_id %>"><%- post_title %></a></p>
-						</div>
-						<div class="form-group">
-							<label>IP | Host</label>
-							<p class="form-control-static"><%- ip %> | <%- reverse_host %></p>
-						</div>
-						<div class="form-group">
-							<label>Affichage</label>
-							<div class="form-check">
-								<input name="is_visible" id="f_<%- comment_id %>_is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
-								<label for="f_<%- comment_id %>_is_visible1" class="visible">Visible</label>
-								<input name="is_visible" id="f_<%- comment_id %>_is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
-								<label for="f_<%- comment_id %>_is_visible0" class="not-visible">Masqué</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-4">
-								<div class="form-group">
-									<label>Auteur</label>
-									<p class="form-control-static"><%- author %></p>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="form-group">
-									<label>Email</label>
-									<p class="form-control-static">
+		<p class="form-control-static">Posté le <%- date %> dans <a href="/blog/posts/<%- post_id %>"><%- post_title %></a></p>
+	</div>
+	<div class="form-group">
+		<label>IP | Host</label>
 
-										<% if(email) { %>
-											<%- email %>
-											<% } else { %>
-												<em class="text-muted">Non renseigné</em>
-												<% } %>
+		<p class="form-control-static"><%- ip %> | <%- reverse_host %></p>
+	</div>
+	<div class="form-group">
+		<label>Affichage</label>
 
-											</p>
-										</div>
-									</div>
-									<div class="col-4">
-										<div class="form-group">
-											<label>Site Web</label>
-											<p class="form-control-static">
+		<div class="form-check">
+			<input name="is_visible" id="f_<%- comment_id %>_is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
+			<label for="f_<%- comment_id %>_is_visible1" class="visible">Visible</label>
+			<input name="is_visible" id="f_<%- comment_id %>_is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
+			<label for="f_<%- comment_id %>_is_visible0" class="not-visible">Masqué</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4">
+			<div class="form-group">
+				<label>Auteur</label>
 
-												<% if(website) { %>
-													<%- website %>
-													<% } else { %>
-														<em class="text-muted">Non renseigné</em>
-														<% } %>
+				<p class="form-control-static"><%- author %></p>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				<label>Email</label>
 
-													</p>
-												</div>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="required" for="f_<%- comment_id %>_comment">Commentaire</label>
-											<textarea class="form-control" rows="5" id="f_<%- comment_id %>_comment" name="comment" placeholder="Obligatoire"><%- comment %></textarea>
-										</div>
-										<div class="btn-toolbar" role="toolbar">
-											<div class="btn-group" role="group">
-												<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="action" data-action="cancel">Annuler</button>
-											</div>
-											<div class="btn-group" role="group">
-												<button type="button" class="btn btn-lg btn-success btn-save" data-role="action" data-action="save">Enregistrer</button>
-											</div>
-										</div>
-									</form>
+				<p class="form-control-static">
+					<% if(email) { %><%- email %><% } else { %><em class="text-muted">Non renseigné</em><% } %>
+				</p>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				<label>Site Web</label>
+
+				<p class="form-control-static">
+					<% if(website) { %><%- website %><% } else { %><em class="text-muted">Non renseigné</em><% } %>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="required" for="f_<%- comment_id %>_comment">Commentaire</label>
+		<textarea class="form-control" rows="5" id="f_<%- comment_id %>_comment" name="comment" placeholder="Obligatoire"><%- comment %></textarea>
+	</div>
+
+	<div class="btn-toolbar" role="toolbar">
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="action" data-action="cancel">
+				Annuler
+			</button>
+		</div>
+
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-lg btn-success btn-save" data-role="action" data-action="save">
+				Enregistrer
+			</button>
+		</div>
+	</div>
+
+</form>

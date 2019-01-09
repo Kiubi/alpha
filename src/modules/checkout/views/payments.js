@@ -34,7 +34,8 @@ var RowView = Marionette.View.extend({
 				type_label = "Paiement par chèque";
 				break;
 			case 'systempay':
-				type_label = "Paiement par carte bancaire distribué par les banques : Banque Populaire (Cyberplus Paiement), Société générale (Sogecommerce)";
+				type_label =
+					"Paiement par carte bancaire distribué par les banques : Banque Populaire (Cyberplus Paiement), Société générale (Sogecommerce)";
 				break;
 			default:
 				break;

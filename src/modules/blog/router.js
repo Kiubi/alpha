@@ -203,9 +203,8 @@ var BlogController = Controller.extend({
 		var c = new Posts();
 		var title = 'Tous les billets postés';
 		var tabs = null;
+		var categs = new Categories();
 		if (category_id) {
-			c.category_id = category_id;
-			var categs = new Categories();
 			var categorie = new categs.model({
 				category_id: category_id
 			});
@@ -213,6 +212,7 @@ var BlogController = Controller.extend({
 				title = categorie.get('name');
 				tabs = HeaderTabscategory(category_id, categorie.get('posts_count'));
 			});
+			qs.category_id = category_id;
 		} else {
 			promise = Backbone.$.Deferred().resolve();
 		}
@@ -221,7 +221,7 @@ var BlogController = Controller.extend({
 
 			var view = new PostsView({
 				collection: c,
-				categories: new Categories(),
+				categories: categs,
 				filters: qs
 			});
 
@@ -237,13 +237,7 @@ var BlogController = Controller.extend({
 				getHeadersAction(),
 				tabs);
 
-		}.bind(this)).fail(function() {
-			// Categorie not found !
-			this.notFound();
-			this.setHeader({
-				title: 'Catégorie introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Catégorie introuvable'));
 	},
 
 	showPost: function(id) {
@@ -264,7 +258,9 @@ var BlogController = Controller.extend({
 			var view = new PostView({
 				model: m,
 				categories: categories,
-				typesSource: m.getTypes(),
+				typesSource: m.getTypes({
+					structure: true
+				}),
 				enableSeo: Session.hasScope('site:seo'),
 				enableLayout: Session.hasScope('site:layout')
 			});
@@ -289,12 +285,7 @@ var BlogController = Controller.extend({
 					addSave: true
 				}),
 				HeaderTabsPost(id, m.get('comments_count')));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Billet introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Billet introuvable'));
 	},
 
 	actionNewPost: function() {
@@ -364,12 +355,7 @@ var BlogController = Controller.extend({
 				preview: m,
 				addSave: true
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Accueil du blog introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Acccueil du blog introuvable'));
 	},
 
 	/*
@@ -388,12 +374,7 @@ var BlogController = Controller.extend({
 			}, getHeadersAction({
 				addSave: true
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	/*
@@ -459,12 +440,7 @@ var BlogController = Controller.extend({
 				},
 				actions,
 				tabs);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Billet introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Billet introuvable'));
 	},
 
 	/*
@@ -510,12 +486,7 @@ var BlogController = Controller.extend({
 				preview: m,
 				addSave: true
 			}), HeaderTabscategory(id, m.get('posts_count')));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Catégorie introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Catégorie introuvable'));
 	},
 
 	actionNewCategory: function() {

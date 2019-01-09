@@ -17,6 +17,7 @@ var CarriersZones = require('./models/carriers.zones');
 var Countries = require('kiubi/core/models/countries');
 var Search = require('kiubi/core/models/geo.search');
 var Payments = require('./models/payments');
+var Customers = require('kiubi/modules/customers/models/customers');
 
 /* Views */
 var OrdersView = require('./views/orders');
@@ -189,6 +190,9 @@ var CheckoutController = Controller.extend({
 
 		var view = new OrdersView({
 			collection: new Orders(),
+			carriers: new Carriers(),
+			customers: new Customers(),
+			payments: new Payments(),
 			filters: qs
 		});
 		this.navigationController.showContent(view);
@@ -200,22 +204,23 @@ var CheckoutController = Controller.extend({
 
 		var title;
 		switch (qs.status) {
-			default: title = 'Toutes les commandes';
-			break;
+			default:
+				title = 'Toutes les commandes';
+				break;
 			case 'pending':
-					title = 'À traiter';
+				title = 'À traiter';
 				break;
 			case 'processing':
-					title = 'En cours';
+				title = 'En cours';
 				break;
 			case 'processed':
-					title = 'Traitées';
+				title = 'Traitées';
 				break;
 			case 'shipped':
-					title = 'Expédiées';
+				title = 'Expédiées';
 				break;
 			case 'cancelled':
-					title = 'Annulées';
+				title = 'Annulées';
 				break;
 		}
 		this.setHeader({
@@ -247,12 +252,7 @@ var CheckoutController = Controller.extend({
 				coliship: m.get('download')['coliship'] ? m.get('download')['coliship'] : null,
 				form: m.get('download')['form'] ? m.get('download')['form'] : null
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Commande introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Commande introuvable'));
 	},
 
 	showAborted: function() {
@@ -322,12 +322,7 @@ var CheckoutController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Mode de paiement introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Mode de paiement introuvable'));
 	},
 
 	/*
@@ -399,12 +394,7 @@ var CheckoutController = Controller.extend({
 				title: 'Ajouter une option',
 				callback: 'showOptionAdd'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Option introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Option introuvable'));
 	},
 
 	/*
@@ -453,12 +443,7 @@ var CheckoutController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
 	/*
@@ -478,12 +463,7 @@ var CheckoutController = Controller.extend({
 				title: 'Enregistrer',
 				callback: 'actionSave'
 			}]);
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Paramètres introuvables'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Paramètres introuvable'));
 	},
 
 	/*
@@ -556,12 +536,7 @@ var CheckoutController = Controller.extend({
 			}], getCarriersAction({
 				addSave: true
 			}));
-		}.bind(this)).fail(function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Transporteur introuvable'
-			});
-		}.bind(this));
+		}.bind(this)).fail(this.failHandler('Transporteur introuvable'));
 	},
 
 	actionNewCarrier: function(type) {

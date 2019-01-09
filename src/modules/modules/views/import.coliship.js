@@ -2,24 +2,19 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
-var AutocompleteView = require('kiubi/core/views/ui/select.search.js');
 var FileView = require('kiubi/core/views/ui/input.file.js');
 
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 
 module.exports = Marionette.View.extend({
-	template: require('../templates/import.products.html'),
+	template: require('../templates/import.coliship.html'),
 	className: 'container',
 	service: 'modules',
 
 	behaviors: [FormBehavior],
 
 	regions: {
-		'categories': {
-			el: "div[data-role='categories']",
-			replaceElement: true
-		},
 		file: {
 			el: "div[data-role='file']",
 			replaceElement: true
@@ -31,14 +26,14 @@ module.exports = Marionette.View.extend({
 	},
 
 	fields: [
-		'is_enabled'
+		'notify'
 	],
 
 	step: 0,
 	report: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['model', 'categories']);
+		this.mergeOptions(options, ['model']);
 	},
 
 	templateContext: function() {
@@ -51,33 +46,10 @@ module.exports = Marionette.View.extend({
 	onRender: function() {
 
 		if (this.step == 0) {
-			this.showChildView('categories', new AutocompleteView({
-				searchPlaceholder: 'Rechercher une catégorie',
-				current: {
-					label: '-- Choisissez une catégorie --',
-					value: null
-				}
-			}));
 
 			this.showChildView('file', new FileView());
 		}
 
-	},
-
-	// Categories
-
-	onChildviewInput: function(term, view) {
-		var exclude = view.current.value ? [view.current.value] : null;
-		this.categories.suggest(term, 5, exclude).done(function(categories) {
-			var results = _.map(categories, function(categ) {
-				return {
-					label: categ.name,
-					value: categ.category_id
-				};
-			});
-
-			view.showResults(results);
-		}.bind(this));
 	},
 
 	onSave: function() {
@@ -87,7 +59,6 @@ module.exports = Marionette.View.extend({
 
 			var data = Forms.extractFields(this.fields, this);
 
-			data.category_id = this.getChildView('categories').getCurrent().value;
 			data.file = this.getChildView('file').getFile();
 			navigationController.showOverlay();
 

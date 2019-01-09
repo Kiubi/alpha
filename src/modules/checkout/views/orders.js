@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 var format = require('kiubi/utils/format.js');
 var moment = require('moment');
@@ -17,6 +18,7 @@ var RowView = Marionette.View.extend({
 		var creation_date = moment(this.model.get('creation_date'), 'YYYY-MM-DD HH:mm:ss');
 		var diff = moment().diff(creation_date, 'days');
 
+		var creation_date_fromnow;
 		if (diff >= 1) {
 			creation_date_fromnow = format.formatLongDateTime(this.model.get('creation_date'));
 		} else {
@@ -57,7 +59,7 @@ module.exports = Marionette.View.extend({
 	filters: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['collection']);
+		this.mergeOptions(options, ['collection', 'carriers', 'customers', 'payments']);
 		this.filters = {
 			is_paid: null,
 			status: this.getOption('filters') && this.getOption('filters').status ? this.getOption('filters').status : null,
@@ -79,29 +81,35 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
-
+		var status = new CollectionUtils.SelectCollection([{
+			'value': 'pending',
+			'label': 'À traiter',
+			//'selected': this.filters.status == 'pending'
+		}, {
+			'value': 'processing',
+			'label': 'En cours',
+			//'selected': this.filters.status == 'processing'
+		}, {
+			'value': 'processed',
+			'label': 'Traitées',
+			//'selected': this.filters.status == 'processed'
+		}, {
+			'value': 'shipped',
+			'label': 'Expédiées',
+			//'selected': this.filters.status == 'shipped'
+		}, {
+			'value': 'cancelled',
+			'label': 'Annulées',
+			//'selected': this.filters.status == 'cancelled'
+		}]);
+		var current = status.findWhere({
+			value: this.filters.status
+		});
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
 
 			title: 'Liste des commandes',
-			order: [{
-				title: 'Date',
-				is_active: true,
-				value: '-date'
-			}, {
-				title: 'Livraison/retrait',
-				is_active: false,
-				value: '-schedule'
-			}, {
-				title: 'Montant',
-				is_active: false,
-				value: '-amount'
-			}, {
-				title: 'Modification',
-				is_active: false,
-				value: '-modification'
-			}],
 			selection: [{
 				title: 'Est À traiter',
 				callback: this.changeStatusPending.bind(this),
@@ -139,38 +147,82 @@ module.exports = Marionette.View.extend({
 				confirm: true
 			}],
 			filters: [{
-					id: 'is_paid',
-					title: 'Tous les status',
-					collectionPromise: new CollectionUtils.SelectCollection([{
-						'value': 'paid',
-						'label': 'Payée',
-						'selected': false
-					}, {
-						'value': 'unpaid',
-						'label': 'À payer',
-						'selected': false
-					}])
-				},
-				{
-					id: 'term',
-					title: 'Rechercher',
-					type: 'input',
-					value: this.filters.term
+				id: 'status',
+				title: current ? current.get('label') : 'Tous les statuts',
+				type: 'dropdown',
+				collectionPromise: status
+			}, {
+				id: 'term',
+				title: 'Rechercher',
+				type: 'input',
+				value: this.filters.term
+			}, {
+				id: 'add',
+				title: 'Ajouter un filtre',
+				extraClassname: 'filter-add',
+				type: 'dropdown',
+				disableLabelUpdate: true,
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					'value': 'paid',
+					'label': 'Paiement'
 				}, {
-					id: 'export',
-					extraClassname: 'md-export',
-					type: 'button',
-					collectionPromise: new CollectionUtils.SelectCollection([{
-						'value': 'export',
-						'label': 'Exporter les commandes',
-						'selected': false
-					}, {
-						'value': 'export-coliship',
-						'label': 'Exporter pour Coliship',
-						'selected': false
-					}])
-				}
-			]
+					'value': 'customer',
+					'label': 'Acheteur'
+				}, {
+					'value': 'creation',
+					'label': 'Date de création'
+				}, {
+					'value': 'price',
+					'label': 'Montant'
+				}, {
+					'value': 'paymentDate',
+					'label': 'Date de paiement'
+				}, {
+					'value': 'payment',
+					'label': 'Mode de paiement'
+				}, {
+					'value': 'carrier',
+					'label': 'Transporteur'
+				}, {
+					'value': 'fidelity',
+					'label': 'Points de fidélités'
+				}])
+			}],
+			xtra: [{
+				id: 'export',
+				extraClassname: 'md-export',
+				type: 'button',
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					'value': 'export',
+					'label': 'Exporter les commandes',
+					'selected': false
+				}, {
+					'value': 'export-coliship',
+					'label': 'Exporter pour Coliship',
+					'selected': false
+				}])
+			}, {
+				id: 'sort',
+				extraClassname: 'md-sort',
+				type: 'button',
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					label: 'Date',
+					selected: true,
+					value: '-date'
+				}, {
+					label: 'Livraison/retrait',
+					selected: false,
+					value: '-schedule'
+				}, {
+					label: 'Montant',
+					selected: false,
+					value: '-amount'
+				}, {
+					label: 'Modification',
+					selected: false,
+					value: '-modification'
+				}])
+			}]
 		}));
 	},
 
@@ -183,6 +235,24 @@ module.exports = Marionette.View.extend({
 		if (this.filters.is_paid != null) data.is_paid = this.filters.is_paid;
 		if (this.filters.customer_id != null) data.customer_id = this.filters.customer_id;
 		if (this.filters.term != null) data.term = this.filters.term;
+		if (this.filters.creation_date != null) {
+			data.creation_date_min = this.filters.creation_date[0];
+			data.creation_date_max = this.filters.creation_date[1];
+		}
+		if (this.filters.price_total_ex_vat != null) {
+			data.price_total_ex_vat_min = this.filters.price_total_ex_vat[0];
+			data.price_total_ex_vat_max = this.filters.price_total_ex_vat[1];
+		}
+		if (this.filters.payment_date != null) {
+			data.payment_date_min = this.filters.payment_date[0];
+			data.payment_date_max = this.filters.payment_date[1];
+		}
+		if (this.filters.payment_id != null) data.payment_id = this.filters.payment_id;
+		if (this.filters.carrier_id != null) data.carrier_id = this.filters.carrier_id;
+		if (this.filters.fidelity_reward != null) {
+			data.fidelity_reward_min = this.filters.fidelity_reward[0];
+			data.fidelity_reward_max = this.filters.fidelity_reward[1];
+		}
 
 		this.collection.fetch({
 			reset: true,
@@ -213,25 +283,21 @@ module.exports = Marionette.View.extend({
 		return this.collection.bulkStatus(ids, 'cancelled');
 	},
 
-	onChildviewChangeOrder: function(order) {
-		this.sortOrder = order;
+	onSortFilterChange: function(filter) {
+		filter.view.activeItem(filter.value);
+		this.sortOrder = filter.value;
 		this.start();
 	},
 
 	/* Filters */
 
 	onChildviewFilterChange: function(filter) {
-		switch (filter.model.get('id')) {
-			case 'is_paid':
-				this.onPaidFilterChange(filter);
-				break;
-			case 'term':
-				this.onTermFilterChange(filter);
-				break;
-			case 'export':
-				this.onExportFilterChange(filter);
-				break;
-		}
+		this.triggerMethod(filter.model.get('id') + ':filter:change', filter);
+	},
+
+	onStatusFilterChange: function(filter) {
+		this.filters.status = filter.value;
+		this.start();
 	},
 
 	onPaidFilterChange: function(filter) {
@@ -265,10 +331,30 @@ module.exports = Marionette.View.extend({
 			view.render();
 
 			var data = {};
+			if (filter.value == 'export-coliship') data.type = 'coliship';
+
 			if (this.filters.status != null) data.status = this.filters.status;
 			if (this.filters.is_paid != null) data.is_paid = this.filters.is_paid;
 			if (this.filters.term != null) data.term = this.filters.term;
-			if (filter.value == 'export-coliship') data.type = 'coliship';
+			if (this.filters.customer_id != null) data.customer_id = this.filters.customer_id;
+			if (this.filters.creation_date != null) {
+				data.creation_date_min = this.filters.creation_date[0];
+				data.creation_date_max = this.filters.creation_date[1];
+			}
+			if (this.filters.price_total_ex_vat != null) {
+				data.price_total_ex_vat_min = this.filters.price_total_ex_vat[0];
+				data.price_total_ex_vat_max = this.filters.price_total_ex_vat[1];
+			}
+			if (this.filters.payment_date != null) {
+				data.payment_date_min = this.filters.payment_date[0];
+				data.payment_date_max = this.filters.payment_date[1];
+			}
+			if (this.filters.payment_id != null) data.payment_id = this.filters.payment_id;
+			if (this.filters.carrier_id != null) data.carrier_id = this.filters.carrier_id;
+			if (this.filters.fidelity_reward != null) {
+				data.fidelity_reward_min = this.filters.fidelity_reward[0];
+				data.fidelity_reward_max = this.filters.fidelity_reward[1];
+			}
 
 			this.collection.exportAll(data).done(function(data) {
 				view.overrideExtraClassname('');
@@ -298,7 +384,150 @@ module.exports = Marionette.View.extend({
 				view.collection.pop();
 			}
 		}
+	},
 
+	onCustomerFilterChange: function(filter) {
+		this.filters.customer_id = filter.value;
+		this.start();
+	},
+
+	onCreationFilterChange: function(filter) {
+		this.filters.creation_date = filter.value;
+		this.start();
+	},
+
+	onPriceFilterChange: function(filter) {
+		this.filters.price_total_ex_vat = filter.value;
+		this.start();
+	},
+
+	onPaymentDateFilterChange: function(filter) {
+		this.filters.payment_date = filter.value;
+		this.start();
+	},
+
+	onPaymentFilterChange: function(filter) {
+		this.filters.payment_id = filter.value;
+		this.start();
+	},
+
+	onCarrierFilterChange: function(filter) {
+		this.filters.carrier_id = filter.value;
+		this.start();
+	},
+
+	onFidelityFilterChange: function(filter) {
+		this.filters.fidelity_reward = filter.value;
+		this.start();
+	},
+
+	onAddFilterChange: function(filter) {
+		var cfg;
+		switch (filter.value) {
+			case 'paid':
+				cfg = {
+					id: filter.value,
+					title: 'Paiement',
+					type: 'dropdown',
+					canDelete: true,
+					collectionPromise: new CollectionUtils.SelectCollection([{
+						'value': 'paid',
+						'label': 'Payée',
+						'selected': false
+					}, {
+						'value': 'unpaid',
+						'label': 'À payer',
+						'selected': false
+					}])
+				};
+				break;
+			case 'customer':
+				cfg = {
+					id: filter.value,
+					title: 'Acheteur',
+					type: 'search',
+					canDelete: true
+				};
+				break;
+			case 'creation':
+				cfg = {
+					id: filter.value,
+					title: 'jj/mm/aaaa',
+					type: 'interval',
+					enableDatepicker: 'date',
+					prependText: ['Créée entre', 'et'],
+					canDelete: true
+				};
+				break;
+			case 'price':
+				cfg = {
+					id: filter.value,
+					title: 'prix HT',
+					type: 'interval',
+					prependText: ['Montant entre', 'et'],
+					canDelete: true
+				};
+				break;
+			case 'paymentDate':
+				cfg = {
+					id: filter.value,
+					title: 'jj/mm/aaaa',
+					type: 'interval',
+					enableDatepicker: 'date',
+					prependText: ['Payée entre', 'et'],
+					canDelete: true
+				};
+				break;
+			case 'payment':
+				cfg = {
+					id: filter.value,
+					title: 'Mode de paiement',
+					type: 'dropdown',
+					canDelete: true,
+					collectionPromise: this.payments.promisedSelect()
+				};
+				break;
+			case 'carrier':
+				cfg = {
+					id: filter.value,
+					title: 'Transporteur',
+					type: 'dropdown',
+					canDelete: true,
+					collectionPromise: this.carriers.promisedSelect()
+				};
+				break;
+			case 'fidelity':
+				cfg = {
+					id: filter.value,
+					title: '',
+					type: 'interval',
+					prependText: ['Pt de fidélités', 'et'],
+					canDelete: true
+				};
+				break;
+			default:
+				return;
+		}
+
+		filter.model.collection.add(cfg);
+	},
+
+	onChildviewFilterInput: function(filter) {
+
+		if (!filter.view || !filter.view.showResults) return;
+
+		var exclude = filter.view.current.value ? [filter.view.current.value] : null;
+		this.customers.suggest(filter.value, 5, exclude).done(function(customers) {
+			var results = _.map(customers, function(customer) {
+				return {
+					label: customer.firstname + ' ' + customer.lastname,
+					value: customer.customer_id
+				};
+			});
+
+			filter.view.showResults(results);
+		}.bind(this));
+		return;
 	}
 
 });

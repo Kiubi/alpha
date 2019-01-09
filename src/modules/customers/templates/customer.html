@@ -11,16 +11,18 @@
 				<div class="col-4 customer-avatar">
 					<div class="media-object md-icon md-face img-default rounded-circle mx-auto img-avatar center-block"></div>
 					<div class="media-object rounded-circle mx-auto img-avatar center-block">
-						<img alt="Un intitulé d'un truc"
+						<img alt=""
 							 src="<%- convertMediaPath(avatar_url) %>&<%- render_counter %>"></a>
 					</div>
 					<br/>
-
+					<% if(customer_id) { %>
 					<div data-role="file"></div>
 					<p class="media-info">Format : gif, jpeg ou png<br/>Taille : 120 x 120px minimum</p>
+					<% } %>
 				</div>
-				<div class="col-7 offset-1">
+				<div class="col-8">
 					<div class="row">
+						<% if(customer_id) { %>
 						<div class="col-6">
 							<div class="form-group">
 								<label>Inscription</label>
@@ -35,6 +37,7 @@
 								<p class="form-control-static">#<%- number %></p>
 							</div>
 						</div>
+						<% } %>
 						<div class="col-12">
 							<label class="required" for="lastname">Nom</label>
 						</div>
@@ -80,8 +83,12 @@
 					</div>
 					<div class="form-group">
 						<label for="password">Mot de passe</label>
+						<% if(customer_id) { %>
 						<a data-role="show-password" href="#" class="form-control-static">Modifier le mot de passe</a>
 						<input class="form-control" style="display: none;" id="password" name="password" type="password" placeholder="Modifier le mot de passe utilisé pour se connecter au site">
+						<% } else { %>
+						<input class="form-control" id="password" name="password" type="password">
+						<% } %>
 					</div>
 					<div class="row">
 						<div class="col-6">
@@ -124,7 +131,11 @@
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">
+		<% if(customer_id) { %>
 		<button type="button" class="btn btn-lg btn btn-danger btn-delete" data-role="delete">Supprimer</button>
+		<% } else { %>
+		<a href="/customers" class="btn btn-lg btn-primary btn-cancel">Annuler</a>
+		<% } %>
 		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
 	</div>
 </div>

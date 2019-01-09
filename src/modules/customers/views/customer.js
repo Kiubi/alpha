@@ -74,18 +74,22 @@ module.exports = Marionette.View.extend({
 				direction: 'up'
 			}));
 		}
-		this.showChildView('file', new FileView({
-			name: 'avatar'
-		}));
+		if (!this.model.isNew()) {
+			this.showChildView('file', new FileView({
+				name: 'avatar'
+			}));
+		}
 	},
 
 	onSave: function() {
+
+		var isNew = this.model.isNew();
 
 		var data = Forms.extractFields(this.fields, this);
 		if (this.getUI('pwdInput').val() != '') {
 			data.password = this.getUI('pwdInput').val();
 		}
-		if (this.getChildView('file').getFile()) {
+		if (this.getChildView('file') && this.getChildView('file').getFile()) {
 			data.avatar = this.getChildView('file').getFile();
 		}
 
@@ -95,8 +99,13 @@ module.exports = Marionette.View.extend({
 				wait: true
 			}
 		).done(function() {
-			// Re-render to update file preview
-			this.render();
+			if (isNew) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.navigate('/customers/' + this.model.get('customer_id'));
+			} else {
+				// Re-render to update file preview
+				this.render();
+			}
 		}.bind(this));
 	},
 

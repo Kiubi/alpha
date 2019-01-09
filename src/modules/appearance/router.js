@@ -149,6 +149,8 @@ var AppearanceController = Controller.extend({
 		var l = new Layout();
 		var c = new Layouts();
 
+		var fail = this.failHandler('Type de mise en page introuvable');
+
 		l.getType(page).then(function(type) {
 			c.fetch({
 				data: {
@@ -163,18 +165,8 @@ var AppearanceController = Controller.extend({
 				this.setHeader({
 					title: type.name
 				});
-			}.bind(this)).fail(function() {
-				this.notFound();
-				this.setHeader({
-					title: 'Type de mise en page introuvable'
-				});
-			}.bind(this));
-		}.bind(this), function() {
-			this.notFound();
-			this.setHeader({
-				title: 'Type de mise en page introuvable'
-			});
-		}.bind(this));
+			}.bind(this)).fail(fail);
+		}.bind(this), fail);
 	},
 
 	showLayout: function(page, id) {
@@ -206,12 +198,7 @@ var AppearanceController = Controller.extend({
 				this.navigationController.showContent(view);
 				this.setHeader(buildBreadCrum(m), getHeadersAction());
 			}.bind(this))
-			.fail(function() {
-				this.notFound();
-				this.setHeader({
-					title: 'Mise en page introuvable'
-				});
-			}.bind(this));
+			.fail(this.failHandler('Mise en page introuvable'));
 	},
 
 	showDraft: function(id, args) {
@@ -249,12 +236,7 @@ var AppearanceController = Controller.extend({
 					}
 				], getHeadersAction());
 			}.bind(this))
-			.fail(function() {
-				this.notFound();
-				this.setHeader({
-					title: 'Mise en page introuvable'
-				});
-			}.bind(this));
+			.fail(this.failHandler('Mise en page introuvable'));
 	}
 
 });
@@ -278,12 +260,13 @@ module.exports = Marionette.AppRouter.extend({
 
 		// Load an other sidebar for showLayout
 		switch (name) {
-			default: this.controller.sidebarMenuService = 'appearance';
-			this.controller.sidebarMenu = SidebarMenuView;
-			break;
+			default:
+				this.controller.sidebarMenuService = 'appearance';
+				this.controller.sidebarMenu = SidebarMenuView;
+				break;
 			case 'showLayout':
-					case 'showDraft':
-					this.controller.sidebarMenuService = 'layout';
+			case 'showDraft':
+				this.controller.sidebarMenuService = 'layout';
 				this.controller.sidebarMenu = SidebarMenuLayoutView;
 				break;
 		}

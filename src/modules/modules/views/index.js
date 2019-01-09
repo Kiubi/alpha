@@ -203,6 +203,13 @@ module.exports = Marionette.View.extend({
 				href: '/modules/import/wordpress',
 				scope: 'site:blog'
 			}, {
+				name: 'Import Coliship',
+				icon: 'publish',
+				desc: 'Importer des données d\'expédition de Coliship.',
+				href: '/modules/import/coliship',
+				scope: 'site:checkout',
+				feature: 'checkout'
+			}, {
 				name: 'Gestion des sauvegardes',
 				icon: 'backup',
 				desc: 'Restaurer ou créer des points de sauvegarde pour sécurier toutes les données du site.',

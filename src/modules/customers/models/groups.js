@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
 module.exports = Backbone.Collection.extend({
 
@@ -43,6 +44,31 @@ module.exports = Backbone.Collection.extend({
 					name: group.name
 				};
 			});
+		});
+	},
+
+	/**
+	 *
+	 * @param {Object} options Options list :
+	 * @param {Number} selected
+	 * @returns {Promise} Promised {Backbone.Collection}
+	 */
+	promisedSelect: function(options, selected) {
+
+		options = _.extend({}, options);
+
+		var that = this;
+		return this.fetch().then(function() {
+			var collector = [];
+			that.each(function(model) {
+				collector.push({
+					'value': model.get('group_id'),
+					'label': model.get('name'),
+					'selected': selected && model.get('group_id') == selected
+				});
+			});
+
+			return new CollectionUtils.SelectCollection(collector);
 		});
 	}
 

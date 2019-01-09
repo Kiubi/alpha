@@ -1,2 +1,14 @@
-<input class="form-control" name="term" value="<%- value %>" placeholder="<%- title %>" type="text">
-<span class="md-feedback md-search"></span>
+<% if(prependText) { %>
+	<div class="input-group">
+		<div class="input-group-prepend">
+			<span class="input-group-text"><%- prependText %></span>
+		</div>
+		<input class="form-control" name="term" value="<%- value %>" placeholder="<%- title %>" type="text">
+		<div class="input-group-append">
+			<span class="input-group-text"><span data-role="feedback" class="md-icon float-right <%- extraClassname %>"></span></span>
+		</div>
+	</div>
+<% } else { %>
+	<input class="form-control" name="term" value="<%- value %>" placeholder="<%- title %>" type="text">
+	<span data-role="feedback" class="md-feedback <%- extraClassname %>"></span>
+<% } %>

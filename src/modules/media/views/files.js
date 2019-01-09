@@ -92,15 +92,6 @@ module.exports = Marionette.View.extend({
 			rowView: RowView,
 
 			title: 'Liste des fichiers',
-			order: [{
-				title: 'Intitulé',
-				is_active: false,
-				value: 'name'
-			}, {
-				title: 'Modification',
-				is_active: true,
-				value: '-date'
-			}],
 			selection: [{
 					title: 'Déplacer',
 					callback: this.movePosts.bind(this)
@@ -121,7 +112,8 @@ module.exports = Marionette.View.extend({
 				title: 'Rechercher',
 				type: 'input',
 				value: this.filters.term
-			}, {
+			}],
+			xtra: [{
 				id: 'export',
 				extraClassname: 'md-export',
 				type: 'button',
@@ -129,6 +121,19 @@ module.exports = Marionette.View.extend({
 					'value': 'export',
 					'label': 'Exporter les fichiers',
 					'selected': false
+				}])
+			}, {
+				id: 'sort',
+				extraClassname: 'md-sort',
+				type: 'button',
+				collectionPromise: new CollectionUtils.SelectCollection([{
+					label: 'Intitulé',
+					selected: false,
+					value: 'name'
+				}, {
+					label: 'Modification',
+					selected: true,
+					value: '-date'
 				}])
 			}]
 		}));
@@ -171,19 +176,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChildviewFilterChange: function(filter) {
-
-		switch (filter.model.get('id')) {
-			case 'folder':
-				this.onFolderFilterChange(filter);
-				break;
-			case 'term':
-				this.onTermFilterChange(filter);
-				break;
-			case 'export':
-				this.onExportFilterChange(filter);
-				break;
-		}
-
+		this.triggerMethod(filter.model.get('id') + ':filter:change', filter);
 	},
 
 	onFolderFilterChange: function(filter) {
@@ -240,8 +233,9 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	onChildviewChangeOrder: function(order) {
-		this.sortOrder = order;
+	onSortFilterChange: function(filter) {
+		filter.view.activeItem(filter.value);
+		this.sortOrder = filter.value;
 		this.start();
 	}
 
