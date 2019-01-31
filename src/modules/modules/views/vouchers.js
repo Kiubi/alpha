@@ -10,9 +10,7 @@ var RowView = Marionette.View.extend({
 	className: 'list-item',
 	templateContext: function() {
 		return {
-			plural: function(nb, singular, plural) {
-				return (nb > 1 ? plural : singular).replace('%d', nb);
-			},
+			plural: format.plural,
 			start_date: format.formatLongDate(this.model.get('start_date')),
 			end_date: format.formatLongDate(this.model.get('end_date'))
 		};

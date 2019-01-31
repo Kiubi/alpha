@@ -5,7 +5,7 @@ var Result = Backbone.Model.extend({
 
 	defaults: {
 		cities: '',
-		distance: .0,
+		distance: 0.0,
 		postal_code: ''
 	}
 

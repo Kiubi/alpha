@@ -65,7 +65,7 @@ module.exports = Backbone.Model.extend({
 					'value': type.type,
 					'label': type.name,
 					'selected': selected && selected == type.type
-				}
+				};
 			}));
 
 			return c;

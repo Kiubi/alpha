@@ -51,7 +51,7 @@ function getHeadersAction(options) {
 		if (options.addPageInMenu) data.menu_id = options.addPageInMenu;
 		if (options.addPage) data.page_parent_id = options.addPage;
 		actions.push({
-			title: 'Ajouter une page libre',
+			title: 'Ajouter une page',
 			callback: ['actionNewPage', data]
 		});
 	}
@@ -362,6 +362,16 @@ var CMSController = Controller.extend({
 				this.navigationController.showOverlay(300);
 				this.navigationController.navigate('/cms');
 				this.triggerSidebarMenu('refresh:menus');
+			});
+			this.listenTo(m, 'sync', function(model) {
+				// header actions depends on page type 
+				this.setHeaderActions(getHeadersAction({
+					preview: model.get('page_type') == 'page' ? model : false,
+					addPost: model.get('page_type') == 'page' ? model.get('page_id') : false,
+					addPage: model.get('page_parent_id') > 0 ? model.get('page_parent_id') : false,
+					addPageInMenu: model.get('page_parent_id') == 0 ? model.get('menu_id') : false,
+					duplicatePage: model.get('page_type') == 'page' ? model.get('page_id') : false
+				}), true);
 			});
 			this.navigationController.showContent(view);
 			this.setHeader({

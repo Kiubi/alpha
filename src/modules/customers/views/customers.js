@@ -15,9 +15,7 @@ var RowView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			convertMediaPath: Session.convertMediaPath.bind(Session),
-			plural: function(nb, singular, plural) {
-				return (nb > 1 ? plural : singular).replace('%d', nb);
-			},
+			plural: format.plural,
 			creation_date: format.formatLongDate(this.model.get('creation_date'))
 		};
 	}

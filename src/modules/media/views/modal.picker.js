@@ -5,8 +5,6 @@ var format = require('kiubi/utils/format.js');
 
 var SelectView = require('kiubi/core/views/ui/select.js');
 
-var Folders = require('kiubi/modules/media/models/folders.js');
-
 var ScrollBehavior = require('kiubi/behaviors/infinite_scroll.js');
 
 var Session = Backbone.Radio.channel('app').request('ctx:session');
@@ -31,9 +29,9 @@ var RowView = Marionette.View.extend({
 	templateContext: function() {
 		return {
 			size: format.formatBytes(this.model.get('weight'), 2),
-			is_selectable: this.selectableType == 'file' ? true : this.model.get('type') ==
-				this.selectableType,
+			is_selectable: this.selectableType == 'file' ? true : this.model.get('type') == this.selectableType,
 			is_selected: this.model.get('media_id') == this.selected,
+			has_thumb: this.model.get('thumb') ? true : false,
 			convertMediaPath: Session.convertMediaPath.bind(Session)
 		};
 	}
@@ -77,7 +75,7 @@ var ListView = Marionette.CollectionView.extend({
 module.exports = Marionette.View.extend({
 	template: require('../templates/modal.picker.html'),
 
-	folder_id: null,
+	// folder_id: null,
 	type: 'image', // image|file
 
 	regions: {
@@ -98,7 +96,7 @@ module.exports = Marionette.View.extend({
 
 	currentFolder: null,
 	currentTerm: null,
-	currentOrder: '-date',
+	currentOrder: null,
 
 	events: {
 		'keyup @ui.term': _.debounce(function(e) {
@@ -109,13 +107,16 @@ module.exports = Marionette.View.extend({
 	},
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['model', 'collection', 'type']);
+		this.mergeOptions(options, ['model', 'collection', 'type', 'folders']);
+
+		this.currentFolder = null;
+		this.currentTerm = null;
+		this.currentOrder = '-date';
 	},
 
 	onRender: function() {
 
-		var folders = new Folders();
-		var folderPromise = folders.fetch({
+		var folderPromise = this.folders.fetch({
 			data: {
 				extra_fields: 'recursive'
 			}
@@ -124,7 +125,7 @@ module.exports = Marionette.View.extend({
 		this.showChildView('categories', new SelectView({
 			name: 'categories',
 			// emptyLabel: 'Dossiers',
-			collection: folders,
+			collection: this.folders,
 			selected: this.model.get('folder_id')
 		}));
 
@@ -139,7 +140,7 @@ module.exports = Marionette.View.extend({
 			this.updateFilter();
 		} else {
 			folderPromise.done(function() {
-				this.currentFolder = folders.at(0).get('folder_id');
+				this.currentFolder = this.folders.at(0).get('folder_id');
 				this.updateFilter();
 			}.bind(this));
 		}

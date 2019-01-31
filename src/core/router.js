@@ -20,6 +20,13 @@ var SidebarMenuView = Marionette.View.extend({
 	service: 'dashboard',
 	behaviors: [TooltipBehavior],
 
+	events: {
+		'click a[data-role="dashboard"]': function() {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
+			window.open(Session.autologBackLink('/dashboard/'));
+		}
+	},
+
 	initialize: function(options) {
 
 		this.mergeOptions(options, ['stat']);
@@ -36,8 +43,7 @@ var SidebarMenuView = Marionette.View.extend({
 			show_checkout: Session.hasFeature('checkout') && Session.hasScope('site:checkout'),
 			pending_orders: this.stat.get('checkout') ? this.stat.get('checkout').pending_orders : null,
 			stock_shortage_count: this.stat.get('catalog') ? this.stat.get('catalog').stock_shortage_count : null,
-			unread_responses: this.stat.get('forms') ? this.stat.get('forms').unread_responses : null,
-			domain: 'https://' + Session.site.get('backoffice')
+			unread_responses: this.stat.get('forms') ? this.stat.get('forms').unread_responses : null
 		};
 	}
 
@@ -75,12 +81,37 @@ var DefaultController = Controller.extend({
 	 *	Login
 	 */
 
+	/**
+	 * Preload login page
+	 */
+	loadLogin: function(queryString) {
+
+		var qs = this.parseQueryString(queryString, {
+			'code_site': null
+		});
+
+		if (qs.code_site) {
+			// Test current access to code_site
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
+			Session.changeSite(qs.code_site).done(function() {
+				// Redirect to Dashboard
+				this.navigationController.navigate('/');
+			}.bind(this)).fail(function() {
+				// Show login form
+				this.showLogin({
+					code_site: qs.code_site
+				});
+			}.bind(this));
+		} else {
+			this.showLogin({});
+		}
+	},
 
 	/**
 	 * Show login page
 	 */
-	showLogin: function() {
-		var view = new LoginView();
+	showLogin: function(options) {
+		var view = new LoginView(options);
 		this.listenTo(view, 'form-login:submit', this.actionLogin);
 		this.navigationController.showModal(view);
 	},
@@ -94,7 +125,7 @@ var DefaultController = Controller.extend({
 	actionLogin: function(params, loginView) {
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 
-		Session.authenticate(params.login, params.password)
+		Session.authenticate(params.login, params.password, params.code_site)
 			.done(function() {
 				this.navigationController.navigate('/'); // Go to Dashboard
 				this.navigationController.hideModal();
@@ -142,7 +173,7 @@ module.exports = Marionette.AppRouter.extend({
 
 	appRoutes: {
 		"": "dashboard",
-		"login": "showLogin",
+		"login": "loadLogin",
 		"*notFound": "notFound"
 	},
 	/**

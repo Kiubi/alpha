@@ -6,6 +6,7 @@ var Controller = require('kiubi/controller.js');
 /* Models */
 var Ftp = require('../prefs/models/ftp');
 var Themes = require('./models/themes');
+var ImportTheme = require('kiubi/modules/modules/models/import.theme');
 
 /* Views */
 var ThemeView = require('./views/theme');
@@ -69,7 +70,9 @@ var ThemesController = Controller.extend({
 
 	showImport: function() {
 
-		this.navigationController.showContent(new ImportView());
+		this.navigationController.showContent(new ImportView({
+			model: new ImportTheme()
+		}));
 		this.setHeader({
 			title: 'Importer un thème'
 		});

@@ -109,9 +109,6 @@ var RowView = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
-			plural: function(nb, singular, plural) {
-				return (nb > 1 ? plural : singular).replace('%d', nb);
-			},
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			main_category: _.find(this.model.get('categories'), function(category) {
 				return category.is_main;

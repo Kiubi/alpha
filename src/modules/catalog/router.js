@@ -19,6 +19,8 @@ var Comments = require('./models/comments');
 var Taxes = require('./models/taxes');
 var Linked = require('./models/linked');
 var Settings = require('./models/settings');
+var Files = require('./models/downloads');
+var Folders = require('./models/folders');
 
 /* Views */
 var ProductView = require('./views/product');
@@ -34,6 +36,9 @@ var TagsView = require('./views/tags');
 var BrandsView = require('./views/brands');
 var VariantsView = require('./views/variants');
 
+var SelectModalView = require('kiubi/modules/media/views/modal.picker');
+var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
+
 /* Actions */
 function getHeadersAction(options) {
 
@@ -45,6 +50,9 @@ function getHeadersAction(options) {
 		[{
 			title: 'Ajouter un produit',
 			callback: ['actionNewProduct', options.targetCategory || null] // category_id
+		}, {
+			title: 'Ajouter un produit virtuel',
+			callback: ['actionNewDownload', options.targetCategory || null] // category_id
 		}, {
 			title: 'Ajouter une catégorie',
 			callback: 'actionNewCategory'
@@ -312,6 +320,96 @@ var CatalogController = Controller.extend({
 		}.bind(this)).fail(function(xhr) {
 			this.navigationController.showErrorModal(xhr);
 		}.bind(this));
+
+	},
+
+	actionNewDownload: function(category_id) {
+
+		var collection = new Files();
+		collection.folder_id = 8; // TODO Fix
+		var model = new(new Files()).model();
+
+		var contentView = new SelectModalView({
+			collection: collection,
+			model: model,
+			type: 'file',
+			folders: new Folders()
+		});
+
+		this.listenTo(contentView, 'close:modal', function() {
+			// Media choosed
+			var m = new Product({
+				name: 'Intitulé par défaut',
+				slug: 'intitule-par-defaut',
+				is_visible: false,
+				is_virtual: true,
+				file_id: contentView.model.get('media_id'),
+				stock: null,
+				categories: category_id ? [category_id] : []
+			});
+
+			return m.save().done(function() {
+				this.triggerSidebarMenu('refresh:products', 1);
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/catalog/products/' + m.get('product_id'));
+			}.bind(this)).fail(function(xhr) {
+				this.navigationController.showErrorModal(xhr);
+			}.bind(this));
+		});
+
+		this.listenTo(contentView, 'action:modal', function(view) {
+			this.actionPublishDownload(category_id, view.currentFolder);
+		}.bind(this));
+
+		this.navigationController.showInModal(contentView, {
+			title: 'Ajouter une fichier',
+			action: {
+				title: 'Publier'
+			},
+			modalClass: 'mediatheque'
+		});
+
+	},
+
+	actionPublishDownload: function(category_id, folder_id) {
+		var collection = new Files();
+		collection.folder_id = folder_id ? folder_id : 8; // TODO Fix
+		var model = new(new Files()).model();
+
+		var contentView = new PublishModalView({
+			isMultiFiles: false,
+			collection: collection
+		});
+
+		this.listenTo(contentView, 'uploaded:files', function(collection) {
+
+			var m = new Product({
+				name: 'Intitulé par défaut',
+				slug: 'intitule-par-defaut',
+				is_visible: false,
+				is_virtual: true,
+				file_id: collection.at(0).get('media_id'),
+				stock: null,
+				categories: category_id ? [category_id] : []
+			});
+
+			return m.save().done(function() {
+				this.triggerSidebarMenu('refresh:products', 1);
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/catalog/products/' + m.get('product_id'));
+			}.bind(this)).fail(function(xhr) {
+				this.navigationController.showErrorModal(xhr);
+			}.bind(this));
+
+		});
+
+		this.navigationController.showInModal(contentView, {
+			title: 'Médiathèque',
+			modalClass: 'mediatheque',
+			action: {
+				title: 'Publier un fichier'
+			}
+		});
 
 	},
 

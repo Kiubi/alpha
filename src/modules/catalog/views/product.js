@@ -23,13 +23,14 @@ var VatBehavior = require('kiubi/behaviors/vat.js');
 var format = require('kiubi/utils/format.js');
 var Forms = require('kiubi/utils/forms.js');
 var Datepicker = require('kiubi/behaviors/datepicker.js');
+
 var VariantsNames = require('../models/variants_names');
+var Downloads = require('../models/downloads');
+var DownloadsFolders = require('../models/folders');
 
 var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 // Variants
-
-
 
 var VariantImageRowView = Marionette.View.extend({
 	template: _.template('<input name="media_id" value="<%- media_id %>" autocomplete="off" type="radio">' +
@@ -78,6 +79,10 @@ var NewVariantRowView = Marionette.View.extend({
 		name: {
 			el: "div[data-role='name']",
 			replaceElement: true
+		},
+		file: {
+			el: "div[data-role='file']",
+			replaceElement: true
 		}
 	},
 
@@ -112,7 +117,8 @@ var NewVariantRowView = Marionette.View.extend({
 		'price_ecotax',
 		'is_stock_unlimited',
 		'stock',
-		'media_id'
+		'media_id',
+		'file_id'
 	],
 
 	initialize: function(options) {
@@ -120,6 +126,7 @@ var NewVariantRowView = Marionette.View.extend({
 		this.images = options.images;
 		this.names = options.names;
 		this.currency = options.currency;
+		this.is_virtual = options.is_virtual;
 	},
 
 	onRender: function() {
@@ -144,6 +151,16 @@ var NewVariantRowView = Marionette.View.extend({
 			name: 'name',
 			noResultsLabel: null
 		}));
+		if (this.is_virtual) {
+			this.showChildView('file', new FilePickerView({
+				fieldname: 'file_id',
+				fieldLabel: 'Fichier téléchargeable',
+				type: 'file',
+				collectionFiles: Downloads,
+				collectionFolders: DownloadsFolders
+				// value: this.model.get('file_id')
+			}));
+		}
 	},
 
 	onChildviewInput: function(term, view) {
@@ -162,7 +179,8 @@ var NewVariantRowView = Marionette.View.extend({
 		return {
 			images: this.images.toJSON(),
 			convertMediaPath: Session.convertMediaPath.bind(Session),
-			currency: this.currency
+			currency: this.currency,
+			is_virtual: this.is_virtual
 		};
 	},
 
@@ -213,6 +231,10 @@ var VariantRowView = Marionette.View.extend({
 		name: {
 			el: "div[data-role='name']",
 			replaceElement: true
+		},
+		file: {
+			el: "div[data-role='file']",
+			replaceElement: true
 		}
 	},
 
@@ -248,7 +270,8 @@ var VariantRowView = Marionette.View.extend({
 		'price_ecotax',
 		'is_stock_unlimited',
 		'media_id',
-		'stock'
+		'stock',
+		'file_id'
 	],
 
 	editing: false,
@@ -258,6 +281,7 @@ var VariantRowView = Marionette.View.extend({
 		this.images = options.images;
 		this.names = options.names;
 		this.currency = options.currency;
+		this.is_virtual = options.is_virtual;
 		this.editing = false;
 		this.listenTo(this.images, 'add remove', this.onImageSync);
 	},
@@ -275,7 +299,8 @@ var VariantRowView = Marionette.View.extend({
 			price_discount_ex_vat: format.formatFloat(this.model.get('price_discount_ex_vat'), 4),
 			price_discount_inc_vat: format.formatFloat(this.model.get('price_discount_inc_vat'), 4),
 			price_ecotax: format.formatFloat(this.model.get('price_ecotax')),
-			currency: this.currency
+			currency: this.currency,
+			is_virtual: this.is_virtual
 		};
 	},
 
@@ -302,6 +327,17 @@ var VariantRowView = Marionette.View.extend({
 			current: this.model.get('name'),
 			noResultsLabel: null
 		}));
+
+		if (this.is_virtual) {
+			this.showChildView('file', new FilePickerView({
+				fieldname: 'file_id',
+				fieldLabel: 'Fichier téléchargeable',
+				type: 'file',
+				value: this.model.get('file_id'),
+				collectionFiles: Downloads,
+				collectionFolders: DownloadsFolders
+			}));
+		}
 	},
 
 	/**
@@ -543,6 +579,23 @@ var TypeSelectorView = Marionette.View.extend({
 	fields: [],
 	type: '',
 	product: null,
+	backupFields: [
+		'text1',
+		'text2',
+		'text3',
+		'text4',
+		'text5',
+		'text6',
+		'text7',
+		'text8',
+		'text9',
+		'text10',
+		'text11',
+		'text12',
+		'text13',
+		'text14',
+		'text15'
+	],
 
 	ui: {
 		'select': "select[name='type']"
@@ -550,18 +603,18 @@ var TypeSelectorView = Marionette.View.extend({
 
 	events: {
 		'change @ui.select': function() {
-			this.selectType(this.getUI('select').val());
+			this.selectType(this.getUI('select').val(), true);
 		}
 	},
 
 	behaviors: [CharCountBehavior, WysiwygBehavior, SelectifyBehavior],
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['type', 'typesSource', 'product']);
+		this.mergeOptions(options, ['type', 'typesSource', 'product', 'formEl']);
 
 		this.typesSource.done(function(types) {
 			this.types = types;
-			this.selectType(this.type);
+			this.selectType(this.type, false);
 		}.bind(this));
 	},
 
@@ -574,8 +627,17 @@ var TypeSelectorView = Marionette.View.extend({
 		};
 	},
 
-	selectType: function(type) {
+	selectType: function(type, backup) {
 		this.type = type;
+
+		// backup values
+		if (backup) {
+			this.triggerMethod('wysiwyg:save');
+			this.product.set(
+				Forms.extractFormFields(this.backupFields, this.formEl)
+			);
+		}
+
 		var fields = [];
 		var current = _.find(this.types, function(type) {
 			return type.type == this.type;
@@ -669,6 +731,10 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
+	ui: {
+		'form': 'form[data-role="part"]'
+	},
+
 	fields: [
 		'name',
 		'available_date',
@@ -722,7 +788,8 @@ module.exports = Marionette.View.extend({
 				taxes: this.taxes,
 				images: this.images,
 				names: new VariantsNames(),
-				currency: format.currencyEntity(this.model.meta.currency)
+				currency: format.currencyEntity(this.model.meta.currency),
+				is_virtual: this.model.get('is_virtual')
 			}
 		});
 
@@ -767,12 +834,13 @@ module.exports = Marionette.View.extend({
 		var view = new TypeSelectorView({
 			type: this.model.get('type'),
 			product: this.model,
-			typesSource: this.typesSource
+			typesSource: this.typesSource,
+			formEl: this.getUI('form')
 		});
 		this.showChildView('type', view);
 		// proxy filepickers events
 		this.listenTo(view, 'childview:field:change', function() {
-			this.triggerMethod('field:change')
+			this.triggerMethod('field:change');
 		}.bind(this));
 
 		this.showChildView('images', this.imagesView);

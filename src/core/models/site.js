@@ -22,8 +22,25 @@ module.exports = Backbone.Model.extend({
 		domain: '',
 		backoffice: '',
 		name: '',
+		plan: {
+			/*
+			plan_id: 0,
+			plan_name: '',
+			is_free
+			is_closed
+			is_trial
+			endtrial_date,
+			closing_date
+			balance
+			*/
+		},
 		scopes: [], // extra_fields = scopes
 		features: [] // extra_fields = features
+	},
+
+	hasScope: function(name) {
+		if (!this.get('scopes')) return false;
+		return _.contains(this.get('scopes'), name);
 	},
 
 	/**

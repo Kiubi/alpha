@@ -8,6 +8,7 @@ var SelectModalView = require('kiubi/modules/media/views/modal.picker');
 var WysiwygModalView = require('kiubi/modules/media/views/modal.picker.wysiwyg');
 
 var Files = require('kiubi/modules/media/models/files');
+var Folders = require('kiubi/modules/media/models/folders');
 var Page = require('kiubi/modules/cms/models/page');
 
 var WysiwygChannel = Backbone.Radio.channel('wysiwyg');
@@ -16,9 +17,14 @@ var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 
 function addSign(match, media) {
-	var id = media.match(/(^|\/)([0-9]+)($|\/|\.)/);
+	var id = media.match(/(^|\/)([0-9]+)(\?|$|\/|\.)/);
 	if (id) {
 		var sign = Session.hashMedia(parseInt(id[2]));
+		// Purge une eventuelle queryString
+		var p = media.indexOf("?");
+		if (p >= 0) {
+			media = media.substring(0, p);
+		}
 		return 'src="https://' + Session.site.get('backoffice') + '/media/' + media + '?sign=' + sign + '"';
 	}
 	return match;
@@ -62,10 +68,10 @@ tinyMCE.PluginManager.add('kiubi', function(editor, url) {
 		}
 	});
 	editor.on('BeforeSetContent', function(e) {
-		e.content = e.content.replace(/src="\/media\/([^"]+)"/, addSign);
+		e.content = e.content.replace(/src="\/media\/([^"]+)"/gi, addSign);
 	});
 	editor.on('GetContent', function(e) {
-		var reg = new RegExp('src="https://' + Session.site.get('backoffice') + '/media/([^"]+)"', 'i');
+		var reg = new RegExp('src="https://' + Session.site.get('backoffice') + '/media/([^"]+)"', 'gi');
 		e.content = e.content.replace(reg, removeSign);
 	});
 });
@@ -306,10 +312,14 @@ module.exports = Marionette.Behavior.extend({
 		this.clearAllWysiwyg();
 	},
 
-	onBeforeSave: function() {
+	onWysiwygSave: function() {
 		_.each(this.editorList, function(editor) {
 			editor.save();
 		});
+	},
+
+	onBeforeSave: function() {
+		this.onWysiwygSave();
 	},
 
 	/**
@@ -329,7 +339,8 @@ module.exports = Marionette.Behavior.extend({
 		var contentView = new SelectModalView({
 			collection: collection,
 			model: model,
-			type: 'file'
+			type: 'file',
+			folders: new Folders()
 		});
 
 		this.listenTo(contentView, 'close:modal', function() {

@@ -28,9 +28,66 @@
 </ul>
 
 <% if(isAuth) { %>
-<div class="user">
-	<a href="#" data-toggle="tooltip" data-placement="right" data-html="true" data-container="body" title="<strong><%- user.firstname %> <%- user.lastname %></strong><br/>Premium">
-		<img src="<%- user.avatar %>" class="rounded-circle img-avatar d-block mx-auto">
+<div class="user dropup">
+	<a href="#" id="accountmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	<img src="<%- user.avatar %>" class="rounded-circle img-avatar d-block mx-auto" data-toggle="tooltip" data-placement="right" data-html="true" data-container="body" title="<%- user.firstname %> <%- user.lastname %>">
 	</a>
+	<div class="dropdown-menu ml-2 mb-2" aria-labelledby="accountmenu">
+		<div class="user-detail dropdown-item-text text-nowrap">
+			<a href="#" data-role="users" class="d-inline-block">
+				<img src="<%- user.avatar %>" class="rounded-circle img-avatar d-block float-left mr-3">
+				<span>
+					<strong><%- user.firstname %> <%- user.lastname %></strong>
+					<br>
+					<small><%- user.email %></small>
+				</span>
+			</a>
+		</div>
+		<div class="dropdown-divider"></div>
+		<div class="row no-gutters">
+			<div class="col-5 d-flex flex-column">
+				<div class="dropdown-item-text text-nowrap">
+					<%- site.plan.plan_name %><br>
+					<% if (site.plan.is_free) { %>
+						<small class="">Offert</small>
+					<% } else if (site.plan.is_trial) { %>
+						<small class="">Jusqu'au <%- endtrial_date %></small>
+					<% } else { %>
+						<small class="">Jusqu'au <%- closing_date %><br>
+						<%- plural(site.plan.balance, '%d crédit restant', '%d crédits restant') %><br>
+						</small>
+					<% } %>
+				</div>
+				<div class="dropdown-divider"></div>
+				<% if (has_scope_subscription) { %>
+				<div><a class="dropdown-item py-2" data-role="subscription" href="#">Abonnement</a></div>
+				<div><a class="dropdown-item py-2" data-role="bill" href="#">Factures</a></div>
+				<% } else { %>
+				<div><span class="dropdown-item-text disabled py-2">Abonnement</span></div>
+				<div><span class="dropdown-item-text disabled py-2">Factures</span></div>
+				<% } %>
+				<% if (has_scope_users) { %>
+				<div><a class="dropdown-item py-2" data-role="users">Utilisateurs</a></div>
+				<% } else { %>
+				<div><span class="dropdown-item-text disabled py-2">Utilisateurs</span></div>
+				<% } %>
+				<% if(has_scope_support) { %>
+				<div><a class="dropdown-item py-2" href="#" data-role="support">Support</a></div>
+				<% }  else { %>
+				<div><a class="dropdown-item py-2" target="_blank" href="https://aide.kiubi.com/documentation/">Support</a></div>
+				<% } %>
+				<div class="dropdown-divider mt-auto"></div>
+				<div><a class="dropdown-item" href="#" data-role="logout">Se déconnecter</a></div>
+			</div>
+			<div class="col-7 border-left border-light quotas">
+				<div data-role="usage"></div>
+				<% if(has_scope_subscription) { %>
+				<div>
+					Quand vos quotas sont atteints, <a href="#" data-role="subscription" class="text-info">faites évoluer votre abonnement</a>
+				</div>
+				<% } %>
+			</div>
+		</div>
+	</div>
 </div>
 <% } %>

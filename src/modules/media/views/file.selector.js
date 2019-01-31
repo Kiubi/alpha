@@ -3,6 +3,7 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
 var Files = require('kiubi/modules/media/models/files.js');
+var Folders = require('kiubi/modules/media/models/folders.js');
 
 var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
 var SelectModalView = require('kiubi/modules/media/views/modal.picker.js');
@@ -45,7 +46,8 @@ module.exports = Marionette.View.extend({
 		var contentView = new SelectModalView({
 			type: this.type,
 			model: this.model,
-			collection: collection
+			collection: collection,
+			folders: new Folders()
 		});
 
 		this.listenTo(contentView, 'action:modal', this.switchToPublish);

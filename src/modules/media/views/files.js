@@ -26,6 +26,7 @@ var RowView = Marionette.View.extend({
 			last_date: format.formatLongDateTime(this.model.get('modification_date')),
 			size: format.formatBytes(this.model.get('weight'), 2),
 			convertMediaPath: Session.convertMediaPath.bind(Session),
+			has_thumb: this.model.get('thumb') ? true : false,
 			is_copy_supported: ClipboardJS.isSupported()
 		};
 	},

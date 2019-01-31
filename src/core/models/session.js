@@ -50,7 +50,7 @@ var LocalStorage = function() {
 function storageFactory() {
 
 	try {
-		var storage = window['localStorage'],
+		var storage = window.localStorage,
 			x = '__storage_test__';
 		storage.setItem(x, x);
 		storage.removeItem(x);
@@ -127,6 +127,7 @@ function setCredidentials(AuthPromise, Session) {
 		Session.user.set('lastname', data.user.lastname);
 		Session.user.set('avatar', data.user.avatar);
 		Session.user.set('email', data.user.email);
+		Session.user.set('scopes', data.user.scopes || []);
 
 		Session.user.trigger('authenticate');
 	}).then(null, function(meta, error) {
@@ -173,7 +174,15 @@ var Session = Backbone.Model.extend({
 	 * @returns {Promise}
 	 */
 	start: function() {
-		var token = this.storage.getItem('AccesToken');
+
+		var token, matches;
+		if (document.location.hash && (matches = document.location.hash.match(/^#([a-f0-9]{40})$/))) { // valid token in hash
+			token = matches[1];
+			history.replaceState(null, null, ' '); // clear hash token from url
+		} else {
+			token = this.storage.getItem('AccesToken');
+		}
+
 		if (!token) {
 			return Backbone.$.Deferred().reject();
 		}
@@ -190,9 +199,10 @@ var Session = Backbone.Model.extend({
 	 *
 	 * @param {String} login
 	 * @param {String} password
+	 * @param {String} code_site (optional)
 	 * @returns Promise
 	 */
-	authenticate: function(login, password) {
+	authenticate: function(login, password, code_site) {
 		this.clearToken();
 
 		return setCredidentials(api.post('auth/token', {
@@ -200,19 +210,25 @@ var Session = Backbone.Model.extend({
 			password: password
 		}), this).then(function() {
 			var promise;
-			var lastSite = this.getLastSite();
 
-			if (lastSite) {
+			if (code_site) {
+				promise = Backbone.$.Deferred();
+				allowedSite(code_site).done(function(meta, data) {
+					promise.resolve(meta, data);
+				}).fail(function(error, b, c, d) {
+					promise.reject(error);
+				});
+			} else if (this.getLastSite()) {
 				// try last site 
 				// fallback => first allowed site
 				promise = Backbone.$.Deferred();
-				allowedSite(lastSite).done(function(meta, data) {
+				allowedSite(this.getLastSite()).done(function(meta, data) {
 					promise.resolve(meta, data);
 				}).fail(function() {
 					pickFirstSite().done(function(meta, data) {
 						promise.resolve(meta, data);
-					}).fail(function(meta, error) {
-						promise.reject(meta, error);
+					}).fail(function(error) {
+						promise.reject(error);
 					});
 				});
 			} else {
@@ -264,6 +280,78 @@ var Session = Backbone.Model.extend({
 	},
 
 	/**
+	 * 
+	 * @param {Number} customer_id
+	 * @return {String}
+	 */
+	autologLink: function(customer_id) {
+		customer_id = customer_id || '';
+
+		var user_id = this.user.get('user_id');
+		var code_site = this.site.get('code_site');
+		var expire = Math.floor(Date.now() / 1000) + 5 * 60; // expire in five minutes (have to be less then 10)
+		var token = this.get('token_media');
+
+		var payload = '' + user_id + code_site + expire + customer_id + token;
+		var sign = createHash('sha256').update(payload).digest('hex');
+
+		var link = this.site.get('domain') + '/?';
+		link += 'u=' + user_id + '&';
+		link += 'expire=' + expire + '&';
+		if (customer_id) {
+			link += 'as=' + customer_id + '&';
+		}
+		link += 'sign=' + sign;
+
+		return link;
+	},
+
+	/**
+	 *
+	 * @param {String} path
+	 * @return {String}
+	 */
+	autologBackLink: function(path) {
+
+		var user_id = this.user.get('user_id');
+		var code_site = this.site.get('code_site');
+		var expire = Math.floor(Date.now() / 1000) + 5 * 60; // expire in five minutes (have to be less then 10)
+		var token = this.get('token_media');
+
+		var payload = '' + user_id + code_site + expire + token;
+		var sign = createHash('sha256').update(payload).digest('hex');
+
+		var link = 'https://' + this.site.get('backoffice') + path + '?';
+		link += 'u=' + user_id + '&';
+		link += 'expire=' + expire + '&';
+		link += 'sign=' + sign;
+
+		return link;
+	},
+
+	/**
+	 *
+	 * @param {String} path
+	 * @return {String}
+	 */
+	autologAccountLink: function(path) {
+
+		var user_id = this.user.get('user_id');
+		var expire = Math.floor(Date.now() / 1000) + 5 * 60; // expire in five minutes (have to be less then 10)
+		var token = this.get('token_media');
+
+		var payload = '' + user_id + expire + token;
+		var sign = createHash('sha256').update(payload).digest('hex');
+
+		var link = 'https://www.kiubi-admin.com' + path + (path.indexOf('?') > -1 ? '&' : '?');
+		link += 'u=' + user_id + '&';
+		link += 'expire=' + expire + '&';
+		link += 'sign=' + sign;
+
+		return link;
+	},
+
+	/**
 	 * Convert path to allow rendering in browser
 	 *
 	 * @param {String} path. Ex : /themes/theme/illustration.jpg
@@ -280,10 +368,7 @@ var Session = Backbone.Model.extend({
 	 * @returns {boolean}
 	 */
 	hasScope: function(name) {
-
-		if (!this.site.get('scopes')) return false;
-
-		return _.contains(this.site.get('scopes'), name);
+		return this.site.hasScope(name) || this.user.hasScope(name);
 	},
 
 	/**
@@ -348,6 +433,20 @@ var Session = Backbone.Model.extend({
 	clearToken: function() {
 		this.storage.clearItem('AccesToken');
 		api.access_token = null;
+	},
+
+	/**
+	 * 
+	 */
+	logout: function() {
+		this.user.clear({
+			silent: true
+		});
+		this.site.clear({
+			silent: true
+		});
+		this.clearToken();
+		this.trigger('logout');
 	}
 
 });

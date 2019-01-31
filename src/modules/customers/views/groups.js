@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var format = require('kiubi/utils/format.js');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 
@@ -11,9 +12,7 @@ var RowView = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
-			plural: function(nb, singular, plural) {
-				return (nb > 1 ? plural : singular).replace('%d', nb);
-			}
+			plural: format.plural
 		};
 	},
 

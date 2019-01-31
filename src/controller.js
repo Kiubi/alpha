@@ -3,34 +3,6 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
 /**
- * Helper to set actions and bind them to the controler
- *
- * @param  {Array} actions
- * @param  {Marionette.Object} controller
- */
-function setHeaderActions(actions, controller) {
-
-	// Bind others callback
-	if (actions && actions.length) {
-
-		_(actions).each(function(item) {
-			if (item.callback && !_.isFunction(item.callback)) {
-				if (_.isArray(item.callback)) {
-					item.callback = controller[item.callback[0]].bind(controller, item.callback[
-						1]);
-				} else {
-					item.callback = controller[item.callback].bind(controller);
-				}
-			}
-		});
-	}
-
-	controller.navigationController.setHeaderActions(actions);
-}
-
-
-
-/**
  * Helper to set tabs
  *
  * @param  {Object} tabs Page
@@ -129,7 +101,7 @@ module.exports = Marionette.Object.extend({
 	 */
 	setHeader: function(breadcrum, actions, tabs) {
 		this.setBreadCrum(breadcrum);
-		setHeaderActions(actions, this);
+		this.setHeaderActions(actions);
 		setHeaderTabs(tabs, this);
 		this.navigationController.refreshHeader();
 	},
@@ -153,6 +125,34 @@ module.exports = Marionette.Object.extend({
 		}
 		this.navigationController.setBreadCrum(bc);
 		if (refresh) this.navigationController.refreshHeader();
+	},
+
+	/**
+	 * Helper to set actions and bind them to the controler
+	 *
+	 * @param  {Array} actions
+	 * @param  {Boolean} refresh Rerender header
+	 */
+	setHeaderActions: function(actions, refresh) {
+		var controller = this;
+
+		// Bind others callback
+		if (actions && actions.length) {
+
+			_(actions).each(function(item) {
+				if (item.callback && !_.isFunction(item.callback)) {
+					if (_.isArray(item.callback)) {
+						item.callback = this[item.callback[0]].bind(this, item.callback[1]);
+					} else {
+						item.callback = this[item.callback].bind(this);
+					}
+				}
+			}.bind(this));
+		}
+
+		this.navigationController.setHeaderActions(actions);
+		if (refresh) this.navigationController.refreshHeader();
+
 	},
 
 	/**

@@ -169,55 +169,6 @@
 
 <% } %>
 
-  <article class="post-article">
-    <header class="post-header">
-      <h1>Publier des fichiers volumineux</h1>
-    </header>
-    <div class="post-content">
-      <p>
-        Un compte FTP est disponible pour chaque site.
-        Il permet de publier des fichiers volumineux de plus de 7Mo dans la médiathèque.
-        Les informations ci-dessous servent à configurer un logiciel FTP.
-      </p>
-      <div class="row">
-        <div class="col-3">
-          <label for="">Adresse de l'hôte :</label>
-        </div>
-        <div class="col-9"><p><%- ftp.host %></p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-          <label for="">Port :</label>
-        </div>
-        <div class="col-9"><p><%- ftp.port %></p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-          <label for="">Nom d'utilisateur :</label>
-        </div>
-        <div class="col-9"><p><%- ftp.login %></p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-          <label for="">Mot de passe :</label>
-        </div>
-        <div class="col-9"><p><span style="display: none" data-role="password-mask"><%- ftp.password %></span><a data-role="password-toggle" href="#">Afficher le mot de passe</a></p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-          <label for="">Répertoire racine :</label>
-        </div>
-        <div class="col-9"><p>/mediatheque/</p>
-        </div>
-      </div>
-    </div>
-    <footer class="post-footer"></footer>
-  </article>
-
 </form>
 
 <div class="save">

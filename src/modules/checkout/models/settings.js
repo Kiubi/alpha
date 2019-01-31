@@ -32,6 +32,7 @@ module.exports = Backbone.Model.extend({
 		stockout_threshold: 0,
 		min_order_amount: 0.01,
 		decrement_stock: 'at_payment',
+		mail_recipients: '',
 		mail_pending: '',
 		mail_processing: '',
 		mail_processed: '',

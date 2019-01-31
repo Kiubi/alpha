@@ -183,7 +183,7 @@ module.exports = Marionette.View.extend({
 			}));
 			this.listenTo(this.getChildView('denied_products').collection, 'update', function() {
 				this.triggerMethod('field:change');
-			}.bind(this))
+			}.bind(this));
 		} else {
 			this.showChildView('carriers', new SelectView({
 				collectionPromise: this.carriers.promisedSelect({

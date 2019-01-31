@@ -22,20 +22,39 @@ var TypeSelectorView = Marionette.View.extend({
 
 	events: {
 		'change @ui.select': function() {
-			this.selectType(this.getUI('select').val());
+			this.selectType(this.getUI('select').val(), true); // with backup
 		}
 	},
 
 	types: [],
 	type: '',
 	fields: [],
+	backupFields: [
+		'title',
+		'subtitle',
+		'text1',
+		'text2',
+		'text3',
+		'text4',
+		'text5',
+		'text6',
+		'text7',
+		'text8',
+		'text9',
+		'text10',
+		'text11',
+		'text12',
+		'text13',
+		'text14',
+		'text15'
+	],
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['type', 'typesSource', 'post']);
+		this.mergeOptions(options, ['type', 'typesSource', 'post', 'formEl']);
 
 		this.typesSource.done(function(types) {
 			this.types = types;
-			this.selectType(this.type);
+			this.selectType(this.type, false); // skip backup
 		}.bind(this));
 	},
 
@@ -48,8 +67,17 @@ var TypeSelectorView = Marionette.View.extend({
 		};
 	},
 
-	selectType: function(type) {
+	selectType: function(type, backup) {
 		this.type = type;
+
+		// backup values
+		if (backup) {
+			this.triggerMethod('wysiwyg:save');
+			this.post.set(
+				Forms.extractFormFields(this.backupFields, this.formEl)
+			);
+		}
+
 		var fields = [];
 		var current = _.find(this.types, function(type) {
 			return type.type == this.type;
@@ -142,6 +170,10 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
+	ui: {
+		'form': 'form'
+	},
+
 	menus: null,
 
 	initialize: function(options) {
@@ -153,12 +185,13 @@ module.exports = Marionette.View.extend({
 		var view = new TypeSelectorView({
 			type: this.model.get('type'),
 			post: this.model,
-			typesSource: this.typesSource
+			typesSource: this.typesSource,
+			formEl: this.getUI('form')
 		});
 		this.showChildView('type', view);
 		// proxy filepickers events
 		this.listenTo(view, 'childview:field:change', function() {
-			this.triggerMethod('field:change')
+			this.triggerMethod('field:change');
 		}.bind(this));
 
 		this.showChildView('page', new SelectView({

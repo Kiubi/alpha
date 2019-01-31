@@ -8,7 +8,6 @@ var Site = require('./models/site');
 var Theme = require('./models/theme');
 var Contact = require('./models/contact');
 var Medias = require('./models/medias');
-var Ftp = require('./models/ftp');
 var Meta = require('./models/meta');
 var Countries = require('kiubi/core/models/countries');
 var Domains = require('kiubi/core/models/domains');
@@ -143,15 +142,13 @@ var PrefsController = Controller.extend({
 	showMedias: function() {
 
 		var m = new Medias();
-		var f = new Ftp();
 
-		Backbone.$.when(m.fetch(), f.fetch()).done(function() {
+		m.fetch().done(function() {
 
 			var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 			var view = new MediasView({
 				model: m,
-				ftp: f,
 				enableAdvanced: Session.hasFeature('advanced_media')
 			});
 			this.navigationController.showContent(view);

@@ -57,7 +57,7 @@ function searchConfig(type) {
 					label: post.label,
 					href: '/cms/posts/' + post.post_id,
 					icon: icon
-				}
+				};
 			};
 			header = 'Résultats dans le site web';
 			service = 'Site web';
@@ -72,7 +72,7 @@ function searchConfig(type) {
 					label: product.name,
 					href: '/catalog/products/' + product.product_id,
 					icon: icon
-				}
+				};
 			};
 			header = 'Résultats dans le catalogue';
 			service = 'Catalogue';
@@ -86,7 +86,7 @@ function searchConfig(type) {
 					label: customer.firstname + ' ' + customer.lastname,
 					href: '/customers/' + customer.customer_id,
 					icon: icon
-				}
+				};
 			};
 			header = 'Résultats dans les membres';
 			service = 'Membres';
@@ -100,7 +100,7 @@ function searchConfig(type) {
 					label: post.title,
 					href: '/blog/posts/' + post.post_id,
 					icon: icon
-				}
+				};
 			};
 			header = 'Résultats dans le blog';
 			service = 'Blog';
@@ -114,7 +114,7 @@ function searchConfig(type) {
 					label: order.reference, // TODO show order.status
 					href: '/checkout/orders/' + order.order_id,
 					icon: icon
-				}
+				};
 			};
 			header = 'Résultats dans les commandes';
 			service = 'Commandes';
@@ -128,7 +128,7 @@ function searchConfig(type) {
 					label: file.name,
 					href: '/media/files/' + file.media_id,
 					icon: icon
-				}
+				};
 			};
 			header = 'Résultats dans la médiathèque';
 			service = 'Médiathèque';
@@ -156,7 +156,8 @@ module.exports = Marionette.View.extend({
 	ui: {
 		'site-dropdown': '[data-role="site-dropdown"]',
 		'site-search': '[data-role="site-search"]',
-		'input-search': '[data-role="site-search"] input'
+		'input-search': '[data-role="site-search"] input',
+		'login': '[data-role="login"]'
 	},
 
 	events: {
@@ -169,6 +170,10 @@ module.exports = Marionette.View.extend({
 		'shown.bs.dropdown @ui.site-dropdown': function(event) {
 			this.getUI('input-search').focus();
 			this.trigger('open:sitesearch');
+		},
+		'click @ui.login': function() {
+			var Session = Backbone.Radio.channel('app').request('ctx:session');
+			window.open(Session.autologLink());
 		}
 
 	},

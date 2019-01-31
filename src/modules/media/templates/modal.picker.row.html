@@ -1,22 +1,22 @@
 <div class="row no-gutters">
 	<div class="col-auto">
-		<% if(type == 'image') { %>
-			<div class="media-object md-icon md-image img-default"></div>
-			<div class="media-object"><img alt="<%- name %>" src="<%- convertMediaPath('/media/miniature/' + media_id + '.jpg') %>" /></div>
-			<% } else { %>
-				<div class="md-icon md-file media-object file"></div><span class="file-type"><%- ext %></span>
-				<% } %>
-			</div>
-			<div class="col item-body">
-						<h4><%- name %></h4>
-						<span><%- size %><% if(type == 'image') { %> • <%- width %> x <%- height %>px<% } %></span>
-					</div>
-			<div class="col-auto">
-					<% if(is_selectable && !is_selected) { %>
-						<a class="btn btn-primary float-right" href="#" role="button" data-role="select">Choisir</a>
-					<% } %>
-					<% if(is_selected) { %>
-						<span class="md-icon md-check-circle text-info float-right"></span>
-					<% } %>
-				</div>
-			</div>
+		<% if(type == 'image' && has_thumb) { %>
+		<div class="media-object md-icon md-image img-default"></div>
+		<div class="media-object"><img alt="<%- name %>" src="<%- convertMediaPath('/media/miniature/' + media_id + '.jpg') %>" /></div>
+		<% } else { %>
+		<div class="md-icon md-file media-object file"></div><span class="file-type"><%- ext %></span>
+		<% } %>
+	</div>
+	<div class="col item-body">
+		<h4><%- name %></h4>
+		<span><%- size %><% if(type == 'image') { %> • <%- width %> x <%- height %>px<% } %></span>
+	</div>
+	<div class="col-auto">
+		<% if(is_selectable && !is_selected) { %>
+		<a class="btn btn-primary float-right" href="#" role="button" data-role="select">Choisir</a>
+		<% } %>
+		<% if(is_selected) { %>
+		<span class="md-icon md-check-circle text-info float-right"></span>
+		<% } %>
+	</div>
+</div>

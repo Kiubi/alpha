@@ -17,7 +17,8 @@ module.exports = Marionette.View.extend({
 		'mail_processing',
 		'mail_processed',
 		'mail_shipped',
-		'mail_cancelled'
+		'mail_cancelled',
+		'mail_recipients'
 	],
 
 	onSave: function() {

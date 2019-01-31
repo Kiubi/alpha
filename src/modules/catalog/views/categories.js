@@ -16,10 +16,6 @@ var RowView = Marionette.View.extend({
 	className: 'list-item',
 	templateContext: function() {
 		return {
-			plural: function(nb, singular, plural) {
-				return (nb > 1 ? plural : singular).replace('%d', nb);
-			},
-			preview: Session.site.get('domain') + '/catalogue/' + this.model.get('slug') + '/', // TODO fix custom breadcrum
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			short_desc: _string.prune(_string.stripTags(this.model.get('description')), 120)
 		};

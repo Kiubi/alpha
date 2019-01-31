@@ -1,0 +1,28 @@
+<div class="quotas-label <%= prct_free < 15 ? 'text-danger' : '' %>">Espace disque <span class="float-right quotas-detail"><%= formatBytes(space.used) %>  / <%= formatBytes(space.total) %></span></div>
+<div class="progress <%= prct_free < 15 ? 'progress-bar-danger' : '' %>">
+	<div class="progress-bar progress-bar-storage-media" role="progressbar" aria-valuenow="<%- prct_medias %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- prct_medias %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Médias : <%= formatBytes(space.medias) %>"></div>
+	<div class="progress-bar progress-bar-storage-data" role="progressbar" aria-valuenow="<%- prct_datas %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- prct_datas %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Données : <%= formatBytes(space.datas) %>"></div>
+	<div class="progress-bar progress-bar-storage-ftp" role="progressbar" aria-valuenow="<%- prct_ftp %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- prct_ftp %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="FTP : <%= formatBytes(space.ftp) %>"></div>
+	<div class="progress-bar progress-bar-free" role="progressbar" aria-valuenow="<%- prct_free %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- prct_free %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Libre : <%= formatBytes(space.free) %>"></div>
+</div>
+<% if(products && products.total) { %>
+<div class="quotas-label <%= prct_products > 85 ? 'text-danger' : '' %>">Produits <span class="float-right quotas-detail"><%- products.used %> / <%- products.total %></span></div>
+<div class="progress <%= prct_products > 85 ? 'progress-bar-danger' : '' %>">
+	<div class="progress-bar progress-bar-storage-media" role="progressbar" aria-valuenow="<%- prct_products %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- prct_products %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Utilisé : <%- products.used %>"></div>
+	<div class="progress-bar progress-bar-free" role="progressbar" aria-valuenow="<%- 100 - prct_products %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- 100 - prct_products %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Libre : <%- products.free %>"></div>
+</div>
+<% } %>
+<% if(forms && forms.total) { %>
+<div class="quotas-label <%= prct_forms > 85 ? 'text-danger' : '' %>">Formulaires <span class="float-right quotas-detail"><%- forms.used %> / <%- forms.total %></span></div>
+<div class="progress <%= prct_forms > 85 ? 'progress-bar-danger' : '' %>">
+	<div class="progress-bar progress-bar-storage-media" role="progressbar" aria-valuenow="<%- prct_forms %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- prct_forms %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Utilisé : <%- forms.used %>"></div>
+	<div class="progress-bar progress-bar-free" role="progressbar" aria-valuenow="<%- 100 - prct_forms %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- 100 - prct_forms %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Libre : <%- forms.free %>"></div>
+</div>
+<% } %>
+<% if(users && users.total) { %>
+<div class="quotas-label <%= prct_users > 85 ? 'text-danger' : '' %>">Utilisateurs <span class="float-right quotas-detail"><%- users.used %> / <%- users.total %></span></div>
+<div class="progress <%= prct_users > 85 ? 'progress-bar-danger' : '' %>">
+	<div class="progress-bar progress-bar-storage-media" role="progressbar" aria-valuenow="<%- prct_users %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- prct_users %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Utilisé : <%- users.used %>"></div>
+	<div class="progress-bar progress-bar-free" role="progressbar" aria-valuenow="<%- 100 - prct_users %>" aria-valuemin="0" aria-valuemax="100" style="width:<%- 100 - prct_users %>%" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" data-original-title="Libre : <%- users.free %>"></div>
+</div>
+<% } %>

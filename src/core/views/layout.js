@@ -28,9 +28,9 @@ var View = Marionette.View.extend({
 	childViewEvents: {
 		'sidebarmenu:toggle': function() {
 			if (this.$el.hasClass('closed')) {
-				this.unlockMenu()
+				this.unlockMenu();
 			} else {
-				this.lockMenu()
+				this.lockMenu();
 			}
 		},
 

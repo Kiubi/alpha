@@ -73,14 +73,14 @@
 
 				<% _.each(options, function(option){%>
 				<div class="list-item order-item">
-									<div class="row no-gutters">
+									<div class="row">
 										<div class="col item-body">
 									<h4><%- option.name %></h4>
 									<%- option.value %>
 								</div>
-								<div class="col-3 text-right"><%- option.price_inc_vat_label %> TTC</div>
+								<div class="col-3 text-right no-white-space"><%- option.price_inc_vat_label %> TTC</div>
 								<div class="col-2">x<%- option.quantity %></div>
-								<div class="col-auto text-right" style="width: 150px;"><%- option.price_total_inc_vat_label %> TTC</div>
+								<div class="col-auto text-right no-white-space" style="width: 150px;"><%- option.price_total_inc_vat_label %> TTC</div>
 							</div>
 				</div>
 				<%}) %>

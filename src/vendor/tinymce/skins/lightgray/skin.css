@@ -150,7 +150,7 @@ div.mce-menubtn.mce-opened {
 }
 
 .mce-window {
-	background: #ebecf0;
+	background: #f2f3f7;
   -webkit-box-shadow: 3px 3px 40px 0 rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 3px 3px 40px 0 rgba(0, 0, 0, 0.3);
   box-shadow: 3px 3px 40px 0 rgba(0, 0, 0, 0.3);
@@ -264,11 +264,11 @@ div.mce-menubtn.mce-opened {
 }
 
 .mce-tabs + .mce-container-body {
-  background: #ebecf0;
+  background: #f2f3f7;
 }
 
 .mce-tabs {
-  background: #ebecf0 !important;
+  background: #f2f3f7 !important;
   border-color: #d9d9d9;
 }
 
@@ -276,13 +276,13 @@ div.mce-menubtn.mce-opened {
   padding: 6px 15px 12px 15px;
   font-family: 'Open Sans', sans-serif;
   color: #868686 !important;
-  background: #ebecf0 !important;
+  background: #f2f3f7 !important;
   border-color: #d9d9d9;
 }
 
 .mce-tab.mce-active {
   color: #363636 !important;
-  background: #ebecf0;
+  background: #f2f3f7;
 }
 
 .mce-tooltip * {

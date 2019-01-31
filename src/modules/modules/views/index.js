@@ -28,6 +28,12 @@ var SpotlightRowView = Marionette.View.extend({
 	template: require('../templates/modules.spotlight.html'),
 	className: 'col-6 d-flex',
 
+	events: {
+		'click a[data-role="subscribe"]': function() {
+			window.open(Session.autologAccountLink('/sites/options.html?code_site=' + Session.site.get('code_site')));
+		}
+	},
+
 	templateContext: function() {
 		return {
 			code_site: Session.site.get('code_site')
@@ -248,7 +254,7 @@ module.exports = Marionette.View.extend({
 		// Spotlights
 		var spotlightsCollection = new Backbone.Collection(
 			this.list.filter(function(model) {
-				if (model.get('is_spotlight') == false) return false;
+				if (!model.get('is_spotlight')) return false;
 				return ((model.get('has_scope') && model.get('has_feature')) || model.get('subscribe'));
 			})
 		);
@@ -259,7 +265,7 @@ module.exports = Marionette.View.extend({
 		// Modules
 		var modulesCollection = new Backbone.Collection(
 			this.list.filter(function(model) {
-				if (!model.get('is_spotlight') == false) return false;
+				if (model.get('is_spotlight')) return false;
 				return (model.get('has_scope') && model.get('has_feature'));
 			})
 		);

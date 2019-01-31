@@ -58,7 +58,7 @@ var ScheduleRowView = Marionette.View.extend({
 		name = name.charAt(0).toUpperCase() + name.slice(1); // ucfirst
 
 		var frames = this.model.get('time_frames') && _.isArray(this.model.get('time_frames')) ? this.model.get(
-			'time_frames').join(',') : ''
+			'time_frames').join(',') : '';
 
 		return {
 			name: name,
@@ -202,7 +202,7 @@ var InfosSocolView = Marionette.View.extend({
 	updateView: function() {
 		this.model.hasChanged('free_threshold') && this.getUI('free_threshold').val(format.formatFloat(this.model.get(
 			'free_threshold'), 2));
-		this.model.hasChanged('delay') && this.getUI('delay').val(this.model.get('delay'));
+		if (this.model.hasChanged('delay')) this.getUI('delay').val(this.model.get('delay'));
 	},
 
 	extractFields: function() {
@@ -348,12 +348,13 @@ var ChargesSocolView = Marionette.View.extend({
 
 	onSave: function(data_country) {
 
+		var i, w, steps;
 
-		var steps = Forms.extractFields(['weight', 'price_ex_vat'], this, this.getUI('form_steps'));
+		steps = Forms.extractFields(['weight', 'price_ex_vat'], this, this.getUI('form_steps'));
 		if (steps.weight) {
 			data_country.steps = {};
-			for (var i = 0; i < steps.weight.length; i++) {
-				var w = Math.round(format.unformatFloat(steps.weight[i]) * 1000);
+			for (i = 0; i < steps.weight.length; i++) {
+				w = Math.round(format.unformatFloat(steps.weight[i]) * 1000);
 				if (isNaN(w)) continue;
 				data_country.steps[w] = steps.price_ex_vat[i];
 			}
@@ -362,11 +363,11 @@ var ChargesSocolView = Marionette.View.extend({
 		}
 
 		var data_pickup = {};
-		var steps = Forms.extractFields(['weight', 'price_ex_vat'], this, this.getUI('form_pickup'));
+		steps = Forms.extractFields(['weight', 'price_ex_vat'], this, this.getUI('form_pickup'));
 		if (steps.weight) {
 			data_pickup.steps = {};
-			for (var i = 0; i < steps.weight.length; i++) {
-				var w = Math.round(format.unformatFloat(steps.weight[i]) * 1000);
+			for (i = 0; i < steps.weight.length; i++) {
+				w = Math.round(format.unformatFloat(steps.weight[i]) * 1000);
 				if (isNaN(w)) continue;
 				data_pickup.steps[w] = steps.price_ex_vat[i];
 			}
@@ -686,7 +687,7 @@ var ChargesLocalView = Marionette.View.extend({
 			var view = this.getChildView('tags');
 			if (!view) return;
 			var postal_codes = _.map(view.getTags(), function(tag) {
-				return tag.value
+				return tag.value;
 			});
 
 			var p, model;

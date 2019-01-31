@@ -4,9 +4,8 @@
 	<div class="alert alert-warning" role="alert">
 		<a href="https://aide.kiubi.com/documentation/Modules/import-de-produits.html"
 		   class="md-icon md-help float-right" target="_blank"></a>
-		Vous pouvez <strong>importer plusieurs fichiers simultanément</strong> à partir de votre espace FTP pour 
-		remplir la médiathèque.
-		Nous vous conseillons avant tout import de produits de <a
+		Vous pouvez <strong>importer des fichiers volumineux</strong> de plus de 7Mo dans la médiathèque à partir de votre espace FTP.
+		Nous vous conseillons avant tout import de <a
 			href="https://aide.kiubi.com/documentation/Preferences-generales/zone-ftp.html"
 			target="_blank">consulter la documentation en ligne</a>
 		et de <a href="/modules/backups" target="_blank">réaliser un point de sauvegarde</a>.
@@ -19,7 +18,7 @@
 			<h1>Paramètres d'import</h1>
 		</header>
 		<div class="post-content">
-			
+
 			<div class="form-group has-feedback">
 				<label>Dossier</label>
 
@@ -42,12 +41,61 @@
 				<% } else { %>
 					<p data-role="summary">En chargement ...</p>
 				<% } %>
-				
+
 			</div>
-			
+
 		</div>
 		<footer class="post-footer"></footer>
 	</article>
+
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Publier des fichiers volumineux</h1>
+		</header>
+		<div class="post-content">
+			<p>
+				Un compte FTP est disponible pour chaque site. Les informations ci-dessous servent à configurer un logiciel FTP.
+			</p>
+			<div class="row">
+				<div class="col-3">
+					<label for="">Adresse de l'hôte :</label>
+				</div>
+				<div class="col-9"><p><%- ftp.host %></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<label for="">Port :</label>
+				</div>
+				<div class="col-9"><p><%- ftp.port %></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<label for="">Nom d'utilisateur :</label>
+				</div>
+				<div class="col-9"><p><%- ftp.login %></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<label for="">Mot de passe :</label>
+				</div>
+				<div class="col-9"><p><span style="display: none" data-role="password-mask"><%- ftp.password %></span><a data-role="password-toggle" href="#">Afficher le mot de passe</a></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<label for="">Répertoire racine :</label>
+				</div>
+				<div class="col-9"><p>/mediatheque/</p>
+				</div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+
 </form>
 
 <% if(summary && summary.count > 0){ %>

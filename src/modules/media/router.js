@@ -7,8 +7,8 @@ var Controller = require('kiubi/controller.js');
 /* Models */
 var Folders = require('./models/folders');
 var Files = require('./models/files');
-var Ftp = require('kiubi/modules/modules/models/import.ftp.js');
-
+var ImportFtp = require('kiubi/modules/modules/models/import.ftp.js');
+var Ftp = require('kiubi/modules/prefs/models/ftp');
 
 /* Views */
 var FilesView = require('./views/files');
@@ -375,7 +375,8 @@ var MediaController = Controller.extend({
 	importFTP: function() {
 		var view = new ImportFTPView({
 			folders: new Folders(),
-			model: new Ftp()
+			model: new ImportFtp(),
+			ftp: new Ftp()
 		});
 		this.navigationController.showContent(view);
 		view.start();

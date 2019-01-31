@@ -21,7 +21,8 @@ module.exports = Backbone.Model.extend({
 		lastname: '',
 		firstname: '',
 		avatar: '',
-		email: ''
+		email: '',
+		scopes: []
 	},
 
 	/**
@@ -31,6 +32,11 @@ module.exports = Backbone.Model.extend({
 	 */
 	isAuth: function() {
 		return this.get('user_id') > 0;
+	},
+
+	hasScope: function(name) {
+		if (!this.get('scopes')) return false;
+		return _.contains(this.get('scopes'), name);
 	}
 
 });

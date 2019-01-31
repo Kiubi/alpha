@@ -202,7 +202,7 @@ module.exports = Marionette.Object.extend({
 				scope: 'site:pref'
 			},
 			{
-				name: "Aide & support",
+				name: "Documentation",
 				path: "https://aide.kiubi.com/",
 				className: 'md-help',
 				type: "tools"

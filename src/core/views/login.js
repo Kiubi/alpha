@@ -15,7 +15,24 @@ var View = Marionette.View.extend({
 	},
 
 	events: {
-		'submit form': 'handleSave'
+		'submit form': 'handleSave',
+		'click a[data-role="clear"]': function() {
+			console.log('clear');
+			this.code_site = null;
+			this.render();
+		}
+	},
+
+	code_site: null,
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['code_site']);
+	},
+
+	templateContext: function() {
+		return {
+			code_site: this.code_site
+		};
 	},
 
 	/**
@@ -27,7 +44,8 @@ var View = Marionette.View.extend({
 		this.showError();
 		this.trigger('form-login:submit', {
 				'login': this.getUI('login').val(),
-				'password': this.getUI('password').val()
+				'password': this.getUI('password').val(),
+				'code_site': this.code_site
 			},
 			this);
 		return false;

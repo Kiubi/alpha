@@ -22,7 +22,12 @@
 					<input id="remember_input" value="" checked="checked" type="checkbox">
 					<label for="remember_input">Se souvenir de moi</label>
 			</div>
-			<input type="submit" class="btn btn-lg btn-success btn-save w-100" value="Se connecter">
+				<% if(code_site) { %>
+					<input type="submit" class="btn btn-lg btn-success btn-save w-100" value="Se connecter à <%- code_site %>">
+					<p><a href="#" data-role="clear">Vous ne voulez pas vous connecter à ce site ?</a></p>
+				<% } else { %>
+					<input type="submit" class="btn btn-lg btn-success btn-save w-100" value="Se connecter">
+				<% } %>
 			</form>
 		</div>
 		<footer class="post-footer"><a href="https://www.kiubi.com/mentions-legales.html" target="_blank">Informations légales</a> | <a href="http://www.kiubi.com/theme/fr/CGV_Kiubi.pdf" target="_blank">Conditions générales d'utilisation</a><br>

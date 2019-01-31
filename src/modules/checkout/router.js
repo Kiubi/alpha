@@ -188,12 +188,14 @@ var CheckoutController = Controller.extend({
 			return;
 		}
 
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		var view = new OrdersView({
 			collection: new Orders(),
 			carriers: new Carriers(),
 			customers: new Customers(),
 			payments: new Payments(),
-			filters: qs
+			filters: qs,
+			hasAccounting: Session.hasFeature('accounting')
 		});
 		this.navigationController.showContent(view);
 		view.start();
@@ -248,9 +250,9 @@ var CheckoutController = Controller.extend({
 			this.setHeader({
 				title: 'Commande #' + m.get('reference')
 			}, getOrderAction({
-				xls: m.get('download')['xls'] ? m.get('download')['xls'] : null,
-				coliship: m.get('download')['coliship'] ? m.get('download')['coliship'] : null,
-				form: m.get('download')['form'] ? m.get('download')['form'] : null
+				xls: m.get('download').xls ? m.get('download').xls : null,
+				coliship: m.get('download').coliship ? m.get('download').coliship : null,
+				form: m.get('download').form ? m.get('download').form : null
 			}));
 		}.bind(this)).fail(this.failHandler('Commande introuvable'));
 	},

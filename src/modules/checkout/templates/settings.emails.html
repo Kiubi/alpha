@@ -11,9 +11,9 @@
       l'enregistrement de sa commande, quelque soit le mode de paiment utilisé. Vous pouvez ajouter un message personnalisé dans cet email.
     </p>
     <div class="form-group">
-      <label for="">Destinataires</label>
+      <label for="mail_recipients">Destinataires</label>
       <p>Saisissez les emails des destinataires, séparés par des virgules. Sans destinataire, l'email par défaut est utilisé.</p>
-      <input class="form-control" id="" placeholder="marc.beyer@troll-idees.com">
+      <input class="form-control" id="mail_recipients" name="mail_recipients" value="<%- mail_recipients %>">
     </div>
     <div class="form-group">
       <label class="required" for="mail_pending">Message personnalisé</label>

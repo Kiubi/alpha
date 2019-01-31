@@ -415,7 +415,7 @@ var CustomersController = Controller.extend({
 			var discount;
 			discount = new GrpDiscount();
 			discount.group_id = id;
-			promise = discount.fetch()
+			promise = discount.fetch();
 		} else {
 			promise = Backbone.$.Deferred().resolve();
 		}

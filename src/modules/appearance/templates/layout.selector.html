@@ -8,7 +8,11 @@
 				<div class="si-overlay">
 					<span class="md-icon md-edit btn-si"></span>
 				</div>
-				<%= structure %>
+				<% if(structure) { %>
+					<%= structure %>
+				<% } else { %>
+					<div class="template danger"></div>
+				<% } %>
 			</a></div>
 		<div class="col">
 			<div class="form-group">

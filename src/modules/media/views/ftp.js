@@ -22,7 +22,16 @@ module.exports = Marionette.View.extend({
 	},
 
 	ui: {
-		'summary': '[data-role="summary"]'
+		'summary': '[data-role="summary"]',
+		'pwdBtn': 'a[data-role="password-toggle"]',
+		'pwdMask': 'span[data-role="password-mask"]'
+	},
+
+	events: {
+		'click @ui.pwdBtn': function() {
+			this.getUI('pwdBtn').hide();
+			this.getUI('pwdMask').show();
+		}
 	},
 
 	fields: [
@@ -33,7 +42,7 @@ module.exports = Marionette.View.extend({
 	report: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['folders', 'model']);
+		this.mergeOptions(options, ['folders', 'model', 'ftp']);
 
 		this.listenTo(this.model, 'sync', this.render);
 
@@ -42,6 +51,7 @@ module.exports = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
+			ftp: this.ftp.toJSON(),
 			report: this.report,
 			step: this.step,
 			summary: this.model.get('summary'),
@@ -64,7 +74,9 @@ module.exports = Marionette.View.extend({
 	},
 
 	start: function() {
-		this.model.fetch();
+		Backbone.$.when(this.model.fetch(), this.ftp.fetch()).done(function() {
+			this.render();
+		}.bind(this));
 	},
 
 	// Categories

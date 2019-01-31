@@ -148,6 +148,12 @@ var GraphView = Marionette.View.extend({
 		'startDate': "input[name='start_date']"
 	},
 
+	events: {
+		'click a[data-role="stats"]': function() {
+			window.open(Session.autologBackLink('/awstats/'));
+		}
+	},
+
 	behaviors: [SelectifyBehavior, Datepicker, TooltipBehavior],
 
 	chart: null,
@@ -173,8 +179,7 @@ var GraphView = Marionette.View.extend({
 		return {
 			title: getGraphTitle(this.stat),
 			startDate: this.startDate.format('DD/MM/YYYY'),
-			endDate: this.endDate.format('DD/MM/YYYY'),
-			stats_url: 'https://' + Session.site.get('backoffice') + '/awstats/'
+			endDate: this.endDate.format('DD/MM/YYYY')
 		};
 	},
 
@@ -460,6 +465,15 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
+	events: {
+		'click a[data-role="subscription"]': function() {
+			window.open(Session.autologBackLink('/comptes/formules/crediter.html'));
+		},
+		'click a[data-role="plan"]': function() {
+			window.open(Session.autologAccountLink('/sites/formule.html?code_site=' + Session.site.get('code_site')));
+		}
+	},
+
 	initialize: function(options) {
 		this.mergeOptions(options, ['stats', 'activity', 'report', 'live']);
 
@@ -467,6 +481,31 @@ module.exports = Marionette.View.extend({
 		Session = Backbone.Radio.channel('app').request('ctx:session');
 
 		this.live.fetch();
+	},
+
+	templateContext: function() {
+
+		var plan = Session.site.get('plan');
+		var interval_closing, interval_trial;
+		if (plan && plan.closing_date) {
+			// +1 => site is closed at the end of the closing day
+			interval_closing = Math.ceil(moment(plan.closing_date, 'YYYY-MM-DD').diff(moment(), 'days', true)) + 1;
+		}
+		if (plan && plan.endtrial_date) {
+			// +1 => trail is ended at the end of end trial day
+			interval_trial = Math.ceil(moment(plan.endtrial_date, 'YYYY-MM-DD').diff(moment(), 'days', true)) + 1;
+		}
+
+		return {
+			user: Session.user.toJSON(),
+			site: Session.site.toJSON(),
+			endtrial_date: plan ? format.formatDate(plan.endtrial_date) : '',
+			closing_date: plan ? format.formatDate(plan.closing_date) : '',
+			interval_closing: interval_closing,
+			interval_trial: interval_trial,
+			plural: format.plural,
+			has_scope_subscription: Session.hasScope('site:subscription')
+		};
 	},
 
 	onRender: function() {

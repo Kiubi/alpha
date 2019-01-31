@@ -56,7 +56,7 @@ function formatLongDateTime(string_date) {
  */
 function formatBytes(bytes, decimals) {
 	if (bytes == 0) return '0 octets';
-	var k = 1000,
+	var k = 1024,
 		dm = decimals || 2,
 		sizes = ['octets', 'Ko', 'Mo', 'Go'],
 		i = Math.floor(Math.log(bytes) / Math.log(k));

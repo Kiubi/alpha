@@ -1,8 +1,12 @@
 <div class="item-templates-list">
-	<% if(is_default) { %>
-	<div class="corner-color template-default right"><div class="corner-color-content"></div></div>
+	<% if(structure) { %>
+		<% if(is_default) { %>
+			<div class="corner-color template-default right"><div class="corner-color-content"></div></div>
+		<% } else { %>
+			<div class="corner-color template-variant right"><div class="corner-color-content"></div></div>
+		<% } %>
 	<% } else { %>
-	<div class="corner-color template-variant right"><div class="corner-color-content"></div></div>
+		<div class="corner-color template-danger right"><div class="corner-color-content"></div></div>
 	<% } %>
 	<div class="row no-gutters">
 	<div class="col-auto mr-4">
@@ -10,9 +14,12 @@
 			<div class="si-overlay">
 				<span class="md-icon md-edit btn-si"></span>
 			</div>
-			<%= structure %>
+			<% if(structure) { %>
+				<%= structure %>
+			<% } else { %>
+				<div class="template danger"></div>
+			<% } %>
 		</a>
-
 	</div>
 	<div class="col item-body">
 		<h4>

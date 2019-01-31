@@ -13,7 +13,7 @@ var serialize = require('form-serialize');
  */
 function extractFields(fields, view, selector) {
 	if (!selector) selector = 'form';
-	return extractFieldsFromSelector(fields, Backbone.$(selector, view.el));
+	return extractFormFields(fields, Backbone.$(selector, view.el));
 }
 
 /**
@@ -24,7 +24,7 @@ function extractFields(fields, view, selector) {
  * @param {jQuery} $forms
  * @returns {Object}
  */
-function extractFieldsFromSelector(fields, $forms) {
+function extractFormFields(fields, $forms) {
 
 	var all = _.reduce($forms, function(acc, form) {
 		return _.extend(acc, serialize(form, {
@@ -94,5 +94,6 @@ function clearErrors($errorEl, el) {
 
 
 module.exports.extractFields = extractFields;
+module.exports.extractFormFields = extractFormFields;
 module.exports.displayErrors = displayErrors;
 module.exports.clearErrors = clearErrors;

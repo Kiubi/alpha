@@ -2,7 +2,6 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
-var format = require('kiubi/utils/format.js');
 
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 var PopoverBehavior = require('kiubi/behaviors/popover.js');
@@ -14,9 +13,6 @@ var RowView = Marionette.View.extend({
 	className: 'list-item',
 	templateContext: function() {
 		return {
-			plural: function(nb, singular, plural) {
-				return (nb > 1 ? plural : singular).replace('%d', nb);
-			},
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			main_category: _.find(this.model.get('categories'), function(category) {
 				return category.is_main;

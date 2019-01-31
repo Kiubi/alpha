@@ -1,31 +1,28 @@
-		<div class="row no-gutters">
-			<div class="col item-body">
-				<h4><%- name %></h4>
-				<% if (!is_enabled) { %>
-					<span class="text-danger">Bloqué</span>
-					<% } else if(target_service) { %>
-						<span class="md-icon md-home icon-left"></span><span class="spacer"><%- target_service %></span> <span class="spacer"><%- target_name %></span>
-						<% } %>
-					</div>
-					<div class="col-3">
-
-
-
-						<% if(customer_count > 0) { %>
-							<%- plural(customer_count, '%d membre', '%d membres') %>
-							<% } else { %>
-								<span class="text-muted">—</span>
-								<% } %>
-
-					</div>
-					<div class="col-3"><span class="text-muted">—</span><!-- #TODO <span>Remise : -15,00%</span> --></div>
-					<div class="col-auto">
-						<div class="btn-group float-right" role="group"><a class="btn btn-primary" href="/customers/groups/<%- group_id %>" role="button">Détail</a>
-							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> </button>
-							<ul class="dropdown-menu dropdown-menu-right">
-								<li><a class="dropdown-item" href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
+<div class="row no-gutters">
+	<div class="col item-body">
+		<h4><%- name %></h4>
+		<% if (!is_enabled) { %>
+			<span class="text-danger">Bloqué</span>
+		<% } else if(target_service) { %>
+			<span class="md-icon md-home icon-left"></span><span class="spacer"><%- target_service %></span> 
+			<span class="spacer"><%- target_name %></span>
+		<% } %>
+	</div>
+	<div class="col-3">
+		<% if(customer_count > 0) { %>
+			<%- plural(customer_count, '%d membre', '%d membres') %>
+		<% } else { %>
+			<span class="text-muted">—</span>
+		<% } %>
+	</div>
+	<div class="col-3"><span class="text-muted">—</span><!-- #TODO <span>Remise : -15,00%</span> --></div>
+	<div class="col-auto">
+		<div class="btn-group float-right" role="group"><a class="btn btn-primary" href="/customers/groups/<%- group_id %>" role="button">Détail</a>
+			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false"> </button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a class="dropdown-item" href="#" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

@@ -57,9 +57,10 @@ module.exports = Marionette.View.extend({
 
 	sortOrder: '-date',
 	filters: null,
+	hasAccounting: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['collection', 'carriers', 'customers', 'payments']);
+		this.mergeOptions(options, ['collection', 'carriers', 'customers', 'payments', 'hasAccounting']);
 		this.filters = {
 			is_paid: null,
 			status: this.getOption('filters') && this.getOption('filters').status ? this.getOption('filters').status : null,
@@ -81,26 +82,43 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
+
+		var exportActions = [{
+			'value': 'export',
+			'label': 'Exporter les commandes',
+			'selected': false
+		}, {
+			'value': 'export-coliship',
+			'label': 'Exporter pour Coliship',
+			'selected': false
+		}];
+
+		if (this.hasAccounting) {
+			exportActions.push({
+				'value': 'export-accounting',
+				'label': 'Export comptable',
+				'selected': false
+			});
+		}
+
 		var status = new CollectionUtils.SelectCollection([{
 			'value': 'pending',
-			'label': 'À traiter',
-			//'selected': this.filters.status == 'pending'
+			'label': 'À traiter'
 		}, {
 			'value': 'processing',
-			'label': 'En cours',
-			//'selected': this.filters.status == 'processing'
+			'label': 'En cours'
 		}, {
 			'value': 'processed',
-			'label': 'Traitées',
-			//'selected': this.filters.status == 'processed'
+			'label': 'Traitées'
 		}, {
 			'value': 'shipped',
-			'label': 'Expédiées',
-			//'selected': this.filters.status == 'shipped'
+			'label': 'Expédiées'
 		}, {
 			'value': 'cancelled',
-			'label': 'Annulées',
-			//'selected': this.filters.status == 'cancelled'
+			'label': 'Annulées'
+		}, {
+			'value': null,
+			'label': 'Toutes les commandes'
 		}]);
 		var current = status.findWhere({
 			value: this.filters.status
@@ -192,15 +210,7 @@ module.exports = Marionette.View.extend({
 				id: 'export',
 				extraClassname: 'md-export',
 				type: 'button',
-				collectionPromise: new CollectionUtils.SelectCollection([{
-					'value': 'export',
-					'label': 'Exporter les commandes',
-					'selected': false
-				}, {
-					'value': 'export-coliship',
-					'label': 'Exporter pour Coliship',
-					'selected': false
-				}])
+				collectionPromise: new CollectionUtils.SelectCollection(exportActions)
 			}, {
 				id: 'sort',
 				extraClassname: 'md-sort',
@@ -321,9 +331,13 @@ module.exports = Marionette.View.extend({
 		if (!filter.view) return;
 		var view = filter.view;
 
-		if (filter.value == 'export' || filter.value == 'export-coliship') {
+		var max = 2;
+		if (this.hasAccounting) {
+			max++;
+		}
 
-			if (view.collection.length > 2) {
+		if (filter.value == 'export' || filter.value == 'export-coliship' || filter.value == 'export-accounting') {
+			if (view.collection.length > max) {
 				return;
 			}
 
@@ -332,6 +346,7 @@ module.exports = Marionette.View.extend({
 
 			var data = {};
 			if (filter.value == 'export-coliship') data.type = 'coliship';
+			else if (filter.value == 'export-accounting') data.type = 'accounting';
 
 			if (this.filters.status != null) data.status = this.filters.status;
 			if (this.filters.is_paid != null) data.is_paid = this.filters.is_paid;
@@ -372,7 +387,7 @@ module.exports = Marionette.View.extend({
 				navigationController.showErrorModal(xhr);
 
 				view.overrideExtraClassname('');
-				while (view.collection.length > 2) {
+				while (view.collection.length > max) {
 					view.collection.pop();
 				}
 			}.bind(this));
@@ -380,7 +395,7 @@ module.exports = Marionette.View.extend({
 		} else {
 			view.toggleDropdown(); // close
 			view.overrideExtraClassname('');
-			while (view.collection.length > 2) {
+			while (view.collection.length > max) {
 				view.collection.pop();
 			}
 		}

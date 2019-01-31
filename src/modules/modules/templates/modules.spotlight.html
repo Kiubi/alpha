@@ -12,7 +12,7 @@
 		<% if(has_scope && has_feature) { %>
 		<a class="btn btn-outline-primary" href="<%- href %>">Utiliser</a>
 		<% } else if(has_scope && !has_feature) { %>
-		<a class="btn btn-outline-primary" target="_blank" href="https://www.kiubi-admin.com/sites/options.html?code_site=<%- code_site %>"><%- price %></a>
+		<a class="btn btn-outline-primary" href="#" data-role="subscribe" ><%- price %></a>
 		<% } else { %>
 		<span class="btn btn-outline-primary disabled">Indisponible</span>
 		<% } %>

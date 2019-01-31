@@ -134,6 +134,10 @@ var KiubiApp = Marionette.Application.extend({
 		layout.on('navigate', function(path, options) {
 			application.navigationController.navigate(path);
 		});
+
+		this.listenTo(this.session, 'logout', function() {
+			this.navigationController.navigate('/login');
+		}.bind(this));
 	},
 
 	/**

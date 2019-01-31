@@ -89,9 +89,8 @@ var Post = Backbone.Model.extend({
 			c.add(_.map(response.data, function(group) {
 				return {
 					'value': group.name,
-					'label': group.name,
-					//'selected': selected && selected == type.type
-				}
+					'label': group.name
+				};
 			}));
 
 			return c;

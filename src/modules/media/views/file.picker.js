@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
 var Files = require('kiubi/modules/media/models/files.js');
+var Folders = require('kiubi/modules/media/models/folders.js');
 
 var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
 var SelectModalView = require('kiubi/modules/media/views/modal.picker.js');
@@ -38,8 +39,19 @@ module.exports = Marionette.View.extend({
 	loaded: false,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['fieldname', 'value', 'type', 'fieldLabel', 'comment']);
-		this.model = new(new Files()).model();
+		this.mergeOptions(options, ['fieldname', 'value', 'type', 'fieldLabel', 'comment', 'collectionFiles',
+			'collectionFolders'
+		]);
+		this.loaded = false;
+
+		if (!this.collectionFiles) {
+			this.collectionFiles = Files;
+		}
+		if (!this.collectionFolders) {
+			this.collectionFolders = Folders;
+		}
+
+		this.model = new(new this.collectionFiles()).model();
 
 		if (this.value > 0) {
 			this.model.set('media_id', this.value);
@@ -65,11 +77,11 @@ module.exports = Marionette.View.extend({
 	},
 
 	select: function() {
-		var collection = new Files();
 		var contentView = new SelectModalView({
 			type: this.type,
 			model: this.model,
-			collection: collection
+			collection: new this.collectionFiles(),
+			folders: new this.collectionFolders()
 		});
 
 		this.listenTo(contentView, 'action:modal', this.switchToPublish);
@@ -90,7 +102,7 @@ module.exports = Marionette.View.extend({
 	 */
 	switchToPublish: function(view) {
 
-		var collection = new Files();
+		var collection = new this.collectionFiles();
 		collection.folder_id = view.currentFolder;
 		var contentView = new PublishModalView({
 			isMultiFiles: false,

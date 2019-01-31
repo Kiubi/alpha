@@ -293,7 +293,7 @@ module.exports = Marionette.View.extend({
 			model: this.model
 		});
 		this.listenTo(this.model, 'sync', function() {
-			this.subView.render()
+			this.subView.render();
 		});
 	},
 
