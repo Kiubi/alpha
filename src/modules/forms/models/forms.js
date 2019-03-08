@@ -38,7 +38,26 @@ var Form = Backbone.Model.extend({
 		"processing_purposes": "",
 		is_consent_required: false
 
+	},
+
+	/**
+	 * Duplicate current form
+	 *
+	 * @return {Promise}
+	 */
+	duplicate: function(attributes) {
+		var that = this;
+		return Backbone.ajax({
+			url: 'sites/@site/forms/' + this.get('form_id'),
+			method: 'POST',
+			data: attributes
+		}).then(function(response) {
+			var copy = that.clone();
+			copy.set(copy.parse(response));
+			return copy;
+		});
 	}
+
 });
 
 module.exports = Backbone.Collection.extend({

@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var _ = require('underscore');
 
 /**
  * Inspired by fakeSelect : v0.1 Copyright 2014 http://takien.com
@@ -45,11 +46,12 @@ function selectify(selector, customOptions) {
 			var indent = Backbone.$(this).data('indent');
 			var indent_class = (indent != undefined && indent != null && indent != '') ? 'page-level-' + indent : '';
 			if (this.tagName == 'OPTGROUP') { // this.class == disabled
-				li = '<li class="' + indent_class + '"><span class="dropdown-item disabled">' + this.label + '</span></li>';
+				li = '<li class="' + indent_class + '"><span class="dropdown-item disabled">' + _.escape(this.label) +
+					'</span></li>';
 			} else {
 				li = '<li class="' + indent_class + (option_index == select_index ? ' active' : '') +
 					'"><a class="dropdown-item" data-index="' +
-					this.index + '" href="#">' + $(this).text() + '</a></li>';
+					this.index + '" href="#">' + this.innerHTML + '</a></li>';
 				option_index++;
 			}
 			dropdown_menu.append(li);
@@ -78,7 +80,8 @@ function selectify(selector, customOptions) {
 }
 
 function getLabel($option) {
-	return ($option.data('tags') ? '<span class="tags tags-color-' + $option.data('tags') + '"></span>' : '') + $option.text();
+	return ($option.data('tags') ? '<span class="tags tags-color-' + $option.data('tags') + '"></span>' : '') + _.escape(
+		$option.text());
 }
 
 module.exports = Marionette.Behavior.extend({

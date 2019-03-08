@@ -81,8 +81,15 @@ module.exports = Marionette.View.extend({
 	},
 
 	onSave: function() {
+
+		var data = Forms.extractFields(this.fields, this);
+
+		if (this.getOption('enableSeo') && Forms.isTmpSlug(data.slug)) {
+			data.slug = data.name;
+		}
+
 		return this.model.save(
-			Forms.extractFields(this.fields, this), {
+			data, {
 				patch: true,
 				wait: true
 			}

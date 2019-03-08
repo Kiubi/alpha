@@ -22,6 +22,7 @@ module.exports = Backbone.Model.extend({
 		firstname: '',
 		avatar: '',
 		email: '',
+		is_admin: false,
 		scopes: []
 	},
 
@@ -34,9 +35,24 @@ module.exports = Backbone.Model.extend({
 		return this.get('user_id') > 0;
 	},
 
+	/**
+	 * Test user scope
+	 * 
+	 * @param name
+	 * @returns {boolean}
+	 */
 	hasScope: function(name) {
 		if (!this.get('scopes')) return false;
 		return _.contains(this.get('scopes'), name);
+	},
+
+	/**
+	 * Test if user is an administrator
+	 * 
+	 * @returns {boolean}
+	 */
+	isAdmin: function() {
+		return this.get('is_admin') === true;
 	}
 
 });

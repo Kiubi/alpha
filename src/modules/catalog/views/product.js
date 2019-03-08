@@ -1058,6 +1058,10 @@ module.exports = Marionette.View.extend({
 		var c = [this.getChildView('primary-categ').getCurrent().value];
 		data.categories = c.concat(_.pluck(this.getChildView('other-categ').getTags(), 'value'));
 
+		if (this.getOption('enableSeo') && Forms.isTmpSlug(data.slug)) {
+			data.slug = data.name;
+		}
+
 		return this.model.save(
 			data, {
 				patch: true,

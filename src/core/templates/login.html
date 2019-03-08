@@ -1,37 +1,60 @@
-<div class="brand"><img src="/assets/img/logo_kiubi.png" class="brand-logo" alt="Kiubi"></div>
+<div class="brand" style="<%- cobranding_background ? 'background-image:url('+cobranding_background+')' : '' %> ">
+
+	<div class="brand-logo"><img src="<%- cobranding_logo ? cobranding_logo : '' %>" alt="Kiubi"></div>
+<div class="brand-message"><h2>Découvrez la nouvelle <br>version de Kiubi</h2>
+	<p>Plus rapide, plus performante<br>
+et encore plus simple d’utilisation.</p>
+	<% if(code_site) { %>
+		<p>Mais si vous ne souhaitez pas <br>encore franchir le pas avec nous, <br>rendez-vous en terrain plus familier.</p>
+		<a href="https://<%- code_site %>.kiubi-admin.com/login/" class="btn btn-lg btn-outline-light w-100 mt-2">Retour à l'ancienne version</a>
+	<% } else { %>
+		<a href="https://www.kiubi.com/" class="btn btn-lg btn-outline-light mt-2">En savoir plus</a>
+	<% } %>
+</div>
+<div class="overlay"></div>
+</div>
 <div class="login-box">
 	<article class="post-article">
 		<header class="post-header">
 			<h1>Connectez-vous à votre site</h1>
-			<p class="my-4">Vous n'avez pas de compte ? <a href="https://www.kiubi-admin.com/login/register.html">Inscrivez-vous</a></p>
+			<p class="my-4">Vous n'avez pas de compte ? <a href="<%- account %>/login/register.html">Inscrivez-vous</a></p>
 		</header>
 		<div class="post-content">
 			<form>
 			<div class="alert alert-danger" role="alert" style="display:none"></div>
 			<div id="group_login" class="form-group has-feedback">
 				<label for="login_input">Identifiant <span>ou</span> email</label>
-				<input class="form-control form-control-lg" id="login_input" placeholder="" type="text">
+				<input class="form-control form-control-lg" id="login_input" value="<%- login %>" placeholder="" type="text">
 				<span class="md-feedback md-person"></span>
 			</div>
-			<div id="group_password" class="form-group has-feedback"><a href="#" class="float-right d-none">Oublié ?</a>
+			<div id="group_password" class="form-group has-feedback">
+
+				<% if(code_site) { %>
+				<a href="https://<%- code_site %>.kiubi-admin.com/login/mdp.html" target="_blank" class="float-right">Oublié ?</a>
+				<% } %>
+
 				<label for="password_input">Mot de passe</label>
 				<input class="form-control form-control-lg" id="password_input" placeholder="" type="password">
 				<span class="md-feedback md-key"></span>
 			</div>
 			<div class="form-group">
-					<input id="remember_input" value="" checked="checked" type="checkbox">
+					<input id="remember_input" value="1" checked="checked" type="checkbox">
 					<label for="remember_input">Se souvenir de moi</label>
 			</div>
 				<% if(code_site) { %>
-					<input type="submit" class="btn btn-lg btn-success btn-save w-100" value="Se connecter à <%- code_site %>">
-					<p><a href="#" data-role="clear">Vous ne voulez pas vous connecter à ce site ?</a></p>
+					<input type="submit" class="btn btn-lg btn-success btn-save text-truncate w-100" value="Se connecter à <%- code_site %>">
 				<% } else { %>
 					<input type="submit" class="btn btn-lg btn-success btn-save w-100" value="Se connecter">
 				<% } %>
+				<p><a href="http://aide2019.kiubi-web.com/generalites.html#console-d-administration" target="_blank">Besoin d'aide</a> pour se connecter ?</p>
 			</form>
 		</div>
-		<footer class="post-footer"><a href="https://www.kiubi.com/mentions-legales.html" target="_blank">Informations légales</a> | <a href="http://www.kiubi.com/theme/fr/CGV_Kiubi.pdf" target="_blank">Conditions générales d'utilisation</a><br>
-			Copyright  © 2017 Kiubi. Tous droits réservés. <br>
+		<footer class="post-footer">
+			<% if(code_site) { %>
+				<p class="mb-1"><a href="#" data-role="clear" class="text-info">Vous ne voulez pas vous connecter à ce site ?</a></p>
+			<% } %>
+			<a href="https://www.kiubi.com/mentions-legales.html" target="_blank">Informations légales</a> | <a href="http://www.kiubi.com/theme/fr/CGV_Kiubi.pdf" target="_blank">Conditions générales d'utilisation</a><br>
+			Copyright © <%- year %> Kiubi. Tous droits réservés. <br>
 			100% fabriqué et hébergé avec ♥ en France.
 		</footer>
 	</article>

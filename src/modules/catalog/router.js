@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var Forms = require('kiubi/utils/forms.js');
 
 var Controller = require('kiubi/controller.js');
 
@@ -307,7 +308,7 @@ var CatalogController = Controller.extend({
 
 		var m = new Product({
 			name: 'Intitulé par défaut',
-			slug: 'intitule-par-defaut',
+			slug: Forms.tmpSlug(),
 			is_visible: false,
 			stock: null,
 			categories: category_id ? [category_id] : []
@@ -340,7 +341,7 @@ var CatalogController = Controller.extend({
 			// Media choosed
 			var m = new Product({
 				name: 'Intitulé par défaut',
-				slug: 'intitule-par-defaut',
+				slug: Forms.tmpSlug(),
 				is_visible: false,
 				is_virtual: true,
 				file_id: contentView.model.get('media_id'),
@@ -385,7 +386,7 @@ var CatalogController = Controller.extend({
 
 			var m = new Product({
 				name: 'Intitulé par défaut',
-				slug: 'intitule-par-defaut',
+				slug: Forms.tmpSlug(),
 				is_visible: false,
 				is_virtual: true,
 				file_id: collection.at(0).get('media_id'),
@@ -516,7 +517,7 @@ var CatalogController = Controller.extend({
 
 		var m = new Category({
 			name: 'Intitulé par défaut',
-			slug: 'intitule-par-defaut',
+			slug: Forms.tmpSlug(),
 			is_visible: false
 		});
 

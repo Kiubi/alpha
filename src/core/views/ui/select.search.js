@@ -160,7 +160,7 @@ module.exports = Marionette.View.extend({
 		if (results.length > 0) {
 			list = _.reduce(results, function(memo, result, index) {
 				return memo + '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' +
-					result.label + '</a></li>';
+					_.escape(result.label) + '</a></li>';
 			}, '<li class="dropdown-divider"></li>');
 		} else {
 			list =
@@ -174,7 +174,7 @@ module.exports = Marionette.View.extend({
 			}, xtra);
 
 			list += '<li class="dropdown-divider"></li><li data-role="xtra" data-event="' + xtra.eventName +
-				'"><a class="dropdown-item" href="#">' + xtra.title + '<span class="md-icon ' + xtra.iconClass +
+				'"><a class="dropdown-item" href="#">' + _.escape(xtra.title) + '<span class="md-icon ' + xtra.iconClass +
 				'"></span></a></li>';
 		}
 		emptyList(this.getUI('dropdown-menu')).append(list);

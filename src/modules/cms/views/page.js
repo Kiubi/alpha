@@ -607,6 +607,10 @@ module.exports = Marionette.View.extend({
 			data.target_key = s[1];
 		}
 
+		if (this.model.get('page_type') == 'page' && this.getOption('enableSeo') && Forms.isTmpSlug(data.slug)) {
+			data.slug = data.name;
+		}
+
 		var that = this;
 
 		return promise.then(function() {

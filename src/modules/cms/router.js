@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var Forms = require('kiubi/utils/forms.js');
 
 var Controller = require('kiubi/controller.js');
 
@@ -28,7 +29,7 @@ function getHeadersAction(options) {
 	if (options.addPost) {
 		actions.push({
 			title: 'Ajouter un billet',
-			callback: ['actionNewPost', options.addPost] // page_id
+			callback: ['actionNewPost', options.addPost] // default page_id (cf this.getContext('page_id') )
 		});
 	}
 
@@ -229,7 +230,7 @@ var CMSController = Controller.extend({
 				extra_fields: 'defaults'
 			}
 		}).done(function() {
-
+			this.addContext('page_id', m.get('page_id'));
 			this.triggerSidebarMenu('change:page', m.get('page_id'));
 			var Session = Backbone.Radio.channel('app').request('ctx:session');
 
@@ -336,6 +337,7 @@ var CMSController = Controller.extend({
 			}
 		}).done(function() {
 			var Session = Backbone.Radio.channel('app').request('ctx:session');
+			this.addContext('page_id', m.get('page_id'));
 
 			var view = new PageView({
 				model: m,
@@ -389,7 +391,7 @@ var CMSController = Controller.extend({
 	actionNewPage: function(position) {
 		var m = new Page({
 			title: 'Intitulé par défaut',
-			slug: 'intitule-par-defaut',
+			slug: Forms.tmpSlug(),
 			is_visible: false,
 			page_type: 'page' //,
 			//menu_id: menu.get('menu_id')
@@ -562,6 +564,7 @@ var CMSController = Controller.extend({
 		}).
 		done(function() {
 
+			this.addContext('page_id', m.get('page_id'));
 			this.triggerSidebarMenu('change:page', m.get('page_id'));
 
 			var view = new PostView({
@@ -578,6 +581,7 @@ var CMSController = Controller.extend({
 					this.setBreadCrum(buildBreadcrum(model, page), true);
 				}
 				if (model.hasChanged('page_id')) {
+					this.addContext('page_id', model.get('page_id'));
 					this.triggerSidebarMenu('change:page', model.get('page_id'));
 				}
 			}.bind(this));
@@ -601,6 +605,8 @@ var CMSController = Controller.extend({
 	},
 
 	actionNewPost: function(page_id) {
+		page_id = this.getContext('page_id') || page_id;
+
 		var that = this;
 
 		var c = new Posts();

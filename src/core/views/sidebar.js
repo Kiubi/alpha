@@ -90,6 +90,13 @@ module.exports = Marionette.View.extend({
 		'shown.bs.dropdown': function(event) {
 			this.usageView.fetch();
 		},
+		'click a[data-role="me"]': function() {
+			if (this.session.user.isAdmin()) {
+				window.open(this.session.autologAccountLink('/dashboard/'));
+			} else {
+				window.open(this.session.autologBackLink('/comptes/users/'));
+			}
+		},
 		'click a[data-role="users"]': function() {
 			window.open(this.session.autologBackLink('/comptes/users/'));
 		},

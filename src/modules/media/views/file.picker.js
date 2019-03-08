@@ -31,12 +31,7 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	modelEvents: {
-		'sync': 'render',
-		'change': 'render'
-	},
-
-	loaded: false,
+	loaded: null,
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['fieldname', 'value', 'type', 'fieldLabel', 'comment', 'collectionFiles',
@@ -57,17 +52,34 @@ module.exports = Marionette.View.extend({
 			this.model.set('media_id', this.value);
 			this.model.fetch().done(function() {
 				this.loaded = true;
+				this.render();
+			}.bind(this)).fail(function(xhr) {
+
+				// Clear model if file not found
+				// Else show an error 
+				if (xhr.status == 404) {
+					this.model.clear({
+						silent: true
+					});
+				} else {
+					this.model.set('name', 'Erreur de chargement');
+				}
+
+				this.loaded = true;
+				this.render();
 			}.bind(this));
 		} else {
 			this.loaded = true;
 		}
 		this.listenTo(this.model, 'change', function() {
 			if (this.loaded) this.triggerMethod('field:change');
+			this.render();
 		}.bind(this));
 	},
 
 	templateContext: function() {
 		return {
+			is_loaded: this.loaded,
 			fieldname: this.fieldname,
 			fieldLabel: this.fieldLabel,
 			comment: this.comment,

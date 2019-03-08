@@ -12,6 +12,7 @@ var Stats = require('./models/stats');
 var Report = require('./models/report');
 var Logs = require('./models/logs');
 var Live = require('./models/live');
+var Cobranding = require('./models/cobranding');
 
 var statsModel = new Stats();
 
@@ -90,20 +91,24 @@ var DefaultController = Controller.extend({
 			'code_site': null
 		});
 
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		if (qs.code_site) {
 			// Test current access to code_site
-			var Session = Backbone.Radio.channel('app').request('ctx:session');
 			Session.changeSite(qs.code_site).done(function() {
 				// Redirect to Dashboard
 				this.navigationController.navigate('/');
 			}.bind(this)).fail(function() {
 				// Show login form
 				this.showLogin({
-					code_site: qs.code_site
+					code_site: qs.code_site,
+					cobranding: new Cobranding(),
+					Session: Session
 				});
 			}.bind(this));
 		} else {
-			this.showLogin({});
+			this.showLogin({
+				Session: Session
+			});
 		}
 	},
 
@@ -112,27 +117,13 @@ var DefaultController = Controller.extend({
 	 */
 	showLogin: function(options) {
 		var view = new LoginView(options);
-		this.listenTo(view, 'form-login:submit', this.actionLogin);
+
+		this.listenTo(view, 'success:login', function() {
+			this.navigationController.navigate('/'); // Go to Dashboard
+			this.navigationController.hideModal();
+		}.bind(this));
+
 		this.navigationController.showModal(view);
-	},
-
-	/**
-	 * Authentification on login page
-	 *
-	 * @param {Object} params
-	 * @param {Marionette.View} loginView
-	 */
-	actionLogin: function(params, loginView) {
-		var Session = Backbone.Radio.channel('app').request('ctx:session');
-
-		Session.authenticate(params.login, params.password, params.code_site)
-			.done(function() {
-				this.navigationController.navigate('/'); // Go to Dashboard
-				this.navigationController.hideModal();
-			}.bind(this))
-			.fail(function(error) {
-				loginView.showError(error);
-			});
 	},
 
 	/*

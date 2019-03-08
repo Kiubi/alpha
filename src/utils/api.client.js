@@ -75,17 +75,19 @@ Errors.E_USER_PARAMS_ENCODING = 4012;
 var Client = Marionette.Object.extend({
 
 	current_site: null,
+	api_version: 1,
+	api_url: '',
+	version: 1,
 
 	initialize: function(options) {
-		// client version
-		this.version = 1;
 		this.access_token = null;
 		this.max_post_size = (1024 * 1024 * 8);
 		this._rate_remaining = null;
 
 		var config = Backbone.Radio.channel('app').request('ctx:config');
-		this.api_version = 1;
+		this.api_version = config.get('api_version');
 		this.api_url = config.get('api');
+		this.version = config.get('client_version');
 
 		$(document).ajaxError(function(e, xhr, options) {
 			if (xhr.responseJSON &&

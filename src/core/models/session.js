@@ -127,6 +127,7 @@ function setCredidentials(AuthPromise, Session) {
 		Session.user.set('lastname', data.user.lastname);
 		Session.user.set('avatar', data.user.avatar);
 		Session.user.set('email', data.user.email);
+		Session.user.set('is_admin', data.user.is_admin);
 		Session.user.set('scopes', data.user.scopes || []);
 
 		Session.user.trigger('authenticate');
@@ -343,7 +344,9 @@ var Session = Backbone.Model.extend({
 		var payload = '' + user_id + expire + token;
 		var sign = createHash('sha256').update(payload).digest('hex');
 
-		var link = 'https://www.kiubi-admin.com' + path + (path.indexOf('?') > -1 ? '&' : '?');
+		var config = Backbone.Radio.channel('app').request('ctx:config');
+
+		var link = config.get('account') + path + (path.indexOf('?') > -1 ? '&' : '?');
 		link += 'u=' + user_id + '&';
 		link += 'expire=' + expire + '&';
 		link += 'sign=' + sign;
@@ -382,6 +385,26 @@ var Session = Backbone.Model.extend({
 		if (!this.site.get('features')) return false;
 
 		return (this.site.get('features')[name] === true);
+	},
+
+	/**
+	 * Store value 
+	 * 
+	 * @param {String} name
+	 * @param {String} value
+	 */
+	storeValue: function(name, value) {
+		this.storage.setItem(name, value);
+	},
+
+	/**
+	 * Return value
+	 * 
+	 * @param {String} name
+	 * @return {String}
+	 */
+	getValue: function(name) {
+		return this.storage.getItem(name);
 	},
 
 	/**

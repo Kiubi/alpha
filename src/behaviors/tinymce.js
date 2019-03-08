@@ -30,9 +30,27 @@ function addSign(match, media) {
 	return match;
 }
 
+function addSignInSrc(match, media) {
+	var id = media.match(/(^|\/)([0-9]+)(\?|$|\/|\.)/);
+
+	if (id) {
+		var sign = Session.hashMedia(parseInt(id[2]));
+		// Purge une eventuelle queryString
+		var p = media.indexOf("?");
+		if (p >= 0) {
+			media = media.substring(0, p);
+		}
+
+		return 'https://' + Session.site.get('backoffice') + '/media/' + media + '?sign=' + sign;
+	}
+}
+
 function removeSign(match, media) {
-	media = media.replace(/(\?|\&)sign=[-a-zA-Z0-9]+/, '');
-	return 'src="/media/' + media + '"';
+	return 'src="' + removeSignInSrc(match, media) + '"';
+}
+
+function removeSignInSrc(match, media) {
+	return '/media/' + media.replace(/(\?|\&)sign=[-a-zA-Z0-9]+/, '');
 }
 
 require('tinymce');
@@ -74,6 +92,606 @@ tinyMCE.PluginManager.add('kiubi', function(editor, url) {
 		var reg = new RegExp('src="https://' + Session.site.get('backoffice') + '/media/([^"]+)"', 'gi');
 		e.content = e.content.replace(reg, removeSign);
 	});
+
+	editor.addShortcut('Meta+S', '', function() {
+		ControllerChannel.trigger('meta:s:shortcut');
+		return false;
+	});
+
+	function Dialog(editor) {
+
+		var parseIntAndGetMax = function(val1, val2) {
+			return Math.max(parseInt(val1, 10), parseInt(val2, 10));
+		};
+
+		var Utils = {
+			getImageSize: function(url, callback) {
+				var img = document.createElement('img');
+
+				function done(width, height) {
+					if (img.parentNode) {
+						img.parentNode.removeChild(img);
+					}
+					callback({
+						width: width,
+						height: height
+					});
+				}
+				img.onload = function() {
+					var width = parseIntAndGetMax(img.width, img.clientWidth);
+					var height = parseIntAndGetMax(img.height, img.clientHeight);
+					done(width, height);
+				};
+				img.onerror = function() {
+					done(0, 0);
+				};
+				var style = img.style;
+				style.visibility = 'hidden';
+				style.position = 'fixed';
+				style.bottom = style.left = '0px';
+				style.width = style.height = 'auto';
+				document.body.appendChild(img);
+				img.src = url;
+			},
+			removePixelSuffix: function(value) {
+				if (value) {
+					value = value.replace(/px$/, '');
+				}
+				return value;
+			},
+			addPixelSuffix: function(value) {
+				if (value.length > 0 && /^[0-9]+$/.test(value)) {
+					value += 'px';
+				}
+				return value;
+			},
+			mergeMargins: function(css) {
+				if (css.margin) {
+					var splitMargin = css.margin.split(' ');
+					switch (splitMargin.length) {
+						case 1:
+							css['margin-top'] = css['margin-top'] || splitMargin[0];
+							css['margin-right'] = css['margin-right'] || splitMargin[0];
+							css['margin-bottom'] = css['margin-bottom'] || splitMargin[0];
+							css['margin-left'] = css['margin-left'] || splitMargin[0];
+							break;
+						case 2:
+							css['margin-top'] = css['margin-top'] || splitMargin[0];
+							css['margin-right'] = css['margin-right'] || splitMargin[1];
+							css['margin-bottom'] = css['margin-bottom'] || splitMargin[0];
+							css['margin-left'] = css['margin-left'] || splitMargin[1];
+							break;
+						case 3:
+							css['margin-top'] = css['margin-top'] || splitMargin[0];
+							css['margin-right'] = css['margin-right'] || splitMargin[1];
+							css['margin-bottom'] = css['margin-bottom'] || splitMargin[2];
+							css['margin-left'] = css['margin-left'] || splitMargin[1];
+							break;
+						case 4:
+							css['margin-top'] = css['margin-top'] || splitMargin[0];
+							css['margin-right'] = css['margin-right'] || splitMargin[1];
+							css['margin-bottom'] = css['margin-bottom'] || splitMargin[2];
+							css['margin-left'] = css['margin-left'] || splitMargin[3];
+					}
+					delete css.margin;
+				}
+				return css;
+			},
+			waitLoadImage: function(editor, data, imgElm) {
+				function selectImage() {
+					imgElm.onload = imgElm.onerror = null;
+					if (editor.selection) {
+						editor.selection.select(imgElm);
+						editor.nodeChanged();
+					}
+				}
+				imgElm.onload = function() {
+					/*if (!data.width && !data.height) {
+						editor.dom.setAttribs(imgElm, {
+							width: imgElm.clientWidth,
+							height: imgElm.clientHeight
+						});
+					}*/
+					selectImage();
+				};
+				imgElm.onerror = selectImage;
+			}
+		};
+
+		var defaultData = function() {
+			return {
+				src: '',
+				alt: '',
+				title: '',
+				width: '',
+				height: '',
+				class: '',
+				style: '',
+				hspace: '',
+				vspace: '',
+				//border: '',
+				//borderStyle: ''
+			};
+		};
+		var doSyncSize = function(widthCtrl, heightCtrl) {
+			widthCtrl.state.set('oldVal', widthCtrl.value());
+			heightCtrl.state.set('oldVal', heightCtrl.value());
+		};
+		var doSizeControls = function(win, f) {
+			var widthCtrl = win.find('#width')[0];
+			var heightCtrl = win.find('#height')[0];
+			var constrained = win.find('#constrain')[0];
+			if (widthCtrl && heightCtrl && constrained) {
+				f(widthCtrl, heightCtrl, constrained.checked());
+			}
+		};
+		var doUpdateSize = function(widthCtrl, heightCtrl, isContrained) {
+			var oldWidth = widthCtrl.state.get('oldVal');
+			var oldHeight = heightCtrl.state.get('oldVal');
+			var newWidth = widthCtrl.value();
+			var newHeight = heightCtrl.value();
+			if (isContrained && oldWidth && oldHeight && newWidth && newHeight) {
+				if (newWidth !== oldWidth) {
+					newHeight = Math.round(newWidth / oldWidth * newHeight);
+					if (!isNaN(newHeight)) {
+						heightCtrl.value(newHeight);
+					}
+				} else {
+					newWidth = Math.round(newHeight / oldHeight * newWidth);
+					if (!isNaN(newWidth)) {
+						widthCtrl.value(newWidth);
+					}
+				}
+			}
+			doSyncSize(widthCtrl, heightCtrl);
+		};
+		var SizeManager = {
+			createUi: function() {
+				var recalcSize = function(evt) {
+					SizeManager.updateSize(evt.control.rootControl);
+				};
+				return {
+					type: 'container',
+					label: 'Dimensions',
+					layout: 'flex',
+					align: 'center',
+					spacing: 5,
+					items: [{
+							name: 'width',
+							type: 'textbox',
+							maxLength: 5,
+							size: 5,
+							onchange: recalcSize,
+							ariaLabel: 'Width'
+						},
+						{
+							type: 'label',
+							text: 'x'
+						},
+						{
+							name: 'height',
+							type: 'textbox',
+							maxLength: 5,
+							size: 5,
+							onchange: recalcSize,
+							ariaLabel: 'Height'
+						},
+						{
+							name: 'constrain',
+							type: 'checkbox',
+							checked: true,
+							text: 'Constrain proportions'
+						}
+					]
+				};
+			},
+			syncSize: function(win) {
+				doSizeControls(win, doSyncSize);
+			},
+			updateSize: function(win) {
+				doSizeControls(win, doUpdateSize);
+			}
+		};
+
+		var getAttrib = function(image, name$$1) {
+			if (image.hasAttribute(name$$1)) {
+				return image.getAttribute(name$$1);
+			} else {
+				return '';
+			}
+		};
+		var getHspace = function(image) {
+			if (image.style.marginLeft && image.style.marginRight && image.style.marginLeft === image.style.marginRight) {
+				return Utils.removePixelSuffix(image.style.marginLeft);
+			} else {
+				return '';
+			}
+		};
+		var setHspace = function(image, value) {
+			var pxValue = Utils.addPixelSuffix(value);
+			image.style.marginLeft = pxValue;
+			image.style.marginRight = pxValue;
+		};
+		var setVspace = function(image, value) {
+			var pxValue = Utils.addPixelSuffix(value);
+			image.style.marginTop = pxValue;
+			image.style.marginBottom = pxValue;
+		};
+
+		var getVspace = function(image) {
+			if (image.style.marginTop && image.style.marginBottom && image.style.marginTop === image.style.marginBottom) {
+				return Utils.removePixelSuffix(image.style.marginTop);
+			} else {
+				return '';
+			}
+		};
+
+		var create = function(normalizeCss, data) {
+			var image = document.createElement('img');
+			write(normalizeCss, merge(data, {
+				caption: false
+			}), image);
+			return image;
+		};
+
+		var read = function(normalizeCss, image) {
+
+			var reg = new RegExp('^https://' + Session.site.get('backoffice') + '/media/([^"]+)', 'i');
+			var src = getAttrib(image, 'src').replace(reg, removeSignInSrc);
+
+			return {
+				src: src,
+				alt: getAttrib(image, 'alt'),
+				title: getAttrib(image, 'title'),
+				width: getSize(image, 'width'),
+				height: getSize(image, 'height'),
+				class: getAttrib(image, 'class'),
+				style: normalizeCss(getAttrib(image, 'style')),
+				hspace: getHspace(image),
+				vspace: getVspace(image)
+			};
+		};
+
+		var setSize = function(name$$1, normalizeCss) {
+			return function(image, name$$1, value) {
+				if (image.style[name$$1]) {
+					image.style[name$$1] = Utils.addPixelSuffix(value);
+					normalizeStyle(image, normalizeCss);
+				} else {
+					setAttrib(image, name$$1, value);
+				}
+			};
+		};
+		var getSize = function(image, name$$1) {
+			if (image.style[name$$1]) {
+				return Utils.removePixelSuffix(image.style[name$$1]);
+			} else {
+				return getAttrib(image, name$$1);
+			}
+		};
+		var getSelectedImage = function(editor) {
+			var imgElm = editor.selection.getNode();
+			var figureElm = editor.dom.getParent(imgElm, 'figure.image');
+			if (figureElm) {
+				return editor.dom.select('img', figureElm)[0];
+			}
+			if (imgElm && (imgElm.nodeName !== 'IMG' || imgElm.getAttribute('data-mce-object') || imgElm.getAttribute(
+					'data-mce-placeholder'))) {
+				return null;
+			}
+			return imgElm;
+		};
+
+		var normalizeStyle = function(image, normalizeCss) {
+			var attrValue = image.getAttribute('style');
+			var value = normalizeCss(attrValue !== null ? attrValue : '');
+			if (value.length > 0) {
+				image.setAttribute('style', value);
+				image.setAttribute('data-mce-style', value);
+			} else {
+				image.removeAttribute('style');
+			}
+		};
+		var normalized = function(set, normalizeCss) {
+			return function(image, name$$1, value) {
+				set(image, value);
+				normalizeStyle(image, normalizeCss);
+			};
+		};
+
+		var normalizeCss = function(editor, cssText) {
+			var css = editor.dom.styles.parse(cssText);
+			var mergedCss = Utils.mergeMargins(css);
+			var compressed = editor.dom.styles.parse(editor.dom.styles.serialize(mergedCss));
+			return editor.dom.styles.serialize(compressed);
+		};
+
+		var readImageDataFromSelection = function(editor) {
+			var image = getSelectedImage(editor);
+			return image ? read(function(css) {
+				return normalizeCss(editor, css);
+			}, image) : defaultData();
+		};
+
+		function curry(fn) {
+			var initialArgs = [];
+			for (var _i = 1; _i < arguments.length; _i++) {
+				initialArgs[_i - 1] = arguments[_i];
+			}
+			return function() {
+				var restArgs = [];
+				for (var _i = 0; _i < arguments.length; _i++) {
+					restArgs[_i] = arguments[_i];
+				}
+				var all = initialArgs.concat(restArgs);
+				return fn.apply(null, all);
+			};
+		}
+
+		var deleteImage = function(editor, image) {
+			if (image) {
+				var elm = editor.dom.is(image.parentNode, 'figure.image') ? image.parentNode : image;
+				editor.dom.remove(elm);
+				editor.focus();
+				editor.nodeChanged();
+				if (editor.dom.isEmpty(editor.getBody())) {
+					editor.setContent('');
+					editor.selection.setCursorLocation();
+				}
+			}
+		};
+
+		var insertImageAtCaret = function(editor, data) {
+			var elm = create(function(css) {
+				return normalizeCss(editor, css);
+			}, data);
+			editor.dom.setAttrib(elm, 'data-mce-id', '__mcenew');
+			editor.focus();
+			editor.selection.setContent(elm.outerHTML);
+			var insertedElm = editor.dom.select('*[data-mce-id="__mcenew"]')[0];
+			editor.dom.setAttrib(insertedElm, 'data-mce-id', null);
+			editor.selection.select(insertedElm);
+		};
+
+		var insertOrUpdateImage = function(editor, data) {
+			var image = getSelectedImage(editor);
+			if (image) {
+				if (data.src) {
+					writeImageDataToSelection(editor, data);
+				} else {
+					deleteImage(editor, image);
+				}
+			} else if (data.src) {
+				insertImageAtCaret(editor, data);
+			}
+		};
+
+		var updateProp = function(image, oldData, newData, name$$1, set) {
+			if (newData[name$$1] !== oldData[name$$1]) {
+				set(image, name$$1, newData[name$$1]);
+			}
+		};
+
+		var write = function(normalizeCss, newData, image) {
+			var oldData = read(normalizeCss, image);
+
+			if (newData.src) {
+				newData.src = newData.src.replace(/^\/media\/(.+)/i, addSignInSrc);
+			}
+
+			updateProp(image, oldData, newData, 'src', setAttrib);
+			updateProp(image, oldData, newData, 'alt', setAttrib);
+			updateProp(image, oldData, newData, 'title', setAttrib);
+			updateProp(image, oldData, newData, 'width', setSize('width', normalizeCss));
+			updateProp(image, oldData, newData, 'height', setSize('height', normalizeCss));
+			updateProp(image, oldData, newData, 'class', setAttrib);
+			updateProp(image, oldData, newData, 'style', normalized(function(image, value) {
+				return setAttrib(image, 'style', value);
+			}, normalizeCss));
+			updateProp(image, oldData, newData, 'hspace', normalized(setHspace, normalizeCss));
+			updateProp(image, oldData, newData, 'vspace', normalized(setVspace, normalizeCss));
+			//updateProp(image, oldData, newData, 'border', normalized(setBorder, normalizeCss));
+			//updateProp(image, oldData, newData, 'borderStyle', normalized(setBorderStyle, normalizeCss));
+		};
+		var writeImageDataToSelection = function(editor, data) {
+			var image = getSelectedImage(editor);
+			write(function(css) {
+				return normalizeCss(editor, css);
+			}, data, image);
+			editor.dom.setAttrib(image, 'src', image.getAttribute('src'));
+
+			editor.selection.select(image);
+			Utils.waitLoadImage(editor, data, image);
+
+		};
+		var updateVSpaceHSpaceBorder = function(editor) {
+			return function(evt) {
+				var dom = editor.dom;
+				var rootControl = evt.control.rootControl;
+				var data = rootControl.toJSON();
+				var css = dom.parseStyle(data.style);
+				rootControl.find('#vspace').value('');
+				rootControl.find('#hspace').value('');
+				css = Utils.mergeMargins(css);
+				if (css['margin-top'] && css['margin-bottom'] || css['margin-right'] && css['margin-left']) {
+					if (css['margin-top'] === css['margin-bottom']) {
+						rootControl.find('#vspace').value(Utils.removePixelSuffix(css['margin-top']));
+					} else {
+						rootControl.find('#vspace').value('');
+					}
+					if (css['margin-right'] === css['margin-left']) {
+						rootControl.find('#hspace').value(Utils.removePixelSuffix(css['margin-right']));
+					} else {
+						rootControl.find('#hspace').value('');
+					}
+				}
+				/*if (css['border-width']) {
+					rootControl.find('#border').value(Utils.removePixelSuffix(css['border-width']));
+				} else {
+					rootControl.find('#border').value('');
+				}
+				if (css['border-style']) {
+					rootControl.find('#borderStyle').value(css['border-style']);
+				} else {
+					rootControl.find('#borderStyle').value('');
+				}*/
+				rootControl.find('#style').value(dom.serializeStyle(dom.parseStyle(dom.serializeStyle(css))));
+			};
+		};
+
+		var merge = function() {
+			var objects = new Array(arguments.length);
+			for (var i = 0; i < objects.length; i++)
+				objects[i] = arguments[i];
+			if (objects.length === 0)
+				throw new Error('Can\'t merge zero objects');
+			var ret = {};
+			for (var j = 0; j < objects.length; j++) {
+				var curObject = objects[j];
+				for (var key in curObject)
+					if (hasOwnProperty.call(curObject, key)) {
+						ret[key] = curObject[key];
+					}
+			}
+			return ret;
+		};
+
+		var setAttrib = function(image, name$$1, value) {
+			image.setAttribute(name$$1, value);
+		};
+
+		var submitForm = function(editor, evt) {
+			var win = evt.control.getRoot();
+			SizeManager.updateSize(win);
+			editor.undoManager.transact(function() {
+				var data = merge(readImageDataFromSelection(editor), win.toJSON());
+				insertOrUpdateImage(editor, data);
+			});
+			editor.editorUpload.uploadImagesAuto();
+		};
+		var getStyleValue = function(normalizeCss, data) {
+			var image = document.createElement('img');
+			setAttrib(image, 'style', data.style);
+			if (getHspace(image) || data.hspace !== '') {
+				setHspace(image, data.hspace);
+			}
+			if (getVspace(image) || data.vspace !== '') {
+				setVspace(image, data.vspace);
+			}
+
+
+			return normalizeCss(image.getAttribute('style'));
+		};
+		var updateStyle = function(editor, win) {
+			win.find('#style').each(function(ctrl) {
+				var value = getStyleValue(function(css) {
+					return normalizeCss(editor, css);
+				}, merge(defaultData(), win.toJSON()));
+				ctrl.value(value);
+			});
+		};
+		var onSrcChange = function(evt, editor) {
+			var srcURL;
+			var meta = evt.meta || {};
+			var control = evt.control;
+			var rootControl = control.rootControl;
+
+			_.each(meta, function(value, key) {
+				rootControl.find('#' + key).value(value);
+			});
+			/*if (!meta.width && !meta.height) { // FIX ME
+				srcURL = editor.convertURL(control.value(), 'src');
+				//prependURL = Settings.getPrependUrl(editor);
+				//absoluteURLPattern = new RegExp('^(?:[a-z]+:)?//', 'i');
+				//if (prependURL && !absoluteURLPattern.test(srcURL) && srcURL.substring(0, prependURL.length) !== prependURL) {
+				//	srcURL = prependURL + srcURL;
+				//}
+				control.value(srcURL);
+				Utils.getImageSize(editor.documentBaseURI.toAbsolute(control.value()), function(data) {
+					if (data.width && data.height) {
+						rootControl.find('#width').value(data.width);
+						rootControl.find('#height').value(data.height);
+						SizeManager.syncSize(rootControl);
+					}
+				});
+			}*/
+		};
+		var getGeneralItems = function(editor) {
+			return [{
+				name: 'src',
+				type: 'filepicker',
+				filetype: 'image',
+				label: 'Source',
+				autofocus: true,
+				onchange: function(evt) {
+					onSrcChange(evt, editor);
+				},
+				onbeforecall: function(evt) {
+					evt.meta = evt.control.rootControl.toJSON();
+				}
+			}, {
+				name: 'alt',
+				type: 'textbox',
+				label: 'Texte alternatif'
+			}, {
+				label: 'Style',
+				name: 'style',
+				type: 'textbox',
+				onchange: updateVSpaceHSpaceBorder(editor)
+			}, {
+				type: 'form',
+				layout: 'grid',
+				packV: 'start',
+				columns: 2,
+				padding: 0,
+				defaults: {
+					type: 'textbox',
+					maxWidth: 50,
+					onchange: function(evt) {
+						updateStyle(editor, evt.control.rootControl);
+					}
+				},
+				items: [{
+						label: 'Vertical space',
+						name: 'vspace'
+					},
+					{
+						label: 'Horizontal space',
+						name: 'hspace'
+					}
+				]
+			}, SizeManager.createUi(), {
+				name: 'title',
+				type: 'textbox',
+				label: 'Titre'
+			}, {
+				name: 'class',
+				type: 'textbox',
+				label: 'Class'
+			}];
+		};
+
+		return {
+			open: function() {
+				var win = editor.windowManager.open({
+					title: 'Insert/edit image',
+					data: readImageDataFromSelection(editor),
+					body: getGeneralItems(editor),
+					onSubmit: curry(submitForm, editor)
+				});
+				SizeManager.syncSize(win);
+			}
+		};
+	}
+
+	editor.addMenuItem('kimage', {
+		icon: 'image',
+		text: 'Image',
+		onclick: Dialog(editor).open,
+		context: 'insert',
+		prependToContext: true
+	});
+
 });
 
 
@@ -214,14 +832,14 @@ module.exports = Marionette.Behavior.extend({
 		var adjusted_height = $target.height(); // Will remove toolbar height to match base textarea height
 		switch ($target.data('wysiwyg-toolbar')) {
 			case 'micro':
-				plugins = ['image', 'contextmenu', 'kiubi', 'lists', 'paste', 'link', 'charmap', 'code'];
+				plugins = [ /*'image'*/ , 'contextmenu', 'kiubi', 'lists', 'paste', 'link', 'charmap', 'code'];
 				toolbar =
 					'bold italic underline strikethrough | numlist bullist | pastetext | link unlink | kiubi_media | removeformat undo redo | code';
 				adjusted_height -= 68;
 				break;
 
 			default:
-				plugins = ['image', 'contextmenu', 'kiubi', 'media', 'lists', 'paste', 'textcolor',
+				plugins = [ /*'image'*/ , 'contextmenu', 'kiubi', 'media', 'lists', 'paste', 'textcolor',
 					'colorpicker', 'link', 'anchor', 'table', 'charmap', 'code'
 				];
 				toolbar = [
@@ -246,7 +864,8 @@ module.exports = Marionette.Behavior.extend({
 			block_formats: 'Paragraphe=p;Titre 1=h1;Titre 2=h2;Titre 3=h3;Titre 4=h4;Titre 5=h5;Titre 6=h6;Preformatted=pre;DIV=div',
 			plugins: plugins,
 			toolbar: toolbar,
-			contextmenu: "",
+			image_advtab: true,
+			contextmenu: "link kimage", //"link image",
 			fontsize_formats: '8px 10px 12px 14px 18px 24px 36px',
 			branding: false,
 			link_list: {
@@ -258,13 +877,6 @@ module.exports = Marionette.Behavior.extend({
 			init_instance_callback: function(editor) {
 				editor.on('Change', function(e) {
 					that.view.triggerMethod('field:change');
-				});
-				editor.on('KeyDown', function(e) {
-					if (e.key == 's' && e.metaKey) {
-						e.preventDefault();
-						ControllerChannel.trigger('meta:s:shortcut');
-						return false;
-					}
 				});
 			}
 		});

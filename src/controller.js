@@ -32,9 +32,31 @@ module.exports = Marionette.Object.extend({
 	sidebarMenuBuffer: [],
 
 	baseBreadcrum: [],
+	context: null,
 
 	initialize: function(options) {
 		this.navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+		this.context = {};
+	},
+
+	/**
+	 * Set context param
+	 * 
+	 * @param {String} name
+	 * @param {*} value
+	 */
+	addContext: function(name, value) {
+		this.context[name] = value;
+	},
+
+	/**
+	 * Get context param
+	 * 
+	 * @param {String} name
+	 * @returns {*}
+	 */
+	getContext: function(name) {
+		return this.context[name];
 	},
 
 	/**

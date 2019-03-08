@@ -167,8 +167,12 @@ module.exports = Marionette.View.extend({
 	},
 
 	onSave: function() {
+
+		var data = Forms.extractFields(this.fields, this);
+		data.display_taxes = (data.display_taxes == '1');
+
 		return this.model.save(
-			Forms.extractFields(this.fields, this), {
+			data, {
 				patch: true
 			}
 		).done(function() {

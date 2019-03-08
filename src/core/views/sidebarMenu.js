@@ -293,9 +293,10 @@ module.exports = Marionette.View.extend({
 			var list = '';
 			if (result.length > 0) {
 				list = _.reduce(result, function(memo, site) {
-					return memo + '<li><a class="dropdown-item" href="#" title="' + site.domain + '" data-site="' + site.code_site +
-						'">' + site.domain +
-						'</a></li>';
+					var default_domain = site.domain.lastIndexOf(site.code_site, 0) != 0 ? '<small>' + site.code_site +
+						'</small>' : '';
+					return memo + '<li><a class="dropdown-item" href="#" title="' + site.domain + '" data-site="' +
+						site.code_site + '">' + site.domain + default_domain + '</a></li>';
 				}, '<li class="dropdown-divider"></li>');
 			} else {
 				list =

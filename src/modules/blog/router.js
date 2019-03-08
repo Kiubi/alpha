@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var moment = require('moment');
+var Forms = require('kiubi/utils/forms.js');
 
 var Controller = require('kiubi/controller.js');
 var ControllerChannel = Backbone.Radio.channel('controller');
@@ -308,7 +309,7 @@ var BlogController = Controller.extend({
 			var c = new Posts();
 			var m = new c.model({
 				title: 'Intitulé par défaut',
-				slug: 'intitule-par-defaut',
+				slug: Forms.tmpSlug(),
 				is_visible: false,
 				has_comments_open: true,
 				publication_date: moment().format('YYYY-MM-DD hh:mm:ss'),
@@ -494,7 +495,7 @@ var BlogController = Controller.extend({
 		var c = new Categories();
 		var m = new c.model({
 			name: 'Intitulé par défaut',
-			slug: 'intitule-par-defaut',
+			slug: Forms.tmpSlug(),
 			is_visible: false
 		});
 

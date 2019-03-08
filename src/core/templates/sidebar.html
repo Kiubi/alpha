@@ -34,7 +34,7 @@
 	</a>
 	<div class="dropdown-menu ml-2 mb-2" aria-labelledby="accountmenu">
 		<div class="user-detail dropdown-item-text text-nowrap">
-			<a href="#" data-role="users" class="d-inline-block">
+			<a href="#" data-role="me" class="d-inline-block">
 				<img src="<%- user.avatar %>" class="rounded-circle img-avatar d-block float-left mr-3">
 				<span>
 					<strong><%- user.firstname %> <%- user.lastname %></strong>
@@ -67,7 +67,7 @@
 				<div><span class="dropdown-item-text disabled py-2">Factures</span></div>
 				<% } %>
 				<% if (has_scope_users) { %>
-				<div><a class="dropdown-item py-2" data-role="users">Utilisateurs</a></div>
+				<div><a class="dropdown-item py-2" href="#" data-role="users">Utilisateurs</a></div>
 				<% } else { %>
 				<div><span class="dropdown-item-text disabled py-2">Utilisateurs</span></div>
 				<% } %>

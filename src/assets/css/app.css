@@ -3,100 +3,6 @@
 Polices
 -------------------------------------*/
 
-/* latin-ext */
-/*
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans Regular'), local('OpenSans-Regular'), url(/assets/fonts/OpenSans-Regular-LE.woff2) format('woff2');
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
-
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(/assets/fonts/OpenSans-Bold-LE.woff2) format('woff2');
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(/assets/fonts/Montserrat-Regular-LE.woff2) format('woff2');
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 500;
-  src: local('Montserrat Medium'), local('Montserrat-Medium'), url(/assets/fonts/Montserrat-Medium-LE.woff2) format('woff2');
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url(/assets/fonts/Montserrat-SemiBold-LE.woff2) format('woff2');
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
-*/
-/* latin */
-
-/*@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans Regular'), local('OpenSans-Regular'), url(/assets/fonts/OpenSans-Regular-L.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
-}
-
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(/assets/fonts/OpenSans-Bold-L.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(/assets/fonts/Montserrat-Regular-L.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 500;
-  src: local('Montserrat Medium'), local('Montserrat-Medium'), url(/assets/fonts/Montserrat-Medium-L.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url(/assets/fonts/Montserrat-SemiBold-L.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
-}
-*/
-/* icons */
-
-/*@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url(/assets/fonts/Material-Icons.woff2) format('woff2');
-}
-*/
-
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600|Open+Sans:400,700');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
@@ -498,6 +404,21 @@ btn (boutons)
 	color: #FFF;
 	background-color: #60AD33;
 	border-color: #60AD33;
+}
+
+.btn-outline-light {
+	padding-top: 7px;
+	padding-bottom: 7px;
+	color: #fff;
+	border: 2px solid #fff;
+	border-radius: 0;
+}
+
+.btn-outline-light:hover {
+	color: #363636;
+}
+
+.btn-outline-light.btn-lg {
 }
 
 .btn:disabled, .btn.disabled {
@@ -1036,6 +957,11 @@ toggle-site
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.toggle-site .dropdown-menu small {
+	display: block;
+	color: #B3B3B3;
 }
 
 .toggle-site + .overlay {
@@ -4244,6 +4170,7 @@ Devises
 
 .desktop img {
 	width: 400px;
+	height: 250px;
 }
 
 .mobile {
@@ -4867,9 +4794,11 @@ login
 	left: 0;
 	width: 50%;
 	height: 100%;
-	background: #fff url(/assets/img/bg_login_c.jpg) no-repeat right top;
+	background: #fff no-repeat right top;
 	-webkit-background-size: cover;
 	background-size: cover;
+	-webkit-background-position: cover;
+	background-position: center;
 	box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.3) inset;
 }
 
@@ -4913,16 +4842,44 @@ login
 .login .brand-logo {
 	position: relative;
 	top: 30%;
-	float: right;
-	margin: -10px 100px 0 0;
-	width: 84px;
-	height: 84px;
-	margin-bottom: 20px;
+	left: 50px;
+	margin-top: -10px;
+	z-index: 2;
+}
+
+.login .brand-logo img {
+	max-width: 250px;
+	max-height: 84px;
+}
+
+.login .brand-message {
+	position: absolute;
+	left: 50px;
+	bottom: 50px;
+	width: 320px;
+	font-size: 16px;
+	color: #FFF;
+	z-index: 2;
+}
+
+.login .brand-message h2 {
+	font-size: 22px;
+	font-weight: 600;
+	line-height: 1.5;
+}
+
+.login .brand-message p {
+	opacity: 0.8;
+}
+
+.login .overlay {
+	z-index: 1;
+	opacity: 0.8;
 }
 
 .login .post-footer {
 	margin: 0;
-	padding: 150px 0 30px 0;
+	padding: 100px 0 30px 0;
 	font-size: 12px;
 	color: #979797;
 	text-align: center;
@@ -4943,15 +4900,26 @@ login
 
 @media (max-width: 768px) {
 	.login .brand {
+		position: relative;
+		height: auto;
+		width: 100%;
+	}
+
+	.login .brand-message {
+		display: none;
+	}
+
+	.login .brand-logo {
 		display: none;
 	}
 
 	.login .login-box {
+		position: relative;
 		width: 100%;
 	}
 
 	.login .post-article {
-		top: 15%;
+		top: 5%;
 		max-width: 100%;
 	}
 

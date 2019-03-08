@@ -2,9 +2,20 @@
 
 <% if(comment) { %><p class="form-control-static"><%- comment %></p><% } %>
 
-<p class="form-control-static"><a href="#" data-role="select"><%- file ? file.name : 'Accéder à la médiathèque' %></a>
-<% if(file) { %>
-<a href="#" data-role="clear" class="md-icon md-delete"></a></p>
+<% if(is_loaded) { %>
+	<p class="form-control-static">
+
+		<a href="#" data-role="select"><%- file ? file.name : 'Accéder à la médiathèque' %></a>
+		<% if(file) { %>
+		<a href="#" data-role="clear" class="md-icon md-delete"></a>
+		<% } %>
+	</p>
+<% } else { %>
+	<p>
+		<div class="spinner-border text-muted" role="status">
+			<span class="sr-only">Chargement...</span>
+		</div>
+	</p>
 <% } %>
 
 <input type="hidden" name="<%- fieldname %>" value="<%- value %>">

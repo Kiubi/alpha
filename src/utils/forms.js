@@ -92,8 +92,32 @@ function clearErrors($errorEl, el) {
 
 }
 
+/**
+ * Generate a temporary slug : eight underscores followed by eight digits
+ * 
+ * @returns {string}
+ */
+function tmpSlug() {
+	var min = 10000000;
+	var max = 99999999;
+	return '________' + (Math.floor(Math.random() * (max - min + 1)) + min);
+}
+
+/**
+ * Recognize a temporary slug
+ * 
+ * @param slug
+ * @returns {boolean}
+ */
+function isTmpSlug(slug) {
+	// in case of rare collision, temporary slug may become ^_{8}[0-9]{8}-[0-9]{1,3}$
+	// so we only test the beginning of the slug
+	return (slug.match(/^_{8}[0-9]{8}/) !== null);
+}
 
 module.exports.extractFields = extractFields;
 module.exports.extractFormFields = extractFormFields;
 module.exports.displayErrors = displayErrors;
 module.exports.clearErrors = clearErrors;
+module.exports.tmpSlug = tmpSlug;
+module.exports.isTmpSlug = isTmpSlug;

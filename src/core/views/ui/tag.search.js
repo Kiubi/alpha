@@ -136,7 +136,7 @@ module.exports = Marionette.View.extend({
 		if (results.length > 0) {
 			list = _.reduce(results, function(acc, result, index) {
 				return acc + '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' +
-					result.label + '</a></li>';
+					_.escape(result.label) + '</a></li>';
 			}, '');
 		} else {
 			list =
@@ -151,7 +151,7 @@ module.exports = Marionette.View.extend({
 			}, xtra);
 
 			list += '<li class="dropdown-divider"></li><li data-role="xtra" data-event="' + xtra.eventName +
-				'"><a class="dropdown-item" href="#">' + xtra.title + '<span class="md-icon ' + xtra.iconClass +
+				'"><a class="dropdown-item" href="#">' + _.escape(xtra.title) + '<span class="md-icon ' + xtra.iconClass +
 				'"></span></a></li>';
 		}
 

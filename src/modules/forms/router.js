@@ -163,10 +163,42 @@ var FormsController = Controller.extend({
 			this.setHeader({
 				title: m.get('name')
 			}, [{
+				title: 'Dupliquer le formulaire',
+				callback: ['actionDuplicateForm', id] // form_id
+			}, {
 				title: 'Enregistrer',
-				callback: 'actionSave'
+				callback: 'actionSave',
+				activateOnEvent: 'modified:content',
+				bubbleOnEvent: 'modified:content'
 			}], HeaderTabsForm(id));
 		}.bind(this)).fail(this.failHandler('Formulaire introuvable'));
+	},
+
+	actionDuplicateForm: function(form_id) {
+
+		var c = new Forms();
+		var m = new c.model({
+			form_id: form_id
+		});
+
+		var navigationController = this.navigationController;
+
+		return m.fetch().then(
+			function() {
+				m.duplicate({
+					name: 'Copie de ' + m.get('name')
+				}).done(function(duplicate) {
+					navigationController.showOverlay(300);
+					navigationController.navigate('/forms/' + duplicate.get('form_id'));
+					//ControllerChannel.trigger('refresh:categories');
+				}).fail(function(xhr) {
+					navigationController.showErrorModal(xhr);
+				});
+			},
+			function(xhr) {
+				navigationController.showErrorModal(xhr);
+			}
+		);
 	},
 
 	showGdpr: function(id) {
