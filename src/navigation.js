@@ -81,7 +81,7 @@ module.exports = Marionette.Object.extend({
 	/**
 	 * Set breadcrum
 	 *
-	 * @param  {array} links
+	 * @param  {Array} links
 	 */
 	setBreadCrum: function(links) {
 		if (!this.layoutView.getChildView('header')) return;
@@ -98,6 +98,17 @@ module.exports = Marionette.Object.extend({
 		if (!this.layoutView.getChildView('header')) return;
 
 		this.layoutView.getChildView('header').setActions(actions);
+	},
+
+	/**
+	 * Set navigation
+	 *
+	 * @param  {Object} navigation
+	 */
+	setHeaderNavigation: function(navigation) {
+		if (!this.layoutView.getChildView('header')) return;
+
+		this.layoutView.getChildView('header').setNavigation(navigation);
 	},
 
 	/**

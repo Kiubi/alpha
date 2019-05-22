@@ -120,11 +120,13 @@ module.exports = Marionette.Object.extend({
 	 * @param {Object|Array} breadcrum
 	 * @param {Array} actions
 	 * @param {Array} tabs
+	 * @param {Object} navigation
 	 */
-	setHeader: function(breadcrum, actions, tabs) {
+	setHeader: function(breadcrum, actions, tabs, navigation) {
 		this.setBreadCrum(breadcrum);
 		this.setHeaderActions(actions);
 		setHeaderTabs(tabs, this);
+		this.setHeaderNavigation(navigation);
 		this.navigationController.refreshHeader();
 	},
 
@@ -173,6 +175,18 @@ module.exports = Marionette.Object.extend({
 		}
 
 		this.navigationController.setHeaderActions(actions);
+		if (refresh) this.navigationController.refreshHeader();
+
+	},
+
+	/**
+	 * Helper to set navigation and bind them to the controler
+	 *
+	 * @param  {Object} navigation
+	 * @param  {Boolean} refresh Rerender header
+	 */
+	setHeaderNavigation: function(navigation, refresh) {
+		this.navigationController.setHeaderNavigation(navigation);
 		if (refresh) this.navigationController.refreshHeader();
 
 	},

@@ -80,13 +80,12 @@ module.exports = Marionette.View.extend({
 		}
 
 		var dataTransfer = event.originalEvent.dataTransfer;
-		var files = (dataTransfer ? dataTransfer.files : event.originalEvent.target
-			.files);
+		var files = (dataTransfer ? dataTransfer.files : event.originalEvent.target.files);
 
 		if (!this.isMultiFiles) {
 			this.collection.reset();
 			// Limit to only 1 file
-			if (files.length > 1) files = files.shift();
+			if (files.length > 1) files = [files[0]];
 		}
 
 		_.each(files, function(File) {

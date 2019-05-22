@@ -20,6 +20,7 @@ var Activity = Backbone.Model.extend({
 		"user_name": "string",
 		"user_profil": "string",
 		"customer_id": "integer",
+		"avatar_url": '',
 		"avatar_thumb_url": '',
 		"creation_date": "string"
 	}

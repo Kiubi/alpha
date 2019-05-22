@@ -21,6 +21,8 @@ var Post = Backbone.Model.extend({
 	idAttribute: 'post_id',
 
 	previewLink: null,
+	nextPost: null,
+	previousPost: null,
 
 	parse: function(response) {
 		if ('data' in response) {
@@ -31,8 +33,20 @@ var Post = Backbone.Model.extend({
 				};
 			}
 
-			if (response.meta && response.meta.link && response.meta.link.preview) {
-				this.previewLink = response.meta.link.preview;
+			if (response.meta && response.meta.link) {
+				if (response.meta.link.preview) this.previewLink = response.meta.link.preview;
+				if (response.meta.link.next_post) {
+					var id = response.meta.link.next_post.match('cms/posts/([0-9]+)');
+					if (id) {
+						this.nextPost = parseInt(id[1]);
+					}
+				}
+				if (response.meta.link.previous_post) {
+					var id = response.meta.link.previous_post.match('cms/posts/([0-9]+)');
+					if (id) {
+						this.previousPost = parseInt(id[1]);
+					}
+				}
 			}
 
 			return response.data;

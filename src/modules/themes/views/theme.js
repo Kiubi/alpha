@@ -19,7 +19,8 @@ module.exports = Marionette.View.extend({
 		'pwdBtn': 'a[data-role="password-toggle"]',
 		'pwdMask': 'span[data-role="password-mask"]',
 		'defaultBtn': 'a[data-role="default"]',
-		'customBtn': 'a[data-role="custom"]'
+		'customBtn': 'a[data-role="custom"]',
+		'selectVariant': '[data-role="select-variant"]'
 	},
 
 	events: {
@@ -81,6 +82,17 @@ module.exports = Marionette.View.extend({
 				}
 
 			}.bind(this), fail);
+		},
+		'click @ui.selectVariant': function(event) {
+
+			var variant = Backbone.$(event.currentTarget).data('id');
+
+			this.themes.changeThemeVariants(variant).done(function() {
+				// console.log('OK');
+			}.bind(this)).fail(function(xhr) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal(xhr);
+			}.bind(this));
 		}
 	},
 

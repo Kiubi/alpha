@@ -146,7 +146,7 @@ var NewVariantRowView = Marionette.View.extend({
 			selected: defaultTax ? defaultTax.get('tax_id') : null
 		}));
 		this.showChildView('images', new Marionette.CollectionView({
-			className: 'btn-group',
+			className: 'btn-group d-block',
 			attributes: {
 				"data-toggle": "buttons"
 			},
@@ -318,7 +318,7 @@ var VariantRowView = Marionette.View.extend({
 			name: 'tax_id'
 		}));
 		this.showChildView('images', new Marionette.CollectionView({
-			className: 'btn-group',
+			className: 'btn-group d-block',
 			attributes: {
 				"data-toggle": "buttons"
 			},
@@ -515,7 +515,7 @@ var ImagesView = Marionette.View.extend({
 
 	onRender: function() {
 		this.showChildView('list', new Marionette.CollectionView({
-			className: 'btn-group',
+			className: 'btn-group d-block',
 			collection: this.collection,
 			childView: ImageRowView,
 			emptyView: EmptyImageRowView

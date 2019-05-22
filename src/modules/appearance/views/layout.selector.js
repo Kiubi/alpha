@@ -23,6 +23,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	initialize: function(options) {
+		this.apply = null;
 		this.mergeOptions(options, ['layout_id', 'type', 'apply', 'applyName']);
 		this.collection = new Layouts();
 		this.collection.fetch({
@@ -76,7 +77,7 @@ module.exports = Marionette.View.extend({
 		});
 		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 		m.save().done(function() {
-			var apply = this.apply ? '?apply=' + this.apply : '';
+			var apply = this.apply != null ? '?apply=' + this.apply : '';
 			navigationController.navigate('/appearance/drafts/' + m.get('draft_id') + apply);
 		}.bind(this)).fail(function(xhr) {
 			navigationController.showErrorModal(xhr);

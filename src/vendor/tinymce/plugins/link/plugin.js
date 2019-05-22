@@ -738,7 +738,7 @@ define(
         };
       }
 
-      if (Settings.hasLinkClassList(editor.settings)) {
+      /*if (Settings.hasLinkClassList(editor.settings)) {
         classListCtrl = {
           name: 'class',
           type: 'listbox',
@@ -754,7 +754,15 @@ define(
             }
           )
         };
-      }
+      }*/
+
+		classListCtrl = {
+			name: 'class',
+			type: 'textbox',
+			label: 'Class',
+			value: data.class
+
+		};
 
       if (Settings.shouldShowLinkTitle(editor.settings)) {
         linkTitleCtrl = {
@@ -782,12 +790,12 @@ define(
           },
           textListCtrl,
           linkTitleCtrl,
+		  classListCtrl,
           buildAnchorListControl(data.href),
           linkListCtrl,
           secLinkListCtrl,
           relListCtrl,
-          targetListCtrl,
-          classListCtrl
+          targetListCtrl
         ],
         onSubmit: function (e) {
           var assumeExternalTargets = Settings.assumeExternalTargets(editor.settings);

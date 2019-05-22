@@ -25,7 +25,19 @@ var Theme = Backbone.Model.extend({
 		"style": "",
 		"version": "",
 		"date": null,
-		"status": ""
+		"status": "",
+		"variants": [
+			/*
+			 colors: {
+			 	color1: "string", 
+			 	color2: "string", 
+			 	color3: "string", 
+			 	color4: "string"
+			 }
+			 css: "string"
+			 id: "string"
+			*/
+		]
 	}
 
 });
@@ -88,6 +100,24 @@ module.exports = Backbone.Collection.extend({
 			method: 'GET'
 		}).then(function(response) {
 			return new this.model(response.data);
+		}.bind(this));
+	},
+
+	/**
+	 * Change  theme variants
+	 *
+	 * @param {String} variant
+	 * @returns {Promise} Theme
+	 */
+	changeThemeVariants: function(variant) {
+		return Backbone.ajax({
+			url: this.url + '/current',
+			method: 'PUT',
+			data: {
+				variant: variant
+			}
+		}).then(function(response) {
+			//return new this.model(response.data);
 		}.bind(this));
 	}
 

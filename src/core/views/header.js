@@ -50,6 +50,8 @@ module.exports = Marionette.View.extend({
 	 */
 	tabs: null,
 
+	navigation: null,
+
 	ui: {
 		'defaultAction': "button[data-role='default-action']",
 		'otherActions': "[data-role='other-actions'] li"
@@ -63,6 +65,8 @@ module.exports = Marionette.View.extend({
 	initialize: function() {
 		this.listenTo(ControllerChannel, 'modified:content', _.debounce(this.onModifiedContent, 300));
 		this.listenTo(ControllerChannel, 'saved:content', this.onSavedContent);
+
+		this.navigation = null;
 	},
 
 	onModifiedContent: function(event) {
@@ -169,7 +173,8 @@ module.exports = Marionette.View.extend({
 		return {
 			links: this.getOption('links'),
 			actions: sortedActions,
-			tabs: this.getOption('tabs')
+			tabs: this.getOption('tabs'),
+			navigation: this.navigation
 		};
 	},
 
@@ -204,6 +209,15 @@ module.exports = Marionette.View.extend({
 	 */
 	setTabs: function(tabs) {
 		this.tabs = tabs;
+	},
+
+	/**
+	 * Set navigation
+	 *
+	 * @param {Object} navigation
+	 */
+	setNavigation: function(navigation) {
+		this.navigation = navigation;
 	}
 
 });

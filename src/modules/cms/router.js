@@ -80,6 +80,17 @@ function getHeadersAction(options) {
 	return actions;
 }
 
+function getPostNavigation(model) {
+
+	if (!model.nextPost && !model.previousPost) return null;
+
+	return {
+		next: model.nextPost ? '/cms/posts/' + model.nextPost : false,
+		previous: model.previousPost ? '/cms/posts/' + model.previousPost : false
+	};
+
+}
+
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
 	template: require('./templates/sidebarMenu.html'),
@@ -553,7 +564,7 @@ var CMSController = Controller.extend({
 		var page;
 		m.fetch({
 			data: {
-				extra_fields: 'texts'
+				extra_fields: 'texts,navigation'
 			}
 		}).
 		then(function() {
@@ -597,7 +608,7 @@ var CMSController = Controller.extend({
 					preview: page,
 					addPost: m.get('page_id'),
 					duplicatePost: id
-				}));
+				}), null, getPostNavigation(m));
 		}.bind(this)).fail(function(xhr) {
 			this.triggerSidebarMenu('change:page', null);
 			this.failHandler('Billet introuvable')(xhr);

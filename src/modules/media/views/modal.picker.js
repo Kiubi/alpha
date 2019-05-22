@@ -98,6 +98,8 @@ module.exports = Marionette.View.extend({
 	currentTerm: null,
 	currentOrder: null,
 
+	currentFetch: null,
+
 	events: {
 		'keyup @ui.term': _.debounce(function(e) {
 			this.currentTerm = this.getUI('term').val();
@@ -112,6 +114,7 @@ module.exports = Marionette.View.extend({
 		this.currentFolder = null;
 		this.currentTerm = null;
 		this.currentOrder = '-date';
+		this.currentFetch = null;
 	},
 
 	onRender: function() {
@@ -172,15 +175,23 @@ module.exports = Marionette.View.extend({
 	},
 
 	fetchFiles: function(folder_id, term, sort) {
-		this.collection.reset();
+
+		if (this.currentFetch) {
+			this.currentFetch.abort();
+		}
+
+		this.collection.reset(); // immediately clear listing BEFORE request
 		this.collection.folder_id = null;
-		this.collection.fetch({
+		this.currentFetch = this.collection.fetch({
+			reset: true, // require to resolve merging concurrent requests
 			data: {
 				folder_id: folder_id,
 				term: term,
 				sort: sort
 			}
-		});
+		}).always(function() {
+			this.currentFetch = null;
+		}.bind(this));
 	},
 
 	onChildviewSelectFile: function(model) {

@@ -42,7 +42,7 @@ module.exports = Marionette.View.extend({
 			this.layoutSelector = new LayoutSelectorView({
 				layout_id: this.model.get('layout_id'),
 				type: 'catalog-home',
-				apply: this.model.get('category_id'),
+				apply: 0, // Catalog home page is id = 0
 				applyName: this.model.get('name')
 			});
 		}

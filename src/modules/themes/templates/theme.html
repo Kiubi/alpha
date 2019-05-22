@@ -22,10 +22,6 @@
 				<% if(theme_download) { %>
 					<li><a class="dropdown-item" href="<%- theme_download %>" target="_blank">Télécharger les fichiers du thème</a></li>
 				<% } %>
-				<% if (theme.code != 'theme') { %>
-					<li class="dropdown-divider"></li>
-					<li><a class="dropdown-item" href="#" target="_blank">Changer de thème</a></li>
-				<% } %>
 			</ul>
 		</div>
 		<% if(theme.code == 'theme') { %>
@@ -36,6 +32,9 @@
 		<p>Vous utilisez le thème graphique par défaut. Vous pouvez créer un look sur mesure en
 			utilisant un thème graphique personnalisé.</p>
 		<% } %>
+
+
+
 		<div class="devises">
 			<!--<div class="mobile">
 			  <div class="screen-border">
@@ -61,6 +60,36 @@
 	</div>
 	<footer class="post-footer"></footer>
 </article>
+
+<% if(theme.variants && theme.variants.length > 0){ %>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Variantes du thème</h1>
+	</header>
+	<div class="post-content">
+<div data-toggle="buttons" class="row select-variants">
+
+		<% _.each(theme.variants, function(variant){ %>
+			<div class="col-3">
+				<label class="btn btn-variante d-flex align-items-stretch <%= variant.is_enabled ? 'active' : '' %>" data-role="select-variant" data-id="<%- variant.id %>">
+					<input name="select-variant" value="" autocomplete="off" type="radio">
+					<span class="variante" style="background-color: <%- variant.colors.color1 %>;"></span>
+					<span class="variante" style="background-color: <%- variant.colors.color2 %>;"></span>
+					<span class="variante" style="background-color: <%- variant.colors.color3 %>;"></span>
+					<span class="variante" style="background-color: <%- variant.colors.color4 %>;"></span>
+				</label>
+			</div>
+		<%}); %>
+		</div>
+	<%} %>
+
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+
+
 
 <% if(theme.code == 'theme') { %>
 

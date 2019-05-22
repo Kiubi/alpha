@@ -48,7 +48,7 @@ var View = Marionette.View.extend({
 		var cobranding_background, cobranding_logo, login;
 
 		if (this.loaded) {
-			cobranding_background = '/assets/img/bg_login_c.jpg';
+			cobranding_background = '/assets/img/bg_login_g.jpg';
 			cobranding_logo = '/assets/img/logo_kiubi.png';
 			if (this.cobranding) {
 				var cobranding = this.cobranding.get('login');

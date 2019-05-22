@@ -75,6 +75,55 @@ require('tinymce/plugins/fullscreen/plugin.js');
 require('tinymce/plugins/image/plugin.js');
 require('tinymce/plugins/contextmenu/plugin.js');
 require('tinymce/plugins/media/plugin.js');
+
+
+
+tinyMCE.PluginManager.add('wordpaste', function(editor, url) {
+
+	var cleanHTML = function(input) {
+
+		// 1. remove line breaks / Mso classes
+		var stringStripper = /( class=(")?Mso[a-zA-Z]+(")?)/g;
+		var output = input.replace(stringStripper, ' ');
+
+		// 2. strip Word generated HTML comments
+		var commentSripper = new RegExp('<!--(.*?)-->', 'g');
+		output = output.replace(commentSripper, '');
+
+		// 3. remove tags leave content if any
+		var tagStripper = new RegExp('<(\/)*(title|meta|link|span|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
+		output = output.replace(tagStripper, '');
+
+		// 4. Remove everything in between and including tags '<style(.)style(.)>'
+		var badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
+		for (var i = 0; i < badTags.length; i++) {
+			var tagStripper = new RegExp('<' + badTags[i] + '.*?' + badTags[i] + '(.*?)>', 'gi');
+			output = output.replace(tagStripper, '');
+		}
+
+		// A different attempt
+		//output = (output).replace(/font-family\:[^;]+;?|font-size\:[^;]+;?|line-height\:[^;]+;?/g, '');
+
+		// 5. remove attributes ' width="..."'
+		var badAttributes = ['start', /*'align',*/ 'class', 'width', 'height', 'data-[^=]+'];
+		for (var i = 0; i < badAttributes.length; i++) {
+			var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"', 'gi');
+			output = output.replace(attributeStripper, '');
+		}
+
+		// 6. remove consecutives new lines
+		var nlStripper = /(\n|\r|\r\n)+/g;
+		output = output.replace(stringStripper, '\r\n');
+
+		return output;
+	};
+
+	editor.on('PastePreProcess', function(e) {
+		e.content = cleanHTML(e.content);
+	});
+});
+
+
 // Plugins Mediathèque
 tinyMCE.PluginManager.add('kiubi', function(editor, url) {
 	// Add a button that opens a window
@@ -832,7 +881,7 @@ module.exports = Marionette.Behavior.extend({
 		var adjusted_height = $target.height(); // Will remove toolbar height to match base textarea height
 		switch ($target.data('wysiwyg-toolbar')) {
 			case 'micro':
-				plugins = [ /*'image'*/ , 'contextmenu', 'kiubi', 'lists', 'paste', 'link', 'charmap', 'code'];
+				plugins = [ /*'image'*/ , 'contextmenu', 'kiubi', 'lists', 'paste', 'link', 'charmap', 'code', 'wordpaste'];
 				toolbar =
 					'bold italic underline strikethrough | numlist bullist | pastetext | link unlink | kiubi_media | removeformat undo redo | code';
 				adjusted_height -= 68;
@@ -840,7 +889,7 @@ module.exports = Marionette.Behavior.extend({
 
 			default:
 				plugins = [ /*'image'*/ , 'contextmenu', 'kiubi', 'media', 'lists', 'paste', 'textcolor',
-					'colorpicker', 'link', 'anchor', 'table', 'charmap', 'code'
+					'colorpicker', 'link', 'anchor', 'table', 'charmap', 'code', 'wordpaste'
 				];
 				toolbar = [
 					'formatselect fontsizeselect | bold italic underline strikethrough superscript | alignleft aligncenter alignright alignjustify | forecolor backcolor | numlist bullist | outdent indent | pastetext | link unlink | kiubi_media media table | removeformat undo redo | code'
