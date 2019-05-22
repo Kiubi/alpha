@@ -20,6 +20,7 @@
     "backbone.marionette": "~3.5.1",
     "bootstrap": "^4.2.0",
     "clipboard": "^2.0.1",
+    "codemirror": "^5.45.0",
     "pc-bootstrap4-datetimepicker": "^4.17.50",
     "chart.js": "^2.7.2",
     "form-serialize": "^0.7.2",

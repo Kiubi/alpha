@@ -45,7 +45,7 @@ function getPageTitle(view) {
 		service = '';
 	}
 
-	return 'ALPHA • ' + Session.site.get('name') + service + ' • Kiubi';
+	return Session.site.get('name') + service + ' • Kiubi';
 }
 
 /**

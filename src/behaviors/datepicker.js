@@ -31,7 +31,7 @@ module.exports = Marionette.Behavior.extend({
 				date: 'md-icon md-date',
 				up: 'md-icon md-up',
 				down: 'md-icon md-down',
-				previous: 'md-icon md-preview',
+				previous: 'md-icon md-previous',
 				next: 'md-icon md-next',
 				today: 'md-icon md-fixed',
 				clear: 'md-icon md-delete',

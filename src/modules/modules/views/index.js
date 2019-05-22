@@ -79,14 +79,14 @@ module.exports = Marionette.View.extend({
 		this.list = new Backbone.Collection();
 		this.list.model = Module;
 		this.list.add([
-			// Spotlights	
+			// Spotlights
 			{
 				name: 'Dismoi?',
 				icon: 'assignment',
 				color: '#337ab7',
 				desc: 'Créer et gérer des formulaires (contact, recrutement, sondage,...) entièrement paramétrables.',
 				href: '/forms/inbox',
-				doc: 'https://aide.kiubi.com/recherche/catalogue/tags:Dismoi%3F/',
+				doc: 'https://aide.kiubi.com/formulaires-dismoi.html',
 				quota: '2/50', // TODO,
 				scope: 'site:modules',
 				is_spotlight: true,
@@ -96,7 +96,7 @@ module.exports = Marionette.View.extend({
 				color: '#5CB299',
 				desc: 'Créer et gérer des bons de réductions pour les animations commerciales.',
 				href: '/modules/vouchers',
-				doc: 'https://aide.kiubi.com/documentation/marketing-et-referencement/creer-un-bon-de-reduction.html',
+				doc: 'https://aide.kiubi.com/modules.html#bons-de-reduction',
 				scope: 'site:marketing',
 				feature: 'checkout',
 				is_spotlight: true
@@ -106,7 +106,7 @@ module.exports = Marionette.View.extend({
 				color: '#c4b1c4',
 				desc: 'Attribuer des points de fidélité	aux clients pour leur faire bénéficier de remises sur les produits.',
 				href: '/modules/fidelity',
-				doc: 'https://aide.kiubi.com/documentation/marketing-et-referencement/carte-de-fidelite.html',
+				doc: 'https://aide.kiubi.com/membres.html#points-de-fidelite',
 				scope: 'site:modules',
 				feature: 'fidelity',
 				is_spotlight: true
@@ -134,7 +134,7 @@ module.exports = Marionette.View.extend({
 				color: '#8a6d3b',
 				desc: 'Restreindre l\'accès aux pages du site. Créer des groupes de clients et y appliquer des remises.',
 				href: '/customers/groups',
-				doc: 'https://aide.kiubi.com/recherche/catalogue/?r=extranet',
+				doc: 'https://aide.kiubi.com/membres.html#extranet',
 				subscribe: true,
 				scope: 'site:modules',
 				feature: 'extranet',
@@ -146,7 +146,7 @@ module.exports = Marionette.View.extend({
 				color: '#86df6a',
 				desc: 'Redimensionner les images téléchargées dans la médiathèque. Importer des fichiers depuis une adresse web ou Dropbox.',
 				href: '/modules/import/files',
-				doc: 'https://aide.kiubi.com/documentation/mediatheque-avancee.html',
+				doc: 'https://aide.kiubi.com/modules.html#mediatheque-avancee',
 				subscribe: true,
 				scope: 'site:modules',
 				feature: 'advanced_media',

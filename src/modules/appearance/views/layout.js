@@ -56,28 +56,9 @@ function buildBloc(bloc) {
 function buildWidget(widget) {
 
 	var color = 'widget-tools'; // default
-	switch (widget.main_category || null) {
-		case 1: // Cms
-			color = 'widget-cms';
-			break;
-		case 2: // Blog
-			color = 'widget-blog';
-			break;
-		case 3: // Com
-			color = 'widget-modules';
-			break;
-		case 19: // Search
-			color = 'widget-search';
-			break;
-		case 25: // Account
-			color = 'widget-customers';
-			break;
-		case 31: // Catalog
-			color = 'widget-catalog';
-			break;
-		case 22: // Tools
-			color = 'widget-tools';
-			break;
+
+	if (widget.category) {
+		color = 'widget-' + widget.category;
 	}
 
 	return tplWidget({
@@ -230,13 +211,12 @@ module.exports = Marionette.View.extend({
 					var widget = view.widgets.find(function(widget) {
 						return widget.type == type;
 					});
-
 					return Backbone.$(buildWidget({
 						widget_id: 0,
 						type: widget.type,
 						name: widget.name,
 						desc: widget.desc || '',
-						main_category: widget.main_category
+						category: widget.category
 					}));
 				},
 				revert: 'invalid'
@@ -404,9 +384,15 @@ module.exports = Marionette.View.extend({
 			view.widget.widget_id,
 			view.widget.settings,
 			view.getValues()
-		).done(function() {
+		).done(function(widget) {
+			var $widget = Backbone.$('div[data-role="widget"]', this.el).filter(function() {
+				return Backbone.$(this).data('widget') == widget.widget_id;
+			});
+			if ($widget) {
+				Backbone.$('[data-role="widget-desc"]', $widget).text(widget.desc);
+			}
 			view.triggerMethod('close:modal', true); // close with animation
-		}).fail(function() {
+		}.bind(this)).fail(function() {
 			// TODO
 		});
 	},
@@ -454,6 +440,7 @@ module.exports = Marionette.View.extend({
 			// Update all data-widget with widget ID
 			$widget.data('widget', widget.widget_id);
 			Backbone.$("[data-widget]", $widget).data('widget', widget.widget_id);
+			Backbone.$('[data-role="widget-desc"]', $widget).text(widget.desc);
 		}).fail(function() {
 			// TODO
 			console.log('FAIL');
@@ -468,7 +455,7 @@ module.exports = Marionette.View.extend({
 	 */
 	moveWidget: function(widget_id, cell_id, position) {
 		this.model.moveWidget(widget_id, cell_id, position).done(function() {
-			console.log('OK');
+			//console.log('OK');
 		}).fail(function() {
 			// TODO
 			console.log('FAIL');
@@ -526,14 +513,13 @@ module.exports = Marionette.View.extend({
 					var widget = view.widgets.find(function(widget) {
 						return widget.type == type;
 					});
-
 					// Drop of a sidebar widget !
 					var $widget = Backbone.$(buildWidget({
 						widget_id: 0, // Widget doesn't have an id yet
 						name: widget.name,
 						type: widget.type,
 						desc: widget.desc || '',
-						main_category: widget.main_category
+						category: widget.category
 					}));
 					ui.item.replaceWith($widget);
 

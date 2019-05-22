@@ -91,13 +91,13 @@ var SummaryView = Marionette.View.extend({
 			current: this.current,
 			live: this.reportData.live,
 
-			visitors: this.reportData.visitors,
-			pageviews: this.reportData.pageviews,
+			visitors: format.formatFloat(this.reportData.visitors, 0, ' '),
+			pageviews: format.formatFloat(this.reportData.pageviews, 0, ' '),
 			sales: this.reportData.sales,
 
 			average_cart_label: this.model.get('checkout') ? this.model.get('checkout').average_cart_label : '-',
 			monthly_transformation_label: this.model.get('checkout') ? this.model.get('checkout').monthly_transformation_label :
-				'-',
+				'-'
 		};
 	},
 

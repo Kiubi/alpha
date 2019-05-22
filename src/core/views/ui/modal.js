@@ -15,7 +15,7 @@ module.exports = Marionette.View.extend({
 	events: {
 		'click @ui.closeBtn': 'close',
 		'click @ui.actionBtn': 'onAction',
-		'click': function(event) {
+		'mousedown': function(event) {
 			// only clics on background
 			if (event.target != this.el && event.target.parentNode != this.el) return;
 			this.close(true);

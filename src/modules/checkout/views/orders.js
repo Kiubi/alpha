@@ -249,9 +249,9 @@ module.exports = Marionette.View.extend({
 			data.creation_date_min = this.filters.creation_date[0];
 			data.creation_date_max = this.filters.creation_date[1];
 		}
-		if (this.filters.price_total_ex_vat != null) {
-			data.price_total_ex_vat_min = this.filters.price_total_ex_vat[0];
-			data.price_total_ex_vat_max = this.filters.price_total_ex_vat[1];
+		if (this.filters.price_total_inc_vat != null) {
+			data.price_total_inc_vat_min = this.filters.price_total_inc_vat[0];
+			data.price_total_inc_vat_max = this.filters.price_total_inc_vat[1];
 		}
 		if (this.filters.payment_date != null) {
 			data.payment_date_min = this.filters.payment_date[0];
@@ -356,9 +356,9 @@ module.exports = Marionette.View.extend({
 				data.creation_date_min = this.filters.creation_date[0];
 				data.creation_date_max = this.filters.creation_date[1];
 			}
-			if (this.filters.price_total_ex_vat != null) {
-				data.price_total_ex_vat_min = this.filters.price_total_ex_vat[0];
-				data.price_total_ex_vat_max = this.filters.price_total_ex_vat[1];
+			if (this.filters.price_total_inc_vat != null) {
+				data.price_total_inc_vat_min = this.filters.price_total_inc_vat[0];
+				data.price_total_inc_vat_max = this.filters.price_total_inc_vat[1];
 			}
 			if (this.filters.payment_date != null) {
 				data.payment_date_min = this.filters.payment_date[0];
@@ -412,7 +412,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	onPriceFilterChange: function(filter) {
-		this.filters.price_total_ex_vat = filter.value;
+		this.filters.price_total_inc_vat = filter.value;
 		this.start();
 	},
 
@@ -477,7 +477,7 @@ module.exports = Marionette.View.extend({
 			case 'price':
 				cfg = {
 					id: filter.value,
-					title: 'prix HT',
+					title: 'prix TTC',
 					type: 'interval',
 					prependText: ['Montant entre', 'et'],
 					canDelete: true

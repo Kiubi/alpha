@@ -3472,7 +3472,7 @@ Datetime picker
   height: 1.8em;
 }
 
-.bootstrap-datetimepicker-widget th .md-preview,
+.bootstrap-datetimepicker-widget th .md-previous,
 .bootstrap-datetimepicker-widget th .md-next {
 	margin-top: 4px;
 }
@@ -3805,9 +3805,9 @@ template-layout
 }
 
 .template-layout td {
+	max-width: 330px;
 	vertical-align: top;
 	padding: 15px;
-	min-width: 300px;
 }
 
 .template-layout a.md-add-layout {
@@ -3882,6 +3882,11 @@ widget
 	box-shadow: 0 8px 12px 0 rgba(0,0,0,0.05);
 }
 
+.widget .col {
+	overflow-wrap: break-word;
+	overflow: hidden;
+}
+
 .widget p {
 	margin: 0;
 }
@@ -3904,14 +3909,15 @@ widget
 .widget .icon-toolbar {
 	position: absolute;
 	display: none;
-	top: -5px;
-	right: 0;
+	top: 10px;
+	right: 10px;
 	height: 32px;
 	padding: 5px;
 	line-height: normal;
 	background-color: #fff;
 	border: 1px solid #d9d9d9;
 	border-radius: 3px;
+	z-index: 2;
 }
 
 .widget:hover .icon-toolbar {
@@ -4034,7 +4040,7 @@ widget
 }
 
 .widget.widget-catalog .service-icon::before {
-	content: "store";
+	content: "shopping_basket";
 }
 
 /* --- widget-blog ---*/
@@ -4095,6 +4101,18 @@ widget
 
 .widget.widget-search .service-icon::before {
 	content: "search";
+}
+
+/* --- widget-checkout ---*/
+
+.widget.widget-checkout:hover,
+.widget.widget-checkout:hover .icon-toolbar,
+.widget.widget-checkout .corner-color-content {
+	background-color: #fed558; /* yellow */
+}
+
+.widget.widget-checkout .service-icon::before {
+	content: "assignment";
 }
 
 /* ------------------------------------
@@ -5268,7 +5286,7 @@ icones
 	content: "search";
 }
 
-.md-preview::before {
+.md-previous::before {
 	content: 'chevron_left';
 }
 
@@ -5560,4 +5578,14 @@ icones
 
 .md-smile::before {
 	content: "mood";
+}
+
+/* ------------------------------------
+Codemirror
+-------------------------------------*/
+
+
+.CodeMirror-line.line-error {
+	background-color:#e85500;
+	color:white;
 }

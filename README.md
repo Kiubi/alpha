@@ -2,23 +2,9 @@
 
 
 Créez, modifiez et hébergez votre propre Back-office [Kiubi](https://www.kiubi.com) sous forme d'une application web
-qui exploite pleinement l'[API Developers](https://aide.kiubi.com/api-developers.html).
+qui exploite pleinement l'[API Developers](https://aide.kiubi.com/api-dev-generalites.html).
 
-
-## VERSION ALPHA
-
-Vous utilisez actuellement une version alpha de l'application back-office qui reste sujette à certains dysfonctionnements.
-Par conséquence, il est **important de ne pas l'utiliser sur un site Internet en production mais uniquement sur un site
-dédié aux tests**. Certains modules ne sont pas encore disponibles ou fictifs (dashboard, catalogue, commandes...) et
-seront ajoutés ultérieurement.
-
-N'hésitez pas à nous faire des retours, positifs comme négatifs ! Tout commentaire, suggestion, remontée de bugs sont
-les bienvenus !
-
-
-## Démo
-
-Vous trouverez une version démo fonctionnelle à l'adresse : [https://alpha.kiubi.com](https://alpha.kiubi.com)
+Vous trouverez une version fonctionnelle à l'adresse : [https://admin.kiubi.com](https://admin.kiubi.com).
 
 
 ## Débuter

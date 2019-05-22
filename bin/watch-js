@@ -42,6 +42,7 @@ watchify -v -d ./src/app.js             \
 	--exclude pc-bootstrap4-datetimepicker \
 	--exclude chart.js		            \
 	--exclude clipboard		            \
+	--exclude codemirror	            \
 	--exclude underscore                \
 	--exclude underscore.string         \
 	--exclude backbone.marionette       \

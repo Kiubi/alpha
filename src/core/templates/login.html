@@ -29,9 +29,7 @@ et encore plus simple d’utilisation.</p>
 			</div>
 			<div id="group_password" class="form-group has-feedback">
 
-				<% if(code_site) { %>
-				<a href="https://<%- code_site %>.kiubi-admin.com/login/mdp.html" target="_blank" class="float-right">Oublié ?</a>
-				<% } %>
+				<a href="<%- account %>/login/mdp.html" target="_blank" class="float-right">Oublié ?</a>
 
 				<label for="password_input">Mot de passe</label>
 				<input class="form-control form-control-lg" id="password_input" placeholder="" type="password">
@@ -46,7 +44,7 @@ et encore plus simple d’utilisation.</p>
 				<% } else { %>
 					<input type="submit" class="btn btn-lg btn-success btn-save w-100" value="Se connecter">
 				<% } %>
-				<p><a href="http://aide2019.kiubi-web.com/generalites.html#console-d-administration" target="_blank">Besoin d'aide</a> pour se connecter ?</p>
+				<p><a href="https://aide.kiubi.com/generalites.html#console-d-administration" target="_blank">Besoin d'aide</a> pour se connecter ?</p>
 			</form>
 		</div>
 		<footer class="post-footer">

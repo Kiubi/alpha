@@ -68,13 +68,15 @@ function formatBytes(bytes, decimals) {
  *
  * @param {float} amount
  * @param {int} decimals
+ * @param {String} thousands
  * @returns {String}
  */
-function formatFloat(amount, decimals) {
+function formatFloat(amount, decimals, thousands) {
 	if (_.isString(amount)) amount = unformatFloat(amount); // in fine, formatFloat(formatFloat('')) can happen
 	if (amount === null) return '';
-	var dm = decimals || 2;
-	return _string.numberFormat(amount, dm, ',', '');
+	decimals = typeof decimals == 'undefined' ? 2 : decimals;
+	thousands = thousands || '';
+	return _string.numberFormat(amount, decimals, ',', thousands);
 }
 
 /**

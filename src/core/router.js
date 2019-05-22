@@ -38,6 +38,7 @@ var SidebarMenuView = Marionette.View.extend({
 	},
 
 	templateContext: function() {
+
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		return {
 			show_catalog: Session.hasFeature('catalog') && Session.hasScope('site:catalog'),

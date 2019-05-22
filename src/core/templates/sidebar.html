@@ -6,9 +6,9 @@
 	<% _(mainItems).each(function(item){ %>
 	<li class="nav-item <%= item.is_active ? 'active' : '' %>">
 		<% if(item.is_enabled) { %>
-		<a href='<%- item.path %>' class="nav-link" title="<%- item.name %>" data-toggle="tooltip" data-placement="right" data-html="true"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
+		<a href='<%- item.path %>' class="nav-link" title="<%- item.name %>"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
 		<% } else { %>
-		<span class="nav-link disabled" title="<%- item.name %> indisponible" data-toggle="tooltip" data-placement="right" data-html="true"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
+		<span class="nav-link disabled" title="<%- item.name %> indisponible"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
 		<% } %>
 	</li>
 	<% }) %>
@@ -18,19 +18,19 @@
 	<% _(toolsItems).each(function(item){ %>
 	<li class="nav-item <%= item.is_active ? 'active' : '' %>">
 		<% if(item.is_enabled) { %>
-		<a href='<%- item.path %>' class="nav-link" title="<%- item.name %>" data-toggle="tooltip" data-placement="right" data-html="true"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
+		<a href="<%- item.path %>" <%= item.blank ? 'target="_blank"' : '' %>  class="nav-link" title="<%- item.name %>"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
 		<% } else { %>
-		<span class="nav-link disabled" title="<%- item.name %> (Désactivé) indisponible" data-toggle="tooltip" data-placement="right" data-html="true"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
+		<span class="nav-link disabled" title="<%- item.name %> (Désactivé) indisponible"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
 		<% } %>
 	</li>
 	<% }) %>
-	<li class="nav-item"><span class="nav-link bt-closed"><span class="md-icon md-icon-menu"></span></span></li>
+	<li class="nav-item"><span class="nav-link bt-closed" title="Réduire/Agrandir"><span class="md-icon md-icon-menu"></span></span></li>
 </ul>
 
 <% if(isAuth) { %>
 <div class="user dropup">
 	<a href="#" id="accountmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	<img src="<%- user.avatar %>" class="rounded-circle img-avatar d-block mx-auto" data-toggle="tooltip" data-placement="right" data-html="true" data-container="body" title="<%- user.firstname %> <%- user.lastname %>">
+	<img src="<%- user.avatar %>" class="rounded-circle img-avatar d-block mx-auto" title="<%- user.firstname %> <%- user.lastname %>">
 	</a>
 	<div class="dropdown-menu ml-2 mb-2" aria-labelledby="accountmenu">
 		<div class="user-detail dropdown-item-text text-nowrap">
@@ -74,7 +74,7 @@
 				<% if(has_scope_support) { %>
 				<div><a class="dropdown-item py-2" href="#" data-role="support">Support</a></div>
 				<% }  else { %>
-				<div><a class="dropdown-item py-2" target="_blank" href="https://aide.kiubi.com/documentation/">Support</a></div>
+				<div><a class="dropdown-item py-2" target="_blank" href="https://aide.kiubi.com/">Support</a></div>
 				<% } %>
 				<div class="dropdown-divider mt-auto"></div>
 				<div><a class="dropdown-item" href="#" data-role="logout">Se déconnecter</a></div>

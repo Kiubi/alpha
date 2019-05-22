@@ -244,8 +244,8 @@ module.exports = Backbone.Model.extend({
 				settings: data
 			}
 		}).then(function(response) {
-			// Widget returned ?
-			return;
+			// Widget returned
+			return response.data;
 		});
 	}
 

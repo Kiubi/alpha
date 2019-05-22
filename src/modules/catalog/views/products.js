@@ -62,7 +62,7 @@ module.exports = Marionette.View.extend({
 		}
 		this.filters = {
 			stock: stock,
-			category_id: null,
+			category_id: this.category_id,
 			tag_id: null,
 			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
 		};
@@ -198,7 +198,6 @@ module.exports = Marionette.View.extend({
 			extra_fields: 'price_label,categories',
 			sort: this.sortOrder ? this.sortOrder : null
 		};
-		if (this.category_id) data.category_id = this.category_id;
 		if (this.filters.stock != null) data.stock = this.filters.stock;
 		if (this.filters.category_id != null) data.category_id = this.filters.category_id;
 		if (this.filters.tag_id != null) data.tag_id = this.filters.tag_id;

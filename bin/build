@@ -17,6 +17,14 @@ popd
 echo "Bundle assets"
 echo " - src"
 cp ./src/index.html "./$dest"
+echo " - build hash"
+if [ -f ./src/BUILD ]; then
+	BUILD_HASH=$(cat ./src/BUILD)
+else
+	BUILD_HASH=$(git rev-parse HEAD)
+fi
+echo '<!-- Build : '$BUILD_HASH' -->' >> "./$dest/index.html"
+
 mkdir -p ./$dest/{locales,vendor,assets/css,assets/img}
 if [ "$1" = "--no-map" ]; then
 	uglifycss ./src/assets/css/*.css > "./$dest/assets/css/app.css"
@@ -28,7 +36,10 @@ cp -r ./src/assets/img/* "./$dest/assets/img/"
 echo " - bootstrap"
 mkdir -p ./$dest/vendor/bootstrap/css
 cp -r ./node_modules/bootstrap/dist/css/bootstrap.min.css ./$dest/vendor/bootstrap/css/
+echo " - datetimepicker"
 cat ./node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css >> ./$dest/vendor/bootstrap/css/bootstrap.min.css
+echo " - codemirror"
+cat ./node_modules/codemirror/lib/codemirror.css >> ./$dest/vendor/bootstrap/css/bootstrap.min.css
 
 echo " - tinymce"
 mkdir -p ./$dest/vendor/tinymce/skins
@@ -95,6 +106,7 @@ browserify -d -p ${minifyify} -o "${output}" \
 	-r pc-bootstrap4-datetimepicker		\
 	-r chart.js		                    \
 	-r clipboard		                \
+	-r codemirror		                \
 	-r underscore                       \
 	-r underscore.string                \
 	-r backbone.marionette              \
@@ -146,6 +158,7 @@ browserify -d ./src/app.js              \
 	--exclude pc-bootstrap4-datetimepicker          \
 	--exclude chart.js		            \
 	--exclude clipboard		            \
+	--exclude codemirror	            \
 	--exclude underscore                \
 	--exclude underscore.string         \
 	--exclude backbone.marionette       \

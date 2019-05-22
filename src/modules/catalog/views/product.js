@@ -50,13 +50,20 @@ var VariantImageRowView = Marionette.View.extend({
 	},
 
 	onRender: function() {
+
+		var checked;
 		if (this.variant) {
-			if (this.model.get('media_id') == this.variant.get('media_id')) this.$el.addClass('active');
-			else this.$el.removeClass('active');
+			checked = this.model.get('media_id') == this.variant.get('media_id');
 		} else {
-			if (this.model.get('position') == 1) this.$el.addClass('active');
-			else this.$el.removeClass('active');
+			checked = (this.model.get('position') == 1);
 		}
+
+		if (checked) {
+			this.$el.addClass('active');
+		} else {
+			this.$el.removeClass('active');
+		}
+		Backbone.$('input', this.$el).prop('checked', checked);
 	}
 
 });

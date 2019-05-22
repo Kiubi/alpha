@@ -213,7 +213,7 @@ module.exports = Marionette.View.extend({
 
 		this.showChildView('group', new SelectView({
 			collectionPromise: this.model.getGroups(),
-			emptyLabel: '&nbsp;',
+			emptyLabel: '-- Sélectionner un groupe --',
 			name: 'group_list',
 			direction: 'up'
 		}));

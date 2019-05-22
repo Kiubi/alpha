@@ -160,6 +160,7 @@ module.exports = Marionette.View.extend({
 			var scope = (model.get('scope') == null || this.session.hasScope(model.get('scope')));
 			var feature = (model.get('feature') == null || this.session.hasFeature(model.get('feature')));
 			model.set('is_enabled', scope && feature);
+			model.set('blank', model.get('path').lastIndexOf('http', 0) == 0);
 		}.bind(this));
 		return _.invoke(links, 'toJSON');
 	},
