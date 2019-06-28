@@ -2,143 +2,138 @@
 
 <form data-role="part">
 
-	<article class="post-article">
-		<header class="post-header">
-			<h1>Informations générales</h1>
-		</header>
-		<div class="post-content">
-			<div class="form-group">
-				<label class="required" for="name">Intitulé du produit</label>
-				<input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Intitulé du produit tel qu'il apparaîtra dans le catalogue" type="text">
-			</div>
-			<div class="row">
-				<div class="col-4">
-					<div class="form-group has-feedback">
-						<label for="available_date">Date de disponibilité</label>
-						<input data-role="datepicker" class="form-control" id="available_date" name="available_date" value="<%- available_date %>" placeholder="jj/mm/aaaa" type="text">
-						<span class="md-feedback md-date"></span>
-					</div>
-				</div>
-				<div class="col-4 offset-4">
+	<div class="row">
+		<div class="col-lg-8 col-12">
+			<article class="post-article">
+				<header class="post-header">
+					<h1>Détail du produit</h1>
+				</header>
+				<div class="post-content">
 					<div class="form-group">
-						<label>Affichage</label>
-						<div class="form-check">
-							<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
-							<label for="is_visible1" class="visible">Visible</label>
-							<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
-							<label for="is_visible0" class="not-visible">Masqué</label>
-						</div>
+						<label class="required" for="name">Intitulé</label>
+						<input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Intitulé du produit tel qu'il apparaîtra dans le catalogue" type="text">
 					</div>
-				</div>
-			</div>
-		</div>
-		<footer class="post-footer"></footer>
-	</article>
-
-	<article class="post-article">
-		<header class="post-header">
-			<h1>Organisation</h1>
-		</header>
-		<div class="post-content">
-			<div class="row">
-				<div class="col-6">
 					<div class="form-group">
-						<label for="primary-categ">Catégorie principale</label>
-						<div data-role='primary-categ'>
-						</div>
+						<label for="header">Chapô</label>
+						<textarea id="header" name="header" class="form-control" rows="14" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro"><%- header %></textarea>
 					</div>
-				</div>
-				<div class="col-6">
 					<div class="form-group">
-						<label for="is_spotlight">Produit vedette</label>
-						<select class="form-control" name="is_spotlight" id="is_spotlight" data-style="selectify">
-							<option value="0" <%= is_spotlight ? 'selected="selected"' : '' %>>Aucune mise en avant du produit</option>
-							<option value="1" <%= is_spotlight ? 'selected="selected"' : '' %>>Produit mis en avant en tête de listing</option>
-						</select>
+						<label for="description">Description</label>
+						<textarea id="description" name="description" class="form-control" rows="21" placeholder="Placeholder du contenu" data-role="wysiwyg"><%- description %></textarea>
 					</div>
 				</div>
-				<div class="col-6">
-					<div class="form-group has-feedback">
-						<label>Catégories secondaires</label>
-						<div data-role="other-categ"></div>
-					</div>
-				</div>
-				<div class="col-6">
-					<div class="form-group has-feedback">
-						<label for="tags">Tags</label>
-						<div data-role='tags'></div>
-					</div>
-				</div>
-			</div>
+				<footer class="post-footer"></footer>
+			</article>
+
+			<article data-role="type"></article>
+
 		</div>
-		<footer class="post-footer"></footer>
-	</article>
-
-	<article class="post-article">
-		<header class="post-header">
-			<h1>Détail du produit</h1>
-		</header>
-		<div class="post-content">
-			<div class="form-group">
-				<label for="header">Chapô</label>
-				<textarea id="header" name="header" class="form-control" rows="14" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro"><%- header %></textarea>
-			</div>
-			<div class="form-group">
-				<label for="description">Description</label>
-				<textarea id="description" name="description" class="form-control" rows="21" placeholder="Placeholder du contenu" data-role="wysiwyg"><%- description %></textarea>
-			</div>
-		</div>
-		<footer class="post-footer"></footer>
-	</article>
-
-	<article data-role="type"></article>
-
-</form>
-
-<article data-role="variants"></article>
-
-<article data-role="images"></article>
-
-<form data-role="part">
-
-	<article class="post-article">
-		<header class="post-header">
-			<h1>Autres informations</h1>
-		</header>
-		<div class="post-content">
-			<div class="row">
-				<div class="col-6">
-					<label for="extra_shipping">Frais de port additionels</label>
-					<p>Les frais de port additionels sont ajoutés au montant total HT des frais de port. La TVA appliquée est celle du tansporteur choisit au moment de la commande.</p>
+		<div class="col-lg-4 col-12">
+			<article class="post-article post-article-aside">
+				<div class="post-content">
 					<div class="row">
-						<div class="col-6">
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-prepend"><span class="input-group-text"></span></div>
-									<input id="extra_shipping" name="extra_shipping" value="<%- extra_shipping %>" class="form-control" placeholder="0,00">
-									<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
+						<div class="col-lg-12 order-lg-2 col-6">
+							<div class="form-group has-feedback post-subcontent">
+								<label for="available_date">Date de disponibilité</label>
+								<input data-role="datepicker" class="form-control" id="available_date" name="available_date" value="<%- available_date %>" placeholder="jj/mm/aaaa" type="text">
+								<span class="md-feedback md-date"></span>
+							</div>
+						</div>
+						<div class="col-lg-12 order-lg-1 col-6">
+							<div class="form-group mb-lg-0">
+								<label>Affichage</label>
+								<div class="form-check">
+									<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
+									<label for="is_visible1" class="visible">Visible</label>
+									<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
+									<label for="is_visible0" class="not-visible">Masqué</label>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-6">
-					<label for="brand_id">Marque</label>
-					<p>Préciser la marque du produit peut être nécessaire pour l'utilisation de certains services comme Google Merchant Center.</p>
+				<footer class="post-footer"></footer>
+			</article>
+
+			<article class="post-article">
+				<div class="post-content">
 					<div class="form-group">
-						<div data-role='brand'></div>
+						<label for="primary-categ">Catégorie principale</label>
+						<div data-role='primary-categ'>
+						</div>
+					</div>
+					<div class="form-group has-feedback">
+						<label>Catégories secondaires</label>
+						<div data-role="other-categ"></div>
+					</div>
+					<div class="form-group has-feedback">
+						<label for="tags">Tags</label>
+						<div data-role='tags'></div>
+					</div>
+					<div class="form-group">
+						<label for="is_spotlight">Produit vedette</label>
+						<select class="form-control" name="is_spotlight" id="is_spotlight" data-style="selectify">
+							<option value="0" <%= is_spotlight ? 'selected="selected"' : '' %>>Aucune mise en avant</option>
+							<option value="1" <%= is_spotlight ? 'selected="selected"' : '' %>>Produit mis en avant</option>
+						</select>
 					</div>
 				</div>
-			</div>
+				<footer class="post-footer"></footer>
+			</article>
+
+			<article data-role="layout"></article>
+
 		</div>
-		<footer class="post-footer"></footer>
-	</article>
-
-	<article data-role="layout"></article>
-
-	<article data-role="seo"></article>
-
+	</div>
 </form>
+
+<div class="row">
+	<div class="col-lg-8 col-12">
+
+		<article data-role="variants"></article>
+
+		<article data-role="images"></article>
+
+		<form data-role="part">
+
+			<article class="post-article">
+				<header class="post-header">
+					<h1>Autres informations</h1>
+				</header>
+				<div class="post-content">
+					<div class="row">
+						<div class="col-6">
+							<label for="extra_shipping">Frais de port additionels</label>
+							<p>Ajoutés au montant total HT des frais de port. La TVA appliquée est celle du tansporteur choisit au moment de la commande.</p>
+							<div class="row">
+								<div class="col-6">
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"></span></div>
+											<input id="extra_shipping" name="extra_shipping" value="<%- extra_shipping %>" class="form-control" placeholder="0,00">
+											<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-6">
+							<label for="brand_id">Marque</label>
+							<p>Préciser la marque du produit peut être nécessaire pour l'utilisation de certains services comme Google Merchant Center.</p>
+							<div class="form-group">
+								<div data-role='brand'></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<footer class="post-footer"></footer>
+			</article>
+
+			<article data-role="seo"></article>
+
+		</form>
+	</div>
+</div>
 
 <div class="save">
 	<div class="btn-toolbar" role="toolbar">

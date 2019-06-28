@@ -80,7 +80,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	triggers: {
-		'click span.bt-closed': 'sidebarmenu:toggle'
+		'click span[data-role="close"]': 'sidebarmenu:toggle'
 	},
 
 	events: {

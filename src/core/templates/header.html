@@ -37,10 +37,10 @@
 	<% _(tabs).each(function(tab){ %>
 	<li role="presentation" class="nav-item <%= tab.is_active ? 'active' : '' %>">
 		<a href="<%- tab.url %>" target="<%- tab.target ? tab.target : '' %>" class="nav-link">
-		<%- tab.title %>
-		<% if(tab.icon) { %>
-		<span class="md-icon <%- tab.icon %>"></span>
-		<% } %>
+			<% if(tab.icon) { %>
+			<span class="md-icon <%- tab.icon %> mr-0 mr-lg-2" title="<%- tab.title %>"></span>
+			<% } %>
+			<span class="d-none d-lg-inline-block"><%- tab.title %></span>
 	</a>
 </li>
 	<% }) %>

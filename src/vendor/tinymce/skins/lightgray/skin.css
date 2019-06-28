@@ -1,5 +1,9 @@
 /* Skin overload */
 
+.mce-container, .mce-container *, .mce-widget, .mce-widget *, .mce-reset {
+  font-size: 0.875rem;
+}
+
 .mce-tinymce,
 .mce-top-part::before {
   box-shadow: none;
@@ -168,7 +172,7 @@ div.mce-menubtn.mce-opened {
 .mce-window-head .mce-title {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 1.125rem;
   letter-spacing: 0.02em;
 }
 
@@ -178,7 +182,7 @@ div.mce-menubtn.mce-opened {
   font-family: 'Material Icons' !important;
   font-weight: normal;
   font-style: normal;
-  font-size: 21px;
+  font-size: 1.3125rem;
   line-height: 1;
   color: #000;
   opacity: 0.2;
@@ -211,7 +215,7 @@ div.mce-menubtn.mce-opened {
   font-family: 'Open Sans', sans-serif;
   line-height: 1.61803399em;
   color: #363636;
-  font-size: 14px;
+  font-size: 0.875rem;
   text-align: left;
   border: 1px solid #d9d9d9;
   box-shadow: none;
@@ -257,7 +261,7 @@ div.mce-menubtn.mce-opened {
   color: #FFF;
   font-family: 'Montserrat', sans-serif;
 	font-weight: 600;
-	font-size: 12px;
+	font-size: 0.75rem;
 	letter-spacing: 1px;
 	line-height: 1.61803399em;
 	text-transform: uppercase;
@@ -286,7 +290,7 @@ div.mce-menubtn.mce-opened {
 }
 
 .mce-tooltip * {
-  font-size: 10px;
+  font-size: 0.625rem;
   text-transform: uppercase;
 }
 
@@ -295,7 +299,7 @@ div.mce-menubtn.mce-opened {
 	font-family: 'Material Icons' !important;
 	font-weight: normal;
 	font-style: normal;
-  font-size: 20px;
+  font-size: 1.25rem;
 	line-height: 1;
 	text-transform: none;
 	word-wrap: normal;

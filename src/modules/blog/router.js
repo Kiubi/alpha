@@ -71,21 +71,25 @@ function getHeadersAction(options) {
 function HeaderTabsPost(post_id, nb) {
 
 	return [{
-		title: 'Détail du billet',
-		url: '/blog/posts/' + post_id
+		title: 'Billet',
+		url: '/blog/posts/' + post_id,
+		icon: 'md-blog-detail'
 	}, {
 		title: nb + ' ' + (nb > 1 ? 'Commentaires' : 'Commentaire'),
-		url: '/blog/posts/' + post_id + '/comments'
+		url: '/blog/posts/' + post_id + '/comments',
+		icon: 'md-blog-comment'
 	}];
 }
 
 function HeaderTabscategory(category_id, nb) {
 	return [{
-		title: 'Détail de la catégorie',
-		url: '/blog/categories/' + category_id
+		title: 'Catégorie',
+		url: '/blog/categories/' + category_id,
+		icon: 'md-blog-categ'
 	}, {
 		title: nb + ' ' + (nb > 1 ? 'Billets postés' : 'Billet posté'),
-		url: '/blog/categories/' + category_id + '/posts'
+		url: '/blog/categories/' + category_id + '/posts',
+		icon: 'md-blog-detail'
 	}];
 }
 

@@ -21,34 +21,13 @@ function withoutNull(hash) {
 if (Backbone.__sync === undefined) {
 	Backbone.__sync = Backbone.sync;
 	Backbone.sync = function(method, model, options) {
-		if (method === 'patch') options.type = 'PUT';
-		if (method === 'delete' && options.data) {
-			options.data = JSON.stringify(options.data);
-			options.contentType = 'application/json';
-		}
-		if (method === 'patch' || method === 'create' || method === 'update') {
 
-			var params = withoutNull(options.attrs || model.toJSON(options));
-			var files = _.filter(params, function(param) {
-				return param instanceof File;
-			});
-			if (files.length == 0) {
-				options.contentType = 'application/x-www-form-urlencoded';
-				options.data = $.param(params);
-			} else {
-				// Found at least one file => multipart
-				options.contentType = false;
-				options.data = new FormData();
-				_.each(params, function(v, k) {
-					options.data.append(k, v);
-				});
-				if (method != 'create') {
-					// Fake PUT, API Limitation
-					options.type = 'POST';
-					options.data.append('method', 'PUT');
-				}
-			}
+		// Stop Backbone to stringify params 
+		if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
+			options.data = options.attrs || model.toJSON(options);
 		}
+		options.data = withoutNull(options.data); // clean up null
+
 		return Backbone.__sync(method, model, options);
 	};
 }
@@ -149,6 +128,48 @@ var Client = Marionette.Object.extend({
 		}
 		params.headers = headers;
 		params.url = this.normalize_url(params.url);
+
+		// Handle HTTP METHOD
+		if (params.type && !params.method) params.method = params.type; // type is an old JQuery alias
+		delete params.type;
+		if (params.method == 'PATCH') params.method = 'PUT';
+
+		// Params encoding
+		if (params.data instanceof FormData) {
+
+			if (params.method == 'PUT' || params.method == 'DELETE') {
+				// Fake PUT & DELETE, API Limitation
+				params.data.append('method', params.method);
+				params.method = 'POST';
+			}
+
+		} else if (params.data && _.size(params.data)) {
+
+			if (params.method == 'PUT' || params.method == 'DELETE') {
+				// Fake PUT & DELETE, API Limitation
+				params.data.method = params.method;
+				params.method = 'POST';
+			}
+
+			var files = _.filter(params.data, function(param) {
+				return param instanceof File;
+			});
+			if (files.length == 0) {
+				params.contentType = 'application/x-www-form-urlencoded';
+				params.data = $.param(params.data);
+			} else {
+				// Found at least one file => multipart
+				params.contentType = false;
+				var data = new FormData();
+				_.each(params.data, function(v, k) {
+					data.append(k, v);
+				});
+				params.data = data;
+			}
+
+		} else {
+			params.data = null;
+		}
 
 		return Backbone.$.ajax.apply(Backbone.$, [params, options]);
 	},

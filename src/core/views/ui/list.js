@@ -458,7 +458,11 @@ var FilterDropdownView = Marionette.View.extend({
 	},
 
 	templateContext: function() {
+		var selected = this.collection ? this.collection.find({
+			selected: true
+		}) : null;
 		return {
+			title: selected ? selected.get('label') : this.model.get('title'),
 			extraClassname: this.model.get('extraClassname') ? this.model.get('extraClassname') : '',
 			collection: this.collection ? this.collection.toJSON() : null
 		};
@@ -794,6 +798,27 @@ module.exports = Marionette.View.extend({
 
 	getChildren: function() {
 		return this.getChildView('list').children;
+	},
+
+	/**
+	 * Simulate filter addition
+	 * 
+	 * @param {String} name Filter id
+	 */
+	showFilter: function(name) {
+
+		var filerView = this.getChildView('filters');
+		if (!filerView) return;
+
+		// Binded to 'add' filter
+		var model = filerView.collection.get('add');
+		if (!model) return;
+
+		this.triggerMethod('filter:change', {
+			model: model,
+			value: name
+			// view: ...
+		});
 	},
 
 	/**

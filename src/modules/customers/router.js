@@ -110,39 +110,45 @@ function HeaderTabsCustomer(customer_id) {
 	var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 	var tabs = [{
-		title: 'Détail du membre',
-		url: '/customers/' + customer_id
+		title: 'Membre',
+		url: '/customers/' + customer_id,
+		icon: 'md-customers-detail'
 	}];
 
 	if (Session.hasScope('site:blog')) {
 		tabs.push({
 			title: 'Commentaires',
-			url: '/customers/' + customer_id + '/blog_comments'
+			url: '/customers/' + customer_id + '/blog_comments',
+			icon: 'md-customers-comment'
 		});
 	}
 
 	if (Session.hasFeature('catalog') && Session.hasScope('site:catalog')) {
 		tabs.push({
 			title: 'Évaluations',
-			url: '/customers/' + customer_id + '/catalog_comments'
+			url: '/customers/' + customer_id + '/catalog_comments',
+			icon: 'md-customers-rating'
 		});
 	}
 
 	if (Session.hasFeature('checkout') && Session.hasScope('site:checkout')) {
 		tabs.push({
 			title: 'Commandes',
-			url: '/customers/' + customer_id + '/orders'
+			url: '/customers/' + customer_id + '/orders',
+			icon: 'md-customers-order'
 		});
 		tabs.push({
 			title: 'Remises',
-			url: '/customers/' + customer_id + '/discount'
+			url: '/customers/' + customer_id + '/discount',
+			icon: 'md-customers-discount'
 		});
 	}
 
 	if (Session.hasFeature('fidelity')) {
 		tabs.push({
 			title: 'Fidelité',
-			url: '/customers/' + customer_id + '/fidelity'
+			url: '/customers/' + customer_id + '/fidelity',
+			icon: 'md-customers-fidelity'
 		});
 	}
 

@@ -97,40 +97,47 @@ function getHeadersAction(options) {
 /* Tabs  */
 function HeaderTabscategory(category_id, nb) {
 	return [{
-		title: 'Détail de la catégorie',
-		url: '/catalog/categories/' + category_id
+		title: 'Catégorie',
+		url: '/catalog/categories/' + category_id,
+		icon: 'md-catalog-categ'
 	}, {
 		//title: nb + ' ' + (nb > 1 ? 'produits en vente' : 'produit en vente'),
 		title: 'Produits en vente',
-		url: '/catalog/categories/' + category_id + '/products'
+		url: '/catalog/categories/' + category_id + '/products',
+		icon: 'md-catalog-detail'
 	}];
 }
 
 function HeaderTabsProduct(product_id, nb, rate) {
 
 	return [{
-		title: 'Détail du produit',
-		url: '/catalog/products/' + product_id
+		title: 'Produit',
+		url: '/catalog/products/' + product_id,
+		icon: 'md-catalog-detail'
 	}, {
 		title: 'Produits associés',
-		url: '/catalog/products/' + product_id + '/linked'
+		url: '/catalog/products/' + product_id + '/linked',
+		icon: 'md-catalog-linked'
 	}, {
 		title: nb + ' ' + (nb > 1 ? 'Évaluations' : 'Évaluation'),
 		url: '/catalog/products/' + product_id + '/comments',
-		icon: (rate ? 'rating md-rating-' + Math.round(rate) : '')
+		icon: (rate ? 'rating md-rating-' + Math.round(rate) : 'md-rating')
 	}];
 }
 
 function HeaderTagsTabs() {
 	return [{
 		title: 'Variantes',
-		url: '/catalog/variants'
+		url: '/catalog/variants',
+		icon: 'md-catalog-variants'
 	}, {
 		title: 'Tags',
-		url: '/catalog/tags'
+		url: '/catalog/tags',
+		icon: 'md-catalog-tags'
 	}, {
 		title: 'Marques',
-		url: '/catalog/brands'
+		url: '/catalog/brands',
+		icon: 'md-catalog-brands'
 	}];
 }
 
@@ -723,11 +730,11 @@ module.exports = Marionette.AppRouter.extend({
 	controller: new CatalogController(),
 	appRoutes: {
 		'catalog': 'showProducts',
-		'catalog/home': 'showHome',
 		'catalog/products/:id': 'showProduct',
 		'catalog/products/:id/comments': 'showComments',
 		'catalog/products/:id/linked': 'showLinked',
 		'catalog/categories': 'showCategories',
+		'catalog/home': 'showHome',
 		'catalog/categories/:id': 'showCategory',
 		'catalog/categories/:id/products': 'showProductsByCategory',
 		'catalog/comments': 'showComments',

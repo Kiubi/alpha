@@ -148,12 +148,12 @@ module.exports = Marionette.View.extend({
 	/**
 	 *
 	 * @param {Array} results
-	 * @param {Object} xtra
+	 * @param {Array} xtras
 	 * 					{String} title
 	 * 					{String} iconClass
 	 * 					{String} eventName
 	 */
-	showResults: function(results, xtra) {
+	showResults: function(results, xtras) {
 		this.suggestions = results;
 
 		var list = '';
@@ -166,16 +166,24 @@ module.exports = Marionette.View.extend({
 			list =
 				'<li class="dropdown-divider"></li><li><span class="dropdown-item dropdown-item-empty"><span class="md-icon md-no-result"></span> Aucun résultat</span></li>';
 		}
-		if (xtra) {
-			xtra = _.extend({
-				title: 'Ajouter',
-				iconClass: 'md-add-outline',
-				eventName: 'xtra'
-			}, xtra);
+		if (xtras) {
 
-			list += '<li class="dropdown-divider"></li><li data-role="xtra" data-event="' + xtra.eventName +
-				'"><a class="dropdown-item" href="#">' + _.escape(xtra.title) + '<span class="md-icon ' + xtra.iconClass +
-				'"></span></a></li>';
+			if (!_.isArray(xtras)) {
+				xtras = [xtras];
+			}
+
+			_.each(xtras, function(xtra) {
+				xtra = _.extend({
+					title: 'Ajouter',
+					iconClass: 'md-add-outline',
+					eventName: 'xtra'
+				}, xtra);
+
+				list += '<li class="dropdown-divider"></li><li data-role="xtra" data-event="' + xtra.eventName +
+					'"><a class="dropdown-item" href="#">' + _.escape(xtra.title) + '<span class="md-icon ' + xtra.iconClass +
+					'"></span></a></li>';
+			});
+
 		}
 		emptyList(this.getUI('dropdown-menu')).append(list);
 		this.getUI('input').focus();

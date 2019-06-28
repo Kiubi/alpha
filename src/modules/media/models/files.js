@@ -221,15 +221,21 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
-		}, ids);
-
+		return CollectionUtils.bulkGroupAction(this, function(slice) {
+			return Backbone.ajax({
+				url: 'sites/@site/media/files',
+				method: 'DELETE',
+				data: {
+					medias: slice
+				}
+			});
+		}, ids, 20).done(function(ids) {
+			this.remove(ids);
+		}.bind(this));
 	},
 
 	/**

@@ -62,14 +62,17 @@ var SidebarMenuView = Marionette.View.extend({
 /* Tabs  */
 function HeaderTabsForm(form_id) {
 	return [{
-		title: 'Détail du formulaire',
-		url: '/forms/' + form_id
-	}, {
-		title: 'Paramètres',
-		url: '/forms/' + form_id + '/settings'
+		title: 'Formulaire',
+		url: '/forms/' + form_id,
+		icon: 'md-forms-detail'
 	}, {
 		title: 'Données personnelles',
-		url: '/forms/' + form_id + '/gdpr'
+		url: '/forms/' + form_id + '/gdpr',
+		icon: 'md-forms-gdpr'
+	}, {
+		title: 'Paramètres',
+		url: '/forms/' + form_id + '/settings',
+		icon: 'md-forms-settings'
 	}];
 }
 

@@ -6,7 +6,7 @@ var Files = require('kiubi/modules/media/models/files.js');
 var Folders = require('kiubi/modules/media/models/folders.js');
 
 var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
-var SelectModalView = require('kiubi/modules/media/views/modal.picker.js');
+var ModalPickerView = require('kiubi/modules/media/views/modal.picker.js');
 
 module.exports = Marionette.View.extend({
 	template: _.template('Ajouter une image'),
@@ -34,7 +34,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	proxySelection: function() {
-		this.triggerMethod('selected:file', this.model.toJSON());
+		this.triggerMethod('selected:file', [this.model.toJSON()]);
 	},
 
 	select: function() {
@@ -43,7 +43,7 @@ module.exports = Marionette.View.extend({
 		});
 
 		var collection = new Files();
-		var contentView = new SelectModalView({
+		var contentView = new ModalPickerView({
 			type: this.type,
 			model: this.model,
 			collection: collection,
@@ -55,7 +55,7 @@ module.exports = Marionette.View.extend({
 		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 		navigationController.showInModal(contentView, {
 			title: 'Médiathèque',
-			modalClass: 'mediatheque modal-right',
+			modalClass: 'mediatheque modal-right has-filters',
 			action: {
 				title: 'Publier un fichier'
 			}
@@ -63,7 +63,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	/**
-	 * 
+	 *
 	 * @param {Marionette.View} view
 	 */
 	switchToPublish: function(view) {
@@ -71,7 +71,7 @@ module.exports = Marionette.View.extend({
 		var collection = new Files();
 		collection.folder_id = view.currentFolder;
 		var contentView = new PublishModalView({
-			isMultiFiles: false,
+			isMultiFiles: true,
 			collection: collection
 		});
 
@@ -94,12 +94,16 @@ module.exports = Marionette.View.extend({
 	 * @param {Backbone.Collection} collection
 	 */
 	onUploadedFiles: function(collection) {
-		var uploadedList = collection.find(function(model) {
-			return model.uploadProgression.status == 'done';
-		});
 
-		if (uploadedList) {
-			this.model.set(uploadedList.toJSON());
+		var files = collection.reduce(function(acc, model) {
+			if (model.uploadProgression.status == 'done') {
+				acc.push(model.toJSON());
+			}
+			return acc;
+		}, []);
+
+		if (files.length) {
+			this.triggerMethod('selected:file', files);
 		}
 
 		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');

@@ -72,11 +72,17 @@ module.exports = Backbone.Collection.extend({
 	 * @returns {Promise}
 	 */
 	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
-		}, ids, 'delete');
-
+		return CollectionUtils.bulkGroupAction(this, function(slice) {
+			return Backbone.ajax({
+				url: 'sites/@site/catalog/products',
+				method: 'DELETE',
+				data: {
+					products: slice
+				}
+			});
+		}, ids, 100).done(function(ids) {
+			this.remove(ids);
+		}.bind(this));
 	},
 
 	/**

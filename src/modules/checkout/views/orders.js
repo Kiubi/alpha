@@ -447,12 +447,10 @@ module.exports = Marionette.View.extend({
 					canDelete: true,
 					collectionPromise: new CollectionUtils.SelectCollection([{
 						'value': 'paid',
-						'label': 'Payée',
-						'selected': false
+						'label': 'Payée'
 					}, {
 						'value': 'unpaid',
-						'label': 'À payer',
-						'selected': false
+						'label': 'À payer'
 					}])
 				};
 				break;

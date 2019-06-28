@@ -11,7 +11,7 @@ var Forms = require('kiubi/utils/forms.js');
 
 var TypeSelectorView = Marionette.View.extend({
 	template: require('../templates/post.type.html'),
-	className: 'post-article',
+	className: 'post-article w-100',
 	tagName: 'article',
 
 	behaviors: [WysiwygBehavior, SelectifyBehavior],
@@ -126,7 +126,7 @@ var TypeSelectorView = Marionette.View.extend({
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/post.html'),
-	className: 'container',
+	className: 'container container-large',
 	service: 'cms',
 
 	behaviors: [FormBehavior],

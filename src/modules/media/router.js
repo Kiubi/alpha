@@ -74,11 +74,13 @@ function getHeadersAction(options) {
 
 function HeaderTabsFolder(folder_id) {
 	return [{
-		title: 'Contenu du dossier',
-		url: '/media/folders/' + folder_id + '/files'
+		title: 'Dossier',
+		url: '/media/folders/' + folder_id + '/files',
+		icon: 'md-media-detail'
 	}, {
-		title: 'Paramètres du dossier',
-		url: '/media/folders/' + folder_id
+		title: 'Paramètres',
+		url: '/media/folders/' + folder_id,
+		icon: 'md-media-settings'
 	}];
 }
 
@@ -171,7 +173,7 @@ var MediaController = Controller.extend({
 	}],
 
 	/*
-	 * Files 
+	 * Files
 	 */
 
 	showIndex: function(queryString) {
@@ -209,7 +211,7 @@ var MediaController = Controller.extend({
 	},
 
 	/*
-	 * Folder 
+	 * Folder
 	 */
 
 	showFolder: function(folder_id) {
@@ -282,7 +284,7 @@ var MediaController = Controller.extend({
 	},
 
 	/*
-	 * File 
+	 * File
 	 */
 
 	showFile: function(id) {
@@ -368,8 +370,8 @@ var MediaController = Controller.extend({
 	},
 
 	actionDownloadFile: function(media_id) {
-		// TODO
-		console.log('actionDownloadFile', media_id);
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		this.actionOpenURL(Session.convertMediaPath('/media/'+media_id, true));
 	},
 
 	importFTP: function() {

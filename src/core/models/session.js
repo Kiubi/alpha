@@ -10,14 +10,31 @@ var Site = require('./site.js');
 
 var CookieStorage = function() {
 
+	/**
+	 * 
+	 * @param {String} label
+	 * @returns {String|undefined}
+	 */
 	this.getItem = function(label) {
 		return Backbone.$.cookie(label);
 	};
+
+	/**
+	 * 
+	 * @param {String} label
+	 * @param {String} value
+	 * @param {Boolean} inSession
+	 */
 	this.setItem = function(label, value, inSession) {
 		Backbone.$.cookie(label, value, {
 			path: '/'
 		});
 	};
+
+	/**
+	 * 
+	 * @param {String} label
+	 */
 	this.clearItem = function(label) {
 		Backbone.$.removeCookie(label);
 	};
@@ -28,6 +45,11 @@ var LocalStorage = function() {
 	var localStorage = window.localStorage;
 	var sessionStorage = window.sessionStorage;
 
+	/**
+	 * 
+	 * @param {String} label
+	 * @returns {String|null}
+	 */
 	this.getItem = function(label) {
 		var value = sessionStorage.getItem(label);
 		if (value === null) {
@@ -35,12 +57,24 @@ var LocalStorage = function() {
 		}
 		return value;
 	};
+
+	/**
+	 * 
+	 * @param {String} label
+	 * @param {String} value
+	 * @param {Boolean} inSession
+	 */
 	this.setItem = function(label, value, inSession) {
 		localStorage.setItem(label, value);
 		if (inSession) {
 			sessionStorage.setItem(label, value);
 		}
 	};
+
+	/**
+	 * 
+	 * @param {String} label
+	 */
 	this.clearItem = function(label) {
 		localStorage.removeItem(label);
 		sessionStorage.removeItem(label);
@@ -401,9 +435,37 @@ var Session = Backbone.Model.extend({
 	 * Return value
 	 * 
 	 * @param {String} name
-	 * @return {String}
+	 * @return {String|null}
 	 */
 	getValue: function(name) {
+		return this.storage.getItem(name);
+	},
+
+	/**
+	 * Store preference for current site and current session
+	 *
+	 * @param {String} name
+	 * @param {String} value
+	 */
+	storePref: function(name, value) {
+		if (this.site.get('code_site') == '') {
+			return;
+		}
+		name = 'pref.' + this.site.get('code_site') + '.' + name;
+		this.storage.setItem(name, value, true); // for current session
+	},
+
+	/**
+	 * Return preference for current site and current session
+	 *
+	 * @param {String} name
+	 * @return {String|null} value
+	 */
+	getPref: function(name) {
+		if (this.site.get('code_site') == '') {
+			return null;
+		}
+		name = 'pref.' + this.site.get('code_site') + '.' + name;
 		return this.storage.getItem(name);
 	},
 

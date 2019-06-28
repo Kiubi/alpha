@@ -105,7 +105,7 @@ var TypeSelectorView = Marionette.View.extend({
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/post.html'),
-	className: 'container',
+	className: 'container container-large',
 	service: 'blog',
 
 	behaviors: [FormBehavior, WysiwygBehavior, Datepicker],

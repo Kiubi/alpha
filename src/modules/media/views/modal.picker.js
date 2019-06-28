@@ -109,9 +109,11 @@ module.exports = Marionette.View.extend({
 	},
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['model', 'collection', 'type', 'folders']);
 
 		this.currentFolder = null;
+
+		this.mergeOptions(options, ['model', 'collection', 'type', 'folders', 'currentFolder']);
+
 		this.currentTerm = null;
 		this.currentOrder = '-date';
 		this.currentFetch = null;
@@ -125,11 +127,29 @@ module.exports = Marionette.View.extend({
 			}
 		});
 
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		var last = Session.getPref('last_folder');
+
+		if (this.model.get('folder_id') > 0) {
+			this.currentFolder = this.model.get('folder_id');
+			this.updateFilter();
+			Session.storePref('last_folder', this.currentFolder);
+		} else if (last > 0) {
+			this.currentFolder = last;
+			this.updateFilter();
+		} else {
+			folderPromise.done(function() {
+				this.currentFolder = this.folders.at(0).get('folder_id');
+				this.updateFilter();
+				Session.storePref('last_folder', this.currentFolder);
+			}.bind(this));
+		}
+
 		this.showChildView('categories', new SelectView({
 			name: 'categories',
 			// emptyLabel: 'Dossiers',
 			collection: this.folders,
-			selected: this.model.get('folder_id')
+			selected: this.currentFolder
 		}));
 
 		this.showChildView('list', new ListView({
@@ -138,16 +158,6 @@ module.exports = Marionette.View.extend({
 			selectableType: this.type
 		}));
 
-		if (this.model.get('folder_id') > 0) {
-			this.currentFolder = this.model.get('folder_id');
-			this.updateFilter();
-		} else {
-			folderPromise.done(function() {
-				this.currentFolder = this.folders.at(0).get('folder_id');
-				this.updateFilter();
-			}.bind(this));
-		}
-
 	},
 
 	onChildviewChange: function(value, view) {
@@ -155,6 +165,9 @@ module.exports = Marionette.View.extend({
 		this.getUI('term').val('');
 		this.currentTerm = '';
 		this.updateFilter();
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		Session.storePref('last_folder', this.currentFolder);
 	},
 
 	changeOrder: function(event) {

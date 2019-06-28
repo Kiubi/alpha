@@ -248,7 +248,7 @@ var CheckoutController = Controller.extend({
 			});
 			this.navigationController.showContent(view);
 			this.setHeader({
-				title: 'Commande #' + m.get('reference')
+				title: '#' + m.get('reference')
 			}, getOrderAction({
 				xls: m.get('download').xls ? m.get('download').xls : null,
 				coliship: m.get('download').coliship ? m.get('download').coliship : null,

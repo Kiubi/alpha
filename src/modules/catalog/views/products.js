@@ -142,7 +142,7 @@ module.exports = Marionette.View.extend({
 			}])
 		});
 
-		this.showChildView('list', new ListView({
+		var listView = new ListView({
 			collection: this.collection,
 			rowView: RowView,
 
@@ -190,7 +190,10 @@ module.exports = Marionette.View.extend({
 					value: '-modification'
 				}])
 			}]
-		}));
+		});
+
+		this.showChildView('list', listView);
+		if (this.filters.stock) listView.showFilter('stock');
 	},
 
 	start: function() {

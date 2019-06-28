@@ -1,85 +1,91 @@
 <form>
 
-<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
 
-<article class="post-article">
-	<header class="post-header">
-		<h1>Informations générales</h1>
-	</header>
-	<div class="post-content">
-		<div class="form-group">
-			<label class="required" for="name">Intitulé de la page</label>
-			<input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Intitulé de la page tel qu'il apparaîtra dans le menu" type="text">
-		</div>
-
-
-		<div class="row">
-            <% if(!is_home) { %>
-
-			<div class="col-6">
-
-				<div class="form-group">
-					<label for="name">Page parente</label>
-					<div data-role="parent"></div>
-				</div>
-
-			</div>
-
-            <% } %>
-
-			<div class="col-4 offset-2">
-				<div class="form-group">
-					<label>Affichage</label>
-					<div class="form-check">
-						<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
-						<label for="is_visible1" class="visible">Visible</label>
-						<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
-						<label for="is_visible0" class="not-visible">Masqué</label>
+	<div class="row">
+		<div class="col-lg-8 col-12">
+			<article class="post-article">
+				<header class="post-header">
+					<h1>Détail de la page</h1>
+				</header>
+				<div class="post-content">
+					<div class="form-group">
+						<label class="required" for="name">Intitulé</label>
+						<input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Intitulé de la page tel qu'il apparaîtra dans le menu" type="text">
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-	<footer class="post-footer"></footer>
-</article>
+				<footer class="post-footer"></footer>
+			</article>
 
-<% if(!is_home) { %>
-<article class="post-article">
-	<header class="post-header no-border">
-		<h1>Type de page</h1>
-	</header>
-	<div class="post-content">
-		<div class="post-group">
-			<div class="form-group">
-				<p>Le type de la page détermine son mode d'affichage dans le menu et la nature de son contenu :</p>
-				<div class="row">
-					<div class="col-6">
-						<select name="page_type" data-style="selectify">
-							<option <%= page_type == 'page' ? 'selected="selected"' : '' %> value="page">Page de contenu libre</option>
-							<option <%= page_type == 'lien_int' ? 'selected="selected"' : '' %> value="internal_link">Lien interne vers une autre page</option>
-							<option <%= page_type == 'lien_ext' ? 'selected="selected"' : '' %> value="external_link">Lien externe vers une adresse web</option>
-							<option <%= page_type == 'separateur' ? 'selected="selected"' : '' %> value="separator">Séparateur sans lien ni contenu</option>
-						</select>
+			<div data-role="detail"></div>
+
+		</div>
+
+		<div class="col-lg-4 col-12">
+
+			<article class="post-article post-article-aside">
+				<div class="post-content">
+					<div class="row"><% if(!is_home) { %>
+						<div class="col-lg-12 order-lg-2 col-6">
+							<div class="form-group post-subcontent">
+								<label>Page parente</label>
+								<div data-role="parent"></div>
+							</div>
+						</div>
+						<% } %>
+						<div class="col-lg-12 order-lg-1 col-6">
+							<div class="form-group mb-lg-0">
+								<label>Affichage</label>
+								<div class="form-check">
+									<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
+									<label for="is_visible1" class="visible">Visible</label>
+									<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
+									<label for="is_visible0" class="not-visible">Masqué</label>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
+				<footer class="post-footer"></footer>
+			</article>
+
+			<% if(!is_home) { %>
+				<article class="post-article">
+					<div class="post-content">
+						<div class="">
+							<div class="form-group">
+								<label>Type de page</label>
+								<p>Détermine l'affichage de la page dans le menu et la nature de son contenu :</p>
+								<div class="row">
+									<div class="col-12">
+										<select name="page_type" data-style="selectify">
+											<option <%= page_type == 'page' ? 'selected="selected"' : '' %> value="page">Page de contenu libre</option>
+											<option <%= page_type == 'lien_int' ? 'selected="selected"' : '' %> value="internal_link">Lien vers une autre page</option>
+											<option <%= page_type == 'lien_ext' ? 'selected="selected"' : '' %> value="external_link">Lien vers une adresse web</option>
+											<option <%= page_type == 'separateur' ? 'selected="selected"' : '' %> value="separator">Séparateur, sans lien</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<footer class="post-footer"></footer>
+				</article>
+				<% } %>
+
+				<article data-role='layout'></article>
+
 			</div>
 		</div>
-	</div>
-	<footer class="post-footer"></footer>
-</article>
-<% } %>
+	</form>
 
-<div data-role="detail"></div>
+	<div class="save">
+		<div class="btn-toolbar" role="toolbar">
+			<% if(!is_home) { %>
+				<button type="button" class="btn btn-lg btn-danger btn-delete" data-role="delete">Supprimer</button>
+				<% } %>
+				<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
+			</div>
+		</div>
 
-</form>
-
-<div class="save">
-	<div class="btn-toolbar" role="toolbar">
-		<% if(!is_home) { %>
-		<button type="button" class="btn btn-lg btn-danger btn-delete" data-role="delete">Supprimer</button>
-		<% } %>
-		<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
-	</div>
-</div>
-
-<footer class="footer"> </footer>
+		<footer class="footer"> </footer>

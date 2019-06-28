@@ -147,7 +147,7 @@ var ModalView = Marionette.View.extend({
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/layout.html'),
-	className: 'container container-large',
+	className: 'container container-large alerte-rwd',
 	service: 'layout',
 
 	behaviors: [FormBehavior],
@@ -282,7 +282,8 @@ module.exports = Marionette.View.extend({
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 			navigationController.showInModal(contentView, {
 				title: 'Paramètres du widget',
-				modalClass: 'modal-right modal-widget',
+				modalClass: 'modal-right',
+				modalDialogClass: 'modal-sm',
 				action: {
 					title: 'Valider'
 				}

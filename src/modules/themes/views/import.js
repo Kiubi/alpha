@@ -9,7 +9,7 @@ var FileView = require('kiubi/core/views/ui/input.file.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/import.html'),
-	className: 'container',
+	className: 'container alerte-rwd',
 	service: 'themes',
 
 	behaviors: [FormBehavior],

@@ -10,7 +10,7 @@ var FileView = require('kiubi/core/views/ui/input.file.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/customer.html'),
-	className: 'container',
+	className: 'container container-large',
 	service: 'customers',
 
 	behaviors: [FormBehavior],

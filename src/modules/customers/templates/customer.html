@@ -2,70 +2,122 @@
 
 	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
 
-	<article class="post-article">
-		<header class="post-header">
-			<h1>Informations personnelles</h1>
-		</header>
-		<div class="post-content">
-			<div class="row media-detail">
-				<div class="col-4 customer-avatar">
-					<div class="media-object md-icon md-face img-default rounded-circle mx-auto img-avatar center-block"></div>
-					<div class="media-object rounded-circle mx-auto img-avatar center-block">
-						<img alt=""
-							 src="<%- convertMediaPath(avatar_url) %>&<%- render_counter %>"></a>
-					</div>
-					<br/>
-					<% if(customer_id) { %>
-					<div data-role="file"></div>
-					<p class="media-info">Format : gif, jpeg ou png<br/>Taille : 120 x 120px minimum</p>
-					<% } %>
-				</div>
-				<div class="col-8">
-					<div class="row">
-						<% if(customer_id) { %>
-						<div class="col-6">
+	<div class="row">
+		<div class="col-lg-8 col-12">
+
+			<article class="post-article">
+				<header class="post-header">
+					<h1>Informations personnelles</h1>
+				</header>
+				<div class="post-content">
+					<div class="row media-detail">
+						<div class="col-4 customer-avatar">
+							<div class="media-object md-icon md-face img-default rounded-circle mx-auto img-avatar center-block"></div>
+							<% if(customer_id) { %>
+								<div class="media-object rounded-circle mx-auto img-avatar center-block">
+									<img alt=""
+										 src="<%- convertMediaPath(avatar_url) %>&<%- render_counter %>"></a>
+								</div>
+								<br/>
+							<div data-role="file"></div>
+							<p class="media-info">Format : gif, jpeg ou png<br/>Taille : 120 x 120px minimum</p>
+							<% } %>
+						</div>
+						<div class="col-8">
+							<div class="row">
+
+								<div class="col-4">
+									<div class="form-group">
+										<label>Civilité</label>
+										<select name="gender" data-style="selectify">
+											<option value="M"
+											<%= gender != 'F' ? selected="selected" : '' %>>M</option>
+											<option value="W"
+											<%= gender == 'W' ? selected="selected" : '' %>>Mme</option>
+										</select>
+									</div>
+								</div>
+							</div>
 							<div class="form-group">
-								<label>Inscription</label>
+								<label class="required" for="lastname">Nom</label>
+								<input class="form-control" id="lastname" name="lastname" value="<%- lastname %>" type="text">
+							</div>
+							<div class="form-group">
+								<label class="required" for="firstname">Prénom</label>
+								<input class="form-control" id="firstname" name="firstname" value="<%- firstname %>" type="text">
+							</div>
+							<div class="form-group">
+								<label class="required" for="email">Email</label>
+								<input class="form-control" id="email" name="email" value="<%- email %>" type="text" placeholder="Utilisé pour se connecter au site">
+							</div>
+							<div class="form-group">
+								<label for="password">Mot de passe</label>
+								<% if(customer_id) { %>
+								<a data-role="show-password" href="#" class="form-control-static">Modifier le mot de passe</a>
+								<input class="form-control" style="display: none;" id="password" name="password" type="password" placeholder="Modifier le mot de passe utilisé pour se connecter au site">
+								<% } else { %>
+								<input class="form-control" id="password" name="password" type="password">
+								<% } %>
+							</div>
+									<div class="form-group">
+										<label for="nickname">Pseudo</label>
+										<input class="form-control" id="nickname" name="nickname" value="<%- nickname %>" type="text" placeholder="S'affiche à la place du nom">
+									</div>
+									<div class="form-group">
+										<label for="website">Site Web</label>
+										<input class="form-control" id="website" name="website" value="<%- website %>" type="text" placeholder="https://www.site-web.com/">
+									</div>
+							<% if(enableExtranet) { %>
+							<div class="form-group">
+								<label>Groupe extranet</label>
+
+								<p>
+									Un membre peut faire partie d'un groupe de l'<a href="/customers/groups">extranet</a>
+									ce qui lui permettra d'accéder à certaines pages et fichiers du site disposant d'un accès
+									restrint et de bénéficier des remises appliquées au groupe.
+								</p>
+
+								<div class="row">
+									<div class="col-8">
+										<div data-role="groups"></div>
+									</div>
+								</div>
+							</div>
+							<% } %>
+						</div>
+					</div>
+				</div>
+				<footer class="post-footer"></footer>
+			</article>
+
+		</div>
+		<div class="col-lg-4 col-12">
+
+			<article class="post-article post-article-aside">
+				<div class="post-content">
+					<div class="row">
+
+						<% if(customer_id) { %>
+							<div class="col-lg-12 order-lg-3 col-4">
+							<div class="form-group post-subcontent">
+								<label>Date d'inscription</label>
 
 								<p class="form-control-static"><%- creation_date %></p>
 							</div>
 						</div>
-						<div class="col-6">
-							<div class="form-group">
+						<div class="col-lg-12 order-lg-2 col-4">
+							<div class="form-group post-subcontent mb-0">
 								<label>Numéro client</label>
 
 								<p class="form-control-static">#<%- number %></p>
 							</div>
 						</div>
 						<% } %>
-						<div class="col-12">
-							<label class="required" for="lastname">Nom</label>
-						</div>
-						<div class="col-3">
-							<div class="form-group">
-								<select name="gender" data-style="selectify">
-									<option value="M"
-									<%= gender != 'F' ? selected="selected" : '' %>>M</option>
-									<option value="W"
-									<%= gender == 'W' ? selected="selected" : '' %>>Mme</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-9">
-							<div class="form-group">
-								<input class="form-control" id="lastname" name="lastname" value="<%- lastname %>" type="text">
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="required" for="firstname">Prénom</label>
-						<input class="form-control" id="firstname" name="firstname" value="<%- firstname %>" type="text">
-					</div>
-					<div class="row">
-						<div class="col-6">
-							<div class="form-group">
-								<label>Accès</label>
 
+
+						<div class="col-lg-12 order-lg-1 col-4">
+							<div class="form-group <%= (customer_id) ?	'mb-lg-0' : '' %>">
+								<label>Accès</label>
 								<div class="form-check">
 									<input name="is_enabled" id="is_enabled1" value="1" <%= (is_enabled) ?
 									'checked="checked"' : '' %> type="radio">
@@ -77,55 +129,13 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="required" for="email">Email</label>
-						<input class="form-control" id="email" name="email" value="<%- email %>" type="text" placeholder="Utilisé pour se connecter au site">
-					</div>
-					<div class="form-group">
-						<label for="password">Mot de passe</label>
-						<% if(customer_id) { %>
-						<a data-role="show-password" href="#" class="form-control-static">Modifier le mot de passe</a>
-						<input class="form-control" style="display: none;" id="password" name="password" type="password" placeholder="Modifier le mot de passe utilisé pour se connecter au site">
-						<% } else { %>
-						<input class="form-control" id="password" name="password" type="password">
-						<% } %>
-					</div>
-					<div class="row">
-						<div class="col-6">
-							<div class="form-group">
-								<label for="nickname">Pseudo</label>
-								<input class="form-control" id="nickname" name="nickname" value="<%- nickname %>" type="text" placeholder="S'affiche à la place du nom">
-							</div>
-						</div>
-						<div class="col-6">
-							<div class="form-group">
-								<label for="website">Site Web</label>
-								<input class="form-control" id="website" name="website" value="<%- website %>" type="text" placeholder="https://www.site-web.com/">
-							</div>
-						</div>
-					</div>
-					<% if(enableExtranet) { %>
-					<div class="form-group">
-						<label>Groupe extranet</label>
-
-						<p>
-							Un membre peut faire partie d'un groupe de l'<a href="/customers/groups">extranet</a>
-							ce qui lui permettra d'accéder à certaines pages et fichiers du site disposant d'un accès
-							restrint et de bénéficier des remises appliquées au groupe.
-						</p>
-
-						<div class="row">
-							<div class="col-6">
-								<div data-role="groups"></div>
-							</div>
-						</div>
-					</div>
-					<% } %>
 				</div>
-			</div>
-		</div>
-		<footer class="post-footer"></footer>
-	</article>
+				<footer class="post-footer"></footer>
+			</article>
+
+</div>
+</div>
+
 
 </form>
 

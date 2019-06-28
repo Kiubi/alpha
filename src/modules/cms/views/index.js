@@ -36,7 +36,7 @@ var RowView = Marionette.View.extend({
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/index.html'),
-	className: 'container',
+	className: 'container container-large',
 	service: 'cms',
 
 	behaviors: [FormBehavior],

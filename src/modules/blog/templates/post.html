@@ -2,78 +2,76 @@
 
 	<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
 
-	<article class="post-article">
-		<header class="post-header">
-			<h1>Informations générales</h1>
-		</header>
-		<div class="post-content">
-			<div class="form-group">
-				<label class="required" for="title">Intitulé du billet</label>
-				<input class="form-control" id="title" name="title" value="<%- title %>" placeholder="Intitulé du billet tel qu'il apparaîtra dans le blog" type="text">
-			</div>
-			<div class="row">
-				<div class="col-4">
+	<div class="row">
+		<div class="col-lg-8 col-12">
+			<article class="post-article">
+				<header class="post-header">
+					<h1>Détail du billet</h1>
+				</header>
+				<div class="post-content">
 					<div class="form-group">
-						<label>Catégorie</label>
-						<div data-role="categories"></div>
+						<label class="required" for="title">Titre</label>
+						<input class="form-control" id="title" name="title" value="<%- title %>" placeholder="Intitulé du billet tel qu'il apparaîtra dans le blog" type="text">
+					</div>
+
+					<div data-role="image"></div>
+
+					<div class="form-group">
+						<label for="header">Chapô</label>
+						<textarea class="form-control" id="header" name="header" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- header %></textarea>
+					</div>
+					<div class="form-group">
+						<label for="content">Contenu</label>
+						<textarea class="form-control" id="content" name="content" placeholder="Placeholder du contenu" data-role="wysiwyg" rows="21"><%- content %></textarea>
 					</div>
 				</div>
-				<div class="col-4">
-					<div class="form-group has-feedback">
-						<label for="publication_date">Date de publication</label>
-						<input data-role="datetimepicker" class="form-control" id="publication_date" name="publication_date" value="<%- publication_date %>" placeholder="jj/mm/aaaa hh:mm:ss" type="text">
-						<span class="md-feedback md-date"></span>
-					</div>
-				</div>
-				<div class="col-4">
-					<div class="form-group">
-						<label>Affichage</label>
-						<div class="form-check">
-							<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
-							<label for="is_visible1" class="visible">Visible</label>
-							<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
-							<label for="is_visible0" class="not-visible">Masqué</label>
+				<footer class="post-footer"></footer>
+			</article>
+
+			<article data-role="type"></article>
+
+
+
+			<article data-role="seo"></article>
+		</div>
+		<div class="col-lg-4 col-12">
+			<article class="post-article post-article-aside">
+				<div class="post-content">
+					<div class="row">
+						<div class="col-lg-12 order-lg-3 col-4">
+							<div class="form-group post-subcontent">
+								<label>Catégorie</label>
+								<div data-role="categories"></div>
+							</div>
+						</div>
+						<div class="col-lg-12 order-lg-2 col-4">
+							<div class="form-group has-feedback post-subcontent mb-3">
+								<label for="publication_date">Date de publication</label>
+								<input data-role="datetimepicker" class="form-control" id="publication_date" name="publication_date" value="<%- publication_date %>" placeholder="jj/mm/aaaa hh:mm:ss" type="text">
+								<span class="md-feedback md-date"></span>
+							</div>
+						</div>
+						<div class="col-lg-12 order-lg-1 col-4">
+							<div class="form-group mb-lg-0">
+								<label>Affichage</label>
+								<div class="form-check">
+									<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
+									<label for="is_visible1" class="visible">Visible</label>
+									<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
+									<label for="is_visible0" class="not-visible">Masqué</label>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<footer class="post-footer"></footer>
-	</article>
+				<footer class="post-footer"></footer>
+			</article>
 
-	<article class="post-article">
-		<header class="post-header">
-			<h1>Détail du billet</h1>
-		</header>
-		<div class="post-content">
-
-			<div data-role="image"></div>
-
-			<div class="form-group">
-				<label for="header">Chapô</label>
-				<textarea class="form-control" id="header" name="header" placeholder="Placeholder du contenu" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- header %></textarea>
-			</div>
-			<div class="form-group">
-				<label for="content">Contenu</label>
-				<textarea class="form-control" id="content" name="content" placeholder="Placeholder du contenu" data-role="wysiwyg" rows="21"><%- content %></textarea>
-			</div>
-			<div class="row">
-				<!--<div class="col-6">
-					<div class="form-group has-feedback">
-						<label for="author">Auteur</label>
-						<select id="author" name="author" data-style="selectify">
-							<option>Marc BEYER</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-						</select>
-					</div>
-				</div>-->
-				<div class="col-4">
+			<article class="post-article">
+				<div class="post-content">
 					<div class="form-group">
 						<label>Commentaires</label>
+						<p>Détermine l'accès aux commentaires par les Internautes pour ce billet uniquement :</p>
 						<div class="form-check">
 							<input name="has_comments_open" id="commentaires1" value="true" <%= has_comments_open ? 'checked="checked"' : '' %> type="radio">
 							<label for="commentaires1">Ouverts</label>
@@ -82,16 +80,12 @@
 						</div>
 					</div>
 				</div>
-			</div>
+				<footer class="post-footer"></footer>
+			</article>
+
+			<article data-role="layout"></article>
 		</div>
-		<footer class="post-footer"></footer>
-	</article>
-
-	<article data-role="type"></article>
-
-	<article data-role="layout"></article>
-
-	<article data-role="seo"></article>
+	</div>
 
 </form>
 

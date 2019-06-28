@@ -45,7 +45,7 @@ var ListView = require('kiubi/core/views/ui/list.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/home.html'),
-	className: 'container',
+	className: 'container container-large',
 	service: 'blog',
 
 	behaviors: [FormBehavior],

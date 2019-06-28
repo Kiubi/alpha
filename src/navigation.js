@@ -26,34 +26,22 @@ var Link = Backbone.Model.extend({
 	}
 });
 
-
 /**
  *
- * @param {Marionette.view} view
- * @returns {String}
+ * @param {Array} breadcrum
  */
-function getPageTitle(view) {
-	var Session = Backbone.Radio.channel('app').request('ctx:session');
-	if (!Session) return 'Kiubi';
-
-	var service;
-	if (view && view.pageTitle) {
-		service = '  •  ' + view.pageTitle;
-	} else if (view && view.service) {
-		service = '  •  ' + view.service[0].toUpperCase() + view.service.slice(1);
-	} else {
-		service = '';
+function updateTitle(breadcrum) {
+	if (breadcrum.length == 0) {
+		document.title = 'Kiubi';
+		return;
 	}
 
-	return Session.site.get('name') + service + ' • Kiubi';
-}
+	var page = breadcrum[breadcrum.length - 1].title;
 
-/**
- *
- * @param {Marionette.view} view
- */
-function updateTitle(view) {
-	document.title = getPageTitle(view);
+	var Session = Backbone.Radio.channel('app').request('ctx:session');
+	var site = (!Session) ? 'Kiubi' : Session.site.get('name');
+
+	document.title = site + ' • ' + page;
 }
 
 /**
@@ -68,7 +56,8 @@ module.exports = Marionette.Object.extend({
 		this.mergeOptions(options, ['layoutView', 'application']);
 
 		this.listenTo(this.application.session.site, 'change:site', function() {
-			updateTitle(this.layoutView.getChildView('content'));
+			var header = this.layoutView.getChildView('header');
+			if (header) updateTitle(header.links);
 		}.bind(this));
 	},
 
@@ -87,6 +76,8 @@ module.exports = Marionette.Object.extend({
 		if (!this.layoutView.getChildView('header')) return;
 
 		this.layoutView.getChildView('header').setBreadCrum(links);
+
+		updateTitle(links);
 	},
 
 	/**
@@ -303,7 +294,6 @@ module.exports = Marionette.Object.extend({
 		} catch (error) {
 			console.error(error);
 		}
-		updateTitle(view);
 	},
 
 	/**

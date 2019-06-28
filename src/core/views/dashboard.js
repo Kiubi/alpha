@@ -28,7 +28,7 @@ var RowView = Marionette.View.extend({
 
 var SummaryView = Marionette.View.extend({
 	template: require('../templates/dashboard.summary.html'),
-	className: 'post-article post-acticle-empty dashboard-stats',
+	className: 'post-article post-article-empty dashboard-stats',
 	tagName: 'article',
 
 	behaviors: [TooltipBehavior],
@@ -448,7 +448,6 @@ var GraphView = Marionette.View.extend({
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/dashboard.html'),
-	pageTitle: 'Tableau de bord',
 
 	regions: {
 		summary: {

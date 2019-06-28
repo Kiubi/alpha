@@ -5,7 +5,7 @@
 	<% if(canDelete) { %><span data-role="feedback" class="md-icon float-right md-cancel"></span><% } %>
 	<ul class="dropdown-menu dropdown-control">
 		<% if(collection) { _(collection).each(function(option, i){ %>
-		<li class="<%= option.selected ? 'active' : '' %>"><a class="dropdown-item" data-index="<%- i %>" href="#"><%- option.label %></a></li>
+		<li><a class="dropdown-item" data-index="<%- i %>" href="#"><%- option.label %></a></li>
 		<% })} %>
 	</ul>
 </div>

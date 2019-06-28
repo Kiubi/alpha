@@ -26,7 +26,7 @@ var Module = Backbone.Model.extend({
 
 var SpotlightRowView = Marionette.View.extend({
 	template: require('../templates/modules.spotlight.html'),
-	className: 'col-6 d-flex',
+	className: 'col-12 col-md-6 d-flex',
 
 	events: {
 		'click a[data-role="subscribe"]': function() {
@@ -82,7 +82,7 @@ module.exports = Marionette.View.extend({
 			// Spotlights
 			{
 				name: 'Dismoi?',
-				icon: 'assignment',
+				icon: 'move_to_inbox',
 				color: '#337ab7',
 				desc: 'Créer et gérer des formulaires (contact, recrutement, sondage,...) entièrement paramétrables.',
 				href: '/forms/inbox',

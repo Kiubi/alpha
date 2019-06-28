@@ -9,7 +9,7 @@ var Forms = require('kiubi/utils/forms.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/category.html'),
-	className: 'container',
+	className: 'container container-large',
 	service: 'blog',
 
 	behaviors: [FormBehavior],

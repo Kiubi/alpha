@@ -10,7 +10,7 @@ var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/theme.html'),
-	className: 'container container-locked',
+	className: 'container container-locked alerte-rwd',
 	service: 'themes',
 
 	behaviors: [SelectifyBehavior],

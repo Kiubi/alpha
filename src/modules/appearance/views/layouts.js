@@ -159,7 +159,7 @@ var ListView = Marionette.CollectionView.extend({
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/layouts.html'),
-	className: 'container-fluid',
+	className: 'container-fluid alerte-rwd',
 	service: 'appearance',
 
 	ui: {

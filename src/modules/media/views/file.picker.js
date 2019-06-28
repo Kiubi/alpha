@@ -5,7 +5,7 @@ var Files = require('kiubi/modules/media/models/files.js');
 var Folders = require('kiubi/modules/media/models/folders.js');
 
 var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
-var SelectModalView = require('kiubi/modules/media/views/modal.picker.js');
+var ModalPickerView = require('kiubi/modules/media/views/modal.picker.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/file.picker.html'),
@@ -89,7 +89,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	select: function() {
-		var contentView = new SelectModalView({
+		var contentView = new ModalPickerView({
 			type: this.type,
 			model: this.model,
 			collection: new this.collectionFiles(),
@@ -101,7 +101,7 @@ module.exports = Marionette.View.extend({
 		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 		navigationController.showInModal(contentView, {
 			title: 'Médiathèque',
-			modalClass: 'mediatheque modal-right',
+			modalClass: 'mediatheque modal-right has-filters',
 			action: {
 				title: 'Publier un fichier'
 			}
@@ -109,7 +109,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	/**
-	 * 
+	 *
 	 * @param {Marionette.View} view
 	 */
 	switchToPublish: function(view) {

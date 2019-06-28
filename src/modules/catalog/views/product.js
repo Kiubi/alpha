@@ -12,6 +12,8 @@ var AutocompleteInputView = require('kiubi/core/views/ui/input.search.js');
 var TagView = require('kiubi/core/views/ui/tag.search.js');
 var ListView = require('kiubi/core/views/ui/list.js');
 var SeoView = require('kiubi/core/views/ui/seo.js');
+var ModalTagsView = require('./modal.tags.js');
+var ModalCategoriesView = require('./modal.categories.js');
 
 var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
@@ -564,13 +566,16 @@ var ImagesView = Marionette.View.extend({
 		var position = this.collection.reduce(function(memo, model) {
 			return Math.max(memo, model.get('position'));
 		}, 0);
-		this.collection.create({
-			media_id: data.media_id,
-			name: data.name,
-			orginial_name: data.orginial_name,
-			product_id: this.collection.product_id,
-			position: position + 1
-		});
+
+		_.each(data, function(file) {
+			this.collection.create({
+				media_id: file.media_id,
+				name: file.name,
+				orginial_name: file.orginial_name,
+				product_id: this.collection.product_id,
+				position: position + 1
+			});
+		}.bind(this));
 	}
 
 });
@@ -694,7 +699,7 @@ var TypeSelectorView = Marionette.View.extend({
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/product.html'),
-	className: 'container',
+	className: 'container container-large',
 	service: 'catalog',
 
 	behaviors: [FormBehavior, WysiwygBehavior, Datepicker],
@@ -948,6 +953,8 @@ module.exports = Marionette.View.extend({
 
 	onChildviewAddBrand: function(term, view) {
 
+		if (term == '') return;
+
 		this.brands.create({
 			name: term
 		}, {
@@ -978,15 +985,51 @@ module.exports = Marionette.View.extend({
 				};
 			});
 
-			// TODO : ne pas mettre xtra si correspondance exacte avec la marque
-			view.showResults(results, {
+			// TODO : ne pas mettre xtra si correspondance exacte avec un tag
+			view.showResults(results, [{
+				title: 'Tous les tags',
+				eventName: 'list',
+				iconClass: 'md-all'
+			}, {
 				title: 'Ajouter le tag',
 				eventName: 'add'
-			});
+			}]);
 		}.bind(this));
 	},
 
+	onChildviewListTags: function(term, view) {
+
+		var selected = _.reduce(view.getTags(), function(acc, tag) {
+			if (_.isNumber(tag.value)) { // could be a string for new tags
+				acc.push(tag.value);
+			}
+			return acc;
+		}, []);
+
+		var contentView = new ModalTagsView({
+			collection: this.tags,
+			selected: selected
+		});
+
+		this.listenTo(contentView, 'selected:modal', function(tag) {
+			view.addTag({
+				label: tag.name,
+				value: tag.tag_id
+			});
+		}.bind(this));
+
+		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+		navigationController.showInModal(contentView, {
+			title: 'Selectionner un tag',
+			modalClass: 'modal-right has-filters',
+			modalDialogClass: 'modal-sm'
+		});
+
+	},
+
 	onChildviewAddTags: function(term, view) {
+
+		if (term == '') return;
 
 		view.addTag({
 			value: term, // trick to add tag
@@ -1020,9 +1063,52 @@ module.exports = Marionette.View.extend({
 						value: categ.category_id
 					};
 				});
-				view.showResults(results);
+
+				view.showResults(results, [{
+					title: 'Toutes les catégories',
+					eventName: 'list',
+					iconClass: 'md-all'
+				}]);
 			});
 		}
+	},
+
+	onChildviewList: function(term, view) {
+
+		// select primary and secondary categories
+		var primary = this.getChildView('primary-categ');
+		var others = this.getChildView('other-categ');
+
+		var selected = _.pluck(others.getTags(), 'value');
+		selected.push(primary.current.value);
+
+		var contentView = new ModalCategoriesView({
+			collection: this.categories,
+			selected: selected
+		});
+
+		this.listenTo(contentView, 'selected:modal', function(model) {
+
+			var categ = {
+				value: model.category_id,
+				label: model.name
+			};
+
+			if (view == this.getChildView('primary-categ')) { // primary
+				view.setCurrent(categ);
+				others.collection.remove(categ.value);
+			} else if (view == this.getChildView('other-categ')) { // secondary
+				view.addTag(categ);
+			}
+		}.bind(this));
+
+		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+		navigationController.showInModal(contentView, {
+			title: 'Selectionner une catégorie',
+			modalClass: 'modal-right has-filters',
+			modalDialogClass: 'modal-sm'
+		});
+
 	},
 
 	onChildviewChange: function(selected, view) {
@@ -1062,6 +1148,7 @@ module.exports = Marionette.View.extend({
 		var data = Forms.extractFields(this.fields, this, 'form[data-role="part"]');
 		data.brand_id = this.model.get('brand_id') || '';
 		data.tags = _.pluck(this.getChildView('tags').getTags(), 'label'); // API can handle label. Simpler, safer
+		if (data.tags.length == 0) data.tags = ''; // hack to explicit removal
 		var c = [this.getChildView('primary-categ').getCurrent().value];
 		data.categories = c.concat(_.pluck(this.getChildView('other-categ').getTags(), 'value'));
 

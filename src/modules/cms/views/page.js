@@ -47,10 +47,6 @@ var PageView = Marionette.View.extend({
 			el: "article[data-role='list']",
 			replaceElement: true
 		},
-		layout: {
-			el: "article[data-role='layout']",
-			replaceElement: true
-		},
 		restrictions: {
 			el: "div[data-role='restrictions']",
 			replaceElement: true
@@ -72,15 +68,6 @@ var PageView = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'collection']);
-
-		if (this.getOption('enableLayout')) {
-			this.layoutSelector = new LayoutSelectorView({
-				layout_id: this.model.get('layout_id'),
-				type: 'cms-page',
-				apply: this.model.get('page_id'),
-				applyName: this.model.get('name')
-			});
-		}
 	},
 
 	templateContext: function() {
@@ -122,9 +109,6 @@ var PageView = Marionette.View.extend({
 				}])
 			}]
 		}));
-		if (this.getOption('enableLayout')) {
-			this.showChildView('layout', this.layoutSelector);
-		}
 		if (this.getOption('enableExtranet')) {
 			this.showChildView('restrictions', new RestrictionsView({
 				restrictions: this.model.get('restrictions')
@@ -154,16 +138,6 @@ var PageView = Marionette.View.extend({
 
 	deletePosts: function(ids) {
 		return this.collection.bulkDelete(ids);
-	},
-
-	onChildviewChangeLayout: function(layout_id) {
-		if (layout_id == this.model.get('layout_id')) return;
-
-		this.model.save({
-			layout_id: layout_id
-		}, {
-			patch: true
-		});
 	},
 
 	onChildviewSortChange: function(data) {
@@ -470,7 +444,7 @@ var ParentView = Marionette.View.extend({
  */
 module.exports = Marionette.View.extend({
 	template: require('../templates/page.html'),
-	className: 'container',
+	className: 'container container-large',
 	service: 'cms',
 
 	behaviors: [FormBehavior],
@@ -485,6 +459,10 @@ module.exports = Marionette.View.extend({
 		detail: "div[data-role='detail']",
 		parent: {
 			el: "div[data-role='parent']",
+			replaceElement: true
+		},
+		layout: {
+			el: "article[data-role='layout']",
 			replaceElement: true
 		}
 	},
@@ -531,10 +509,17 @@ module.exports = Marionette.View.extend({
 					model: this.model,
 					collection: collection,
 					enableSeo: this.getOption('enableSeo'),
-					enableLayout: this.getOption('enableLayout'),
 					enableExtranet: this.getOption('enableExtranet')
 				});
 				view.start();
+				if (this.getOption('enableLayout')) {
+					this.showChildView('layout', new LayoutSelectorView({
+						layout_id: this.model.get('layout_id'),
+						type: 'cms-page',
+						apply: this.model.get('page_id'),
+						applyName: this.model.get('name')
+					}));
+				}
 				break;
 			case 'lien_int':
 				view = new InternalLinkView({
@@ -565,6 +550,16 @@ module.exports = Marionette.View.extend({
 			selected: selected,
 			current: this.model.get('page_id')
 		}));
+	},
+
+	onChildviewChangeLayout: function(layout_id) {
+		if (layout_id == this.model.get('layout_id')) return;
+
+		this.model.save({
+			layout_id: layout_id
+		}, {
+			patch: true
+		});
 	},
 
 	onChildviewFieldChange: function() {

@@ -135,15 +135,21 @@ module.exports = Marionette.View.extend({
 		}
 
 		if (options.xtra) {
-			options.xtra = _.extend({
-				title: 'Ajouter',
-				iconClass: 'md-add-outline',
-				eventName: 'xtra'
-			}, options.xtra);
 
-			list += '<li class="dropdown-divider"></li><li data-role="xtra" data-event="' + options.xtra.eventName +
-				'"><a class="dropdown-item" href="#">' + options.xtra.title + '<span class="md-icon ' + options.xtra.iconClass +
-				'"></span></a></li>';
+			if (!_.isArray(options.xtra)) {
+				options.xtra = [options.xtra];
+			}
+			_.each(options.xtra, function(xtra) {
+				options.xtra = _.extend({
+					title: 'Ajouter',
+					iconClass: 'md-add-outline',
+					eventName: 'xtra'
+				}, options.xtra);
+
+				list += '<li class="dropdown-divider"></li><li data-role="xtra" data-event="' + options.xtra.eventName +
+					'"><a class="dropdown-item" href="#">' + options.xtra.title + '<span class="md-icon ' + options.xtra.iconClass +
+					'"></span></a></li>';
+			});
 		}
 
 		list = '<li><ul class="dropdown-control list-unstyled m-0">' + list + '</ul></li>';

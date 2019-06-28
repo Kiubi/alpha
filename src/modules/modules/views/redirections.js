@@ -37,7 +37,7 @@ module.exports = Marionette.View.extend({
 			if (xhr.responseJSON && xhr.responseJSON.error && xhr.responseJSON.error.fields) {
 				var lines = _.reduce(xhr.responseJSON.error.fields, function(acc, error) {
 					acc.push(error.field - 1); // line 1 == 0 for codemirror
-					return acc
+					return acc;
 				}, []);
 
 				this.triggerMethod('codemirror:highligth', lines);

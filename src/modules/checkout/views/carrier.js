@@ -842,6 +842,8 @@ var ChargesLocalView = Marionette.View.extend({
 	},
 
 	onSave: function() {
+		if (!this.zone) return Backbone.$.Deferred().resolve();
+
 		var data = Forms.extractFields(this.fields, this);
 		var steps = Forms.extractFields(['weight', 'price_ex_vat'], this);
 		if (steps.weight) {

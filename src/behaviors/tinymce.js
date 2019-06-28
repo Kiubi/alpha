@@ -883,7 +883,7 @@ module.exports = Marionette.Behavior.extend({
 			case 'micro':
 				plugins = [ /*'image'*/ , 'contextmenu', 'kiubi', 'lists', 'paste', 'link', 'charmap', 'code', 'wordpaste'];
 				toolbar =
-					'bold italic underline strikethrough | numlist bullist | pastetext | link unlink | kiubi_media | removeformat undo redo | code';
+					'bold italic underline strikethrough | numlist bullist | link unlink | kiubi_media | removeformat undo redo | pastetext code';
 				adjusted_height -= 68;
 				break;
 
@@ -892,7 +892,7 @@ module.exports = Marionette.Behavior.extend({
 					'colorpicker', 'link', 'anchor', 'table', 'charmap', 'code', 'wordpaste'
 				];
 				toolbar = [
-					'formatselect fontsizeselect | bold italic underline strikethrough superscript | alignleft aligncenter alignright alignjustify | forecolor backcolor | numlist bullist | outdent indent | pastetext | link unlink | kiubi_media media table | removeformat undo redo | code'
+					'formatselect fontsizeselect | bold italic underline strikethrough superscript | alignleft aligncenter alignright alignjustify | forecolor backcolor | numlist bullist | outdent indent | link unlink | kiubi_media media table | removeformat undo redo | pastetext code'
 				];
 				adjusted_height -= 102;
 				break;
@@ -1015,7 +1015,7 @@ module.exports = Marionette.Behavior.extend({
 		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 		navigationController.showInModal(contentView, {
 			title: 'Médiathèque',
-			modalClass: 'mediatheque modal-right',
+			modalClass: 'mediatheque modal-right has-filters',
 			action: {
 				title: 'Publier'
 			}
