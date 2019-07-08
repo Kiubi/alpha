@@ -663,7 +663,8 @@ var NoChildrenView = Marionette.View.extend({
 
 var ListView = Marionette.CollectionView.extend({
 	className: function() {
-		return 'post-content post-list ' + this.getOption('extraListClassname');
+		var extra = this.getOption('extraListClassname') || '';
+		return 'post-content post-list '+ extra;
 	},
 	emptyView: NoChildrenView,
 
@@ -672,10 +673,35 @@ var ListView = Marionette.CollectionView.extend({
 	},
 
 	onRender: function() {
-		Backbone.$(this.el).sortable({
+		var scrollfix = 0;
+
+		var params = {
 			handle: ".btn-drag",
 			axis: "y"
-		});
+		};
+		
+		if(this.getOption('fixRelativeDragNDrop')) {
+			params.start = function(event, ui) {
+				if (Backbone.$(this).data('sortableFirst') != true) {
+					scrollfix = Backbone.$('#content').scrollTop();
+				} else {
+					scrollfix = 0;
+				}
+				Backbone.$(this).data('sortableFirst', true);
+			};
+			params.sort = function(event, ui) {
+				if (scrollfix > 0) {
+					ui.helper.css({
+						'top': ui.position.top - scrollfix + 'px'
+					});
+				}
+			};
+			params.change = function(event, ui) {
+				scrollfix = 0;
+			};
+		}
+		
+		Backbone.$(this.el).sortable(params);
 	},
 
 	onAddChild: function(collectionView, rowView) {
@@ -839,7 +865,8 @@ module.exports = Marionette.View.extend({
 			collection: this.getOption('collection'),
 			childView: this.rowView,
 			childViewOptions: childViewOptions,
-			extraListClassname: this.getOption('extraListClassname')
+			extraListClassname: this.getOption('extraListClassname'),
+			fixRelativeDragNDrop: this.getOption('fixRelativeDragNDrop') || false
 		}));
 
 		if (this.getOption('filters').length > 0) {

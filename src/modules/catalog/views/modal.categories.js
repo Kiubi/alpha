@@ -8,7 +8,7 @@ var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/modal.categories.row.html'),
-	className: 'list-item list-item-sm',
+	className: 'list-item list-item-md',
 
 	events: {
 		'click a[data-role="select"]': function() {
@@ -111,7 +111,7 @@ module.exports = Marionette.View.extend({
 		this.currentFetch = this.collection.fetch({
 			reset: true, // require to resolve merging concurrent requests
 			data: {
-				term: term || '' // hack to hide catalog homepage 
+				term: term || '' // hack to hide catalog homepage
 			}
 		}).always(function() {
 			this.currentFetch = null;

@@ -90,6 +90,7 @@ module.exports = Marionette.View.extend({
 		this.showChildView('list', new ListView({
 			collection: this.collection,
 			rowView: RowView,
+			fixRelativeDragNDrop: true,
 
 			title: 'Liste des catégories',
 			selection: [{

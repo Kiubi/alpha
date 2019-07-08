@@ -2470,7 +2470,7 @@ post-list list-item
 	margin-bottom: 15px;
 }
 
-.post-list > *:first-child {
+.post-list > *:not(.list-item):not(form):first-child {
 	margin-top: 40px;
 }
 
@@ -2478,46 +2478,38 @@ post-list list-item
 	margin-top: -16px;
 }
 
-.post-list > .list-item:first-child,
-.post-list ~ .post-list > *:first-child {
-	margin-top: 0;
-}
-
-.post-list > .list-item:last-child:hover {
-	padding-bottom: 17px;
-	margin-bottom: 1px;
-}
-
 .list-item {
+	margin-top: -1px;
 	padding: 18px 0;
 	border-top: 1px solid #ebebeb;
+	border-bottom: 1px solid transparent;
 	-webkit-transition: background-color 0.15s ease 0s;
 	transition: background-color 0.15s ease 0s;
 }
 
-.list-item:hover {
+.post-list:not(.no-hover) .list-item:not(.no-hover):hover,
+.post-list .list-item.active {
 	padding-left: 15px;
 	padding-right: 15px;
-	margin: 0 -15px -1px -15px;
-	background-color: rgba(242, 243, 247, 0.4);
+	margin-left: -15px;
+	margin-right: -15px;
 	border-bottom: 1px solid #ebebeb;
+	background-color: rgba(242, 243, 247, 0.4);
 }
 
-.no-hover .list-item:hover,
-.list-item.no-hover:hover,
-.no-hover .list-item:last-child:hover,
-.list-item.no-hover:last-child:hover {
-	padding-left: 0;
-	padding-right: 0;
-	margin: 0;
-	background: none;
-	border-bottom: none;
-}
-
-.list-item-sm,
-.list-item-sm:hover {
+.list-item-md {
 	padding-top: 10px;
-	padding-bottom: 10px !important;
+	padding-bottom: 10px;
+}
+
+.list-item-sm {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.list-item-0 {
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 .list-item.disabled {
@@ -2579,7 +2571,7 @@ div > .list-item > .row > div[class*="col"].item-body {
 	width: 46px;
 	height: 46px;
 	margin: 0 10px 0 3px;
-	line-height: 42px;
+	line-height: 40px;
 	color: #aaa;
 	text-align: center;
 	border: 1px solid #ebebeb;
@@ -2721,14 +2713,14 @@ dragged
 	padding: 0 !important;
 	margin: 0 0 0 -15px !important;
 	border: none;
-	background-color: rgba(255, 255, 255, 0.9);
+	background-color: rgba(255, 255, 255, 0.9) !important;
 	box-shadow: 0 18px 30px 0px rgba(0, 0, 0, 0.1);
 	-webkit-animation: draganim 0.3s linear;
 	animation: draganim 0.3s linear;
 }
 
 .list-item.ui-sortable-helper > .row {
-	padding: 20px 15px;
+	padding: 18px 15px;
 }
 
 .list-item.ui-sortable-helper .btn,
@@ -2747,15 +2739,9 @@ dragged
 	100% { box-shadow: 0 18px 30px 0px rgba(0, 0, 0, 0.1); }
 }
 
-.list-item.ui-sortable-placeholder:last-child {
-	padding-bottom: 21px;
-}
-
 /* ------------------------------------
 post-subcontent
 -------------------------------------*/
-
-
 
 .post-subcontent + .post-subcontent {
 	margin: 20px 0 20px 0;
@@ -2840,7 +2826,7 @@ list-media
 .list-media .media-object {
 	width: 60px;
 	height: 60px;
-	line-height: 56px;
+	line-height: 54px;
 }
 
 .list-media .media-object img {
@@ -3093,24 +3079,18 @@ answers
 }
 
 .answers-list .list-item {
-	padding-left: 30px;
-	padding-right: 15px;
+	padding-left: 30px !important;
+	padding-right: 15px !important;
 }
 
 .answers-list .list-item:first-child {
 	border-top: none;
-	margin-top: 0 !important;
 }
 
 .answers-list .list-item.active,
 .answers-list .list-item:hover {
-	padding: 18px 15px 18px 30px;
-	margin: 0 0 -1px 0;
-	background-color: rgba(242, 243, 247, 0.4);;
-	border-bottom: 1px solid #ebebeb;
-}
-
-.answers-list .list-item.active p {
+	margin-left: 0 !important;
+	margin-right: 0 !important;
 }
 
 .answers-list .item-body span {
@@ -4818,17 +4798,12 @@ modal
 .modal-content .list-item:hover,
 .modal-content .list-item .media-object,
 .modal-content .media-detail .media-object {
-	border-color: #d9d9d9;
+	border-color: #d9d9d9 !important;
 }
 
 .modal-content .list-item:hover,
 .modal-content .card:hover {
-	background-color: rgba(0,0,0,0.02);
-}
-
-.modal-content .list-item:last-child:hover {
-	padding-bottom: 19px;
-	margin-bottom: 0;
+	background-color: rgba(0,0,0,0.02) !important;
 }
 
 .modal-content .card {

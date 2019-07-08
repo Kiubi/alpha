@@ -795,6 +795,8 @@ module.exports = Marionette.View.extend({
 			collection: this.variants,
 			rowView: VariantRowView,
 			newRowView: NewVariantRowView,
+			fixRelativeDragNDrop: true,
+
 			title: 'Variantes',
 			childViewOptions: {
 				taxes: this.taxes,

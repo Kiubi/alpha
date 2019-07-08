@@ -5,7 +5,7 @@ var ScrollBehavior = require('kiubi/behaviors/infinite_scroll.js');
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/modal.tags.row.html'),
-	className: 'list-item list-item-sm',
+	className: 'list-item list-item-md',
 
 	events: {
 		'click a[data-role="select"]': function() {
