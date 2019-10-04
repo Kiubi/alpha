@@ -37,8 +37,7 @@ module.exports = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
-			values: this.model.get('values') && _.isArray(this.model.get('values')) > 0 ? this.model.get('values').join(',') :
-				'',
+			values: this.model.get('values') && _.isArray(this.model.get('values')) > 0 ? this.model.get('values').join(',') : '',
 			price_ex_vat: format.formatFloat(this.model.get('price_ex_vat'), 4),
 			price_inc_vat: format.formatFloat(this.model.get('price_inc_vat'), 4),
 			'base_price': this.model.meta.base_price,

@@ -35,7 +35,7 @@ var DetailView = Marionette.View.extend({
 
 var RowView = Marionette.View.extend({
 	template: require('../templates/inbox.row.html'),
-	className: 'list-item',
+	className: 'list-item answers-item',
 
 	ui: {
 		'read': 'span[data-role="read"]'
@@ -130,7 +130,15 @@ module.exports = Marionette.View.extend({
 			// Sync event from collection
 			if (!modelOrCollection.model) return;
 			if (this.collection.length > 0) {
-				this.onChildviewSelectRow(this.collection.at(0));
+				var model;
+				if (this.getOption('filters') && this.getOption('filters').r) {
+					model = this.collection.findWhere({
+						response_id: parseInt(this.getOption('filters').r) // routing gives a string
+					});
+				}
+				if (!model) model = this.collection.at(0);
+
+				this.onChildviewSelectRow(model);
 			} else {
 				this.onChildviewSelectRow(this.empty);
 			}

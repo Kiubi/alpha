@@ -49,39 +49,64 @@
 
 				<% _.each(items, function(item){ %>
 				<div class="list-item order-item">
-									<div class="row">
-										<div class="col item-body">
+					<div class="row">
+						<div class="col item-body">
 
-									<h4><!-- item.type == 'voucher' -->
-										<% if(item.product_id) { %>
-											<a href="/catalog/products/<%- item.product_id %>"><%- item.product_name %></a>
-										<% } else { %>
-											<%- item.product_name %>
-										<% } %>
-									</h4>
-									<%- item.variant_name %>
-									<% if (item.reference) { %><br />#<%- item.reference %><% } %>
-									<% if(item.price_ecotax != 0) { %><br/><em>Éco-part. de <%- item.price_ecotax_label %></em><% } %>
-									<% if (item.file_id) { %><br/><a href="/media/files/<%- item.file_id %>">Télécharger</a><% } %>
-								</div>
-								<div class="col-3 text-right no-white-space"><%- item.price_inc_vat_label %> TTC <% if(item.is_discounted) { %><br/>-<%- item.discount %>% <% } %></div>
-								<div class="col-2">x<%- item.quantity %></div>
-								<div class="col-auto text-right no-white-space" style="width: 150px;"><%- item.price_total_inc_vat_label %> TTC</div>
-							</div>
+							<h4><!-- item.type == 'voucher' -->
+								<% if(item.product_id) { %>
+								<a href="/catalog/products/<%- item.product_id %>"><%- item.product_name %></a>
+								<% } else { %>
+								<%- item.product_name %>
+								<% } %>
+							</h4>
+							<%- item.variant_name %>
+							<% if (item.reference) { %><br />#<%- item.reference %><% } %>
+							<% if(item.price_ecotax != 0) { %><br/><em>Éco-part. de <%- item.price_ecotax_label %></em><% } %>
+							<% if (item.file_id) { %><br/><a href="/media/files/<%- item.file_id %>">Télécharger</a><% } %>
+						</div>
+						<div class="col-3 text-right no-white-space">
+							<% if(base_price == 'TTC') { %>
+							<%- item.price_inc_vat_label %> TTC
+							<% } else { %>
+							<%- item.price_ex_vat_label %> HT
+							<% } %>
+							<% if(item.is_discounted) { %><br/>-<%- item.discount %>% <% } %>
+						</div>
+						<div class="col-2">x<%- item.quantity %></div>
+						<div class="col-auto text-right no-white-space" style="width: 150px;">
+							<% if(base_price == 'TTC') { %>
+							<%- item.price_total_inc_vat_label %> TTC
+							<% } else { %>
+							<%- item.price_total_ex_vat_label %> HT
+							<% } %>
+						</div>
+					</div>
 				</div>
 				<%}) %>
 
 				<% _.each(options, function(option){%>
 				<div class="list-item order-item">
-									<div class="row">
-										<div class="col item-body">
-									<h4><%- option.name %></h4>
-									<%- option.value %>
-								</div>
-								<div class="col-3 text-right no-white-space"><%- option.price_inc_vat_label %> TTC</div>
-								<div class="col-2">x<%- option.quantity %></div>
-								<div class="col-auto text-right no-white-space" style="width: 150px;"><%- option.price_total_inc_vat_label %> TTC</div>
-							</div>
+					<div class="row">
+						<div class="col item-body">
+							<h4><%- option.name %></h4>
+							<%- option.value %>
+						</div>
+						<div class="col-3 text-right no-white-space">
+							<% if(base_price == 'TTC') { %>
+							<%- option.price_inc_vat_label %> TTC
+							<% } else { %>
+							<%- option.price_ex_vat_label %> TTC
+							<% } %>
+						</div>
+						<div class="col-2">x<%- option.quantity %></div>
+						<div class="col-auto text-right no-white-space" style="width: 150px;">
+							<% if(base_price == 'TTC') { %>
+							<%- option.price_total_inc_vat_label %> TTC
+							<% } else { %>
+							<%- option.price_total_ex_vat_label %> HT
+							<% } %>
+						</div>
+					</div>
 				</div>
 				<%}) %>
 
@@ -111,7 +136,7 @@
 							<span class="total">Total TTC</span>
 						</div>
 						<div class="col-4 text-right"><%- price_items_ex_vat_label %><br/>
-							<%- shipping.price_ext_vat_label %><br/>
+							<%- shipping.price_ex_vat_label %><br/>
 							<%- price_vat_label %><br/>
 							<span class="total"><%- price_total_inc_vat_label %></span>
 						</div>

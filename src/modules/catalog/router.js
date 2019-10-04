@@ -334,14 +334,16 @@ var CatalogController = Controller.extend({
 	actionNewDownload: function(category_id) {
 
 		var collection = new Files();
-		collection.folder_id = 8; // TODO Fix
-		var model = new(new Files()).model();
+		var model = new(new Files()).model({
+			folder_id: 8
+		});
 
 		var contentView = new SelectModalView({
 			collection: collection,
 			model: model,
 			type: 'file',
-			folders: new Folders()
+			folders: new Folders(),
+			rememberFolder: false
 		});
 
 		this.listenTo(contentView, 'close:modal', function() {

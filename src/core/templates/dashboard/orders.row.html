@@ -1,0 +1,13 @@
+<div class="row no-gutters">
+	<div class="col item-body">
+		<h4 class="d-inline-block mr-2"><a href="/checkout/orders/<%- order_id %>">#<%- reference %></a></h4> <%- creation_date_fromnow %>
+		<p class="m-0">
+		<% if(customer_id) { %>
+			<a href="/customers/<%- customer_id %>"><%- billing_address.firstname %> <%- billing_address.lastname %></a>
+		<% } else { %>
+			<%- billing_address.firstname %> <%- billing_address.lastname %>
+		<% } %>
+	</p>
+	</div>
+	<div class="col-3"><span class="price"><%- price_total_inc_vat_label %> TTC</span></div>
+</div>

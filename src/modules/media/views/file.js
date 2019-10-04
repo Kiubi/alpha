@@ -72,7 +72,9 @@ module.exports = Marionette.View.extend({
 
 		var fields = Forms.extractFields(this.fields, this);
 		if (this.getChildView('file').getFile()) {
-			fields.file = this.getChildView('file').getFile();
+			var file = this.getChildView('file').getFile();
+			fields.file = file;
+			fields.name = file.name;
 		}
 
 		return this.model.save(fields, {

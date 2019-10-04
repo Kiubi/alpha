@@ -90,7 +90,8 @@ var FormsController = Controller.extend({
 
 		var qs = this.parseQueryString(queryString, {
 			'id': null,
-			'is_read': null
+			'is_read': null,
+			'r': null
 		});
 
 		var view = new InboxView({

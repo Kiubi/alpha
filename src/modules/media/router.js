@@ -371,7 +371,7 @@ var MediaController = Controller.extend({
 
 	actionDownloadFile: function(media_id) {
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
-		this.actionOpenURL(Session.convertMediaPath('/media/'+media_id, true));
+		this.actionOpenURL(Session.convertMediaPath('/media/' + media_id, true));
 	},
 
 	importFTP: function() {

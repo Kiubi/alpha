@@ -99,6 +99,7 @@ module.exports = Marionette.View.extend({
 	currentOrder: null,
 
 	currentFetch: null,
+	rememberFolder: null,
 
 	events: {
 		'keyup @ui.term': _.debounce(function(e) {
@@ -111,8 +112,9 @@ module.exports = Marionette.View.extend({
 	initialize: function(options) {
 
 		this.currentFolder = null;
+		this.rememberFolder = true;
 
-		this.mergeOptions(options, ['model', 'collection', 'type', 'folders', 'currentFolder']);
+		this.mergeOptions(options, ['model', 'collection', 'type', 'folders', 'currentFolder', 'rememberFolder']);
 
 		this.currentTerm = null;
 		this.currentOrder = '-date';
@@ -128,12 +130,12 @@ module.exports = Marionette.View.extend({
 		});
 
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
-		var last = Session.getPref('last_folder');
+		var last = (this.rememberFolder) ? Session.getPref('last_folder') : null;
 
 		if (this.model.get('folder_id') > 0) {
 			this.currentFolder = this.model.get('folder_id');
 			this.updateFilter();
-			Session.storePref('last_folder', this.currentFolder);
+			if (this.rememberFolder) Session.storePref('last_folder', this.currentFolder);
 		} else if (last > 0) {
 			this.currentFolder = last;
 			this.updateFilter();
@@ -141,7 +143,7 @@ module.exports = Marionette.View.extend({
 			folderPromise.done(function() {
 				this.currentFolder = this.folders.at(0).get('folder_id');
 				this.updateFilter();
-				Session.storePref('last_folder', this.currentFolder);
+				if (this.rememberFolder) Session.storePref('last_folder', this.currentFolder);
 			}.bind(this));
 		}
 
@@ -167,7 +169,7 @@ module.exports = Marionette.View.extend({
 		this.updateFilter();
 
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
-		Session.storePref('last_folder', this.currentFolder);
+		if (this.rememberFolder) Session.storePref('last_folder', this.currentFolder);
 	},
 
 	changeOrder: function(event) {

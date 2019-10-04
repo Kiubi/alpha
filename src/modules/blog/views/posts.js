@@ -49,8 +49,7 @@ module.exports = Marionette.View.extend({
 		this.mergeOptions(options, ['collection']);
 		this.filters = {
 			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null,
-			category_id: this.getOption('filters') && this.getOption('filters').category_id ? this.getOption('filters').category_id :
-				null
+			category_id: this.getOption('filters') && this.getOption('filters').category_id ? this.getOption('filters').category_id : null
 		};
 	},
 

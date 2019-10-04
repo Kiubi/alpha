@@ -5,7 +5,7 @@
 <% if(is_loaded) { %>
 	<p class="form-control-static">
 
-		<a href="#" data-role="select"><%- file ? file.name : 'Accéder à la médiathèque' %></a>
+		<a href="#" data-role="select"><%- file ? file.name+'.'+file.ext : 'Accéder à la médiathèque' %></a>
 		<% if(file) { %>
 		<a href="#" data-role="clear" class="md-icon md-delete"></a>
 		<% } %>

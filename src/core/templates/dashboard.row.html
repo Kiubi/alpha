@@ -1,16 +1,12 @@
 <div class="row no-gutters">
 	<div class="col-auto">
-		<div class="media-object md-icon md-face img-default rounded-circle img-avatar"></div>
-		<img src="<%= convertMediaPath(avatar_url) %>" class="rounded-circle media-object img-avatar">
+		<div class="activity-type md-icon md-activity-<%- type %>"></div>
 	</div>
 	<div class="col item-body">
 				<%- text %>
 				<h4><%- user_name %></h4>
 	</div>
-			<div class="col-2">
-				<i class="md-icon type-<%- type %>"></i>
-			</div>
-			<div class="col-3">
+			<div class="col-auto">
 				<%- creation_date_fromnow %>
 			</div>
 	</div>

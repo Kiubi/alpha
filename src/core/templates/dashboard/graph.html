@@ -1,0 +1,54 @@
+<header class="post-header no-border">
+
+	<div class="row no-gutters d-none d-md-flex">
+		<div class="col filters-options">
+			<span>
+			<div class="btn-group">
+				<div class="input-group">
+					<div class="input-group-prepend"><span class="input-group-text">Période du</span></div>
+					<input data-role="datepicker" class="form-control" name="start_date" value="<%- startDate %>" placeholder="jj/mm/aaaa" type="text">
+
+					<div class="input-group-prepend"><span class="input-group-text border-left-0">au</span></div>
+					<input data-role="datepicker" class="form-control" name="end_date" value="<%- endDate %>" placeholder="jj/mm/aaaa" type="text">
+
+					<div class="input-group-append"><span class="input-group-text"><span data-role="feedback" class="md-icon float-right md-date"></span></span>
+					</div>
+				</div>
+			</div>
+			<div class="btn-group mr-0">
+				<div class="input-group">
+					<div class="input-group-prepend"><span class="input-group-text">Comparée à</span></div>
+					<input data-role="datepicker" class="form-control" name="compare_date" value="" placeholder="jj/mm/aaaa" type="text">
+
+					<div class="input-group-append"><span class="input-group-text"><span data-role="feedback" class="md-icon float-right md-date"></span></span>
+					</div>
+				</div>
+			</div>
+			<span	class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="right"
+					data-container="body" title="" data-original-title="Période comprise entre 1 et 31 jours"></span>
+			</span>
+		</div>
+		<div class="col-auto sort-options">
+			<span>
+				<!--<div class="btn-group" role="group">
+					<button type="button" class="btn btn-secondary">Jour</button>
+					<button type="button" class="btn btn-secondary">Semaine</button>
+					<button type="button" class="btn btn-secondary active">Mois</button>
+					<button type="button" class="btn btn-secondary">Année</button>
+				</div>-->
+				<div class="btn-group">
+					<a href="#" data-role="stats" class="btn btn-secondary btn-icon md-icon md-stats"></a>
+				</div>
+			</span>
+		</div>
+	</div>
+</header>
+
+<div class="post-content">
+
+	<div data-role="summary"></div>
+
+	<p data-role="chart"></p>
+
+</div>
+<footer class="post-footer"></footer>

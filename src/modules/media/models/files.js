@@ -167,6 +167,10 @@ var File = Backbone.Model.extend({
 
 			if (response.data && _.isNumber(response.data)) {
 				model.set('media_id', response.data);
+				if (model.get('name') && model.get('name').indexOf('.') >= 0) {
+					var name_witouth_ext = model.get('name').split('.').slice(0, -1).join('.');
+					model.set('name', name_witouth_ext);
+				}
 				model.setProgression(100, 'done');
 				dfd.resolve();
 				return;

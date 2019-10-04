@@ -34,8 +34,11 @@ module.exports = Marionette.View.extend({
 	loaded: null,
 
 	initialize: function(options) {
+
+		this.rememberFolder = true;
+
 		this.mergeOptions(options, ['fieldname', 'value', 'type', 'fieldLabel', 'comment', 'collectionFiles',
-			'collectionFolders'
+			'collectionFolders', 'rememberFolder'
 		]);
 		this.loaded = false;
 
@@ -93,7 +96,8 @@ module.exports = Marionette.View.extend({
 			type: this.type,
 			model: this.model,
 			collection: new this.collectionFiles(),
-			folders: new this.collectionFolders()
+			folders: new this.collectionFolders(),
+			rememberFolder: this.rememberFolder
 		});
 
 		this.listenTo(contentView, 'action:modal', this.switchToPublish);

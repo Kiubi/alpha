@@ -50,10 +50,12 @@ function HeaderTabsL10n() {
 
 	return [{
 		title: 'Traductions',
-		url: '/prefs/l10n'
+		url: '/prefs/l10n',
+		icon: 'md-translate'
 	}, {
 		title: 'Import',
-		url: '/prefs/l10n/import'
+		url: '/prefs/l10n/import',
+		icon: 'md-import'
 	}];
 }
 

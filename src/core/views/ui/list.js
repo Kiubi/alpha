@@ -664,7 +664,7 @@ var NoChildrenView = Marionette.View.extend({
 var ListView = Marionette.CollectionView.extend({
 	className: function() {
 		var extra = this.getOption('extraListClassname') || '';
-		return 'post-content post-list '+ extra;
+		return 'post-content post-list ' + extra;
 	},
 	emptyView: NoChildrenView,
 
@@ -679,8 +679,8 @@ var ListView = Marionette.CollectionView.extend({
 			handle: ".btn-drag",
 			axis: "y"
 		};
-		
-		if(this.getOption('fixRelativeDragNDrop')) {
+
+		if (this.getOption('fixRelativeDragNDrop')) {
 			params.start = function(event, ui) {
 				if (Backbone.$(this).data('sortableFirst') != true) {
 					scrollfix = Backbone.$('#content').scrollTop();
@@ -700,7 +700,7 @@ var ListView = Marionette.CollectionView.extend({
 				scrollfix = 0;
 			};
 		}
-		
+
 		Backbone.$(this.el).sortable(params);
 	},
 

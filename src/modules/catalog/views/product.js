@@ -166,7 +166,8 @@ var NewVariantRowView = Marionette.View.extend({
 				fieldLabel: 'Fichier téléchargeable',
 				type: 'file',
 				collectionFiles: Downloads,
-				collectionFolders: DownloadsFolders
+				collectionFolders: DownloadsFolders,
+				rememberFolder: false
 				// value: this.model.get('file_id')
 			}));
 		}
@@ -344,7 +345,8 @@ var VariantRowView = Marionette.View.extend({
 				type: 'file',
 				value: this.model.get('file_id'),
 				collectionFiles: Downloads,
-				collectionFolders: DownloadsFolders
+				collectionFolders: DownloadsFolders,
+				rememberFolder: false
 			}));
 		}
 	},
