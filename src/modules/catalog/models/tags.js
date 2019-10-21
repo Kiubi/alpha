@@ -2,22 +2,9 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-var Tag = Backbone.Model.extend({
+var Tag = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/catalog/tags',
 	idAttribute: 'tag_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					tag_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		tag_id: null,
@@ -26,26 +13,9 @@ var Tag = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 	url: 'sites/@site/catalog/tags',
 	model: Tag,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
-
-	/**
-	 *
-	 * @param {Integer[]} ids
-	 * @returns {Promise}
-	 */
-	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
-		}, ids);
-
-	},
 
 	/**
 	 * Suggest tags
@@ -63,8 +33,8 @@ module.exports = Backbone.Collection.extend({
 				exclude: exclude,
 				limit: limit || 5
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(tag) {
+		}).then(function(data) {
+			return _.map(data, function(tag) {
 				return {
 					tag_id: tag.tag_id,
 					name: tag.name

@@ -1,4 +1,5 @@
 var Backbone = require('backbone');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
 require('jquery.cookie');
 var api = require('kiubi/utils/api.client.js');
@@ -105,8 +106,9 @@ function storageFactory() {
 function isTokenValid(token) {
 	return api.get(
 		'auth/token/' + token, {}, {
-			access_token: token
-		} // require also token in authorize header
+			access_token: token, // require also token in authorize header
+			disableErrorHandling: true
+		}
 	);
 }
 
@@ -121,9 +123,9 @@ function allowedSite(site) {
 
 	api.get('sites/' + site, {
 		extra_fields: 'scopes,features'
-	}).done(function(meta, data) {
+	}).done(function(data) {
 		d.resolve(data);
-	}).fail(function(meta, error) {
+	}).fail(function(error) {
 		d.reject(error.message);
 	});
 	return d.promise();
@@ -139,20 +141,20 @@ function pickFirstSite() {
 
 	api.get('sites', {
 		limit: 1
-	}).done(function(meta, data) {
+	}).done(function(data) {
 		allowedSite(data[0].code_site).done(function(site) {
 			d.resolve(site);
 		}).fail(function(msg) {
 			d.reject(msg);
 		});
-	}).fail(function(meta, error) {
+	}).fail(function(error) {
 		d.reject(error.message);
 	});
 	return d.promise();
 }
 
 function setCredidentials(AuthPromise, Session) {
-	return AuthPromise.done(function(meta, data) {
+	return AuthPromise.done(function(data) {
 		Session.storeToken(data.token);
 		Session.set('token_media', data.token_media);
 
@@ -165,7 +167,7 @@ function setCredidentials(AuthPromise, Session) {
 		Session.user.set('scopes', data.user.scopes || []);
 
 		Session.user.trigger('authenticate');
-	}).then(null, function(meta, error) {
+	}).then(null, function(error) {
 		// FAIL
 		return Backbone.$.Deferred().reject(error.message);
 	});
@@ -187,7 +189,7 @@ function setSiteContext(SitePromise, Session) {
 	});
 }
 
-var Session = Backbone.Model.extend({
+var Session = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'auth/token',
 
 	initialize: function(options) {
@@ -248,20 +250,20 @@ var Session = Backbone.Model.extend({
 
 			if (code_site) {
 				promise = Backbone.$.Deferred();
-				allowedSite(code_site).done(function(meta, data) {
-					promise.resolve(meta, data);
-				}).fail(function(error, b, c, d) {
-					promise.reject(error);
+				allowedSite(code_site).done(function(data, meta) {
+					promise.resolve(data, meta);
+				}).fail(function(error, meta) {
+					promise.reject(error, meta);
 				});
 			} else if (this.getLastSite()) {
 				// try last site 
 				// fallback => first allowed site
 				promise = Backbone.$.Deferred();
-				allowedSite(this.getLastSite()).done(function(meta, data) {
-					promise.resolve(meta, data);
+				allowedSite(this.getLastSite()).done(function(data, meta) {
+					promise.resolve(data, meta);
 				}).fail(function() {
-					pickFirstSite().done(function(meta, data) {
-						promise.resolve(meta, data);
+					pickFirstSite().done(function(data, meta) {
+						promise.resolve(data, meta);
 					}).fail(function(error) {
 						promise.reject(error);
 					});

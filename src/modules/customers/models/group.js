@@ -1,21 +1,8 @@
-var Backbone = require('backbone');
-var _ = require('underscore');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/account/groups',
 	idAttribute: 'group_id',
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					group_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		group_id: null,

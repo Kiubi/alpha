@@ -11,29 +11,15 @@ function checkExport(job) {
 	return Backbone.ajax({
 		url: 'sites/@site/export/checkout/orders/' + token,
 		method: 'GET'
-	}).then(function(response) {
-		return response.data;
+	}).then(function(data, meta) {
+		return data;
 	});
 }
 
-var Order = Backbone.Model.extend({
+var Order = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: 'sites/@site/checkout/orders',
 	idAttribute: 'order_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					order_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"order_id": null,
@@ -162,16 +148,11 @@ var Order = Backbone.Model.extend({
 	}
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/checkout/orders',
 
 	model: Order,
-
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 *
@@ -227,8 +208,8 @@ module.exports = Backbone.Collection.extend({
 				term: term,
 				limit: limit || 5
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(order) {
+		}).then(function(data) {
+			return _.map(data, function(order) {
 				return {
 					order_id: order.order_id,
 					reference: order.reference,
@@ -247,10 +228,10 @@ module.exports = Backbone.Collection.extend({
 			url: 'sites/@site/export/checkout/orders',
 			method: 'POST',
 			data: data
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {

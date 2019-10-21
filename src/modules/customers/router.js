@@ -480,8 +480,8 @@ var CustomersController = Controller.extend({
 		return m.save().done(function() {
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/customers/groups/' + m.get('group_id'));
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 	}
 

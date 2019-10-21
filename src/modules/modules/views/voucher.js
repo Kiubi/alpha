@@ -186,9 +186,9 @@ module.exports = Marionette.View.extend({
 			}.bind(this));
 		} else {
 			this.showChildView('carriers', new SelectView({
-				collectionPromise: this.carriers.promisedSelect({
+				collectionPromise: this.carriers.promisedSelect(this.model.get('carrier_id'), {
 					exclude_pickup: true
-				}, this.model.get('carrier_id')),
+				}),
 				name: 'carrier_id'
 			}));
 		}

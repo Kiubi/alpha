@@ -1,22 +1,10 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/appearance/builder',
 	idAttribute: 'draft_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					draft_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		draft_id: null,
@@ -51,8 +39,8 @@ module.exports = Backbone.Model.extend({
 		// TODO : cache
 		return Backbone.ajax({
 			url: 'sites/@site/appearance/widgets.json?page=' + page
-		}).then(function(response) {
-			return response.data;
+		}).then(function(data, meta) {
+			return data;
 		});
 	},
 
@@ -64,8 +52,8 @@ module.exports = Backbone.Model.extend({
 	getModels: function() {
 		return Backbone.ajax({
 			url: 'sites/@site/appearance/models.json'
-		}).then(function(response) {
-			return _.map(response.data, function(model) {
+		}).then(function(data, meta) {
+			return _.map(data, function(model) {
 				return {
 					id: model.id,
 					name: model.name,
@@ -91,10 +79,10 @@ module.exports = Backbone.Model.extend({
 				nb_col: type,
 				zone: zone
 			}
-		}).then(function(response) {
+		}).then(function(data, meta) {
 			// TODO : update tree ? get all tree back ?
 			// Bloc returned
-			return response.data;
+			return data;
 		});
 	},
 
@@ -109,7 +97,7 @@ module.exports = Backbone.Model.extend({
 		return Backbone.ajax({
 			url: 'sites/@site/appearance/builder/' + this.get('draft_id') + '/blocs/' + bloc_id + '.json',
 			method: 'DELETE'
-		}).then(function(response) {
+		}).then(function(data, meta) {
 			// TODO : update tree ? get all tree back ?
 			return null;
 		});
@@ -126,7 +114,7 @@ module.exports = Backbone.Model.extend({
 		return Backbone.ajax({
 			url: 'sites/@site/appearance/builder/' + this.get('draft_id') + '/widgets/' + widget_id + '.json',
 			method: 'DELETE'
-		}).then(function(response) {
+		}).then(function(data, meta) {
 			// TODO : update tree ? get all tree back ?
 			return null;
 		});
@@ -151,9 +139,8 @@ module.exports = Backbone.Model.extend({
 				position: position.position,
 				sibling_id: position.sibling_id
 			}
-		}).then(function(response) {
-			// Widget returned
-			return response.data;
+		}).then(function(data, meta) {
+			return data;
 		});
 	},
 
@@ -175,9 +162,8 @@ module.exports = Backbone.Model.extend({
 				position: position.position,
 				sibling_id: position.sibling_id
 			}
-		}).then(function(response) {
-			// Widget returned
-			return response.data;
+		}).then(function(data, meta) {
+			return data;
 		});
 	},
 
@@ -191,9 +177,8 @@ module.exports = Backbone.Model.extend({
 	getWidget: function(widget_id) {
 		return Backbone.ajax({
 			url: 'sites/@site/appearance/builder/' + this.get('draft_id') + '/widgets/' + widget_id + '.json'
-		}).then(function(response) {
-			// Widget returned
-			return response.data;
+		}).then(function(data, meta) {
+			return data;
 		});
 	},
 
@@ -243,9 +228,8 @@ module.exports = Backbone.Model.extend({
 			data: {
 				settings: data
 			}
-		}).then(function(response) {
-			// Widget returned
-			return response.data;
+		}).then(function(data, meta) {
+			return data;
 		});
 	}
 

@@ -1,32 +1,12 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-var Option = Backbone.Model.extend({
+var Option = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/checkout/options',
 	idAttribute: 'option_id',
 
 	meta: {},
-
-	parse: function(response) {
-		this.meta = {};
-		if ('meta' in response && response.meta.base_price) {
-			this.meta = {
-				'base_price': response.meta.base_price,
-				'currency': response.meta.currency
-			};
-		}
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					option_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"option_id": null,
@@ -56,15 +36,10 @@ var Option = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 	url: 'sites/@site/checkout/options',
 
 	model: Option,
-
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	reOrder: function(list) {
 		return Backbone.ajax({

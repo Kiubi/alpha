@@ -29,20 +29,26 @@ function getHeadersAction(options) {
 	if (options.addPost) {
 		actions.push({
 			title: 'Ajouter un billet',
+			icon: 'md-add-outline',
+			isPrimary: true,
 			callback: ['actionNewPost', options.addPost] // default page_id (cf this.getContext('page_id') )
 		});
 	}
 
 	if (options.duplicatePost) {
 		actions.push({
-			title: 'Dupliquer le billet',
+			title: 'Dupliquer',
+			icon: 'md-duplicate',
+			isOptional: true,
 			callback: ['actionDuplicationPost', options.duplicatePost] // post_id
 		});
 	}
 
 	if (options.duplicatePage) {
 		actions.push({
-			title: 'Dupliquer la page',
+			title: 'Dupliquer',
+			icon: 'md-duplicate',
+			isOptional: true,
 			callback: ['actionDuplicationPage', options.duplicatePage] // page_id
 		});
 	}
@@ -53,6 +59,7 @@ function getHeadersAction(options) {
 		if (options.addPage) data.page_parent_id = options.addPage;
 		actions.push({
 			title: 'Ajouter une page',
+			icon: 'md-add-outline',
 			callback: ['actionNewPage', data]
 		});
 	}
@@ -60,6 +67,8 @@ function getHeadersAction(options) {
 	if (options.preview) {
 		actions.push({
 			title: 'Aperçu',
+			icon: 'md-launch',
+			isOptional: true,
 			callback: ['actionPreview', options.preview]
 		});
 	}
@@ -264,14 +273,13 @@ var CMSController = Controller.extend({
 			this.setHeader({
 				title: m.get('name')
 			}, getHeadersAction({
-				preview: m,
 				addPost: m.get('page_id')
 				//addPageInMenu: m.get('menu_id')
 			}));
 			view.start();
-		}.bind(this)).fail(function(xhr) {
+		}.bind(this)).fail(function() {
 			this.triggerSidebarMenu('change:page', null);
-			this.failHandler('Page introuvable')(xhr);
+			this.failHandler('Page introuvable')();
 		}.bind(this));
 	},
 
@@ -325,8 +333,8 @@ var CMSController = Controller.extend({
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/cms/menus/' + m.get('menu_id'));
 			this.triggerSidebarMenu('refresh:menus');
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 	},
 
@@ -377,7 +385,7 @@ var CMSController = Controller.extend({
 				this.triggerSidebarMenu('refresh:menus');
 			});
 			this.listenTo(m, 'sync', function(model) {
-				// header actions depends on page type 
+				// header actions depends on page type
 				this.setHeaderActions(getHeadersAction({
 					preview: model.get('page_type') == 'page' ? model : false,
 					addPost: model.get('page_type') == 'page' ? model.get('page_id') : false,
@@ -462,11 +470,11 @@ var CMSController = Controller.extend({
 				that.navigationController.showOverlay(300);
 				that.navigationController.navigate('/cms/pages/' + m.get('page_id'));
 				that.triggerSidebarMenu('refresh:menus');
-			}).fail(function(xhr) {
-				that.navigationController.showErrorModal(xhr);
+			}).fail(function(error) {
+				that.navigationController.showErrorModal(error);
 			});
-		}, function(xhr) {
-			that.navigationController.showErrorModal(xhr);
+		}, function(error) {
+			that.navigationController.showErrorModal(error);
 		});
 	},
 
@@ -490,11 +498,11 @@ var CMSController = Controller.extend({
 				that.navigationController.showOverlay(300);
 				that.navigationController.navigate('/cms/pages/' + m.get('page_id'));
 				that.triggerSidebarMenu('refresh:menus');
-			}).fail(function(xhr) {
-				that.navigationController.showErrorModal(xhr);
+			}).fail(function(error) {
+				that.navigationController.showErrorModal(error);
 			});
-		}, function(xhr) {
-			that.navigationController.showErrorModal(xhr);
+		}, function(error) {
+			that.navigationController.showErrorModal(error);
 		});
 	},
 
@@ -517,11 +525,11 @@ var CMSController = Controller.extend({
 				that.navigationController.showOverlay(300);
 				that.navigationController.navigate('/cms/pages/' + m.get('page_id'));
 				that.triggerSidebarMenu('refresh:menus');
-			}).fail(function(xhr) {
-				that.navigationController.showErrorModal(xhr);
+			}).fail(function(error) {
+				that.navigationController.showErrorModal(error);
 			});
-		}, function(xhr) {
-			that.navigationController.showErrorModal(xhr);
+		}, function(error) {
+			that.navigationController.showErrorModal(error);
 		});
 	},
 
@@ -537,8 +545,8 @@ var CMSController = Controller.extend({
 				that.navigationController.showOverlay(300);
 				that.navigationController.navigate('/cms/pages/' + page_id);
 				that.triggerSidebarMenu('refresh:menus');
-			}).fail(function(xhr) {
-				that.navigationController.showErrorModal(xhr);
+			}).fail(function(error) {
+				that.navigationController.showErrorModal(error);
 			});
 	},
 
@@ -609,9 +617,9 @@ var CMSController = Controller.extend({
 					addPost: m.get('page_id'),
 					duplicatePost: id
 				}), null, getPostNavigation(m));
-		}.bind(this)).fail(function(xhr) {
+		}.bind(this)).fail(function() {
 			this.triggerSidebarMenu('change:page', null);
-			this.failHandler('Billet introuvable')(xhr);
+			this.failHandler('Billet introuvable')();
 		}.bind(this));
 	},
 
@@ -637,8 +645,8 @@ var CMSController = Controller.extend({
 			return post.save().done(function() {
 				that.navigationController.showOverlay(300);
 				that.navigationController.navigate('/cms/posts/' + post.get('post_id'));
-			}).fail(function(xhr) {
-				that.navigationController.showErrorModal(xhr);
+			}).fail(function(error) {
+				that.navigationController.showErrorModal(error);
 			});
 		});
 	},
@@ -655,8 +663,8 @@ var CMSController = Controller.extend({
 			.done(function(copy) {
 				that.navigationController.showOverlay(300);
 				that.navigationController.navigate('/cms/posts/' + copy.get('post_id'));
-			}).fail(function(xhr) {
-				that.navigationController.showErrorModal(xhr);
+			}).fail(function(error) {
+				that.navigationController.showErrorModal(error);
 			});
 	},
 

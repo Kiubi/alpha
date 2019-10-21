@@ -1,3 +1,4 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Job = require('kiubi/modules/modules/models/job');
@@ -10,30 +11,16 @@ function checkImport(job) {
 	return Backbone.ajax({
 		url: 'sites/@site/import/l10n/theme/' + token,
 		method: 'GET'
-	}).then(function(response) {
-		return response.data;
+	}).then(function(data, meta) {
+		return data;
 	});
 }
 
-var Entry = Backbone.Model.extend({
+var Entry = CollectionUtils.KiubiModel.extend({
 
 	url: 'sites/@site/l10n/theme', // endpoint like sites/@site/l10n/theme/{msgid} doesn't exists
 
 	idAttribute: 'msgid',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					msgid: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		msgid: null,
@@ -42,16 +29,11 @@ var Entry = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/l10n/theme',
 
 	model: Entry,
-
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 * Clear all traductions
@@ -84,10 +66,10 @@ module.exports = Backbone.Collection.extend({
 			data: data,
 			processData: false,
 			contentType: false
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {
@@ -105,10 +87,10 @@ module.exports = Backbone.Collection.extend({
 			url: 'sites/@site/export/l10n/theme',
 			method: 'POST',
 			data: {}
-		}).then(function(result) {
+		}).then(function(data, meta) {
 
-			if (result.meta && result.meta.success) {
-				return result.data;
+			if (meta && meta.success) {
+				return data;
 			}
 
 			// TODO reject !

@@ -41,8 +41,8 @@ var NewRowView = Marionette.View.extend({
 				this.getUI('form').hide();
 				this.collection.add(m);
 			}.bind(this))
-			.fail(function(xhr) {
-				Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+			.fail(function(error) {
+				Forms.displayErrors(error, this.getUI('errors'), this.el);
 			}.bind(this));
 	},
 
@@ -73,9 +73,9 @@ var RowView = Marionette.View.extend({
 	onActionDelete: function() {
 		return this.model.destroy({
 			wait: true
-		}).fail(function(xhr) {
+		}).fail(function(error) {
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-			navigationController.showErrorModal(xhr);
+			navigationController.showErrorModal(error);
 		});
 	},
 
@@ -98,8 +98,8 @@ var RowView = Marionette.View.extend({
 				patch: true,
 				wait: true
 			}
-		).fail(function(xhr) {
-			Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+		).fail(function(error) {
+			Forms.displayErrors(error, this.getUI('errors'), this.el);
 		}.bind(this));
 	}
 

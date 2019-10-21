@@ -16,8 +16,13 @@
         Avant d'activer l'accès HTTPS, veuillez noter que :
       </p>
       <ul>
-        <li><a href="/prefs/domains">Les noms de domaine associés au site</a>  doivent être correctement configurés sur l'adresse IP indiquée</li>
-        <li>Il faut patienter au moins 5 minutes après l'activation de l'accès HTTPS pour que le site soit pris en charge</li>
+        <li><a href="/prefs/domains">Les noms de domaine associés au site</a> doivent être correctement configurés sur l'adresse IP indiquée</li>
+        <li>La propagation des DNS doit être complète et acceptée par Let's Encrypt :
+          <ul class="mb-0">
+            <li>Si c'est le cas, l'accès HTTPS est activé dans <span class="text-danger">un délais de 5 minutes environ</li>
+            <li>Si ce n'est pas le cas, l'accès HTTPS est activé une fois la propagation complète, dans <span class="text-danger">un délais de 48 heures environ</span></li>
+          </ul>
+          </li>
         <li>Le sitemap du site généré automatiquement est mis à jour 24 heures après l'activation du HTTPS</li>
         <li>Le certificat SSL/TLS utilisé pour l'accès HTTPS n’est pas compatible avec IE8 et précédents sur Windows XP</li>
       </ul>

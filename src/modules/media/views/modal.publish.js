@@ -90,9 +90,14 @@ module.exports = Marionette.View.extend({
 
 		_.each(files, function(File) {
 			var model = new this.collection.model();
-			model.setFile(File);
-			model.set('folder_id', this.collection.folder_id);
-			this.collection.add(model);
+			var result = model.setFile(File);
+			if (result) {
+				model.set('folder_id', this.collection.folder_id);
+				this.collection.add(model);
+			} else {
+				model.destroy();
+				// TODO ALERT ?
+			}
 		}.bind(this));
 
 		if (!this.isMultiFiles) {

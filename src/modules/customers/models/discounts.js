@@ -1,19 +1,11 @@
-var Backbone = require('backbone');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 
 	customer_id: null,
 
 	url: function() {
 		return 'sites/@site/account/customers/' + this.customer_id + '/discounts';
-	},
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			return response.data;
-		}
-		return response;
 	},
 
 	isNew: function() {

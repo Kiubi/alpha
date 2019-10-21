@@ -1,25 +1,12 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Job = require('./job');
 
-var Backup = Backbone.Model.extend({
+var Backup = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: 'sites/@site/backups',
 	idAttribute: 'id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					voucher_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"id": null,
@@ -38,34 +25,29 @@ var Backup = Backbone.Model.extend({
 		Backbone.ajax({
 			url: this.urlRoot + '/' + this.get('id'),
 			method: 'PUT'
-		}).done(function(response) {
+		}).done(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 			job.watch().done(function() {
 				D.resolve(job.get('error'));
-			}).fail(function(xhr) {
-				D.reject(xhr);
+			}).fail(function(error, meta) {
+				D.reject(error, meta);
 			});
-		}).fail(function(xhr) {
-			D.reject(xhr);
+		}).fail(function(error, meta) {
+			D.reject(error, meta);
 		});
 
 		return D.promise();
 	}
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/backups',
 
 	model: Backup,
-
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 * Create a new backup
@@ -78,18 +60,18 @@ module.exports = Backbone.Collection.extend({
 		Backbone.ajax({
 			url: this.url,
 			method: 'POST'
-		}).done(function(response) {
+		}).done(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 			job.watch().done(function() {
 				D.resolve(job.get('error'));
-			}).fail(function(xhr) {
-				D.reject(xhr);
+			}).fail(function(error, meta) {
+				D.reject(error);
 			});
-		}).fail(function(xhr) {
-			D.reject(xhr);
+		}).fail(function(error, meta) {
+			D.reject(error, meta);
 		});
 
 		return D.promise();

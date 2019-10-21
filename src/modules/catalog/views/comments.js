@@ -50,8 +50,8 @@ var RowView = Marionette.View.extend({
 				patch: true,
 				wait: true
 			}
-		).fail(function(xhr) {
-			Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+		).fail(function(error) {
+			Forms.displayErrors(error, this.getUI('errors'), this.el);
 		}.bind(this));
 	}
 });

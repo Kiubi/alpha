@@ -11,12 +11,12 @@ function checkExport(job) {
 	return Backbone.ajax({
 		url: 'sites/@site/export/cms/posts/' + token,
 		method: 'GET'
-	}).then(function(response) {
-		return response.data;
+	}).then(function(data, meta) {
+		return data;
 	});
 }
 
-var Post = Backbone.Model.extend({
+var Post = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/cms/posts',
 	idAttribute: 'post_id',
 
@@ -24,7 +24,7 @@ var Post = Backbone.Model.extend({
 	nextPost: null,
 	previousPost: null,
 
-	parse: function(response) {
+	parse: function(response) { // FIXME
 		if ('data' in response) {
 			if (response.data === null) return {};
 			if (_.isNumber(response.data)) {
@@ -98,9 +98,9 @@ var Post = Backbone.Model.extend({
 	getGroups: function() {
 		return Backbone.ajax({
 			url: 'sites/@site/cms/posts_groups'
-		}).then(function(response) {
+		}).then(function(data) {
 			var c = new CollectionUtils.SelectCollection();
-			c.add(_.map(response.data, function(group) {
+			c.add(_.map(data, function(group) {
 				return {
 					'value': group.name,
 					'label': group.name
@@ -122,8 +122,8 @@ var Post = Backbone.Model.extend({
 			data: {
 				extra_fields: 'structure'
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(type) {
+		}).then(function(data) {
+			return _.map(data, function(type) {
 				return {
 					type: type.type,
 					name: type.name,
@@ -143,13 +143,13 @@ var Post = Backbone.Model.extend({
 
 		return Backbone.ajax({
 			url: 'sites/@site/cms/posts_types'
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var c = new CollectionUtils.SelectCollection();
 			var collector = [];
 
-			if (response.data) {
-				_.each(response.data, function(type) {
+			if (data) {
+				_.each(data, function(type) {
 					collector.push({
 						'value': type.type,
 						'label': type.name,
@@ -191,7 +191,7 @@ var Post = Backbone.Model.extend({
 });
 
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	page_id: null,
 
@@ -202,10 +202,7 @@ module.exports = Backbone.Collection.extend({
 	},
 
 	model: Post,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
+
 
 	reOrder: function(page_id, list) {
 		return Backbone.ajax({
@@ -219,7 +216,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkShow: function(ids) {
@@ -240,7 +237,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkHide: function(ids) {
@@ -292,8 +289,8 @@ module.exports = Backbone.Collection.extend({
 				term: term,
 				limit: limit || 5
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(post) {
+		}).then(function(data) {
+			return _.map(data, function(post) {
 
 				var label = 'Billet sans titre';
 				if (post.title) {
@@ -319,10 +316,10 @@ module.exports = Backbone.Collection.extend({
 			url: 'sites/@site/export/cms/posts',
 			method: 'POST',
 			data: data
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {

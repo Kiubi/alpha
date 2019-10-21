@@ -81,8 +81,7 @@ var sharedInstance = new Translate({
 module.exports = sharedInstance;
 // Exposition de quelques helpers utiles
 module.exports.translate = Translate.prototype.translate.bind(sharedInstance);
-module.exports.format_price = Translate.prototype.format_price.bind(
-	sharedInstance);
+module.exports.format_price = Translate.prototype.format_price.bind(sharedInstance);
 // permet d'ecrire var __ = require('path/to/translate').translate;
 module.exports.Translate = Translate; // test unitaire ? :)
 

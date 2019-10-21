@@ -1,21 +1,12 @@
-var Backbone = require('backbone');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
 
-var Linked = Backbone.Model.extend({
+var Linked = CollectionUtils.KiubiModel.extend({
 	urlRoot: function() {
 		return 'sites/@site/catalog/products/' + this.get('product_id') + '/linked';
 	},
 
 	idAttribute: 'linked_product_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		product_id: null,
@@ -28,7 +19,7 @@ var Linked = Backbone.Model.extend({
 });
 
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	product_id: null,
 
@@ -36,16 +27,6 @@ module.exports = Backbone.Collection.extend({
 		return 'sites/@site/catalog/products/' + this.product_id + '/linked';
 	},
 
-	model: Linked,
-
-	parse: function(response) {
-		this.meta = response.meta;
-
-		_.each(response.data, function(linked) {
-			linked.product_id = this.product_id;
-		}.bind(this));
-
-		return response.data;
-	}
+	model: Linked
 
 });

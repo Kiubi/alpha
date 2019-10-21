@@ -54,25 +54,24 @@ function extractFormFields(fields, $forms) {
 /**
  * Hepler to display and format errors in a standard form
  * 
- * @param {XMLHttpRequest} xhr
+ * @param {Object} error
  * @param {jQuery} $errorEl
  * @param {Node} el
  */
-function displayErrors(xhr, $errorEl, el) {
+function displayErrors(error, $errorEl, el) {
 
-	if (!xhr.responseJSON || !xhr.responseJSON.error || !xhr.responseJSON.error.message) {
+	if (!error || !error.message) {
 		$errorEl.text('Erreur inattendue');
 		$errorEl.show();
 		return;
 	}
 
-	$errorEl.text(xhr.responseJSON.error.message);
+	$errorEl.text(error.message);
 	$errorEl.show();
 
-	if (xhr.responseJSON.error && xhr.responseJSON.error.fields) {
-		_(xhr.responseJSON.error.fields).each(function(f) {
-			Backbone.$("input[name='" + f.field + "'], textarea[name='" + f.field +
-					"'], select[name='" + f.field + "']", el)
+	if (error && error.fields) {
+		_(error.fields).each(function(f) {
+			Backbone.$("input[name='" + f.field + "'], textarea[name='" + f.field + "'], select[name='" + f.field + "']", el)
 				.parents(".form-group").addClass('has-error');
 		});
 	}

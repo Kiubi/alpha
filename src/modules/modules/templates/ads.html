@@ -1,0 +1,43 @@
+<form>
+
+  <div class="alert alert-warning" role="alert">
+    <a href="https://aide.kiubi.com/modules.html#authorized-digital-sellers" class="md-icon md-help float-right" target="_blank"></a>
+    Authorized Digital Sellers vous permet de <strong>vendre votre inventaire publicitaire numérique</strong> uniquement
+    par l'intermédiaire de vendeurs (comme Google Ads, par exemple) que vous avez identifiés comme étant autorisés.<br/><br/>
+
+    Vous pouvez ajouter du contenu à vos fichiers <code>ads.txt</code>  et <code>app-ads.txt</code> afin de <strong>contrôler qui est autorisé</strong>
+    à vendre des annonces sur votre site et vos applications et ainsi empêcher qu'un inventaire de contrefaçon ne soit proposé aux annonceurs.
+  </div>
+
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+  <article class="post-article">
+    <header class="post-header">
+      <h1>Configuration des Authorized Digital Sellers</h1>
+    </header>
+    <div class="post-content">
+
+      <div class="form-group">
+        <label for="ads">Vendeurs autorisés : <code>ads.txt</code></label>
+        <textarea class="form-control" rows="14" id="ads" name="ads"><%- ads %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="app_ads">Vendeurs autorisés pour les applications : <code>app-ads.txt</code></label>
+        <textarea class="form-control" rows="14" id="app_ads" name="app_ads"><%- app_ads %></textarea>
+      </div>
+
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+</form>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <a class="btn btn-lg btn-primary btn-cancel" href="/modules">Retour</a>
+    <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"> </footer>

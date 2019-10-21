@@ -52,8 +52,8 @@ var NewRowView = Marionette.View.extend({
 				this.collection.add(m);
 				this.clearFields();
 			}.bind(this))
-			.fail(function(xhr) {
-				Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+			.fail(function(error) {
+				Forms.displayErrors(error, this.getUI('errors'), this.el);
 			}.bind(this));
 	},
 
@@ -104,8 +104,8 @@ var RowView = Marionette.View.extend({
 				patch: true,
 				wait: true
 			}
-		).fail(function(xhr) {
-			Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+		).fail(function(error) {
+			Forms.displayErrors(error, this.getUI('errors'), this.el);
 		}.bind(this));
 	}
 });

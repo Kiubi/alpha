@@ -1,24 +1,11 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-var Order = Backbone.Model.extend({
+var Order = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: 'sites/@site/checkout/orders',
 	idAttribute: 'order_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					order_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"order_id": null,
@@ -97,15 +84,10 @@ var Order = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/checkout/orders/aborted',
 
-	model: Order,
-
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	}
+	model: Order
 
 });

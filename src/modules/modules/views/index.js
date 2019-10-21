@@ -197,6 +197,12 @@ module.exports = Marionette.View.extend({
 				href: '/modules/subscribers',
 				scope: 'site:marketing'
 			}, {
+				name: 'Authorized Digital Sellers (ADS)',
+				icon: 'picture_in_picture',
+				desc: 'Configurer vos fichiers <code>ads.txt</code> et <code>app-ads.txt</code>.',
+				href: '/modules/ads',
+				scope: 'site:marketing'
+			}, {
 				name: 'Import dans le Site Web',
 				icon: 'description',
 				desc: 'Importer des billets dans les pages du site web.',

@@ -1,27 +1,14 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-var Field = Backbone.Model.extend({
+var Field = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: function() {
 		return 'sites/@site/forms/' + this.get('form_id') + '/fields';
 	},
 
 	idAttribute: 'field_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					field_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"field_id": null,
@@ -108,7 +95,7 @@ var Field = Backbone.Model.extend({
 	}
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: function() {
 		return 'sites/@site/forms/' + this.form_id + '/fields';

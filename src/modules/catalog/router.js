@@ -62,7 +62,9 @@ function getHeadersAction(options) {
 
 	if (options.duplicateProduct) {
 		actions.push({
-			title: 'Dupliquer le produit',
+			title: 'Dupliquer',
+			icon: 'md-duplicate',
+			isOptional: true,
 			callback: ['actionDuplicateProduct', options.duplicateProduct] // product_id
 		});
 	}
@@ -70,6 +72,8 @@ function getHeadersAction(options) {
 	if (options.preview) {
 		actions.push({
 			title: 'Aperçu',
+			icon: 'md-launch',
+			isOptional: true,
 			callback: ['actionPreview', options.preview]
 		});
 	}
@@ -121,7 +125,7 @@ function HeaderTabsProduct(product_id, nb, rate) {
 	}, {
 		title: nb + ' ' + (nb > 1 ? 'Évaluations' : 'Évaluation'),
 		url: '/catalog/products/' + product_id + '/comments',
-		icon: (rate ? 'rating md-rating-' + Math.round(rate) : 'md-rating')
+		icon: 'md-rating'
 	}];
 }
 
@@ -325,8 +329,8 @@ var CatalogController = Controller.extend({
 			this.triggerSidebarMenu('refresh:products', 1);
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/catalog/products/' + m.get('product_id'));
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 
 	},
@@ -362,8 +366,8 @@ var CatalogController = Controller.extend({
 				this.triggerSidebarMenu('refresh:products', 1);
 				this.navigationController.showOverlay(300);
 				this.navigationController.navigate('/catalog/products/' + m.get('product_id'));
-			}.bind(this)).fail(function(xhr) {
-				this.navigationController.showErrorModal(xhr);
+			}.bind(this)).fail(function(error) {
+				this.navigationController.showErrorModal(error);
 			}.bind(this));
 		});
 
@@ -407,8 +411,8 @@ var CatalogController = Controller.extend({
 				this.triggerSidebarMenu('refresh:products', 1);
 				this.navigationController.showOverlay(300);
 				this.navigationController.navigate('/catalog/products/' + m.get('product_id'));
-			}.bind(this)).fail(function(xhr) {
-				this.navigationController.showErrorModal(xhr);
+			}.bind(this)).fail(function(error) {
+				this.navigationController.showErrorModal(error);
 			}.bind(this));
 
 		});
@@ -438,12 +442,12 @@ var CatalogController = Controller.extend({
 					navigationController.showOverlay(300);
 					navigationController.navigate('/catalog/products/' + duplicate.get('product_id'));
 					//ControllerChannel.trigger('refresh:categories');
-				}).fail(function(xhr) {
-					navigationController.showErrorModal(xhr);
+				}).fail(function(error) {
+					navigationController.showErrorModal(error);
 				});
 			},
-			function(xhr) {
-				navigationController.showErrorModal(xhr);
+			function(error) {
+				navigationController.showErrorModal(error);
 			}
 		);
 
@@ -469,6 +473,7 @@ var CatalogController = Controller.extend({
 			this.setHeader({
 				title: m.get('name')
 			}, getHeadersAction({
+				preview: m,
 				duplicateProduct: id
 			}), HeaderTabsProduct(id, m.get('comments_count'), m.get('rate')));
 
@@ -534,8 +539,8 @@ var CatalogController = Controller.extend({
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/catalog/categories/' + m.get('category_id'));
 			//ControllerChannel.trigger('refresh:categories');
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 
 	},

@@ -79,8 +79,8 @@ module.exports = Marionette.View.extend({
 		m.save().done(function() {
 			var apply = this.apply != null ? '?apply=' + this.apply : '';
 			navigationController.navigate('/appearance/drafts/' + m.get('draft_id') + apply);
-		}.bind(this)).fail(function(xhr) {
-			navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			navigationController.showErrorModal(error);
 		}.bind(this));
 	}
 

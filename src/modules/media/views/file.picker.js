@@ -56,11 +56,11 @@ module.exports = Marionette.View.extend({
 			this.model.fetch().done(function() {
 				this.loaded = true;
 				this.render();
-			}.bind(this)).fail(function(xhr) {
+			}.bind(this)).fail(function(error, meta) {
 
 				// Clear model if file not found
 				// Else show an error 
-				if (xhr.status == 404) {
+				if (meta.status_code == 404) {
 					this.model.clear({
 						silent: true
 					});

@@ -11,32 +11,18 @@ function checkExport(job) {
 	return Backbone.ajax({
 		url: 'sites/@site/export/forms/responses/' + token,
 		method: 'GET'
-	}).then(function(response) {
-		return response.data;
+	}).then(function(data, meta) {
+		return data;
 	});
 }
 
-var Response = Backbone.Model.extend({
+var Response = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: function() {
 		return 'sites/@site/forms/responses';
 	},
 
 	idAttribute: 'response_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					response_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"response_id": null,
@@ -75,7 +61,7 @@ var Response = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: function() {
 		return 'sites/@site/forms/responses';
@@ -83,14 +69,9 @@ module.exports = Backbone.Collection.extend({
 
 	model: Response,
 
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
-
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkRead: function(ids) {
@@ -111,7 +92,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkUnred: function(ids) {
@@ -132,15 +113,21 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
-		}, ids);
-
+		return CollectionUtils.bulkGroupAction(this, function(slice) {
+			return Backbone.ajax({
+				url: 'sites/@site/forms/responses',
+				method: 'DELETE',
+				data: {
+					responses: slice
+				}
+			});
+		}, ids, 100).done(function(ids) {
+			this.remove(ids);
+		}.bind(this));
 	},
 
 	/**
@@ -152,10 +139,10 @@ module.exports = Backbone.Collection.extend({
 			url: 'sites/@site/export/forms/responses',
 			method: 'POST',
 			data: data
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {

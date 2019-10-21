@@ -24,6 +24,7 @@ else
 	BUILD_HASH=$(git rev-parse HEAD)
 fi
 echo '<!-- Build : '$BUILD_HASH' -->' >> "./$dest/index.html"
+sed -i '' "s/{version}/$BUILD_HASH/g" "./$dest/index.html"
 
 mkdir -p ./$dest/{locales,vendor,assets/css,assets/img}
 if [ "$1" = "--no-map" ]; then
@@ -40,6 +41,8 @@ echo " - datetimepicker"
 cat ./node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css >> ./$dest/vendor/bootstrap/css/bootstrap.min.css
 echo " - codemirror"
 cat ./node_modules/codemirror/lib/codemirror.css >> ./$dest/vendor/bootstrap/css/bootstrap.min.css
+echo " - jqvmap"
+cat ./node_modules/jqvmap-novulnerability/dist/jqvmap.min.css >> ./$dest/vendor/bootstrap/css/bootstrap.min.css
 
 echo " - tinymce"
 mkdir -p ./$dest/vendor/tinymce/skins
@@ -107,6 +110,7 @@ browserify -d -p ${minifyify} -o "${output}" \
 	-r chart.js		                    \
 	-r clipboard		                \
 	-r codemirror		                \
+	-r jqvmap-novulnerability	        \
 	-r underscore                       \
 	-r underscore.string                \
 	-r backbone.marionette              \
@@ -159,6 +163,7 @@ browserify -d ./src/app.js              \
 	--exclude chart.js		            \
 	--exclude clipboard		            \
 	--exclude codemirror	            \
+	--exclude jqvmap-novulnerability	\
 	--exclude underscore                \
 	--exclude underscore.string         \
 	--exclude backbone.marionette       \

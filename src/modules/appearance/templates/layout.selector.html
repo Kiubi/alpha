@@ -1,14 +1,14 @@
 <div class="post-content templates">
 	<div class="form-group">
 		<label>Mise en page</label>
-		<p>Définie l'apparence de cette page, son template et la configuration de ses widgets :</p>
+		<p>Définie l'apparence, le template et la configuration des widgets de cette page :</p>
 		<select data-style="selectify">
 			<% _(layouts).each(function(item){%>
 				<option value="<%- item.layout_id %>" <%= layout_id == item.layout_id ? 'selected="selected"' : '' %>><%- item.name %></option>
 				<% }) %>
 			</select>
 		</div>
-		<p class="mb-1 d-none d-md-block"><a href="/appearance/layouts/<%- page %>/<%- layout_id %>">Modifier cette mise en page</a></p>
+		<p class="mb-2 d-none d-md-block"><a href="/appearance/layouts/<%- page %>/<%- layout_id %>">Modifier cette mise en page</a></p>
 		<p class="d-none d-md-block"><a href="#" data-role="create">Créer une nouvelle mise en page</a></p>
 	</div>
 	<footer class="post-footer"></footer>

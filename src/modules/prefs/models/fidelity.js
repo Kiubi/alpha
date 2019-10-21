@@ -1,26 +1,10 @@
-var Backbone = require('backbone');
-var format = require('kiubi/utils/format');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 
 	url: 'sites/@site/prefs/fidelity',
 
 	meta: {},
-
-	parse: function(response) {
-		this.meta = {};
-		if ('meta' in response && response.meta.base_price) {
-			this.meta = {
-				'base_price': response.meta.base_price,
-				'currency': response.meta.currency
-			};
-		}
-		if ('data' in response) {
-			if (response.data === null) return {};
-			return response.data;
-		}
-		return response;
-	},
 
 	isNew: function() {
 		return false;

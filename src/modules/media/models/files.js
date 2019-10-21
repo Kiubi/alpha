@@ -12,12 +12,12 @@ function checkExport(job) {
 	return Backbone.ajax({
 		url: 'sites/@site/export/media/folder/' + token,
 		method: 'GET'
-	}).then(function(response) {
-		return response.data;
+	}).then(function(data, meta) {
+		return data;
 	});
 }
 
-var File = Backbone.Model.extend({
+var File = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/media/files',
 	idAttribute: 'media_id',
 
@@ -27,20 +27,6 @@ var File = Backbone.Model.extend({
 		prct: 0,
 		status: 'pending', // pending => uploading => done|fail
 		error: ''
-	},
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					media_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
 	},
 
 	defaults: {
@@ -64,7 +50,7 @@ var File = Backbone.Model.extend({
 		this.setProgression(0, 'pending');
 
 		if (api.max_post_size && File.size > api.max_post_size) {
-			return this.destroy();
+			return false;
 		}
 
 		this.set('name', File.name);
@@ -76,7 +62,7 @@ var File = Backbone.Model.extend({
 		// this.set('status', "draft");
 
 		if (this.get('type') != 'image') {
-			return;
+			return true;
 		}
 
 		var model = this;
@@ -90,7 +76,7 @@ var File = Backbone.Model.extend({
 				delete this;
 			};
 			preloader.src = domURL.createObjectURL(File);
-			return;
+			return true;
 		}
 
 		// Fallback
@@ -104,6 +90,7 @@ var File = Backbone.Model.extend({
 			preloader.src = event.target.result;
 		};
 		reader.readAsDataURL(File);
+		return true;
 	},
 
 	createThumbnail: function(img) {
@@ -163,10 +150,10 @@ var File = Backbone.Model.extend({
 				return xhr;
 			},
 			data: datas
-		}).done(function(response) {
+		}).done(function(data) {
 
-			if (response.data && _.isNumber(response.data)) {
-				model.set('media_id', response.data);
+			if (data && _.isNumber(data)) {
+				model.set('media_id', data);
 				if (model.get('name') && model.get('name').indexOf('.') >= 0) {
 					var name_witouth_ext = model.get('name').split('.').slice(0, -1).join('.');
 					model.set('name', name_witouth_ext);
@@ -178,7 +165,7 @@ var File = Backbone.Model.extend({
 
 			model.setProgression(100, 'fail');
 			dfd.reject("Fail");
-		}).fail(function(xhr) {
+		}).fail(function() {
 			model.setProgression(100, 'fail', 'Erreur inattendue');
 			dfd.reject("Fail");
 		});
@@ -195,7 +182,7 @@ var File = Backbone.Model.extend({
 });
 
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	folder_id: null,
 
@@ -206,10 +193,6 @@ module.exports = Backbone.Collection.extend({
 	},
 
 	model: File,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	upload: function() {
 		var upload = [];
@@ -244,8 +227,8 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
-	 * @param {Integer} folder_id
+	 * @param {Number[]} ids
+	 * @param {Number} folder_id
 	 * @returns {Promise}
 	 */
 	bulkMove: function(ids, folder_id) {
@@ -274,10 +257,10 @@ module.exports = Backbone.Collection.extend({
 			url: 'sites/@site/export/media/folder',
 			method: 'POST',
 			data: data
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {
@@ -300,8 +283,8 @@ module.exports = Backbone.Collection.extend({
 				term: term,
 				limit: limit || 5
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(file) {
+		}).then(function(data) {
+			return _.map(data, function(file) {
 				return {
 					media_id: file.media_id,
 					name: file.name

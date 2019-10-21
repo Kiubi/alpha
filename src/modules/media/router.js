@@ -273,8 +273,8 @@ var MediaController = Controller.extend({
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/media/folders/' + m.get('folder_id'));
 			this.triggerSidebarMenu('refresh:folders');
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 	},
 
@@ -347,9 +347,9 @@ var MediaController = Controller.extend({
 						addDownloadFile: m.get('media_id'),
 						addPublish: m.get('folder_id')
 					}));
-			}.bind(this)).fail(function(xhr) {
+			}.bind(this)).fail(function() {
 				this.triggerSidebarMenu('change:folder', null);
-				this.failHandler('Fichier introuvable')(xhr);
+				this.failHandler('Fichier introuvable')();
 			}.bind(this));
 	},
 

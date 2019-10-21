@@ -75,8 +75,8 @@ var NewRowView = Marionette.View.extend({
 			}.bind(this));
 		}
 
-		return promise.fail(function(xhr) {
-			Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+		return promise.fail(function(error) {
+			Forms.displayErrors(error, this.getUI('errors'), this.el);
 		}.bind(this));
 	},
 
@@ -151,9 +151,9 @@ var RowView = Marionette.View.extend({
 				// Main domain has changed, refetch site to get the definitive main domain with scheme
 				Session.site.fetch();
 			}.bind(this))
-			.fail(function(xhr) {
+			.fail(function(error) {
 				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-				navigationController.showErrorModal(xhr);
+				navigationController.showErrorModal(error);
 			}.bind(this));
 	}
 
@@ -182,9 +182,9 @@ module.exports = Marionette.View.extend({
 	},
 
 	start: function() {
-		this.collection.fetch().done(function(response) {
-			if (response.meta.domain_IP) {
-				this.getUI('ip').text(response.meta.domain_IP);
+		this.collection.fetch().done(function(data, meta) {
+			if (meta.domain_IP) {
+				this.getUI('ip').text(meta.domain_IP);
 			}
 		}.bind(this));
 	},

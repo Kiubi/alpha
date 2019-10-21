@@ -1,20 +1,9 @@
-var Backbone = require('backbone');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'users',
 	idAttribute: 'user_id',
-	parse: function(response) {
-		if (response.data) {
-			if (_.isNumber(response.data)) {
-				return {
-					user_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		user_id: 0,

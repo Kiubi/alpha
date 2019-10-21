@@ -1,0 +1,16 @@
+<article class="post-article post-article-aside dashboard-map w-100">
+<header class="post-header d-flex"><h1>Localiser les commandes</h1>
+<nav class="ml-auto">
+	<ul class="pagination mb-0">
+		<li class="page-item <%- mode == 'france' ? 'active' : '' %> d-none d-lg-inline-block"><a href="#" data-role="switch" data-mode="france" class="page-link ml-2">France</a></li>
+		<li class="page-item <%- mode == 'world' ? 'active' : '' %> d-none d-lg-inline-block"><a href="#" data-role="switch" data-mode="world" class="page-link ml-2">Monde</a></li>
+	</ul>
+</nav>
+</header>
+<div class="post-content post-list" style="height: 510px">
+
+	<div data-role="map" style="height: 100%"></div>
+
+</div>
+<footer class="post-footer"></footer>
+</article>

@@ -2,37 +2,81 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var format = require('kiubi/utils/format.js');
 var moment = require('moment');
+var _ = require('underscore');
 
 var TooltipBehavior = require('kiubi/behaviors/tooltip');
 var Session; // Must wait because this model is loaded BEFORE session start
+var Dashboard = require('../models/dashboard');
 
-/* Graph */
+/* Widgets */
 
 var GraphView = require('./dashboard/graph.js');
-
-/* Orders */
-
 var OrdersView = require('./dashboard/orders.js');
-
-/* Forms */
-
 var FormsView = require('./dashboard/forms.js');
+var FunnelView = require('./dashboard/funnel.js');
+var SourcesView = require('./dashboard/sources.js');
+var ProductsView = require('./dashboard/products.js');
+var SearchView = require('./dashboard/search.js');
+var MapView = require('./dashboard/map.js');
+var ActivitiesView = require('./dashboard/activities.js');
 
-/* Activity */
+var EmptyWidgetView = Marionette.View.extend({
+	template: _.template('')
+});
 
-var ListView = require('kiubi/core/views/ui/list.js');
-var RowView = Marionette.View.extend({
-	template: require('../templates/dashboard.row.html'),
-	className: 'list-item border-0',
+function fieldsNeeded(widgets) {
 
-	templateContext: function() {
-		return {
-			creation_date: format.formatLongDateTime(this.model.get('creation_date')),
-			creation_date_fromnow: moment(this.model.get('creation_date'), 'YYYY-MM-DD HH:mm:ss').fromNow(),
-			convertMediaPath: Session.convertMediaPath.bind(Session)
-		};
+	var fields = ['visits'];
+
+	if (widgets.findWhere({
+			type: 'orders'
+		})) fields.push('orders');
+	if (widgets.findWhere({
+			type: 'funnel'
+		})) fields.push('funnel');
+	if (widgets.findWhere({
+			type: 'search'
+		})) fields.push('search');
+	if (widgets.findWhere({
+			type: 'products'
+		})) fields.push('products');
+	if (widgets.findWhere({
+			type: 'map'
+		})) fields.push('origins');
+	if (widgets.findWhere({
+			type: 'sources'
+		})) fields.push('referer');
+
+	return fields;
+}
+
+var WidgetGridView = Marionette.CollectionView.extend({
+	className: 'row',
+	childView: function(item) {
+
+		switch (item.get('type')) {
+			case 'orders':
+				return OrdersView;
+			case 'forms':
+				return FormsView;
+			case 'funnel':
+				return FunnelView;
+			case 'sources':
+				return SourcesView;
+			case 'products':
+				return ProductsView;
+			case 'search':
+				return SearchView;
+			case 'map':
+				return MapView;
+			case 'activities':
+				return ActivitiesView;
+		}
+
+		return EmptyWidgetView; // should not happens
 	}
 });
+
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/dashboard.html'),
@@ -44,16 +88,8 @@ module.exports = Marionette.View.extend({
 			el: "article[data-role='graph']",
 			replaceElement: true
 		},
-		orders: {
-			el: "article[data-role='orders']",
-			replaceElement: true
-		},
-		forms: {
-			el: "article[data-role='forms']",
-			replaceElement: true
-		},
-		list: {
-			el: "article[data-role='list']",
+		widgets: {
+			el: "div[data-role='widgets']",
 			replaceElement: true
 		}
 	},
@@ -68,10 +104,12 @@ module.exports = Marionette.View.extend({
 	},
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['stats', 'activity', 'report', 'live']);
+		this.mergeOptions(options, ['stats', 'report', 'live']);
 
 		// Must wait because this module is loaded BEFORE session start
 		Session = Backbone.Radio.channel('app').request('ctx:session');
+
+		this.dashboardPrefs = new Dashboard();
 
 		this.live.fetch();
 	},
@@ -106,39 +144,50 @@ module.exports = Marionette.View.extend({
 		this.stats.clear().set(this.stats.defaults); // RAZ stats when changing site
 		this.stats.fetch();
 
-		var view = new GraphView({
-			report: this.report,
-			stat: 'visitors', // defaults
-			live: this.live,
-			stats: this.stats
-		});
-		this.showChildView('graph', view);
-		view.fetch();
 
-		if (Session.hasFeature('checkout')) {
-			this.showChildView('orders', new OrdersView({}));
-		}
+		this.dashboardPrefs.fetch().done(function() {
 
-		this.showChildView('forms', new FormsView({}));
+			// Widgets
+			var widgets = new Backbone.Collection();
+			widgets.model = Backbone.Model.extend({
+				idAttribute: 'type',
+				defaults: {
+					type: '',
+					order: 0,
+					size: 5
+				}
+			});
+			var order = 0;
+			var list = _.map(this.dashboardPrefs.get('widgets'), function(widget) {
+				return {
+					type: widget,
+					order: order++,
+					size: (order % 2 == 0) ? 7 : 5
+				};
+			});
+			widgets.add(list);
 
-		this.showChildView('list', new ListView({
-			collection: this.activity,
-			rowView: RowView,
-			className: 'd-flex w-100',
-			extraClassname: 'dashboard-activity w-100',
-			extraListClassname: 'no-hover',
+			var view = new GraphView({
+				report: this.report,
+				stat: 'visitors', // defaults
+				live: this.live,
+				stats: this.stats,
+				extra_fields: fieldsNeeded(widgets)
+			});
+			this.showChildView('graph', view);
+			view.fetch();
 
-			title: 'Activités récentes'
-			/*
-			filters: [{
-				extraClassname: 'select-category',
-				title: 'Toutes les catégories',
-				collectionPromise: this.getOption('categories').promisedSelect(this.collection.category_id)
-			}]*/
-		}));
-		this.activity.fetch({
-			reset: true
-		});
+			this.showChildView('widgets', new WidgetGridView({
+				collection: widgets,
+				childViewOptions: {
+					report: this.report
+				}
+			}));
+
+		}.bind(this)).fail(function() {
+			console.log('Dashboard - FAILED'); // TODO
+		}.bind(this));
+
 	}
 
 });

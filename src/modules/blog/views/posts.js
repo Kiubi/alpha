@@ -148,7 +148,7 @@ module.exports = Marionette.View.extend({
 	},
 
 	deletePosts: function(ids) {
-		return this.collection.bulkDelete(ids);
+		return this.collection.bulkDelete(ids, 'delete');
 	},
 
 	/* Filers */

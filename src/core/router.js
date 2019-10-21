@@ -9,8 +9,7 @@ var DashboardView = require('./views/dashboard');
 var LoginView = require('./views/login');
 
 var Stats = require('./models/stats');
-var Report = require('./models/report');
-var Logs = require('./models/logs');
+var Report = require('./models/graphs');
 var Live = require('./models/live');
 var Cobranding = require('./models/cobranding');
 
@@ -136,7 +135,6 @@ var DefaultController = Controller.extend({
 		var view = new DashboardView({
 			stats: statsModel,
 			report: new Report(),
-			activity: new Logs(),
 			live: new Live()
 		});
 

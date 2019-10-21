@@ -1,26 +1,13 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-var Image = Backbone.Model.extend({
+var Image = CollectionUtils.KiubiModel.extend({
 	urlRoot: function() {
 		return 'sites/@site/catalog/products/' + this.get('product_id') + '/images';
 	},
 
 	idAttribute: 'media_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					media_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		media_id: null,
@@ -33,7 +20,7 @@ var Image = Backbone.Model.extend({
 });
 
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	product_id: null,
 
@@ -42,10 +29,7 @@ module.exports = Backbone.Collection.extend({
 	},
 
 	model: Image,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
+
 
 	/**
 	 * Reorder current product images

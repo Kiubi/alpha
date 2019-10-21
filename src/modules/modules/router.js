@@ -33,6 +33,7 @@ var Posts = require('kiubi/modules/cms/models/posts');
 var Folders = require('kiubi/modules/media/models/folders');
 var Medias = require('kiubi/modules/prefs/models/medias');
 var Captcha = require('kiubi/modules/prefs/models/captcha');
+var Ads = require('kiubi/modules/prefs/models/ads');
 
 /* Views */
 var IndexView = require('./views/index');
@@ -40,6 +41,7 @@ var InjectcodeView = require('./views/injectcode');
 var RedirectionsView = require('./views/redirections');
 var FidelityView = require('./views/fidelity');
 var AnalyticsView = require('./views/analytics');
+var AdsView = require('./views/ads');
 var VouchersView = require('./views/vouchers');
 var VoucherView = require('./views/voucher');
 var VoucherAddModalView = require('./views/modal.voucher.add');
@@ -56,6 +58,7 @@ var IadvizeView = require('./views/iadvize');
 var AvisVerifiesView = require('./views/avisverifies');
 var BackupsView = require('./views/backups');
 var CaptchaView = require('./views/captcha');
+var KpsView = require('./views/kps');
 
 
 /* Actions */
@@ -92,10 +95,28 @@ function HeaderTabsSubscribers() {
 
 	return [{
 		title: 'Liste des abonnés',
-		url: '/modules/subscribers'
+		url: '/modules/subscribers',
+		icon: 'md-newsletter-detail'
+
 	}, {
 		title: 'Paramètres',
-		url: '/modules/subscribers/settings'
+		url: '/modules/subscribers/settings',
+		icon: 'md-newsletter-settings'
+	}];
+}
+
+/* Tabs  */
+function HeaderTabsIndex() {
+
+	return [{
+		title: 'Modules & Applications',
+		url: '/modules',
+		icon: 'md-extension'
+
+	}, {
+		title: 'Kiubi Professional Services',
+		url: '/modules/kps',
+		icon: 'md-modules-kps'
 	}];
 }
 
@@ -206,7 +227,8 @@ var ModulesController = Controller.extend({
 		this.navigationController.showContent(new IndexView());
 		this.setHeader({
 			title: 'Tous les modules'
-		});
+		}, null, HeaderTabsIndex());
+
 	},
 
 	showInjectcode: function() {
@@ -262,6 +284,21 @@ var ModulesController = Controller.extend({
 			}));
 			this.setHeader({
 				title: 'Google Analytics'
+			}, [{
+				title: 'Enregistrer',
+				callback: 'actionSave'
+			}]);
+		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
+	},
+
+	showAds: function() {
+		var m = new Ads();
+		m.fetch().done(function() {
+			this.navigationController.showContent(new AdsView({
+				model: m
+			}));
+			this.setHeader({
+				title: 'Authorized Digital Sellers (ADS)'
 			}, [{
 				title: 'Enregistrer',
 				callback: 'actionSave'
@@ -560,14 +597,22 @@ var ModulesController = Controller.extend({
 
 	},
 
+	showKps: function() {
+		this.navigationController.showContent(new KpsView());
+		this.setHeader({
+			title: 'Kiubi Professionnal Services'
+		}, null, HeaderTabsIndex());
+
+	},
+
 	actionNewBackup: function() {
 
 		this.navigationController.showOverlay();
 		var c = new Backups();
-		return c.createBackup().done(function(error) {
+		return c.createBackup().done(function(errorOrdata) {
 
-			if (error != '') {
-				this.navigationController.showErrorModal(error, 4000);
+			if (errorOrdata != '') {
+				this.navigationController.showErrorModal(errorOrdata, 4000);
 				return;
 			}
 			this.navigationController.hideModal();
@@ -576,8 +621,8 @@ var ModulesController = Controller.extend({
 			if (view && view.start) {
 				view.start();
 			}
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 
 	},
@@ -609,6 +654,7 @@ module.exports = Marionette.AppRouter.extend({
 		'modules/redirections': 'showRedirections',
 		'modules/fidelity': 'showFidelity',
 		'modules/analytics': 'showAnalytics',
+		'modules/ads': 'showAds',
 		'modules/vouchers': 'showVouchers',
 		'modules/vouchers/:id': 'showVoucher',
 		'modules/subscribers': 'showSubscribers',
@@ -623,7 +669,8 @@ module.exports = Marionette.AppRouter.extend({
 		'modules/iadvize': 'showIadvize',
 		'modules/avisverifies': 'showAvisVerifies',
 		'modules/captcha': 'showCaptcha',
-		'modules/backups': 'showBackups'
+		'modules/backups': 'showBackups',
+		'modules/kps': 'showKps'
 	},
 
 	onRoute: function(name, path, args) {

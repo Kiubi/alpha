@@ -76,6 +76,79 @@ var SelectCollection = Backbone.Collection.extend({
 	model: Option
 });
 
+var KiubiModel = Backbone.Model.extend({
+
+	previewLink: null,
+	meta: null,
+
+	/**
+	 * 
+	 * @param {Object} payload Payload or data from a Collection Payload
+	 * @returns {*}
+	 */
+	parse: function(payload) {
+
+		this.meta = {};
+
+		// Request playload
+		if ('data' in payload) {
+			if (payload.data === null) return {};
+			if (_.isNumber(payload.data)) {
+				var d = {};
+				d[this.idAttribute] = payload.data; // FIXME this.idAttribute == ''
+				return d;
+			}
+
+			if (payload.meta) {
+
+				this.meta = payload.meta;
+
+				if (payload.meta.link && payload.meta.link.preview) {
+					this.previewLink = payload.meta.link.preview;
+				}
+			}
+
+			return payload.data;
+		}
+
+		// Data from a KiubiCollection::parse()
+		return payload;
+	}
+
+});
+
+var KiubiCollection = Backbone.Collection.extend({
+
+	meta: null,
+
+	/**
+	 * 
+	 * @param {Object} payload
+	 * @returns {Array}
+	 */
+	parse: function(payload) {
+		this.meta = payload.meta;
+		return payload.data;
+	},
+
+	/**
+	 *
+	 * @param {Number[]} ids
+	 * @param {String} eventName
+	 * @returns {Promise}
+	 */
+	bulkDelete: function(ids, eventName) {
+
+		return bulkAction(this, function(model) {
+			return model.destroy();
+		}, ids, eventName);
+
+	}
+
+});
+
 module.exports.bulkAction = bulkAction;
 module.exports.bulkGroupAction = bulkGroupAction;
 module.exports.SelectCollection = SelectCollection;
+module.exports.KiubiModel = KiubiModel;
+module.exports.KiubiCollection = KiubiCollection;

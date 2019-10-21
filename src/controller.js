@@ -198,33 +198,15 @@ module.exports = Marionette.Object.extend({
 	 * @returns {function}
 	 */
 	failHandler: function(defaultError) {
-
-		return function(xhr) {
-
-			// API unavailable
-			if (xhr.status == 503) {
-				this.navigationController.showErrorModal(xhr);
-				return;
-			}
-
-			// Not allowed
-			if (xhr.status == 403) {
-				// Tokens errors
-				if (xhr.responseJSON && xhr.responseJSON.error &&
-					(xhr.responseJSON.error.code == 4311 || xhr.responseJSON.error.code == 4307)) {
-					// TODO this.navigationController.showErrorModal('....');
-					this.navigationController.navigate('/login');
-					return;
-				}
-			}
+		return function() {
 
 			// Handle all others like 404
 			this.notFound();
 			this.setHeader({
 				title: defaultError
 			});
-		}.bind(this);
 
+		}.bind(this);
 	},
 
 	/**

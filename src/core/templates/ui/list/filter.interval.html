@@ -2,12 +2,12 @@
 	<div class="input-group-prepend">
 		<span class="input-group-text"><%- prependText[0] %></span>
 	</div>
-	<input class="form-control" name="min" value="" placeholder="<%- title %>">
+	<input class="form-control" name="min" value="<%- value ? (value[0]) : '' %>" placeholder="<%- title %>">
 	<div class="input-group-prepend">
 		<span class="input-group-text" style="border-left: none"><%- prependText[1] %></span>
 	</div>
 
-	<input class="form-control" name="max" value="" placeholder="<%- title %>">
+	<input class="form-control" name="max" value="<%- value ? (value[1]) : '' %>" placeholder="<%- title %>">
 	<div class="input-group-append">
 		<span class="input-group-text"><span data-role="feedback" class="md-icon float-right <%- extraClassname %>"></span></span>
 	</div>

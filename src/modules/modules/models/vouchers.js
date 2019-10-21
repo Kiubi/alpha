@@ -3,33 +3,12 @@ var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 var format = require('kiubi/utils/format');
 
-var Voucher = Backbone.Model.extend({
+var Voucher = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: 'sites/@site/checkout/vouchers',
 	idAttribute: 'voucher_id',
 
 	meta: {},
-
-	parse: function(response) {
-		this.meta = {};
-		if ('meta' in response && response.meta.base_price) {
-			this.meta = {
-				'base_price': response.meta.base_price,
-				'currency': response.meta.currency
-			};
-		}
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					voucher_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"voucher_id": null,
@@ -54,20 +33,15 @@ var Voucher = Backbone.Model.extend({
 	}
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/checkout/vouchers',
 
 	model: Voucher,
 
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
-
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkEnable: function(ids) {
@@ -88,7 +62,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkDisable: function(ids) {
@@ -103,19 +77,6 @@ module.exports = Backbone.Collection.extend({
 			}, {
 				patch: true
 			});
-		}, ids);
-
-	},
-
-	/**
-	 *
-	 * @param {Integer[]} ids
-	 * @returns {Promise}
-	 */
-	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
 		}, ids);
 
 	}

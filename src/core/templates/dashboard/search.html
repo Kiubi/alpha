@@ -1,0 +1,29 @@
+<article class="post-article dashboard-words w-100">
+<header class="post-header d-flex"><h1>Mots clés recherchés</h1>
+	<nav class="ml-auto">
+		<ul class="pagination mb-0">
+			<li class="page-item <%- !has_previous ? 'disabled' : '' %>" data-role="previous"><a class="page-link" href="#"><span class="md-icon md-previous"></span></a></li>
+			<li class="page-item <%- !has_next ? 'disabled' : '' %>" data-role="next"><a class="page-link" href="#"><span class="md-icon md-next"></span></a></li>
+		</ul>
+	</nav>
+</header>
+
+<div class="post-content post-list no-hover">
+	<% if(list && list.length > 0) { %>
+	<% _.each(list, function(row, i){ %>
+	<div class="list-item list-item-sm">
+		<div class="row no-gutters">
+			<div class="col-auto mr-2"><%- row.position %>.</div>
+			<div class="col item-body pr-sm-0">
+				<h4 class="text-truncate"><%- row.name %></h4>
+			</div>
+			<div class="col-auto"><%- formatNumber(row.count) %></div>
+		</div>
+	</div>
+	<% }) %>
+	<% } else { %>
+	<span class="list-item-empty"><span class="md-icon md-empty mb-2"></span>Il n'y a encore rien à afficher</span>
+	<% }%>
+</div>
+<footer class="post-footer"></footer>
+</article>

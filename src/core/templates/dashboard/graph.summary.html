@@ -1,82 +1,66 @@
 <div class="row align-items-center">
-	
-	<div class="col-8 col-lg-6">
+
+	<div class="col-8 col-lg-4">
 		<div class="row no-gutters dashboard-stats-primary">
-			<div class="col-4">
-				<div class="dashboard-stats-item <%= current == 'visitors' ? 'active' : '' %>" data-role="select-visitors"><span
-						class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="top"
-						data-container="body" title="" data-original-title="Total des visiteurs différents"></span>
+			<div class="col-6">
 
-					<div class="mt-1">
-						<h1 data-role="visitors"><%- visitors %></h1>
-						<span class="badge stats-label">Visiteurs</span>
-					</div>
+				<div class="dashboard-stats-item <%= current == 'visitors' ? 'active' : '' %>" data-role="select-visitors">
+					<span class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="top"  data-container="body" title="" data-original-title="Total des visites"></span>
+					<span class="mt-1"><h1 data-role="visitors"><%- visitors %></h1><span class="badge stats-label">Visites</span></span>
 				</div>
-			</div>
-			
-			<div class="col-4">
-				<div class="dashboard-stats-item <%= current == 'pageviews' ? 'active' : '' %>" data-role="select-pageviews"><span
-						class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="top"
-						data-container="body" title="" data-original-title="Total des pages vues"></span> 
-					<span class="mt-1">
-			  			<h1 data-role="pageviews"><%- pageviews %></h1>
-			  			<span class="badge stats-label">Pages vues</span>
-					</span>
-				</div>
-			</div>
 
-			<div class="col-4">
-				<div class="dashboard-stats-item <%= current == 'sales' ? 'active' : '' %>" data-role="select-sales"><span class="md-icon md-help-outline d-none" data-toggle="tooltip"
-																				  data-placement="top" data-container="body" title=""
-																				  data-original-title="Total HT des commandes payées"></span>
-					<div class="mt-1">
-						<h1 data-role="sales"><%= sales %></h1>
-						<span class="badge stats-label">Ventes</span>
-					</div>
-				</div>
 			</div>
-			
+			<div class="col-6">
+
+				<div class="dashboard-stats-item <%= current == 'pageviews' ? 'active' : '' %>" data-role="select-pageviews">
+					<span class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="top" data-container="body" title="" data-original-title="Total des pages vues"></span>
+					<span class="mt-1"><h1 data-role="pageviews"><%- pageviews %></h1><span class="badge stats-label">Pages vues</span></span>
+				</div>
+
+			</div>
 		</div>
 	</div>
-	
+
 	<div class="col-4 col-lg-2 mt-4 mt-sm-0 order-lg-3">
 		<div class="row no-gutters dashboard-stats-secondary">
 			<div class="col-12">
-				<div class="dashboard-stats-item"><span class="md-icon md-help-outline d-none" data-toggle="tooltip"
-														data-placement="top" data-container="body" title=""
-														data-original-title="Visiteurs actuellement sur le site Internet"></span>
 
-					<h1 class="mr-2" data-role="live"><%- live %></h1>
-					<span class="badge badge-warning">En direct</span></div>
+				<div class="dashboard-stats-item">
+					<span class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="top" data-container="body" title="" data-original-title="Visiteurs actuellement sur le site Internet"></span>
+					<h1 class="mr-2" data-role="live"><%- live %></h1><span class="badge badge-warning">En direct</span>
+				</div>
+
 			</div>
 		</div>
 	</div>
-	
-	<div class="col-12 col-lg-4 mt-4 mt-lg-0">
-		<div class="row no-gutters dashboard-stats-secondary">
-			
-			<div class="col-6">
-				<div class="dashboard-stats-item"><span class="md-icon md-help-outline d-none" data-toggle="tooltip"
-														data-placement="top" data-container="body" title=""
-														data-original-title="Visiteurs ayant passé une commande sur les 30 derniers jours"></span>
-					<span class="mt-1">
-			  			<h1><%- monthly_transformation_label %></h1>
-			  			<span class="badge stats-label">Conversion</span>
-					</span>
+
+	<div class="col-12 col-lg-6 mt-4 mt-lg-0">
+		<div class="row no-gutters dashboard-stats-primary">
+			<div class="col-4">
+
+				<div class="dashboard-stats-item <%= current == 'orders' ? 'active' : '' %>" data-role="select-orders">
+					<span class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="top" data-container="body" title=""  data-original-title="Total des commandes payées"></span>
+					<span class="mt-1"><h1><%- orders %></h1><span class="badge stats-label">Commandes</span></span>
 				</div>
+
 			</div>
-			
-			<div class="col-6">
-				<div class="dashboard-stats-item"><span class="md-icon md-help-outline d-none" data-toggle="tooltip"
-														data-placement="top" data-container="body" title=""
-														data-original-title="Moyenne HT des montants payés par commande"></span>
-					<span class="mt-1">
-			  			<h1><%= average_cart_label %></h1>
-			  			<span class="badge stats-label">Panier moyen</span>
-					</span>
+			<div class="col-4">
+
+				<div class="dashboard-stats-item <%= current == 'sales' ? 'active' : '' %>" data-role="select-sales">
+					<span class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="top" data-container="body" title="" data-original-title="Total HT des commandes payées"></span>
+					<span class="mt-1"><h1 data-role="sales"><%= sales %></h1><span class="badge stats-label">Ventes</span></span>
 				</div>
+
+			</div>
+			<div class="col-4">
+
+				<div class="dashboard-stats-item <%= current == 'cart' ? 'active' : '' %>" data-role="select-cart">
+					<span class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="top" data-container="body" title="" data-original-title="Moyenne HT des montants payés par commande"></span>
+					<span class="mt-1"><h1><%= cart_mean %></h1><span class="badge stats-label">Panier moyen</span></span>
+				</div>
+
 			</div>
 		</div>
 	</div>
-	
+
 </div>

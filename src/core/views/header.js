@@ -20,7 +20,7 @@ module.exports = Marionette.View.extend({
 
 	/**
 	 * Actions list
-	 * 
+	 *
 	 * Usage :
 	 * [{
 	 *		title: 'Action #1',
@@ -29,23 +29,23 @@ module.exports = Marionette.View.extend({
 	 *		title: 'Action #2',
 	 *		callback: function(){}
 	 *	}]
-	 * 
+	 *
 	 */
 	actions: null,
 	lockActions: false,
 
 	/**
 	 * Tabs list
-	 * 
+	 *
 	 * Usage :
 	 * [{
 	 *		title: 'Other action #1',
 	 *		url: '/path1',
-	 *		is_active: true	
+	 *		is_active: true
 	 *	}, {
 	 *		title: 'Other action #2',
 	 *		url: '/path2'
-	 *		is_active: false	
+	 *		is_active: false
 	 *	}]
 	 */
 	tabs: null,
@@ -53,7 +53,7 @@ module.exports = Marionette.View.extend({
 	navigation: null,
 
 	ui: {
-		'defaultAction': "button[data-role='default-action']",
+		'defaultAction': "[data-role='default-action']",
 		'otherActions': "[data-role='other-actions'] li"
 	},
 
@@ -67,6 +67,39 @@ module.exports = Marionette.View.extend({
 		this.listenTo(ControllerChannel, 'saved:content', this.onSavedContent);
 
 		this.navigation = null;
+	},
+
+	/**
+	 * Expose links and actions for template
+	 */
+	templateContext: function() {
+
+		var sortedActions = [];
+		var tabActions = [];
+
+		if (this.getOption('actions') && this.getOption('actions').length > 0) {
+			sortedActions = sortedActions.concat(
+				_.filter(this.getOption('actions'), function(action) {
+					return action.isOnTop && !action.isOptional;
+				}),
+				_.filter(this.getOption('actions'), function(action) {
+					return !action.isOnTop && !action.isOptional;
+				})
+			);
+
+			tabActions = _.filter(this.getOption('actions'), function(action) {
+				return action.isOptional;
+			});
+
+		}
+
+		return {
+			links: this.getOption('links'),
+			actions: sortedActions,
+			tabactions: tabActions,
+			tabs: this.getOption('tabs'),
+			navigation: this.navigation
+		};
 	},
 
 	onModifiedContent: function(event) {
@@ -127,7 +160,7 @@ module.exports = Marionette.View.extend({
 
 	/**
 	 * Généric handler with callback support
-	 * 
+	 *
 	 * @param callback
 	 */
 	onAction: function(callback) {
@@ -153,35 +186,9 @@ module.exports = Marionette.View.extend({
 	},
 
 	/**
-	 * Expose links and actions for template
-	 */
-	templateContext: function() {
-
-		var sortedActions = [];
-
-		if (this.getOption('actions') && this.getOption('actions').length > 0) {
-			sortedActions = sortedActions.concat(
-				_.filter(this.getOption('actions'), function(action) {
-					return action.isOnTop;
-				}),
-				_.filter(this.getOption('actions'), function(action) {
-					return !action.isOnTop;
-				})
-			);
-		}
-
-		return {
-			links: this.getOption('links'),
-			actions: sortedActions,
-			tabs: this.getOption('tabs'),
-			navigation: this.navigation
-		};
-	},
-
-	/**
 	 * Set breadcrum
 	 *
-	 * @param {Array} links 
+	 * @param {Array} links
 	 */
 	setBreadCrum: function(links) {
 		this.links = links;
@@ -189,7 +196,7 @@ module.exports = Marionette.View.extend({
 
 	/**
 	 * Set default and others actions
-	 * 
+	 *
 	 * @param {Array} actions
 	 */
 	setActions: function(actions) {

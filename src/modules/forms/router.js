@@ -133,8 +133,8 @@ var FormsController = Controller.extend({
 		return m.save().done(function() {
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/forms/' + m.get('form_id'));
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 	},
 
@@ -195,12 +195,12 @@ var FormsController = Controller.extend({
 					navigationController.showOverlay(300);
 					navigationController.navigate('/forms/' + duplicate.get('form_id'));
 					//ControllerChannel.trigger('refresh:categories');
-				}).fail(function(xhr) {
-					navigationController.showErrorModal(xhr);
+				}).fail(function(error) {
+					navigationController.showErrorModal(error);
 				});
 			},
-			function(xhr) {
-				navigationController.showErrorModal(xhr);
+			function(error) {
+				navigationController.showErrorModal(error);
 			}
 		);
 	},

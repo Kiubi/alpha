@@ -1,7 +1,8 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/catalog/products',
 	idAttribute: 'product_id',
 
@@ -100,7 +101,8 @@ module.exports = Backbone.Model.extend({
 		text15: '',
 		categories: [],
 		variants: [],
-		images: []
+		images: [],
+		service_path: ''
 	},
 
 	/**
@@ -122,8 +124,8 @@ module.exports = Backbone.Model.extend({
 		return Backbone.ajax({
 			url: 'sites/@site/catalog/products_types',
 			data: data
-		}).then(function(response) {
-			return _.map(response.data, function(type) {
+		}).then(function(data) {
+			return _.map(data, function(type) {
 				return {
 					type: type.type,
 					name: type.name,
@@ -145,9 +147,12 @@ module.exports = Backbone.Model.extend({
 			url: 'sites/@site/catalog/products/' + this.get('product_id'),
 			method: 'POST',
 			data: attributes
-		}).then(function(response) {
+		}).then(function(data, meta) {
 			var copy = that.clone();
-			copy.set(copy.parse(response));
+			copy.set(copy.parse({
+				data: data,
+				meta: meta
+			}));
 			return copy;
 		});
 	}

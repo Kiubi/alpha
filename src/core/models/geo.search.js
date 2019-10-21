@@ -1,7 +1,7 @@
-var Backbone = require('backbone');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
 
-var Result = Backbone.Model.extend({
+var Result = CollectionUtils.KiubiModel.extend({
 
 	defaults: {
 		cities: '',
@@ -11,15 +11,10 @@ var Result = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'geo/search',
 
-	model: Result,
-
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	}
+	model: Result
 
 });

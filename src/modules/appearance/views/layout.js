@@ -290,9 +290,9 @@ module.exports = Marionette.View.extend({
 			});
 
 
-		}.bind(this)).fail(function(xhr) {
+		}.bind(this)).fail(function(error) {
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-			navigationController.showErrorModal(xhr);
+			navigationController.showErrorModal(error);
 		});
 	},
 
@@ -303,9 +303,9 @@ module.exports = Marionette.View.extend({
 		// API Call
 		this.model.addBloc($target.data('zone'), $target.data('col')).done(function(bloc) {
 			this.onBlocCreate(bloc, $target.data('zone'));
-		}.bind(this)).fail(function(xhr) {
+		}.bind(this)).fail(function(error) {
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-			navigationController.showErrorModal(xhr);
+			navigationController.showErrorModal(error);
 		}.bind(this));
 	},
 
@@ -324,15 +324,15 @@ module.exports = Marionette.View.extend({
 				var nb_col = zone ? zone.defaut : '1';
 				this.model.addBloc($zone.data('zone'), nb_col).done(function(bloc) {
 					this.onBlocCreate(bloc, $zone.data('zone'));
-				}.bind(this)).fail(function(xhr) {
+				}.bind(this)).fail(function(error) {
 					var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-					navigationController.showErrorModal(xhr);
+					navigationController.showErrorModal(error);
 				}.bind(this));
 			}
 
-		}.bind(this)).fail(function() {
+		}.bind(this)).fail(function(error) {
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-			navigationController.showErrorModal(xhr);
+			navigationController.showErrorModal(error);
 		}.bind(this));
 	},
 
@@ -411,9 +411,9 @@ module.exports = Marionette.View.extend({
 				}, 'slow');
 				this.render();
 			}.bind(this));
-		}.bind(this)).fail(function(xhr) {
+		}.bind(this)).fail(function(error) {
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-			navigationController.showErrorModal(xhr);
+			navigationController.showErrorModal(error);
 		});
 	},
 
@@ -574,11 +574,11 @@ module.exports = Marionette.View.extend({
 				}
 				if (this.willTriggerChangeName) this.trigger('change:name', this.model);
 				this.willTriggerChangeName = false;
-			}.bind(this)).fail(function(xhr) {
-				navigationController.showErrorModal(xhr);
+			}.bind(this)).fail(function(error) {
+				navigationController.showErrorModal(error);
 			});
-		}.bind(this), function(xhr) {
-			navigationController.showErrorModal(xhr);
+		}.bind(this), function(error) {
+			navigationController.showErrorModal(error);
 		});
 	}
 

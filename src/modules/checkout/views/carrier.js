@@ -712,9 +712,9 @@ var ChargesLocalView = Marionette.View.extend({
 			p.done(function() {
 				this.currentZone = model.get('zone_id');
 				this.render();
-			}.bind(this)).fail(function(xhr) {
+			}.bind(this)).fail(function(error) {
 				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-				navigationController.showErrorModal(xhr);
+				navigationController.showErrorModal(error);
 			}.bind(this));
 		},
 
@@ -759,7 +759,7 @@ var ChargesLocalView = Marionette.View.extend({
 
 	onRender: function() {
 		this.showChildView('zones', new SelectView({
-			collectionPromise: this.carrierZones.promisedSelect(null, this.currentZone).done(function(result) {
+			collectionPromise: this.carrierZones.promisedSelect(this.currentZone).done(function(result) {
 				if (result.length > 0) {
 					this.selectZone(this.currentZone ? this.currentZone : result.at(0).get('value'));
 				}

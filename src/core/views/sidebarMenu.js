@@ -118,7 +118,7 @@ function searchConfig(type) {
 			};
 			header = 'Résultats dans les commandes';
 			service = 'Commandes';
-			serviceURL = '/checkout/orders?status=pending&';
+			serviceURL = '/checkout/orders?status=all&';
 			break;
 
 		case 'media':

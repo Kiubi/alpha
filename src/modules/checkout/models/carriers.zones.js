@@ -21,7 +21,7 @@ var Steps = Backbone.Collection.extend({
 
 });
 
-var Zone = Backbone.Model.extend({
+var Zone = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: function() {
 		return 'sites/@site/checkout/carriers/' + this.get('carrier_id') + '/zones';
@@ -54,7 +54,7 @@ var Zone = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	carrier_id: null,
 
@@ -76,13 +76,10 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Object} options Options
 	 * @param {Number} selected
 	 * @returns {Promise} Promised {Backbone.Collection}
 	 */
-	promisedSelect: function(options, selected) {
-
-		options = _.extend({}, options);
+	promisedSelect: function(selected) {
 
 		var that = this;
 		return this.fetch().then(function() {

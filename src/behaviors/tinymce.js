@@ -881,14 +881,14 @@ module.exports = Marionette.Behavior.extend({
 		var adjusted_height = $target.height(); // Will remove toolbar height to match base textarea height
 		switch ($target.data('wysiwyg-toolbar')) {
 			case 'micro':
-				plugins = [ /*'image'*/ , 'contextmenu', 'kiubi', 'lists', 'paste', 'link', 'charmap', 'code', 'wordpaste'];
+				plugins = [ /*'image' ,*/ 'contextmenu', 'kiubi', 'lists', 'paste', 'link', 'charmap', 'code', 'wordpaste'];
 				toolbar =
 					'bold italic underline strikethrough | numlist bullist | link unlink | kiubi_media | removeformat undo redo | pastetext code';
 				adjusted_height -= 68;
 				break;
 
 			default:
-				plugins = [ /*'image'*/ , 'contextmenu', 'kiubi', 'media', 'lists', 'paste', 'textcolor',
+				plugins = [ /*'image' ,*/ 'contextmenu', 'kiubi', 'media', 'lists', 'paste', 'textcolor',
 					'colorpicker', 'link', 'anchor', 'table', 'charmap', 'code', 'wordpaste'
 				];
 				toolbar = [
@@ -907,6 +907,7 @@ module.exports = Marionette.Behavior.extend({
 			language: 'fr_FR',
 			language_url: false,
 			convert_urls: false,
+			entity_encoding: "named+numeric",
 			menu: {},
 			custom_undo_redo_levels: 20,
 			forced_root_block: false, // Beware, potential breaking

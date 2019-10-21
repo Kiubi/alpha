@@ -2,29 +2,9 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-var Post = Backbone.Model.extend({
+var Post = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/blog/posts',
 	idAttribute: 'post_id',
-
-	previewLink: null,
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					post_id: response.data
-				};
-			}
-
-			if (response.meta && response.meta.link && response.meta.link.preview) {
-				this.previewLink = response.meta.link.preview;
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		post_id: null,
@@ -45,7 +25,8 @@ var Post = Backbone.Model.extend({
 		category_id: null,
 		category_name: '',
 		thumb: null,
-		layout_id: null
+		layout_id: null,
+		service_path: ''
 	},
 
 	/**
@@ -68,8 +49,8 @@ var Post = Backbone.Model.extend({
 		return Backbone.ajax({
 			url: 'sites/@site/blog/posts_types',
 			data: data
-		}).then(function(response) {
-			return _.map(response.data, function(type) {
+		}).then(function(data) {
+			return _.map(data, function(type) {
 				return {
 					type: type.type,
 					name: type.name,
@@ -82,17 +63,13 @@ var Post = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: function() {
 		return 'sites/@site/blog/posts';
 	},
 
 	model: Post,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 *
@@ -137,19 +114,6 @@ module.exports = Backbone.Collection.extend({
 	},
 
 	/**
-	 *
-	 * @param {Integer[]} ids
-	 * @returns {Promise}
-	 */
-	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
-		}, ids, 'delete');
-
-	},
-
-	/**
 	 * Suggest posts
 	 *
 	 * @param {String} term
@@ -163,8 +127,8 @@ module.exports = Backbone.Collection.extend({
 				term: term,
 				limit: limit || 5
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(post) {
+		}).then(function(data) {
+			return _.map(data, function(post) {
 				return {
 					post_id: post.post_id,
 					title: post.title

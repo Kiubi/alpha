@@ -2,32 +2,11 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-var Carrier = Backbone.Model.extend({
+var Carrier = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/checkout/carriers',
 	idAttribute: 'carrier_id',
 
 	meta: {},
-
-	parse: function(response) {
-		this.meta = {};
-		if ('meta' in response && response.meta.base_price) {
-			this.meta = {
-				'base_price': response.meta.base_price,
-				'currency': response.meta.currency
-			};
-		}
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					carrier_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"carrier_id": null,
@@ -76,23 +55,19 @@ var Carrier = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 	url: 'sites/@site/checkout/carriers',
 
 	model: Carrier,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 *
+	 * @param {Number} selected
 	 * @param {Object} options Options list :
 	 * 					{boolean} exclude_pickup
-	 * @param {Number} selected
 	 * @returns {Promise} Promised {Backbone.Collection}
 	 */
-	promisedSelect: function(options, selected) {
+	promisedSelect: function(selected, options) {
 
 		options = _.extend({
 			'exclude_pickup': false
@@ -133,7 +108,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkEnable: function(ids) {
@@ -154,7 +129,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkDisable: function(ids) {
@@ -169,19 +144,6 @@ module.exports = Backbone.Collection.extend({
 			}, {
 				patch: true
 			});
-		}, ids);
-
-	},
-
-	/**
-	 *
-	 * @param {Integer[]} ids
-	 * @returns {Promise}
-	 */
-	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
 		}, ids);
 
 	}

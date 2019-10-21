@@ -79,7 +79,6 @@ module.exports = Marionette.View.extend({
 		// Seo
 		if (this.getOption('enableSeo')) {
 			this.showChildView('seo', new SeoView({
-				slug_prefix: '/catalogue/',
 				slug_suffix: '/',
 				model: this.model
 			}));

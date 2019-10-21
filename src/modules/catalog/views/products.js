@@ -353,9 +353,9 @@ module.exports = Marionette.View.extend({
 					extraClassname: 'md-export'
 				}]);
 				view.toggleDropdown(); // open
-			}.bind(this)).fail(function(xhr) {
+			}.bind(this)).fail(function(error) {
 				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-				navigationController.showErrorModal(xhr);
+				navigationController.showErrorModal(error);
 
 				view.overrideExtraClassname('');
 				while (view.collection.length > 1) {

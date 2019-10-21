@@ -2,21 +2,9 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-var Comment = Backbone.Model.extend({
+var Comment = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/blog/comments',
 	idAttribute: 'comment_id',
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					comment_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		comment_id: null,
@@ -38,16 +26,12 @@ var Comment = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: function() {
 		return 'sites/@site/blog/comments';
 	},
 	model: Comment,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 *

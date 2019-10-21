@@ -89,9 +89,9 @@ module.exports = Marionette.View.extend({
 
 			this.themes.changeThemeVariants(variant).done(function() {
 				// console.log('OK');
-			}.bind(this)).fail(function(xhr) {
+			}.bind(this)).fail(function(error) {
 				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-				navigationController.showErrorModal(xhr);
+				navigationController.showErrorModal(error);
 			}.bind(this));
 		}
 	},

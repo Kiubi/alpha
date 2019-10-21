@@ -2,21 +2,9 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-var Comment = Backbone.Model.extend({
+var Comment = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/catalog/comments',
 	idAttribute: 'comment_id',
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					comment_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		comment_id: null,
@@ -40,7 +28,7 @@ var Comment = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	product_id: null,
 
@@ -49,14 +37,10 @@ module.exports = Backbone.Collection.extend({
 		return 'sites/@site/catalog/comments';
 	},
 	model: Comment,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkShow: function(ids) {
@@ -77,7 +61,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkHide: function(ids) {

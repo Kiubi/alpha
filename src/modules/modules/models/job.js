@@ -1,24 +1,11 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: 'sites/@site/jobs',
 	idAttribute: 'job_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					job_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"job_id": null,
@@ -65,8 +52,8 @@ module.exports = Backbone.Model.extend({
 					this.deferred.resolve(this);
 					break;
 			}
-		}.bind(this)).fail(function(xhr) {
-			this.deferred.reject(xhr);
+		}.bind(this)).fail(function(error, meta) {
+			this.deferred.reject(error, meta);
 		}.bind(this));
 	}
 

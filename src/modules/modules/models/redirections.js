@@ -1,16 +1,9 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 
-var Redirection = Backbone.Model.extend({
+var Redirection = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: 'sites/@site/seo/redirections',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		uri: '',
@@ -18,16 +11,11 @@ var Redirection = Backbone.Model.extend({
 	}
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/seo/redirections',
 
 	model: Redirection,
-
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 * @param {Array} redirections
@@ -40,8 +28,8 @@ module.exports = Backbone.Collection.extend({
 			data: {
 				redirections: redirections
 			}
-		}).then(function(response) {
-			return response.data;
+		}).then(function(data, meta) {
+			return data;
 		});
 	}
 

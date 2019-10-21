@@ -11,27 +11,14 @@ function checkExport(job) {
 	return Backbone.ajax({
 		url: 'sites/@site/export/account/customers/' + token,
 		method: 'GET'
-	}).then(function(response) {
-		return response.data;
+	}).then(function(data, meta) {
+		return data;
 	});
 }
 
-var Customer = Backbone.Model.extend({
+var Customer = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/account/customers',
 	idAttribute: 'customer_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					customer_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		customer_id: null,
@@ -58,20 +45,15 @@ var Customer = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/account/customers',
 
 	model: Customer,
 
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
-
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkEnable: function(ids) {
@@ -92,7 +74,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkDisable: function(ids) {
@@ -107,19 +89,6 @@ module.exports = Backbone.Collection.extend({
 			}, {
 				patch: true
 			});
-		}, ids);
-
-	},
-
-	/**
-	 *
-	 * @param {Integer[]} ids
-	 * @returns {Promise}
-	 */
-	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
 		}, ids);
 
 	},
@@ -140,8 +109,8 @@ module.exports = Backbone.Collection.extend({
 				exclude: exclude,
 				limit: limit || 5
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(customer) {
+		}).then(function(data) {
+			return _.map(data, function(customer) {
 				return {
 					customer_id: customer.customer_id,
 					lastname: customer.lastname,
@@ -160,10 +129,10 @@ module.exports = Backbone.Collection.extend({
 			url: 'sites/@site/export/account/customers',
 			method: 'POST',
 			data: data
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {

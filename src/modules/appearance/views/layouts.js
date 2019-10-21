@@ -98,8 +98,8 @@ var RowView = Marionette.View.extend({
 		var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 		m.save().done(function() {
 			navigationController.navigate('/appearance/drafts/' + m.get('draft_id'));
-		}.bind(this)).fail(function(xhr) {
-			navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			navigationController.showErrorModal(error);
 		}.bind(this));
 	},
 

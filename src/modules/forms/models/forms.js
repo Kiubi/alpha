@@ -2,24 +2,10 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-var Form = Backbone.Model.extend({
+var Form = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: 'sites/@site/forms',
 	idAttribute: 'form_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					form_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"form_id": null,
@@ -51,25 +37,23 @@ var Form = Backbone.Model.extend({
 			url: 'sites/@site/forms/' + this.get('form_id'),
 			method: 'POST',
 			data: attributes
-		}).then(function(response) {
+		}).then(function(data, meta) {
 			var copy = that.clone();
-			copy.set(copy.parse(response));
+			copy.set(copy.parse({
+				data: data,
+				meta: meta
+			}));
 			return copy;
 		});
 	}
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/forms',
 
 	model: Form,
-
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 *

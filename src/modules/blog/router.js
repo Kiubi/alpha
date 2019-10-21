@@ -34,15 +34,20 @@ function getHeadersAction(options) {
 	actions = actions.concat(
 		[{
 			title: 'Rédiger un billet',
-			callback: 'actionNewPost'
+			callback: 'actionNewPost',
+			icon: 'md-add-outline'
+
 		}, {
 			title: 'Ajouter une catégorie',
-			callback: 'actionNewCategory'
+			callback: 'actionNewCategory',
+			icon: 'md-add-outline'
 		}]
 	);
 	if (options.preview) {
 		actions.push({
 			title: 'Aperçu',
+			icon: 'md-launch',
+			isOptional: true,
 			callback: ['actionPreview', options.preview]
 		});
 	}
@@ -52,6 +57,7 @@ function getHeadersAction(options) {
 		var saveAction = {
 			title: 'Enregistrer',
 			callback: 'actionSave',
+			icon: 'md-save',
 			activateOnEvent: 'modified:content',
 			bubbleOnEvent: 'modified:content'
 		};
@@ -324,8 +330,8 @@ var BlogController = Controller.extend({
 				that.triggerSidebarMenu('refresh:posts', 1);
 				that.navigationController.showOverlay(300);
 				that.navigationController.navigate('/blog/posts/' + m.get('post_id'));
-			}).fail(function(xhr) {
-				that.navigationController.showErrorModal(xhr);
+			}).fail(function(error) {
+				that.navigationController.showErrorModal(error);
 			});
 		});
 	},
@@ -507,8 +513,8 @@ var BlogController = Controller.extend({
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/blog/categories/' + m.get('category_id'));
 			this.triggerSidebarMenu('refresh:categories');
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 
 	},

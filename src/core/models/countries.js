@@ -1,20 +1,9 @@
-var Backbone = require('backbone');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
 
-var Country = Backbone.Model.extend({
+var Country = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'geo/countries',
 	idAttribute: 'country_id',
-	parse: function(response) {
-		if (response.data) {
-			if (_.isNumber(response.data)) {
-				return {
-					user_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		country_id: 0,
@@ -25,16 +14,11 @@ var Country = Backbone.Model.extend({
 	}
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'geo/countries',
 
 	model: Country,
-
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	selectPayload: function() {
 		return _.map(this.toJSON(), function(item) {

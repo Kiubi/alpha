@@ -2,17 +2,13 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 	url: 'sites/@site/catalog/categories',
 	model: require('./category'),
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkShow: function(ids) {
@@ -33,7 +29,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkHide: function(ids) {
@@ -87,8 +83,8 @@ module.exports = Backbone.Collection.extend({
 				exclude: exclude,
 				limit: limit || 5
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(category) {
+		}).then(function(data) {
+			return _.map(data, function(category) {
 				return {
 					category_id: category.category_id,
 					name: category.name

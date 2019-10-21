@@ -2,15 +2,11 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/account/groups',
 
 	model: require('./group'),
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	selectPayload: function() {
 		return _.map(this.toJSON(), function(item) {
@@ -37,8 +33,8 @@ module.exports = Backbone.Collection.extend({
 				exclude: exclude,
 				limit: limit || 5
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(group) {
+		}).then(function(data) {
+			return _.map(data, function(group) {
 				return {
 					group_id: group.group_id,
 					name: group.name
@@ -49,13 +45,10 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Object} options Options list :
 	 * @param {Number} selected
 	 * @returns {Promise} Promised {Backbone.Collection}
 	 */
-	promisedSelect: function(options, selected) {
-
-		options = _.extend({}, options);
+	promisedSelect: function(selected) {
 
 		var that = this;
 		return this.fetch().then(function() {

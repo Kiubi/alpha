@@ -47,8 +47,8 @@ var NewRowView = Marionette.View.extend({
 		).done(function(operations) {
 			this.getUI('form').hide();
 			this.collection.add(operations);
-		}.bind(this)).fail(function(xhr) {
-			Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+		}.bind(this)).fail(function(error) {
+			Forms.displayErrors(error, this.getUI('errors'), this.el);
 		}.bind(this));
 	},
 

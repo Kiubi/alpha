@@ -1,6 +1,7 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 
 	type: '',
 	type_id: null,
@@ -16,14 +17,6 @@ module.exports = Backbone.Model.extend({
 	setType: function(type, id) {
 		this.type = type;
 		this.type_id = id;
-	},
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			return response.data;
-		}
-		return response;
 	},
 
 	isNew: function() {

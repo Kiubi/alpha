@@ -212,8 +212,8 @@ var NewVariantRowView = Marionette.View.extend({
 				this.getUI('form').hide();
 				this.collection.add(m);
 			}.bind(this))
-			.fail(function(xhr) {
-				Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+			.fail(function(error) {
+				Forms.displayErrors(error, this.getUI('errors'), this.el);
 			}.bind(this));
 	},
 
@@ -401,18 +401,18 @@ var VariantRowView = Marionette.View.extend({
 			.done(function(duplicate) {
 				this.model.collection.add(duplicate);
 			}.bind(this))
-			.fail(function(xhr) {
+			.fail(function(error) {
 				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-				navigationController.showErrorModal(xhr);
+				navigationController.showErrorModal(error);
 			});
 	},
 
 	onActionDeleteRow: function() {
 		return this.model.destroy({
 			wait: true
-		}).fail(function(xhr) {
+		}).fail(function(error) {
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-			navigationController.showErrorModal(xhr);
+			navigationController.showErrorModal(error);
 		});
 	},
 
@@ -445,8 +445,8 @@ var VariantRowView = Marionette.View.extend({
 			).done(function() {
 				this.editing = false;
 			}.bind(this))
-			.fail(function(xhr) {
-				Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+			.fail(function(error) {
+				Forms.displayErrors(error, this.getUI('errors'), this.el);
 			}.bind(this));
 	}
 
@@ -921,7 +921,6 @@ module.exports = Marionette.View.extend({
 		// Seo
 		if (this.getOption('enableSeo')) {
 			this.showChildView('seo', new SeoView({
-				slug_prefix: '/catalogue/',
 				model: this.model
 			}));
 		}

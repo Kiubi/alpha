@@ -1,16 +1,8 @@
-var Backbone = require('backbone');
+var CollectionUtils = require('kiubi/utils/collections.js');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 
 	url: 'sites/@site/blog',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			return response.data;
-		}
-		return response;
-	},
 
 	isNew: function() {
 		return false;

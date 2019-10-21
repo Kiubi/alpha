@@ -11,7 +11,7 @@ var Datepicker = require('kiubi/behaviors/datepicker.js');
 
 var Session; // Must wait because this model is loaded BEFORE session start
 
-function skinDataset(data, label, is_primary) {
+function skinDataset(data, label, is_primary, formatAsFloat, tooltipsTitles) {
 
 	var dataset = {
 		type: 'line',
@@ -26,7 +26,9 @@ function skinDataset(data, label, is_primary) {
 		pointHoverBorderColor: '#fff',
 		pointHoverBackgroundColor: '#fff',
 		label: label,
-		data: data
+		data: data,
+		formatAsFloat: formatAsFloat,
+		tooltipsTitles: tooltipsTitles
 	};
 
 	if (is_primary) {
@@ -54,13 +56,17 @@ var SummaryView = Marionette.View.extend({
 	ui: {
 		'selectSales': '[data-role="select-sales"]',
 		'selectVisitors': '[data-role="select-visitors"]',
-		'selectPageviews': '[data-role="select-pageviews"]'
+		'selectPageviews': '[data-role="select-pageviews"]',
+		'selectOrders': '[data-role="select-orders"]',
+		'selectCart': '[data-role="select-cart"]'
 	},
 
 	events: {
 		'click @ui.selectSales': 'onSalesSelect',
 		'click @ui.selectVisitors': 'onVisitorsSelect',
-		'click @ui.selectPageviews': 'onPageviewsSelect'
+		'click @ui.selectPageviews': 'onPageviewsSelect',
+		'click @ui.selectOrders': 'onOrdersSelect',
+		'click @ui.selectCart': 'onCartSelect'
 	},
 
 	current: 'visitors', // visitors, pageviews
@@ -73,7 +79,9 @@ var SummaryView = Marionette.View.extend({
 		this.reportData = {
 			visitors: '-',
 			pageviews: '-',
+			orders: '-',
 			sales: '-',
+			cart: '-',
 			live: ''
 		};
 
@@ -84,9 +92,12 @@ var SummaryView = Marionette.View.extend({
 			this.render();
 		}.bind(this));
 		this.listenTo(this.report, 'report', function(data) {
-			this.reportData.visitors = data.visitors;
-			this.reportData.pageviews = data.pageviews;
-			this.reportData.sales = data.sales_label ? data.sales_label : '-';
+			this.reportData.visitors = data.summary.visits.count;
+			this.reportData.pageviews = data.summary.visits.pageviews;
+			this.reportData.orders = data.summary.orders ? data.summary.orders.count : '-';
+			this.reportData.sales = data.summary.orders ? data.summary.orders.total : '-';
+			this.reportData.cart = data.summary.orders ? data.summary.orders.cart : '-';
+			this.reportData.currency = data.summary.orders ? data.summary.orders.currency : '';
 
 			this.render();
 		}.bind(this));
@@ -94,16 +105,17 @@ var SummaryView = Marionette.View.extend({
 	},
 
 	templateContext: function() {
+
 		return {
 			current: this.current,
 			live: this.reportData.live,
 
 			visitors: format.formatFloat(this.reportData.visitors, 0, ' '),
 			pageviews: format.formatFloat(this.reportData.pageviews, 0, ' '),
-			sales: this.reportData.sales,
 
-			average_cart_label: this.model.get('checkout') ? this.model.get('checkout').average_cart_label : '-',
-			monthly_transformation_label: this.model.get('checkout') ? this.model.get('checkout').monthly_transformation_label : '-'
+			sales: this.reportData.orders != '-' ? format.formatFloat(this.reportData.sales, 2, ' ') + format.currencyEntity(this.reportData.currency) : '-',
+			orders: this.reportData.orders != '-' ? format.formatFloat(this.reportData.orders, 0, ' ') : '-',
+			cart_mean: this.reportData.orders > 0 ? format.formatFloat(this.reportData.sales / this.reportData.orders, 2, ' ') + format.currencyEntity(this.reportData.currency) : '-'
 		};
 	},
 
@@ -124,6 +136,8 @@ var SummaryView = Marionette.View.extend({
 		this.getUI('selectSales').addClass('active');
 		this.getUI('selectVisitors').removeClass('active');
 		this.getUI('selectPageviews').removeClass('active');
+		this.getUI('selectOrders').removeClass('active');
+		this.getUI('selectCart').removeClass('active');
 	},
 
 	onVisitorsSelect: function() {
@@ -132,6 +146,8 @@ var SummaryView = Marionette.View.extend({
 		this.getUI('selectSales').removeClass('active');
 		this.getUI('selectVisitors').addClass('active');
 		this.getUI('selectPageviews').removeClass('active');
+		this.getUI('selectOrders').removeClass('active');
+		this.getUI('selectCart').removeClass('active');
 	},
 
 	onPageviewsSelect: function() {
@@ -140,6 +156,28 @@ var SummaryView = Marionette.View.extend({
 		this.getUI('selectSales').removeClass('active');
 		this.getUI('selectVisitors').removeClass('active');
 		this.getUI('selectPageviews').addClass('active');
+		this.getUI('selectOrders').removeClass('active');
+		this.getUI('selectCart').removeClass('active');
+	},
+
+	onOrdersSelect: function() {
+		this.current = 'orders';
+		this.trigger('select:stat', this.current);
+		this.getUI('selectSales').removeClass('active');
+		this.getUI('selectVisitors').removeClass('active');
+		this.getUI('selectPageviews').removeClass('active');
+		this.getUI('selectOrders').addClass('active');
+		this.getUI('selectCart').removeClass('active');
+	},
+
+	onCartSelect: function() {
+		this.current = 'cart';
+		this.trigger('select:stat', this.current);
+		this.getUI('selectSales').removeClass('active');
+		this.getUI('selectVisitors').removeClass('active');
+		this.getUI('selectPageviews').removeClass('active');
+		this.getUI('selectOrders').removeClass('active');
+		this.getUI('selectCart').addClass('active');
 	}
 
 });
@@ -157,16 +195,8 @@ var ChartView = Marionette.View.extend({
 
 	onAttach: function() {
 
-		Chart.defaults.global.maintainAspectRatio = false;
-		Chart.defaults.global.animation.duration = 0;
 		Chart.defaults.global.defaultFontColor = "rgba(255, 255, 255, 0.5)";
 		Chart.defaults.global.defaultFontFamily = "'Open Sans', sans-serif";
-		Chart.defaults.global.elements.line.borderWidth = "2";
-		Chart.defaults.global.elements.point.radius = "5";
-		Chart.defaults.global.elements.point.borderWidth = "2";
-		Chart.defaults.global.elements.point.hitRadius = "2";
-		Chart.defaults.global.elements.point.hoverRadius = "7";
-		Chart.defaults.global.legend.display = false;
 		Chart.defaults.global.tooltips.backgroundColor = "#000";
 		Chart.defaults.global.tooltips.displayColors = false;
 		Chart.defaults.global.tooltips.intersect = false;
@@ -176,6 +206,24 @@ var ChartView = Marionette.View.extend({
 
 		this.chart = new Chart(this.getUI('chart'), {
 			options: {
+				maintainAspectRatio: false,
+				animation: {
+					duration: 0
+				},
+				elements: {
+					line: {
+						borderWidth: "2"
+					},
+					point: {
+						radius: "5",
+						borderWidth: "2",
+						hitRadius: "2",
+						hoverRadius: "7"
+					}
+				},
+				legend: {
+					display: false
+				},
 				layout: {
 					padding: {
 						top: 10,
@@ -185,6 +233,7 @@ var ChartView = Marionette.View.extend({
 				},
 				scales: {
 					xAxes: [{
+						offset: false,
 						position: 'bottom',
 						gridLines: {
 							color: "rgba(255, 255, 255, 0.1)",
@@ -207,6 +256,22 @@ var ChartView = Marionette.View.extend({
 
 					}]
 
+				},
+				tooltips: {
+					callbacks: {
+						title: function(tooltipItems, data) {
+
+							if (tooltipItems[0].datasetIndex == 1 && tooltipItems[0].index < data.datasets[1].tooltipsTitles.length) {
+								return data.datasets[1].tooltipsTitles[tooltipItems[0].index];
+							}
+
+							return tooltipItems[0].xLabel; // default
+						},
+						label: function(tooltipItem, data) {
+							var formatAsFloat = data.datasets[0].formatAsFloat;
+							return data.datasets[0].label + ' : ' + format.formatFloat(tooltipItem.value, formatAsFloat ? 2 : 0, ' ');
+						}
+					}
 				}
 			}
 		});
@@ -218,6 +283,7 @@ var ChartView = Marionette.View.extend({
 			labels: labels,
 			datasets: datasets
 		};
+		this.chart.options.scales.xAxes[0].offset = (datasets[0].data.length == 1);
 
 		this.chart.update();
 	},
@@ -247,12 +313,37 @@ module.exports = Marionette.View.extend({
 
 	ui: {
 		'endDate': "input[name='end_date']",
-		'startDate': "input[name='start_date']"
+		'startDate': "input[name='start_date']",
+		'compareDate': "input[name='compare_date']",
+		'compareShort': "button[data-role='compare']"
 	},
 
 	events: {
 		'click a[data-role="stats"]': function() {
 			window.open(Session.autologBackLink('/awstats/'));
+		},
+		'click @ui.compareShort': function(event) {
+
+			switch (Backbone.$(event.currentTarget).data('delta')) {
+				case 'days':
+					this.startDate = this.endDate.clone();
+					break;
+				case 'weeks':
+					this.startDate = this.endDate.clone().add(-6, 'days');
+					break;
+				case 'months':
+					this.startDate = this.endDate.clone().add(-30, 'days');
+					break;
+			}
+			this.getUI('startDate').val(this.startDate.format('DD/MM/YYYY'));
+
+			var compareDate = this.startDate.clone().add(-1, Backbone.$(event.currentTarget).data('delta'));
+			this.getUI('compareDate').val(compareDate.format('DD/MM/YYYY'));
+			this.onFieldChange({
+				name: 'compare_date',
+				date: compareDate
+			});
+
 		}
 	},
 
@@ -263,9 +354,11 @@ module.exports = Marionette.View.extend({
 	startDate: null,
 	endDate: null,
 	compareDate: null,
+	datas: null,
+	extra_fields: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['report', 'stat', 'live', 'stats']);
+		this.mergeOptions(options, ['report', 'stat', 'live', 'stats', 'extra_fields']);
 
 		// Must wait because this module is loaded BEFORE session start
 		Session = Backbone.Radio.channel('app').request('ctx:session');
@@ -273,6 +366,7 @@ module.exports = Marionette.View.extend({
 		this.startDate = moment().add(-31, 'days');
 		this.endDate = moment().add(-1, 'days');
 		this.compareDate = null;
+		this.datas = null;
 	},
 
 	templateContext: function() {
@@ -303,7 +397,9 @@ module.exports = Marionette.View.extend({
 		$datepickers.each(function(i, el) {
 
 			var $el = Backbone.$(el);
-			$el.data('DateTimePicker').showTodayButton(false);
+			$el.data('DateTimePicker')
+				.showTodayButton(false)
+				.minDate(moment("2019-09-06")); // no reliable data before this date
 
 			if (el.name == 'start_date') {
 				$el.data('DateTimePicker').maxDate(moment().add(-1, 'days'));
@@ -319,52 +415,72 @@ module.exports = Marionette.View.extend({
 		if (stat == this.stat) return;
 		this.stat = stat;
 
-		this.fetch();
+		this.onDataUpdate();
 	},
 
 	fetch: function() {
 
 		var promise;
 
+		var data = {
+			'extra_fields': this.extra_fields //'funnel,orders,visits,referer,search,products,origins'
+		};
+
 		if (!this.compareDate) { // startDate & endDate optional
 
-			var data = {};
 			if (this.startDate) data.start_date = this.startDate.format('DD/MM/YYYY');
 			if (this.endDate) data.end_date = this.endDate.format('DD/MM/YYYY');
+
+			data.extra_fields += ',trends';
 
 			promise = this.report.fetch({
 				data: data,
 				reset: true
 			}).done(function() {
 				this.report.trigger('report', this.report.toJSON());
-				this.onDataUpdate([this.report.get('days')]);
+				this.datas = [this.report.get('days')];
+				this.onDataUpdate();
 			}.bind(this));
 
 		} else if (this.startDate && this.compareDate) {
 
 			var diff = this.endDate ? this.endDate.diff(this.startDate, 'days') : 30;
 
-			promise = this.report.compare(this.startDate, this.compareDate, diff).done(function(data) {
-				this.report.trigger('report', data[0]);
-				this.onDataUpdate([data[0].days, data[1].days]);
+			promise = this.report.compare(this.startDate, this.compareDate, diff, data).done(function(data) {
+				this.report.trigger('report', data);
+				this.datas = data.days;
+				this.onDataUpdate();
 			}.bind(this));
 		}
 
-		promise.fail(function(xhr) {
+		promise.fail(function(error, meta) {
+
+			if (meta.status_code == 404) {
+				// TODO : stats not yet available
+				return;
+			}
+
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-			navigationController.showErrorModal(xhr);
+			navigationController.showErrorModal(error);
 		});
 
 		return promise;
 	},
 
-	onDataUpdate: function(sets) {
+	onDataUpdate: function() {
 
 		var tooltipstitle;
+		var formatAsFloat = false;
 		if (this.stat == 'sales') {
 			tooltipstitle = 'Ventes';
+			formatAsFloat = true;
 		} else if (this.stat == 'visitors') {
 			tooltipstitle = 'Visiteurs';
+		} else if (this.stat == 'orders') {
+			tooltipstitle = 'Commandes';
+		} else if (this.stat == 'cart') {
+			tooltipstitle = 'Panier moyen';
+			formatAsFloat = true;
 		} else {
 			tooltipstitle = 'Pages vues';
 		}
@@ -373,31 +489,41 @@ module.exports = Marionette.View.extend({
 		var datasets = [
 			[]
 		];
-		_.each(sets[0], function(day) {
+		_.each(this.datas[0], function(day) {
 			labels.push(moment(day.date, 'YYYY-MM-DD').format('DD/MM'));
 			if (this.stat == 'visitors') {
-				datasets[0].push(day.visitors !== null ? day.visitors : null);
+				datasets[0].push(day.visits ? day.visits.count : null);
 			} else if (this.stat == 'sales') {
-				datasets[0].push(day.sales !== null ? day.sales : null);
+				datasets[0].push(day.orders ? day.orders.total : null);
+			} else if (this.stat == 'orders') {
+				datasets[0].push(day.orders ? day.orders.count : null);
+			} else if (this.stat == 'cart') {
+				datasets[0].push(day.orders ? day.orders.cart_mean : null);
 			} else {
-				datasets[0].push(day.pageviews !== null ? day.pageviews : null);
+				datasets[0].push(day.visits ? day.visits.pageviews : null);
 			}
 
 		}.bind(this));
-		datasets[0] = skinDataset(datasets[0], tooltipstitle, true);
+		datasets[0] = skinDataset(datasets[0], tooltipstitle, true, formatAsFloat, null);
 
-		if (sets.length == 2) {
+		if (this.datas.length == 2) {
 			datasets[1] = [];
-			_.each(sets[1], function(day) {
+			var tooltipsTitles = [];
+			_.each(this.datas[1], function(day) {
+				tooltipsTitles.push(moment(day.date, 'YYYY-MM-DD').format('DD/MM'));
 				if (this.stat == 'visitors') {
-					datasets[1].push(day.visitors !== null ? day.visitors : null);
+					datasets[1].push(day.visits ? day.visits.count : null);
 				} else if (this.stat == 'sales') {
-					datasets[1].push(day.sales !== null ? day.sales : null);
+					datasets[1].push(day.orders ? day.orders.total : null);
+				} else if (this.stat == 'orders') {
+					datasets[1].push(day.orders ? day.orders.count : null);
+				} else if (this.stat == 'cart') {
+					datasets[1].push(day.orders ? day.orders.cart_mean : null);
 				} else {
-					datasets[1].push(day.pageviews !== null ? day.pageviews : null);
+					datasets[1].push(day.visits ? day.visits.pageviews : null);
 				}
 			}.bind(this));
-			datasets[1] = skinDataset(datasets[1], tooltipstitle, false);
+			datasets[1] = skinDataset(datasets[1], tooltipstitle, false, formatAsFloat, tooltipsTitles);
 		}
 
 		this.getChildView('chart').updateChart(labels, datasets);

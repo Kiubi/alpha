@@ -11,18 +11,14 @@ function checkExport(job) {
 	return Backbone.ajax({
 		url: 'sites/@site/export/catalog/products/' + token,
 		method: 'GET'
-	}).then(function(response) {
-		return response.data;
+	}).then(function(data, meta) {
+		return data;
 	});
 }
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 	url: 'sites/@site/catalog/products',
 	model: require('./product'),
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 *
@@ -101,8 +97,8 @@ module.exports = Backbone.Collection.extend({
 				exclude: exclude,
 				limit: limit || 5
 			}
-		}).then(function(response) {
-			return _.map(response.data, function(product) {
+		}).then(function(data) {
+			return _.map(data, function(product) {
 				return {
 					product_id: product.product_id,
 					name: product.name
@@ -120,10 +116,10 @@ module.exports = Backbone.Collection.extend({
 			url: 'sites/@site/export/catalog/products',
 			method: 'POST',
 			data: data
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {

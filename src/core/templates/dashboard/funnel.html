@@ -1,0 +1,40 @@
+<article class="post-article dashboard-funnel w-100">
+<header class="post-header"><h1>Conversion des ventes</h1></header>
+<div class="post-content post-list no-hover">
+
+	<div class="list-item border-0 stats-value">
+		<div class="row no-gutters">
+			<div class="col item-body"><h4><%- conversion.pending %></h4></div>
+			<div class="col-auto"><span class="md-icon <%- conversion.pending_trends >=0 ? 'md-trendingup text-success' : 'md-trendingdown text-danger' %> mr-1"></span><%- formatNumber(conversion.pending_trends,2) %></div>
+		</div>
+	</div>
+	<div class="list-item list-item-md border-0">
+		<div class="row no-gutters">
+			<div class="col item-body"><h4>Ajout au panier</h4>
+				<% if(hasData) { %><%- plural(funnel.cart, '%d visite', '%d visites') %><% } %>&nbsp;
+			</div>
+			<div class="col-3 align-items-start"><%- conversion.cart %></div>
+			<div class="col-2 align-items-start"><span class="md-icon <%- conversion.cart_trends >=0 ? 'md-trendingup text-success' : 'md-trendingdown text-danger' %> mr-1"></span><%- formatNumber(conversion.cart_trends,2) %></div>
+		</div>
+	</div>
+	<div class="list-item list-item-md border-0">
+		<div class="row no-gutters">
+			<div class="col item-body"><h4>Page de récapitulation</h4>
+				<% if(hasData) { %><%- plural(funnel.checkout, '%d visite', '%d visites') %><% } %>&nbsp;
+			</div>
+			<div class="col-3 align-items-start"><%- conversion.checkout %></div>
+			<div class="col-2 align-items-start"><span class="md-icon <%- conversion.checkout_trends >=0 ? 'md-trendingup text-success' : 'md-trendingdown text-danger' %> mr-1"></span><%- formatNumber(conversion.checkout_trends,2) %></div>
+		</div>
+	</div>
+	<div class="list-item list-item-md border-0">
+		<div class="row no-gutters">
+			<div class="col item-body"><h4>Commandes effectuées</h4>
+				<% if(hasData) { %><%- plural(funnel.pending, '%d visite', '%d visites') %><% } %>&nbsp;
+			</div>
+			<div class="col-3 align-items-start"><%- conversion.pending %></div>
+			<div class="col-2 align-items-start"><span class="md-icon <%- conversion.pending_trends >=0 ? 'md-trendingup text-success' : 'md-trendingdown text-danger' %> mr-1"></span><%- formatNumber(conversion.pending_trends,2) %></div>
+		</div>
+	</div>
+</div>
+<footer class="post-footer"></footer>
+</article>

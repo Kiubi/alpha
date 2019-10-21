@@ -1,26 +1,13 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-var Variant = Backbone.Model.extend({
+var Variant = CollectionUtils.KiubiModel.extend({
 	urlRoot: function() {
 		return 'sites/@site/catalog/products/' + this.get('product_id') + '/variants';
 	},
 
 	idAttribute: 'variant_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					variant_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		variant_id: null,
@@ -63,9 +50,9 @@ var Variant = Backbone.Model.extend({
 			data: {
 				variant_id: this.get('variant_id')
 			}
-		}).then(function(response) {
+		}).then(function(data) {
 			var copy = that.clone();
-			copy.set(response.data);
+			copy.set(data);
 			return copy;
 		});
 	}
@@ -74,7 +61,7 @@ var Variant = Backbone.Model.extend({
 
 
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	product_id: null,
 
@@ -83,10 +70,6 @@ module.exports = Backbone.Collection.extend({
 	},
 
 	model: Variant,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	reOrder: function(list) {
 		return Backbone.ajax({

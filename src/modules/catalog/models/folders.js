@@ -2,21 +2,9 @@ var Backbone = require('backbone');
 var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
 
-var Folder = Backbone.Model.extend({
+var Folder = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/catalog/downloads/folders',
 	idAttribute: 'folder_id',
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					folder_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		folder_id: null,
@@ -27,13 +15,9 @@ var Folder = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 	url: 'sites/@site/catalog/downloads/folders',
 	model: Folder,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 * Return a menu tree from the current collection

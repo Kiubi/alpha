@@ -1,21 +1,10 @@
 var Backbone = require('backbone');
+var CollectionUtils = require('kiubi/utils/collections.js');
 var _ = require('underscore');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites',
 	idAttribute: 'code_site',
-
-	parse: function(response) {
-		if (response.data) {
-			if (_.isNumber(response.data)) {
-				return {
-					site_id: response.data
-				};
-			}
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		code_site: '',
@@ -58,8 +47,8 @@ module.exports = Backbone.Model.extend({
 				term: term,
 				limit: 5
 			}
-		}).then(function(response) {
-			return _.filter(response.data, function(site) {
+		}).then(function(data) {
+			return _.filter(data, function(site) {
 				return site.code_site != current;
 			});
 		});

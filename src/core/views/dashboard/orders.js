@@ -7,7 +7,7 @@ var Orders = require('kiubi/modules/checkout/models/orders.js');
 
 var RowView = Marionette.View.extend({
 	template: require('../../templates/dashboard/orders.row.html'),
-	className: 'list-item',
+	className: 'list-item list-item-sm',
 
 
 	templateContext: function() {
@@ -44,8 +44,11 @@ var ListView = Marionette.CollectionView.extend({
 module.exports = Marionette.View.extend({
 	template: require('../../templates/dashboard/orders.html'),
 
-	className: 'post-article post-article-aside dashboard-orders',
-	tagName: 'article',
+	attributes: function() {
+		return {
+			class: 'col-12 col-lg-' + this.model.get('size') + ' order-lg-' + this.model.get('order') + ' d-flex'
+		};
+	},
 
 	regions: {
 		list: {

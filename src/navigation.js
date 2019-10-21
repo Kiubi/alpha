@@ -2,6 +2,8 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+var NavigationChannel = Backbone.Radio.channel('navigation');
+
 var SidebarView = require('kiubi/core/views/sidebar');
 var SidebarMenuView = require('kiubi/core/views/sidebarMenu');
 var HeaderView = require('kiubi/core/views/header');
@@ -51,6 +53,7 @@ module.exports = Marionette.Object.extend({
 
 	layoutView: null,
 	application: null,
+	lockErrorModal: false,
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['layoutView', 'application']);
@@ -58,6 +61,14 @@ module.exports = Marionette.Object.extend({
 		this.listenTo(this.application.session.site, 'change:site', function() {
 			var header = this.layoutView.getChildView('header');
 			if (header) updateTitle(header.links);
+		}.bind(this));
+
+		this.listenTo(NavigationChannel, 'critical:error', function(error, meta) {
+			this.showErrorModal(error);
+		}.bind(this));
+
+		this.listenTo(NavigationChannel, 'expired:login', function(error, meta) {
+			this.navigate('/login');
 		}.bind(this));
 	},
 
@@ -202,12 +213,6 @@ module.exports = Marionette.Object.extend({
 				className: 'md-settings',
 				type: "tools",
 				scope: 'site:pref'
-			},
-			{
-				name: "Documentation",
-				path: "https://aide.kiubi.com/",
-				className: 'md-help',
-				type: "tools"
 			}
 		]);
 
@@ -339,24 +344,35 @@ module.exports = Marionette.Object.extend({
 	/**
 	 * Show an arbitrary modal
 	 *
-	 * @param {String|XHR} xhr Error message
+	 * @param {Object} error Error
 	 * @param {int} duration milliseconds
 	 */
-	showErrorModal: function(xhr, duration) {
+	showErrorModal: function(error, duration) {
+
+		if (this.lockErrorModal) return;
+		this.lockErrorModal = true;
+
+		var errorMsg;
+
+		if (!_.isString(error)) {
+			if (error.handled) return;
+			errorMsg = error.message ? error.message : "Une erreur inattendue s'est produite";
+		} else {
+			errorMsg = error;
+		}
+
 		var modalView = new ModalView({
 			title: 'Oups ! Une erreur est survenue.',
 			modalClass: 'modal-danger'
 		});
 		this.showModal(modalView, duration);
-
-		if (!_.isString(xhr)) {
-			xhr = xhr.responseJSON && xhr.responseJSON.error && xhr.responseJSON.error.message ? xhr.responseJSON.error.message :
-				"Une erreur inattendue s'est produite";
-		}
+		this.listenTo(modalView, 'destroy', function() {
+			this.lockErrorModal = false;
+		});
 
 		// Attach modalView to DOM before attaching the view
 		var view = Marionette.View.extend({
-			template: _.template(xhr)
+			template: _.template(errorMsg)
 		});
 		modalView.showChildView('content', new view());
 	},

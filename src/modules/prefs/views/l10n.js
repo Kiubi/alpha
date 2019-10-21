@@ -23,8 +23,8 @@ var RowView = Marionette.View.extend({
 		}, {
 			patch: false, // send msgstr AND msgid
 			wait: true
-		}).fail(function(xhr) {
-			Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+		}).fail(function(error) {
+			Forms.displayErrors(error, this.getUI('errors'), this.el);
 		}.bind(this));
 	},
 
@@ -47,8 +47,8 @@ var RowView = Marionette.View.extend({
 				patch: false, // send msgstr AND msgid
 				wait: true
 			}
-		).fail(function(xhr) {
-			Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+		).fail(function(error) {
+			Forms.displayErrors(error, this.getUI('errors'), this.el);
 		}.bind(this));
 	}
 
@@ -142,9 +142,9 @@ module.exports = Marionette.View.extend({
 				}]);
 				view.toggleDropdown(); // open
 
-			}.bind(this)).fail(function(xhr) {
+			}.bind(this)).fail(function(error) {
 				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-				navigationController.showErrorModal(xhr);
+				navigationController.showErrorModal(error);
 				view.overrideExtraClassname('');
 				while (view.collection.length > 1) {
 					view.collection.pop();

@@ -12,17 +12,9 @@ var supported = [
 	'atos'
 ];
 
-var Payment = Backbone.Model.extend({
+var Payment = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/checkout/payments',
 	idAttribute: 'payment_id',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"payment_id": null,
@@ -39,14 +31,10 @@ var Payment = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 	url: 'sites/@site/checkout/payments',
 
 	model: Payment,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	reOrder: function(list) {
 		return Backbone.ajax({
@@ -60,15 +48,10 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Object} options Options list ()
 	 * @param {Number} selected
 	 * @returns {Promise} Promised {Backbone.Collection}
 	 */
-	promisedSelect: function(options, selected) {
-
-		options = _.extend({
-			'exclude_pickup': false
-		}, options);
+	promisedSelect: function(selected) {
 
 		var that = this;
 		return this.fetch().then(function() {

@@ -34,8 +34,8 @@ var RowView = Marionette.View.extend({
 
 		var data = Forms.extractFields(['name'], this);
 
-		return this.model.rename(data.name).fail(function(xhr) {
-			Forms.displayErrors(xhr, this.getUI('errors'), this.el);
+		return this.model.rename(data.name).fail(function(error) {
+			Forms.displayErrors(error, this.getUI('errors'), this.el);
 		}.bind(this));
 	}
 });

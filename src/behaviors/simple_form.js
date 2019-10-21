@@ -103,13 +103,13 @@ module.exports = Marionette.Behavior.extend({
 
 		return promise.done(function() {
 			ControllerChannel.trigger('saved:content');
-		}).fail(function(xhr) {
+		}).fail(function(error) {
 
 			Backbone.$('#content').animate({
 				scrollTop: 0
 			}, 'slow');
 
-			Forms.displayErrors(xhr, this.getUI('errors'), this.view.el);
+			Forms.displayErrors(error, this.getUI('errors'), this.view.el);
 
 		}.bind(this)).always(function() {
 			this.lockSave = false;
@@ -150,13 +150,13 @@ module.exports = Marionette.Behavior.extend({
 		var old = btn.text();
 		btn.html(LoaderTpl());
 
-		return promise.fail(function(xhr) {
+		return promise.fail(function(error) {
 
 			Backbone.$('#content').animate({
 				scrollTop: 0
 			}, 'slow');
 
-			Forms.displayErrors(xhr, this.getUI('errors'), this.view.el);
+			Forms.displayErrors(error, this.getUI('errors'), this.view.el);
 
 		}.bind(this)).always(function() {
 			Backbone.history.history.back();

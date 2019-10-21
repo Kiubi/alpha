@@ -1,12 +1,22 @@
-<header class="post-header">
-	<a href="#seo" class="float-right collapsed" data-toggle="collapse"
-	   aria-expanded="false" aria-controls="seo">
-		Afficher <span class="more">plus</span> <span class="less">moins</span> d'options
-	</a>
+<header class="post-header no-border">
 	<h1>Référencement</h1>
 </header>
+
 <div class="post-content">
-	<% if(slug_prefix != false) { %>
+	
+	<div class="post-group seo-layout">
+		<h3><%- preview_meta_title %></h3>
+		<p class="seo-breadcrumb mb-2"><%- slug_prefix %><%- slug %><%- slug_suffix %></p>
+		<p class="seo-desc mb-0"><%- preview_meta_description %></p>
+	</div>
+	
+	<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
+		<label for="meta_title">Titre de la page</label>
+		<input class="form-control" id="meta_title" name="meta_title" value="<%- meta_title %>" placeholder="<%- defaults_meta_title %>" type="text">
+	</div>
+	
+	<% if (slug_edit != false) { %>
+
 	<div class="form-group">
 		<label class="required" for="slug">Adresse de la page</label>
 		<div class="input-group">
@@ -26,10 +36,7 @@
 	</div>
 	</div> -->
 	<% } %>
-	<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
-		<label for="meta_title">Titre de la page</label>
-		<input class="form-control" id="meta_title" name="meta_title" value="<%- meta_title %>" placeholder="<%- defaults_meta_title %>" type="text">
-	</div>
+
 	<div class="form-group" data-behavior="countable"><span class="letter-counter"></span>
 		<label for="meta_description">Description de la page</label>
 		<textarea class="form-control" id="meta_description" name="meta_description" rows="5" placeholder="<%- defaults_meta_description %>"><%- meta_description %></textarea>
@@ -48,5 +55,10 @@
 			<textarea class="form-control" id="js_body" name="js_body" rows="5" placeholder="<%- defaults_js_body %>"><%- js_body %></textarea>
 		</div>
 	</div>
+	<a href="#seo" class="collapsed" data-toggle="collapse"
+	   aria-expanded="false" aria-controls="seo">
+		Afficher <span class="more">plus</span> <span class="less">moins</span> d'options
+	</a>
+
 </div>
 <footer class="post-footer"></footer>

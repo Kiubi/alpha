@@ -11,30 +11,15 @@ function checkExport(job) {
 	return Backbone.ajax({
 		url: 'sites/@site/export/subscribers/' + token,
 		method: 'GET'
-	}).then(function(response) {
-		return response.data;
+	}).then(function(data, meta) {
+		return data;
 	});
 }
 
-var Subscriber = Backbone.Model.extend({
+var Subscriber = CollectionUtils.KiubiModel.extend({
 
 	urlRoot: 'sites/@site/subscribers',
 	idAttribute: 'subscriber_id',
-
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					subscriber_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"subscriber_id": null,
@@ -44,20 +29,15 @@ var Subscriber = Backbone.Model.extend({
 	}
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/subscribers',
 
 	model: Subscriber,
 
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
-
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkSubscribe: function(ids) {
@@ -78,7 +58,7 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
+	 * @param {Number[]} ids
 	 * @returns {Promise}
 	 */
 	bulkUnsubscribe: function(ids) {
@@ -98,19 +78,6 @@ module.exports = Backbone.Collection.extend({
 	},
 
 	/**
-	 *
-	 * @param {Integer[]} ids
-	 * @returns {Promise}
-	 */
-	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
-		}, ids);
-
-	},
-
-	/**
 	 * @param {Object} data
 	 * @returns {Promise}
 	 */
@@ -119,10 +86,10 @@ module.exports = Backbone.Collection.extend({
 			url: 'sites/@site/export/subscribers',
 			method: 'POST',
 			data: data
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {

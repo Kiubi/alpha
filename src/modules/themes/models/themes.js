@@ -1,19 +1,12 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-var Theme = Backbone.Model.extend({
+var Theme = CollectionUtils.KiubiModel.extend({
 
 	url: 'sites/@site/themes',
 
 	idAttribute: 'code',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		"code": null,
@@ -42,13 +35,9 @@ var Theme = Backbone.Model.extend({
 
 });
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 	url: 'sites/@site/themes',
 	model: Theme,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	/**
 	 * Create a custom theme
@@ -65,9 +54,9 @@ module.exports = Backbone.Collection.extend({
 				code: data.code,
 				reuse_layouts: data.reuse_layouts
 			}
-		}).then(function(response) {
+		}).then(function(data) {
 			this.trigger('create');
-			return new this.model(response.data);
+			return new this.model(data);
 		}.bind(this));
 	},
 
@@ -84,8 +73,8 @@ module.exports = Backbone.Collection.extend({
 			data: {
 				code: theme
 			}
-		}).then(function(response) {
-			return new this.model(response.data);
+		}).then(function(data) {
+			return new this.model(data);
 		}.bind(this));
 	},
 
@@ -98,8 +87,8 @@ module.exports = Backbone.Collection.extend({
 		return Backbone.ajax({
 			url: this.url + '/current',
 			method: 'GET'
-		}).then(function(response) {
-			return new this.model(response.data);
+		}).then(function(data) {
+			return new this.model(data);
 		}.bind(this));
 	},
 
@@ -116,8 +105,8 @@ module.exports = Backbone.Collection.extend({
 			data: {
 				variant: variant
 			}
-		}).then(function(response) {
-			//return new this.model(response.data);
+		}).then(function(data) {
+			//return new this.model(data);
 		}.bind(this));
 	}
 

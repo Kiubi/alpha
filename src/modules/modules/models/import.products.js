@@ -1,3 +1,4 @@
+var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Job = require('./job');
@@ -11,11 +12,11 @@ function checkAnalyse(job) {
 	return Backbone.ajax({
 		url: 'sites/@site/import/catalog/products/' + token,
 		method: 'GET'
-	}).then(function(response) {
+	}).then(function(data) {
 
-		response.data.token = token;
+		data.token = token;
 
-		return response.data;
+		return data;
 	});
 }
 
@@ -24,24 +25,14 @@ function checkImport(token) {
 	return Backbone.ajax({
 		url: 'sites/@site/import/catalog/products/' + token,
 		method: 'GET'
-	}).then(function(response) {
-
-		return response.data;
-
+	}).then(function(data, meta) {
+		return data;
 	});
 }
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 
 	url: 'sites/@site/import/catalog/products',
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			return response.data;
-		}
-		return response;
-	},
 
 	isNew: function() {
 		return false;
@@ -68,10 +59,10 @@ module.exports = Backbone.Model.extend({
 			data: data,
 			processData: false,
 			contentType: false
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {
@@ -88,10 +79,10 @@ module.exports = Backbone.Model.extend({
 		return Backbone.ajax({
 			url: this.url + '/' + token,
 			method: 'PUT'
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var job = new Job({
-				job_id: response.data.job_id
+				job_id: data.job_id
 			});
 
 			return job.watch().then(function() {

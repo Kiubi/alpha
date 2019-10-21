@@ -60,12 +60,15 @@ module.exports = Marionette.View.extend({
 	hasAccounting: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['collection', 'carriers', 'customers', 'payments', 'hasAccounting']);
+		this.mergeOptions(options, ['collection', 'carriers', 'customers', 'payments', 'departments', 'hasAccounting']);
 		this.filters = {
 			is_paid: null,
-			status: this.getOption('filters') && this.getOption('filters').status ? this.getOption('filters').status : null,
+			status: this.getOption('filters') && this.getOption('filters').status && this.getOption('filters').status != 'all' ? this.getOption('filters').status : null,
 			customer_id: this.getOption('customer_id') ? this.getOption('customer_id') : null,
-			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
+			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null,
+			payment_date: this.getOption('filters') && this.getOption('filters').payment_date_min && this.getOption('filters').payment_date_max ? [this.getOption('filters').payment_date_min, this.getOption('filters').payment_date_max] : null,
+			creation_date: this.getOption('filters') && this.getOption('filters').creation_date_min && this.getOption('filters').creation_date_max ? [this.getOption('filters').creation_date_min, this.getOption('filters').creation_date_max] : null,
+			department: this.getOption('filters') && this.getOption('filters').department ? this.getOption('filters').department : null
 		};
 
 		this.listenTo(this.collection, 'sync', function(model) {
@@ -123,7 +126,7 @@ module.exports = Marionette.View.extend({
 		var current = status.findWhere({
 			value: this.filters.status
 		});
-		this.showChildView('list', new ListView({
+		var view = new ListView({
 			collection: this.collection,
 			rowView: RowView,
 
@@ -204,6 +207,9 @@ module.exports = Marionette.View.extend({
 				}, {
 					'value': 'fidelity',
 					'label': 'Points de fidélités'
+				}, {
+					'value': 'department',
+					'label': 'Département'
 				}])
 			}],
 			xtra: [{
@@ -233,7 +239,21 @@ module.exports = Marionette.View.extend({
 					value: '-modification'
 				}])
 			}]
-		}));
+		});
+		this.showChildView('list', view);
+
+		if (this.filters.payment_date != null) {
+			view.showFilter('paymentDate');
+		}
+
+		if (this.filters.creation_date != null) {
+			view.showFilter('creation');
+		}
+
+		if (this.filters.department != null) {
+			view.showFilter('department');
+		}
+
 	},
 
 	start: function() {
@@ -262,6 +282,10 @@ module.exports = Marionette.View.extend({
 		if (this.filters.fidelity_reward != null) {
 			data.fidelity_reward_min = this.filters.fidelity_reward[0];
 			data.fidelity_reward_max = this.filters.fidelity_reward[1];
+		}
+		if (this.filters.department != null) {
+			data.country_id = 73; // Fr only
+			data.department = this.filters.department;
 		}
 
 		this.collection.fetch({
@@ -370,6 +394,10 @@ module.exports = Marionette.View.extend({
 				data.fidelity_reward_min = this.filters.fidelity_reward[0];
 				data.fidelity_reward_max = this.filters.fidelity_reward[1];
 			}
+			if (this.filters.department !== '' && this.filters.department != null) {
+				data.country_id = 73; // Fr only
+				data.department = this.filters.department;
+			}
 
 			this.collection.exportAll(data).done(function(data) {
 				view.overrideExtraClassname('');
@@ -382,9 +410,9 @@ module.exports = Marionette.View.extend({
 					extraClassname: 'md-export'
 				}]);
 				view.toggleDropdown(); // open
-			}.bind(this)).fail(function(xhr) {
+			}.bind(this)).fail(function(error) {
 				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-				navigationController.showErrorModal(xhr);
+				navigationController.showErrorModal(error);
 
 				view.overrideExtraClassname('');
 				while (view.collection.length > max) {
@@ -436,6 +464,11 @@ module.exports = Marionette.View.extend({
 		this.start();
 	},
 
+	onDepartmentFilterChange: function(filter) {
+		this.filters.department = filter.value;
+		this.start();
+	},
+
 	onAddFilterChange: function(filter) {
 		var cfg;
 		switch (filter.value) {
@@ -469,7 +502,8 @@ module.exports = Marionette.View.extend({
 					type: 'interval',
 					enableDatepicker: 'date',
 					prependText: ['Créée entre', 'et'],
-					canDelete: true
+					canDelete: true,
+					value: this.filters.creation_date ? this.filters.creation_date : null
 				};
 				break;
 			case 'price':
@@ -488,7 +522,8 @@ module.exports = Marionette.View.extend({
 					type: 'interval',
 					enableDatepicker: 'date',
 					prependText: ['Payée entre', 'et'],
-					canDelete: true
+					canDelete: true,
+					value: this.filters.payment_date ? this.filters.payment_date : null
 				};
 				break;
 			case 'payment':
@@ -516,6 +551,15 @@ module.exports = Marionette.View.extend({
 					type: 'interval',
 					prependText: ['Pt de fidélités', 'et'],
 					canDelete: true
+				};
+				break;
+			case 'department':
+				cfg = {
+					id: filter.value,
+					title: 'Département',
+					type: 'dropdown',
+					canDelete: true,
+					collectionPromise: this.departments.promisedSelect(this.filters.department)
 				};
 				break;
 			default:

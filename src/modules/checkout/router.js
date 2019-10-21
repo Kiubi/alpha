@@ -18,6 +18,7 @@ var Countries = require('kiubi/core/models/countries');
 var Search = require('kiubi/core/models/geo.search');
 var Payments = require('./models/payments');
 var Customers = require('kiubi/modules/customers/models/customers');
+var Departements = require('kiubi/core/models/departments');
 
 /* Views */
 var OrdersView = require('./views/orders');
@@ -180,7 +181,10 @@ var CheckoutController = Controller.extend({
 	showOrders: function(queryString) {
 		var qs = this.parseQueryString(queryString, {
 			'status': null,
-			'term': null
+			'term': null,
+			'creation_date_min': null,
+			'creation_date_max': null,
+			'department': null
 		});
 
 		if (!qs.status) {
@@ -194,6 +198,7 @@ var CheckoutController = Controller.extend({
 			carriers: new Carriers(),
 			customers: new Customers(),
 			payments: new Payments(),
+			departments: new Departements(),
 			filters: qs,
 			hasAccounting: Session.hasFeature('accounting')
 		});
@@ -423,8 +428,8 @@ var CheckoutController = Controller.extend({
 		return m.save().done(function() {
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/checkout/options/' + m.get('option_id'));
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 	},
 
@@ -550,8 +555,8 @@ var CheckoutController = Controller.extend({
 		return m.save().done(function() {
 			this.navigationController.showOverlay(300);
 			this.navigationController.navigate('/checkout/carriers/' + m.get('carrier_id'));
-		}.bind(this)).fail(function(xhr) {
-			this.navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
 		}.bind(this));
 	}
 

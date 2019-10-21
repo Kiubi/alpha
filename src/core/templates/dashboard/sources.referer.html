@@ -1,0 +1,48 @@
+<header class="post-header"><h1>Visites par sources de trafic</h1></header>
+<div class="post-content post-list no-hover">
+	<div class="list-item list-item-sm">
+		<div class="row no-gutters">
+			<div class="col item-body"><h4>Recherches</h4></div>
+			<% if(hasData) { %>
+			<div class="col-3"><%- formatNumber(referer.search) %></div>
+			<div class="col-2"><span class="md-icon <%- referer.search_trends >=0 ? 'md-trendingup text-success' : 'md-trendingdown text-danger' %> mr-1"></span><%- formatPrct(referer.search_trends*100) %>%</div>
+			<% } else { %>
+			<div class="col-2">-</div>
+			<% } %>
+		</div>
+	</div>
+	<div class="list-item list-item-sm">
+		<div class="row no-gutters">
+			<div class="col item-body"><h4>Liens directs</h4></div>
+			<% if(hasData) { %>
+			<div class="col-3"><%- formatNumber(referer.referals) %></div>
+			<div class="col-2"><span class="md-icon <%- referer.referals_trends >=0 ? 'md-trendingup text-success' : 'md-trendingdown text-danger' %> mr-1"></span><%- formatPrct(referer.referals_trends*100) %>%</div>
+			<% } else { %>
+			<div class="col-2">-</div>
+			<% } %>
+		</div>
+	</div>
+	<div class="list-item list-item-sm">
+		<div class="row no-gutters">
+			<div class="col item-body"><h4>Réseaux sociaux</h4></div>
+			<% if(hasData) { %>
+			<div class="col-3"><%- formatNumber(referer.social) %></div>
+			<div class="col-2"><span class="md-icon <%- referer.social_trends >=0 ? 'md-trendingup text-success' : 'md-trendingdown text-danger' %> mr-1"></span><%- formatPrct(referer.social_trends*100) %>%</div>
+			<% } else { %>
+			<div class="col-2">-</div>
+			<% } %>
+		</div>
+	</div>
+	<div class="list-item list-item-sm">
+		<div class="row no-gutters">
+			<div class="col item-body"><h4>Emails</h4></div>
+			<% if(hasData) { %>
+			<div class="col-3"><%- formatNumber(referer.email) %></div>
+			<div class="col-2"><span class="md-icon <%- referer.email_trends >=0 ? 'md-trendingup text-success' : 'md-trendingdown text-danger' %> mr-1"></span><%- formatPrct(referer.email_trends*100) %>%</div>
+			<% } else { %>
+			<div class="col-2">-</div>
+			<% } %>
+		</div>
+	</div>
+</div>
+<footer class="post-footer"></footer>

@@ -1,30 +1,11 @@
-var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-var Categ = Backbone.Model.extend({
+var Categ = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/blog/categories',
 	idAttribute: 'category_id',
 
 	previewLink: null,
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					category_id: response.data
-				};
-			}
-
-			if (response.meta && response.meta.link && response.meta.link.preview) {
-				this.previewLink = response.meta.link.preview;
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		category_id: null,
@@ -36,19 +17,16 @@ var Categ = Backbone.Model.extend({
 		js_body: '',
 		slug: '',
 		is_visible: false,
-		layout_id: null
+		layout_id: null,
+		service_path: ''
 	}
 
 });
 
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 	url: 'sites/@site/blog/categories',
 	model: Categ,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	selectPayload: function() {
 		return _.map(this.toJSON(), function(item) {
@@ -129,19 +107,6 @@ module.exports = Backbone.Collection.extend({
 			}, {
 				patch: true
 			});
-		}, ids);
-
-	},
-
-	/**
-	 *
-	 * @param {Integer[]} ids
-	 * @returns {Promise}
-	 */
-	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
 		}, ids);
 
 	}

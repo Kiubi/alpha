@@ -3,7 +3,7 @@ var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 var api = require('kiubi/utils/api.client.js');
 
-var File = Backbone.Model.extend({
+var File = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/catalog/downloads/files',
 	idAttribute: 'media_id',
 
@@ -13,20 +13,6 @@ var File = Backbone.Model.extend({
 		prct: 0,
 		status: 'pending', // pending => uploading => done|fail
 		error: ''
-	},
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					media_id: response.data
-				};
-			}
-
-			return response.data;
-		}
-		return response;
 	},
 
 	defaults: {
@@ -49,7 +35,7 @@ var File = Backbone.Model.extend({
 		this.setProgression(0, 'pending');
 
 		if (api.max_post_size && File.size > api.max_post_size) {
-			return this.destroy();
+			return false;
 		}
 
 		this.set('name', File.name);
@@ -61,7 +47,7 @@ var File = Backbone.Model.extend({
 		// this.set('status', "draft");
 
 		if (this.get('type') != 'image') {
-			return;
+			return true;
 		}
 
 		var model = this;
@@ -75,7 +61,7 @@ var File = Backbone.Model.extend({
 				delete this;
 			};
 			preloader.src = domURL.createObjectURL(File);
-			return;
+			return true;
 		}
 
 		// Fallback
@@ -89,6 +75,7 @@ var File = Backbone.Model.extend({
 			preloader.src = event.target.result;
 		};
 		reader.readAsDataURL(File);
+		return true;
 	},
 
 	createThumbnail: function(img) {
@@ -148,10 +135,10 @@ var File = Backbone.Model.extend({
 				return xhr;
 			},
 			data: datas
-		}).done(function(response) {
+		}).done(function(data) {
 
-			if (response.data && _.isNumber(response.data)) {
-				model.set('media_id', response.data);
+			if (data && _.isNumber(data)) {
+				model.set('media_id', data);
 				if (model.get('name') && model.get('name').indexOf('.') >= 0) {
 					var name_witouth_ext = model.get('name').split('.').slice(0, -1).join('.');
 					model.set('name', name_witouth_ext);
@@ -180,7 +167,7 @@ var File = Backbone.Model.extend({
 });
 
 
-module.exports = Backbone.Collection.extend({
+module.exports = CollectionUtils.KiubiCollection.extend({
 
 	folder_id: null,
 
@@ -191,10 +178,6 @@ module.exports = Backbone.Collection.extend({
 	},
 
 	model: File,
-	parse: function(response) {
-		this.meta = response.meta;
-		return response.data;
-	},
 
 	upload: function() {
 		var upload = [];
@@ -210,21 +193,8 @@ module.exports = Backbone.Collection.extend({
 
 	/**
 	 *
-	 * @param {Integer[]} ids
-	 * @returns {Promise}
-	 */
-	bulkDelete: function(ids) {
-
-		return CollectionUtils.bulkAction(this, function(model) {
-			return model.destroy();
-		}, ids);
-
-	},
-
-	/**
-	 *
-	 * @param {Integer[]} ids
-	 * @param {Integer} folder_id
+	 * @param {Number[]} ids
+	 * @param {Number} folder_id
 	 * @returns {Promise}
 	 */
 	bulkMove: function(ids, folder_id) {

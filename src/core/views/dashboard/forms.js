@@ -23,7 +23,8 @@ var RowView = Marionette.View.extend({
 		}
 
 		return {
-			creation_date_fromnow: creation_date_fromnow
+			creation_date_fromnow: creation_date_fromnow,
+			summary: this.model.getSummary()
 		};
 	}
 
@@ -44,8 +45,11 @@ var ListView = Marionette.CollectionView.extend({
 module.exports = Marionette.View.extend({
 	template: require('../../templates/dashboard/forms.html'),
 
-	className: 'post-article dashboard-forms',
-	tagName: 'article',
+	attributes: function() {
+		return {
+			class: 'col-12 col-lg-' + this.model.get('size') + ' order-lg-' + this.model.get('order') + ' d-flex'
+		};
+	},
 
 	regions: {
 		list: {

@@ -27,8 +27,8 @@ var RowView = Marionette.View.extend({
 			}
 			navigationController.hideModal();
 			this.render();
-		}.bind(this)).fail(function(xhr) {
-			navigationController.showErrorModal(xhr);
+		}.bind(this)).fail(function(error) {
+			navigationController.showErrorModal(error);
 		});
 
 	}

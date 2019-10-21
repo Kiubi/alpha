@@ -2,29 +2,9 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var CollectionUtils = require('kiubi/utils/collections.js');
 
-module.exports = Backbone.Model.extend({
+module.exports = CollectionUtils.KiubiModel.extend({
 	urlRoot: 'sites/@site/cms/pages',
 	idAttribute: 'page_id',
-
-	previewLink: null,
-
-	parse: function(response) {
-		if ('data' in response) {
-			if (response.data === null) return {};
-			if (_.isNumber(response.data)) {
-				return {
-					page_id: response.data
-				};
-			}
-
-			if (response.meta && response.meta.link && response.meta.link.preview) {
-				this.previewLink = response.meta.link.preview;
-			}
-
-			return response.data;
-		}
-		return response;
-	},
 
 	defaults: {
 		page_id: null,
@@ -46,7 +26,8 @@ module.exports = Backbone.Model.extend({
 		target_page: '',
 		target_key: '',
 		url_target: '',
-		restrictions: []
+		restrictions: [],
+		service_path: ''
 	},
 
 	/**
@@ -57,10 +38,10 @@ module.exports = Backbone.Model.extend({
 	getInternalLinkTypes: function(selected) {
 		return Backbone.ajax({
 			url: 'sites/@site/cms/internal_links/targets'
-		}).then(function(response) {
+		}).then(function(data) {
 
 			var c = new CollectionUtils.SelectCollection();
-			c.add(_.map(response.data, function(type) {
+			c.add(_.map(data, function(type) {
 				return {
 					'value': type.type,
 					'label': type.name,
@@ -81,8 +62,8 @@ module.exports = Backbone.Model.extend({
 	getInternalLinkTargets: function(type) {
 		return Backbone.ajax({
 			url: 'sites/@site/cms/internal_links/targets/' + type
-		}).then(function(response) {
-			return response.data;
+		}).then(function(data) {
+			return data;
 		});
 	},
 
@@ -100,8 +81,8 @@ module.exports = Backbone.Model.extend({
 				page_id: this.get('page_id')
 				// name : '...'
 			}
-		}).then(function(response) {
-			return response.data;
+		}).then(function(data, meta) {
+			return data;
 		});
 	}
 

@@ -43,6 +43,7 @@ watchify -v -d ./src/app.js             \
 	--exclude chart.js		            \
 	--exclude clipboard		            \
 	--exclude codemirror	            \
+	--exclude jqvmap-novulnerability    \
 	--exclude underscore                \
 	--exclude underscore.string         \
 	--exclude backbone.marionette       \

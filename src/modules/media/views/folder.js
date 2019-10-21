@@ -89,9 +89,9 @@ module.exports = Marionette.View.extend({
 	onDelete: function() {
 		return this.model.destroy({
 			wait: true
-		}).fail(function(xhr) {
+		}).fail(function(error) {
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-			navigationController.showErrorModal(xhr);
+			navigationController.showErrorModal(error);
 		}.bind(this));
 	}
 

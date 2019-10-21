@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var $ = require('jquery');
 var _ = require('underscore');
+var NavigationChannel = Backbone.Radio.channel('navigation');
 
 /**
  * Return object without null or undefined properties
@@ -36,6 +37,7 @@ var Errors = {};
 
 Errors.E_UNKNOWN_RESOURCE = 4401;
 Errors.E_MAINTENANCE = 5300;
+Errors.E_SYS_UNEXPECTED_ERROR = 5007;
 Errors.E_REQUEST_TOO_LARGE = 413;
 Errors.E_ACCESS_ABUSE = 4300;
 Errors.E_ACCESS_AUTH_NEEDED = 4307;
@@ -68,13 +70,6 @@ var Client = Marionette.Object.extend({
 		this.api_url = config.get('api');
 		this.version = config.get('client_version');
 
-		$(document).ajaxError(function(e, xhr, options) {
-			if (xhr.responseJSON &&
-				xhr.responseJSON.error &&
-				xhr.responseJSON.error.code == Errors.E_ACCESS_TOKEN) {
-				$(document).trigger('application:logout');
-			}
-		});
 	},
 	/**
 	 * Uniformise l'URL d'appelle pour un endpoint donné
@@ -171,7 +166,79 @@ var Client = Marionette.Object.extend({
 			params.data = null;
 		}
 
-		return Backbone.$.ajax.apply(Backbone.$, [params, options]);
+		return this.decorationAjax(Backbone.$.ajax.apply(Backbone.$, [params, options]), params);
+	},
+
+	/**
+	 * 
+	 * @param {XHR} ajax
+	 * @returns {Promise}
+	 */
+	decorationAjax: function(ajax, params) {
+		var d = Backbone.$.Deferred();
+		var client = this;
+
+		ajax.done(function(payload) {
+			if (payload.meta && payload.meta.status_code != 200) {
+				// cas spécifique ou une erreur est
+				// retournée dans un code 200
+				d.reject(payload.error || {}, payload.meta || {}, payload.data || {});
+				return;
+			}
+			d.resolve(payload.data || {}, payload.meta || {});
+		});
+
+		ajax.fail(function(xhr) {
+
+			var payload = {};
+			if (xhr.responseText) {
+				try {
+					// sur un fail jQuery stocke le retour json sous forme de texte
+					payload = Backbone.$.parseJSON(xhr.responseText);
+				} catch (e) {
+					payload.error = {
+						'code': Errors.E_SYS_UNEXPECTED_ERROR,
+						'message': "An unexpected error has occurred.",
+						'fields': []
+					};
+				}
+			}
+
+			if (xhr.status == 503 && !params.disableErrorHandling) {
+				NavigationChannel.trigger('critical:error', payload.error, payload.meta);
+				payload.error.handled = true;
+			}
+
+			// Not allowed
+			if (xhr.status == 403 && !params.disableErrorHandling) {
+				// Tokens errors
+				if (payload.error && (payload.error.code == Errors.E_ACCESS_TOKEN || payload.error.code == Errors.E_ACCESS_AUTH_NEEDED)) {
+					NavigationChannel.trigger('expired:login', payload.error, payload.meta);
+					payload.error.handled = true;
+				}
+			}
+
+			// on rejette la promesse
+			d.reject.apply(this, [
+				payload.error || {},
+				payload.meta || {},
+				payload.data || {}
+			]);
+		});
+
+		ajax.always(function(xhr) {
+			if (!xhr.meta) {
+				// try reading meta from responseText
+				try {
+					xhr = $.parseJSON(xhr.responseText);
+				} catch (e) {
+					return;
+				}
+			}
+			client._rate_remaining = xhr.meta.rate_remaining; // FIXME bofbof
+		});
+
+		return d.promise();
 	},
 
 	/**
@@ -185,60 +252,12 @@ var Client = Marionette.Object.extend({
 	 * @returns Promise
 	 */
 	query: function(type, endpoint, params, ajax_options) {
-		var d = $.Deferred();
-		var client = this;
-
-		var query = this.ajax($.extend({
+		return this.ajax($.extend({
 			type: type,
 			dataType: 'json',
 			data: params || {},
-			url: endpoint,
+			url: endpoint
 		}, ajax_options || {}));
-
-		query.done(function(s) {
-			if (s.meta.status_code != 200) {
-				// cas spécifique ou une erreur est
-				// retournée dans un code 200
-				d.reject(s.meta, s.error, s.data);
-				return;
-			}
-			d.resolve(s.meta, s.data);
-		});
-
-		query.fail(function(s) {
-			var payload = {};
-			if (s.responseText) {
-				try {
-					// sur un fail jQuery stocke le retour json sous forme de texte
-					payload = $.parseJSON(s.responseText);
-				} catch (e) {
-					payload.error = {
-						'message': "An unexpected error has occurred.",
-						'fields': []
-					};
-				}
-			}
-			// on rejette la promesse
-			d.reject.apply(this, [
-				payload.meta || {},
-				payload.error || {},
-				payload.data || {}
-			]);
-		});
-
-		query.always(function(s) {
-			if (!s.meta) {
-				// try reading meta from responseText
-				try {
-					s = $.parseJSON(s.responseText);
-				} catch (e) {
-					return;
-				}
-			}
-			client._rate_remaining = s.meta.rate_remaining;
-		});
-
-		return d.promise();
 	},
 
 	/**
