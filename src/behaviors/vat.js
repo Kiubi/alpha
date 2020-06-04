@@ -46,12 +46,14 @@ module.exports = Marionette.Behavior.extend({
 			return this.view.getOption(this.getOption('proxy')).taxRate();
 		}
 
+		if (!this.view.getChildView('taxes')) return 1;
+
 		tax = this.view.taxes.get(this.view.getChildView('taxes').selected);
 		if (tax) {
 			return (1 + tax.get('vat_rate') / 100);
 		}
 
-		return null;
+		return 1;
 	},
 
 	/* Handle Rate change */

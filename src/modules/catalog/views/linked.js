@@ -171,7 +171,12 @@ module.exports = Marionette.View.extend({
 			data: {
 				extra_fields: 'categories'
 			}
-		});
+		}).done(function() {
+			// restore product_id for each link
+			this.collection.each(function (model) {
+				model.set('product_id', model.collection.product_id)
+			})
+		}.bind(this));
 	}
 
 });

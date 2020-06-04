@@ -6,7 +6,8 @@ var format = require('kiubi/utils/format.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var VatBehavior = require('kiubi/behaviors/vat.js');
 var Forms = require('kiubi/utils/forms.js');
-var SelectView = require('kiubi/core/views/ui/select.js');
+var TaxView = require('kiubi/modules/catalog/views/select.taxes.js');
+
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/option.html'),
@@ -46,11 +47,12 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
-		this.showChildView('taxes', new SelectView({
-			collection: this.taxes,
-			selected: this.model.get('tax_id'),
-			name: 'tax_id'
-		}));
+		if (this.taxes.length > 0) {
+			this.showChildView('taxes', new TaxView({
+				taxes: this.taxes,
+				selected: this.model.get('tax_id')
+			}));
+		}
 	},
 
 	onSave: function() {

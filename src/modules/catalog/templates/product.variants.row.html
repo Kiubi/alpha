@@ -50,62 +50,59 @@
 		</div>
 		<div class="col-4">
 			<div class="form-group">
-				<label for="reference">Référence</label>
-				<input class="form-control" id="reference" name="reference" value="<%- reference %>" placeholder="" type="text">
+				<label for="reference_<%- variant_id %>">Référence</label>
+				<input class="form-control" id="reference_<%- variant_id %>" name="reference" value="<%- reference %>" placeholder="" type="text">
 			</div>
 		</div>
 		<div class="col-4">
 			<div class="form-group">
-				<label for="gtin">EAN/ISBN</label>
-				<input class="form-control" id="gtin" name="gtin" value="<%- gtin %>" placeholder="8, 10, 12, 13 ou 14 chiffres" type="text">
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-4">
-			<div class="form-group">
-				<label for="price_ex_vat">Prix HT</label>
-				<div class="input-group">
-					<div class="input-group-prepend"><span class="input-group-text"></span></div>
-					<input class="form-control" id="price_ex_vat" name="price_ex_vat" data-role="vat" data-linked="price_inc_vat" value="<%- price_ex_vat %>" placeholder="0,00">
-					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-4">
-			<div class="form-group">
-				<label for="price_inc_vat">Prix TTC</label>
-				<div class="input-group">
-					<div class="input-group-prepend"><span class="input-group-text"></span></div>
-					<input class="form-control" id="price_inc_vat" name="price_inc_vat" data-role="vat" data-linked="price_ex_vat" value="<%- price_inc_vat %>" placeholder="0,00">
-					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-4">
-			<div class="form-group">
-				<label for="tax_id">Taxe</label>
-				<div data-role="taxes"></div>
+				<label for="gtin_<%- variant_id %>">EAN/ISBN</label>
+				<input class="form-control" id="gtin_<%- variant_id %>" name="gtin" value="<%- gtin %>" placeholder="8, 10, 12, 13 ou 14 chiffres" type="text">
 			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-4">
 			<div class="form-group">
-				<label for="price_discount_ex_vat">Promotion HT</label>
+				<label for="price_ex_vat_<%- variant_id %>">Prix HT</label>
 				<div class="input-group">
 					<div class="input-group-prepend"><span class="input-group-text"></span></div>
-					<input class="form-control" id="price_discount_ex_vat" name="price_discount_ex_vat" data-role="vat" data-linked="price_discount_inc_vat" value="<%- price_discount_ex_vat %>" placeholder="Pas de promotion">
+					<input class="form-control" id="price_ex_vat_<%- variant_id %>" name="price_ex_vat" data-role="vat" data-linked="price_inc_vat" value="<%- price_ex_vat %>" placeholder="0,00">
 					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
 				</div>
 			</div>
 		</div>
 		<div class="col-4">
 			<div class="form-group">
-				<label for="price_discount_inc_vat">Promotion TTC</label>
+				<label for="price_inc_vat_<%- variant_id %>">Prix TTC</label>
 				<div class="input-group">
 					<div class="input-group-prepend"><span class="input-group-text"></span></div>
-					<input class="form-control" id="price_discount_inc_vat" name="price_discount_inc_vat" data-role="vat" data-linked="price_discount_ex_vat" value="<%- price_discount_inc_vat %>" placeholder="Pas de promotion">
+					<input class="form-control" id="price_inc_vat_<%- variant_id %>" name="price_inc_vat" data-role="vat" data-linked="price_ex_vat" value="<%- price_inc_vat %>" placeholder="0,00">
+					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div data-role="taxes"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4">
+			<div class="form-group">
+				<label for="price_discount_ex_vat_<%- variant_id %>">Promotion HT</label>
+				<div class="input-group">
+					<div class="input-group-prepend"><span class="input-group-text"></span></div>
+					<input class="form-control" id="price_discount_ex_vat_<%- variant_id %>" name="price_discount_ex_vat" data-role="vat" data-linked="price_discount_inc_vat" value="<%- price_discount_ex_vat %>" placeholder="Pas de promotion">
+					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				<label for="price_discount_inc_vat_<%- variant_id %>">Promotion TTC</label>
+				<div class="input-group">
+					<div class="input-group-prepend"><span class="input-group-text"></span></div>
+					<input class="form-control" id="price_discount_inc_vat_<%- variant_id %>" name="price_discount_inc_vat" data-role="vat" data-linked="price_discount_ex_vat" value="<%- price_discount_inc_vat %>" placeholder="Pas de promotion">
 					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
 				</div>
 			</div>
@@ -121,18 +118,18 @@
 	<div class="row">
 		<div class="col-4">
 			<div class="form-group">
-				<label for="weight">Poids</label>
+				<label for="weight_<%- variant_id %>">Poids</label>
 				<div class="input-group">
 					<div class="input-group-prepend"><span class="input-group-text"></span></div>
-					<input class="form-control" id="weight" name="weight" value="<%- weight %>" placeholder="0">
+					<input class="form-control" id="weight_<%- variant_id %>" name="weight" value="<%- weight %>" placeholder="0">
 					<div class="input-group-append"><span class="input-group-text">g</span></div>
 				</div>
 			</div>
 		</div>
 		<div class="col-4">
 			<div class="form-group">
-				<label for="condition">Etat</label>
-				<select class="form-control" id="condition" name="condition" data-style="selectify">
+				<label for="condition_<%- variant_id %>">Etat</label>
+				<select class="form-control" id="condition_<%- variant_id %>" name="condition" data-style="selectify">
 					<option value="new" <%= condition == 'new' ? 'selected="selected"' : '' %>>Neuf</option>
 					<option value="used" <%= condition == 'used' ? 'selected="selected"' : '' %>>Occasion</option>
 					<option value="refurbished" <%= condition == 'refurbished' ? 'selected="selected"' : '' %>>Reconditionné</option>
@@ -141,10 +138,10 @@
 		</div>
 		<div class="col-4">
 			<div class="form-group">
-				<label for="price_ecotax">Eco-part. incluse</label>
+				<label for="price_ecotax_<%- variant_id %>">Eco-part. incluse</label>
 				<div class="input-group">
 					<div class="input-group-prepend"><span class="input-group-text"></span></div>
-					<input class="form-control" id="price_ecotax" name="price_ecotax" value="<%- price_ecotax %>" placeholder="Pas d'éco-participation">
+					<input class="form-control" id="price_ecotax_<%- variant_id %>" name="price_ecotax" value="<%- price_ecotax %>" placeholder="Pas d'éco-participation">
 					<div class="input-group-append"><span class="input-group-text"><%= currency %></span></div>
 				</div>
 			</div>
@@ -153,8 +150,8 @@
 	<div class="row">
 		<div class="col-4">
 			<div class="form-group">
-				<label for="is_stock_unlimited">Stock</label>
-				<select class="form-control" id="is_stock_unlimited" name="is_stock_unlimited" data-style="selectify">
+				<label for="is_stock_unlimited_<%- variant_id %>">Stock</label>
+				<select class="form-control" id="is_stock_unlimited_<%- variant_id %>" name="is_stock_unlimited" data-style="selectify">
 					<option value="0" <%= !is_stock_unlimited ? 'selected="selected"':'' %>>Quantité limitée</option>
 					<option value="1" <%= is_stock_unlimited ? 'selected="selected"':'' %>>Stock illimité</option>
 				</select>
@@ -162,8 +159,8 @@
 		</div>
 		<div class="col-4" data-role="stock" <%= is_stock_unlimited ? 'style="display:none"':'' %>>
 			<div class="form-group">
-				<label for="stock">Ajouter au stock</label>
-				<input class="form-control" id="stock" name="stock" placeholder="+ pour ajouter ou - pour retirer" type="text">
+				<label for="stock_<%- variant_id %>">Ajouter au stock</label>
+				<input class="form-control" id="stock_<%- variant_id %>" name="stock" placeholder="+ pour ajouter ou - pour retirer" type="text">
 			</div>
 		</div>
 		<div class="col-4" data-role="stock" <%= is_stock_unlimited ? 'style="display:none"':'' %>>

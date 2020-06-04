@@ -17,7 +17,7 @@ var Variant = CollectionUtils.KiubiModel.extend({
 		gtin: '',
 		condition: '',
 		weight: 0,
-		tax_id: 0,
+		tax_id: null,
 		price_ex_vat: 0.0,
 		price_inc_vat: 0.0,
 		price_discount_ex_vat: 0.0,

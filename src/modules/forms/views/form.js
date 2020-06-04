@@ -215,7 +215,9 @@ module.exports = Marionette.View.extend({
 
 	onSave: function() {
 		return this.model.save(
-			Forms.extractFields(this.fields, this, 'form[data-role="part"]'), {
+			Forms.extractFields(this.fields, this, {
+				selector: 'form[data-role="part"]'
+			}), {
 				patch: true,
 				wait: true
 			}

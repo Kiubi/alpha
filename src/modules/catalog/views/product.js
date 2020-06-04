@@ -4,7 +4,6 @@ var _ = require('underscore');
 require('kiubi/utils/proxy.jquery-ui.js');
 
 var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector.js');
-var SelectView = require('kiubi/core/views/ui/select.js');
 var FilePickerView = require('kiubi/modules/media/views/file.picker.js');
 var FileSelectorView = require('kiubi/modules/media/views/file.selector.js');
 var AutocompleteView = require('kiubi/core/views/ui/select.search.js');
@@ -14,6 +13,7 @@ var ListView = require('kiubi/core/views/ui/list.js');
 var SeoView = require('kiubi/core/views/ui/seo.js');
 var ModalTagsView = require('./modal.tags.js');
 var ModalCategoriesView = require('./modal.categories.js');
+var TaxView = require('./select.taxes.js');
 
 var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
@@ -142,11 +142,12 @@ var NewVariantRowView = Marionette.View.extend({
 		var defaultTax = this.taxes.find({
 			is_default: true
 		});
-		this.showChildView('taxes', new SelectView({
-			collection: this.taxes,
-			name: 'tax_id',
-			selected: defaultTax ? defaultTax.get('tax_id') : null
-		}));
+		if (this.taxes.length) {
+			this.showChildView('taxes', new TaxView({
+				taxes: this.taxes,
+				selected: defaultTax ? defaultTax.get('tax_id') : null
+			}));
+		}
 		this.showChildView('images', new Marionette.CollectionView({
 			className: 'btn-group d-block',
 			attributes: {
@@ -315,11 +316,12 @@ var VariantRowView = Marionette.View.extend({
 	},
 
 	onRender: function() {
-		this.showChildView('taxes', new SelectView({
-			collection: this.taxes,
-			selected: this.model.get('tax_id'),
-			name: 'tax_id'
-		}));
+		if (this.taxes.length) {
+			this.showChildView('taxes', new TaxView({
+				taxes: this.taxes,
+				selected: this.model.get('tax_id')
+			}));
+		}
 		this.showChildView('images', new Marionette.CollectionView({
 			className: 'btn-group d-block',
 			attributes: {
@@ -1148,7 +1150,9 @@ module.exports = Marionette.View.extend({
 			}
 		});
 
-		var data = Forms.extractFields(this.fields, this, 'form[data-role="part"]');
+		var data = Forms.extractFields(this.fields, this, {
+			selector: 'form[data-role="part"]'
+		});
 		data.brand_id = this.model.get('brand_id') || '';
 		data.tags = _.pluck(this.getChildView('tags').getTags(), 'label'); // API can handle label. Simpler, safer
 		if (data.tags.length == 0) data.tags = ''; // hack to explicit removal

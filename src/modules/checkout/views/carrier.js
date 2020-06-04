@@ -13,6 +13,7 @@ var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var SelectView = require('kiubi/core/views/ui/select.js');
 var StepsView = require('./carrier.steps.js');
 var TagView = require('kiubi/core/views/ui/tag.search.js');
+var TaxView = require('kiubi/modules/catalog/views/select.taxes.js');
 
 /*
  * Magasin
@@ -176,7 +177,6 @@ var InfosSocolView = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'taxes']);
-		this.taxes.fetch();
 
 		this.listenTo(this.model, 'change', function() {
 			this.updateView();
@@ -192,11 +192,16 @@ var InfosSocolView = Marionette.View.extend({
 	},
 
 	onRender: function() {
-		this.showChildView('taxes', new SelectView({
-			collection: this.taxes,
-			selected: this.model.get('tax_id'),
-			name: 'tax_id'
-		}));
+		this.taxes.fetch().done(function() {
+
+			if (this.taxes.length === 0) return;
+
+			this.showChildView('taxes', new TaxView({
+				taxes: this.taxes,
+				selected: this.model.get('tax_id')
+			}));
+
+		}.bind(this));
 	},
 
 	updateView: function() {
@@ -277,7 +282,7 @@ var ChargesSocolView = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'carrierCountries']);
-		this.rate = null;
+		this.rate = 1;
 		this.country = null;
 		this.pickup = null;
 	},
@@ -350,7 +355,9 @@ var ChargesSocolView = Marionette.View.extend({
 
 		var i, w, steps;
 
-		steps = Forms.extractFields(['weight', 'price_ex_vat'], this, this.getUI('form_steps'));
+		steps = Forms.extractFields(['weight', 'price_ex_vat'], this, {
+			selector: this.getUI('form_steps')
+		});
 		if (steps.weight) {
 			data_country.steps = {};
 			for (i = 0; i < steps.weight.length; i++) {
@@ -363,7 +370,9 @@ var ChargesSocolView = Marionette.View.extend({
 		}
 
 		var data_pickup = {};
-		steps = Forms.extractFields(['weight', 'price_ex_vat'], this, this.getUI('form_pickup'));
+		steps = Forms.extractFields(['weight', 'price_ex_vat'], this, {
+			selector: this.getUI('form_pickup')
+		});
 		if (steps.weight) {
 			data_pickup.steps = {};
 			for (i = 0; i < steps.weight.length; i++) {
@@ -408,7 +417,6 @@ var InfosView = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'taxes']);
-		this.taxes.fetch();
 	},
 
 	templateContext: function() {
@@ -420,11 +428,16 @@ var InfosView = Marionette.View.extend({
 	},
 
 	onRender: function() {
-		this.showChildView('taxes', new SelectView({
-			collection: this.taxes,
-			selected: this.model.get('tax_id'),
-			name: 'tax_id'
-		}));
+		this.taxes.fetch().done(function() {
+
+			if (this.taxes.length === 0) return;
+
+			this.showChildView('taxes', new TaxView({
+				taxes: this.taxes,
+				selected: this.model.get('tax_id')
+			}));
+
+		}.bind(this));
 	}
 
 });
@@ -485,7 +498,7 @@ var ChargesTranchesView = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'carrierCountries']);
-		this.rate = null;
+		this.rate = 1;
 		this.country = null;
 	},
 
@@ -739,7 +752,7 @@ var ChargesLocalView = Marionette.View.extend({
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['model', 'carrierZones', 'search']);
-		this.rate = null;
+		this.rate = 1;
 		this.zone = null;
 		this.addingZone = null;
 		this.currentZone = null;
@@ -957,7 +970,6 @@ module.exports = Marionette.View.extend({
 					taxes: this.taxes
 				});
 				this.listenTo(view, 'childview:change', this.onTaxChange);
-				this.listenTo(view, 'childview:load', this.onTaxChange);
 				this.showChildView('infos', view);
 				this.showChildView('charges', new ChargesSocolView({
 					model: this.model,
@@ -970,7 +982,6 @@ module.exports = Marionette.View.extend({
 					taxes: this.taxes
 				});
 				this.listenTo(view, 'childview:change', this.onTaxChange);
-				this.listenTo(view, 'childview:load', this.onTaxChange);
 				this.showChildView('infos', view);
 				this.showChildView('schedule', new ScheduleView({
 					model: this.model
@@ -987,7 +998,6 @@ module.exports = Marionette.View.extend({
 					taxes: this.taxes
 				});
 				this.listenTo(view, 'childview:change', this.onTaxChange);
-				this.listenTo(view, 'childview:load', this.onTaxChange);
 				this.showChildView('infos', view);
 				this.showChildView('charges', new ChargesTranchesView({
 					model: this.model,
@@ -1034,7 +1044,9 @@ module.exports = Marionette.View.extend({
 				break;
 		}
 
-		var data = Forms.extractFields(this.fields, this);
+		var data = Forms.extractFields(this.fields, this, {
+			autoCast: false
+		});
 		if (this.model.get('type') == 'socolissimo') {
 			_.extend(data, this.getChildView('charges').extractFields());
 		}

@@ -92,12 +92,12 @@ var SummaryView = Marionette.View.extend({
 			this.render();
 		}.bind(this));
 		this.listenTo(this.report, 'report', function(data) {
-			this.reportData.visitors = data.summary.visits.count;
-			this.reportData.pageviews = data.summary.visits.pageviews;
-			this.reportData.orders = data.summary.orders ? data.summary.orders.count : '-';
-			this.reportData.sales = data.summary.orders ? data.summary.orders.total : '-';
-			this.reportData.cart = data.summary.orders ? data.summary.orders.cart : '-';
-			this.reportData.currency = data.summary.orders ? data.summary.orders.currency : '';
+			this.reportData.visitors = data.summary.visits.count !== null ? data.summary.visits.count : '-';
+			this.reportData.pageviews = data.summary.visits.pageviews !== null ? data.summary.visits.pageviews : '-';
+			this.reportData.orders = data.summary.orders && data.summary.orders.count !== null ? data.summary.orders.count : '-';
+			this.reportData.sales = data.summary.orders && data.summary.orders.total !== null ? data.summary.orders.total : '-';
+			this.reportData.cart = data.summary.orders && data.summary.orders.cart !== null ? data.summary.orders.cart : '-';
+			this.reportData.currency = data.summary.orders && data.summary.orders.currency !== null ? data.summary.orders.currency : '';
 
 			this.render();
 		}.bind(this));
@@ -110,11 +110,11 @@ var SummaryView = Marionette.View.extend({
 			current: this.current,
 			live: this.reportData.live,
 
-			visitors: format.formatFloat(this.reportData.visitors, 0, ' '),
-			pageviews: format.formatFloat(this.reportData.pageviews, 0, ' '),
+			visitors: this.reportData.visitors !== '-' ? format.formatFloat(this.reportData.visitors, 0, ' ') : '-',
+			pageviews: this.reportData.pageviews !== '-' ? format.formatFloat(this.reportData.pageviews, 0, ' ') : '-',
 
-			sales: this.reportData.orders != '-' ? format.formatFloat(this.reportData.sales, 2, ' ') + format.currencyEntity(this.reportData.currency) : '-',
-			orders: this.reportData.orders != '-' ? format.formatFloat(this.reportData.orders, 0, ' ') : '-',
+			sales: this.reportData.orders !== '-' ? format.formatFloat(this.reportData.sales, 2, ' ') + format.currencyEntity(this.reportData.currency) : '-',
+			orders: this.reportData.orders !== '-' ? format.formatFloat(this.reportData.orders, 0, ' ') : '-',
 			cart_mean: this.reportData.orders > 0 ? format.formatFloat(this.reportData.sales / this.reportData.orders, 2, ' ') + format.currencyEntity(this.reportData.currency) : '-'
 		};
 	},

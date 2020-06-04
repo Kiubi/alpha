@@ -7,13 +7,15 @@ var serialize = require('form-serialize');
  *
  * @param {Array} fields
  * @param {Marionette.View} view
- * @param {String} selector
+ * @param {Object} options
  * @returns {Object}
  * @see  extractFieldsFromEl
  */
-function extractFields(fields, view, selector) {
-	if (!selector) selector = 'form';
-	return extractFormFields(fields, Backbone.$(selector, view.el));
+function extractFields(fields, view, options) {
+	options = _.defaults(options || {}, {
+		selector: 'form'
+	});
+	return extractFormFields(fields, Backbone.$(options.selector, view.el), options);
 }
 
 /**
@@ -22,10 +24,13 @@ function extractFields(fields, view, selector) {
  *
  * @param {Array} fields
  * @param {jQuery} $forms
+ * @param {Object} options
  * @returns {Object}
  */
-function extractFormFields(fields, $forms) {
-
+function extractFormFields(fields, $forms, options) {
+	options = _.defaults(options || {}, {
+		autoCast: true
+	});
 	var all = _.reduce($forms, function(acc, form) {
 		return _.extend(acc, serialize(form, {
 			hash: true,
@@ -35,10 +40,12 @@ function extractFormFields(fields, $forms) {
 
 	var whitelist = _.pick(all, fields); // whitelist
 	return _.mapObject(whitelist, function(e, i) {
-		if (i.substring(0, 3) === 'is_' && (e == '1' || e == '0')) {
-			e = (e == '1');
-		} else if (i.substring(i.length - 3) === '_id' && e !== '') {
-			e = parseInt(e);
+		if (options.autoCast) {
+			if (i.substring(0, 3) === 'is_' && (e == '1' || e == '0')) {
+				e = (e == '1');
+			} else if (i.substring(i.length - 3) === '_id' && e !== '') {
+				e = parseInt(e);
+			}
 		}
 
 		// Filter out checkbox
