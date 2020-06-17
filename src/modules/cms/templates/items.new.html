@@ -1,0 +1,70 @@
+<form style="display: none;" data-role="new">
+
+	<div class="list-item">
+
+		<div class="alert alert-danger" data-role="errors" role="alert" style="display: none;"></div>
+
+		<div class="form-group">
+			<label>Affichage</label>
+			<div class="form-check">
+				<input name="is_visible" id="f_<%- item_id %>_is_visible1" value="1" type="radio">
+				<label for="f_<%- item_id %>_is_visible1" class="visible">Visible</label>
+				<input name="is_visible" id="f_<%- item_id %>_is_visible0" value="0" type="radio" checked="checked">
+				<label for="f_<%- item_id %>_is_visible0" class="not-visible">Masqué</label>
+			</div>
+		</div>
+
+		<% _(collection).each(function(field){ %>
+
+		<% switch(field.type){ case 'text': %>
+		<div class="form-group">
+			<label for="f_<%- item_id %>_<%- field.field %>"><%- field.name %></label>
+			<% if (field.help) { %><p><%- field.help %></p><% } %>
+			<input type="text" class="form-control" id="f_<%- item_id %>_<%- field.field %>" name="<%- field.field %>" placeholder="<%- field.default %>">
+		</div>
+		<% break; case 'textarea': %>
+		<div class="form-group">
+			<label for="f_<%- item_id %>_<%- field.field %>"><%- field.name %></label>
+			<% if (field.help) { %><p><%- field.help %></p><% } %>
+			<textarea class="form-control" id="f_<%- item_id %>_<%- field.field %>" name="<%- field.field %>" rows="5" placeholder="<%- field.default %>"></textarea>
+		</div>
+		<% break; case 'wysiwyg': %>
+		<div class="form-group">
+			<label for="f_<%- item_id %>_<%- field.field %>"><%- field.name %></label>
+			<% if (field.help) { %><p><%- field.help %></p><% } %>
+			<textarea class="form-control" id="f_<%- item_id %>_<%- field.field %>" name="<%- field.field %>" rows="21" placeholder="<%- field.default %>" data-role="wysiwyg"></textarea>
+		</div>
+		<% break; case 'select': %>
+		<div class="form-group">
+			<label for="f_<%- item_id %>_<%- field.field %>"><%- field.name %></label>
+			<% if (field.help) { %><p><%- field.help %></p><% } %>
+			<div class="row">
+				<div class="col-6">
+					<select id="f_<%- item_id %>_<%- field.field %>" name="<%- field.field %>" data-style="selectify">
+						<% _(field.options).each(function(option){ %>
+						<option value="<%- option.value %>" <%= (option.value == field.default) ? 'selected="selected"':''  %>><%- option.label %></option>
+						<% }) %>
+					</select>
+				</div>
+			</div>
+		</div>
+		<% break; case 'image':case 'file': %>
+		<div data-role="filepicker-<%- field.field %>"></div>
+		<% break;} %>
+
+		<% }) %>
+
+		<div class="btn-toolbar" role="toolbar">
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="action" data-action="cancel">Annuler</button>
+			</div>
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-lg btn-success btn-save" data-role="action" data-action="save">Enregistrer</button>
+			</div>
+		</div>
+
+	</div>
+
+</form>
+
+<div class="list-item no-hover"><a href="#" title="Ajouter un élément" data-role="action" data-action="show"><span class="page-add md-icon md-add-page"></span>Ajouter un élément</a></div>

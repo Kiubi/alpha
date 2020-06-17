@@ -1,0 +1,29 @@
+<div class="row no-gutters">
+	<div class="col-auto">
+		<input id="voucher_<%- grid_id %>" name="selection" value="<%- grid_id %>" type="checkbox">
+		<label for="voucher_<%- grid_id %>"></label>
+	</div>
+	<div class="col item-body">
+		<h4><%- name %></h4>
+		<span><% if(product_count == 0)  { %>
+				 Appliquée à aucun produit
+			<% } else { %>
+				Appliquée à <a href="/catalog?tier_prices=<%- grid_id %>"><%- plural(product_count, '%d produit', '%d produits') %></a>
+			<% } %></span>
+	</div>
+
+	<div class="col-3">
+		<% if(is_enabled) { %>
+		<span class="badge badge-success">Activé</span>
+		<% } else { %>
+		<span class="badge badge-danger">Désactivé</span>
+		<% }%>
+	</div>
+
+	<div class="col-1 no-white-space">
+
+	</div>
+	<div class="col-auto">
+		<a class="btn btn-primary float-right" href="/modules/tier_prices/<%- grid_id %>" role="button">Détail</a>
+	</div>
+</div>

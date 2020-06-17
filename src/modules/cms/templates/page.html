@@ -25,26 +25,21 @@
 
 			<article class="post-article post-article-aside">
 				<div class="post-content">
-					<div class="row"><% if(!is_home) { %>
-						<div class="col-lg-12 order-lg-2 col-6">
-							<div class="form-group post-subcontent">
-								<label>Page parente</label>
-								<div data-role="parent"></div>
-							</div>
-						</div>
-						<% } %>
-						<div class="col-lg-12 order-lg-1 col-6">
-							<div class="form-group mb-lg-0">
-								<label>Affichage</label>
-								<div class="form-check">
-									<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
-									<label for="is_visible1" class="visible">Visible</label>
-									<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
-									<label for="is_visible0" class="not-visible">Masqué</label>
-								</div>
-							</div>
+					<div class="form-group post-subcontent">
+						<label>Affichage</label>
+						<div class="form-check">
+							<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
+							<label for="is_visible1" class="visible">Visible</label>
+							<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
+							<label for="is_visible0" class="not-visible">Masqué</label>
 						</div>
 					</div>
+					<% if(!is_home) { %>
+					<div class="form-group post-subcontent">
+						<label>Page parente</label>
+						<div data-role="parent"></div>
+					</div>
+				<% } %>
 				</div>
 				<footer class="post-footer"></footer>
 			</article>
@@ -59,10 +54,10 @@
 								<div class="row">
 									<div class="col-12">
 										<select name="page_type" data-style="selectify">
-											<option <%= page_type == 'page' ? 'selected="selected"' : '' %> value="page">Page de contenu libre</option>
-											<option <%= page_type == 'lien_int' ? 'selected="selected"' : '' %> value="internal_link">Lien vers une autre page</option>
-											<option <%= page_type == 'lien_ext' ? 'selected="selected"' : '' %> value="external_link">Lien vers une adresse web</option>
-											<option <%= page_type == 'separateur' ? 'selected="selected"' : '' %> value="separator">Séparateur, sans lien</option>
+											<option <%= page_type == 'page' ? 'selected="selected"' : '' %> data-tags="md-page" value="page">Page de contenu libre</option>
+											<option <%= page_type == 'lien_int' ? 'selected="selected"' : '' %> data-tags="md-directions" value="internal_link">Lien vers une autre page</option>
+											<option <%= page_type == 'lien_ext' ? 'selected="selected"' : '' %> data-tags="md-link" value="external_link">Lien vers une adresse web</option>
+											<option <%= page_type == 'separateur' ? 'selected="selected"' : '' %> data-tags="md-spacer" value="separator">Séparateur, sans lien</option>
 										</select>
 									</div>
 								</div>

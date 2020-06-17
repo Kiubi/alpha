@@ -45,7 +45,8 @@ module.exports = CollectionUtils.KiubiModel.extend({
 			url: 'sites.json',
 			data: {
 				term: term,
-				limit: 5
+				limit: 5,
+				sort: 'relevance'
 			}
 		}).then(function(data) {
 			return _.filter(data, function(site) {

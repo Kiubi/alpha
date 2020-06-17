@@ -30,6 +30,14 @@ module.exports = CollectionUtils.KiubiModel.extend({
 		service_path: ''
 	},
 
+	getTitle: function() {
+		return this.get('name');
+	},
+
+	getBackURL: function() {
+		return this.get('is_home') ? '/cms' : '/cms/pages/' + this.get('page_id');
+	},
+
 	/**
 	 * Return all iternal links target types
 	 * 
@@ -70,19 +78,20 @@ module.exports = CollectionUtils.KiubiModel.extend({
 	/**
 	 * Duplicate current page
 	 *
-	 * @return {Promise} Will return new page_id
+	 * @return {Promise}
 	 */
 	duplicate: function() {
-
+		var that = this;
 		return Backbone.ajax({
-			url: 'sites/@site/cms/pages',
-			method: 'POST',
-			data: {
-				page_id: this.get('page_id')
-				// name : '...'
-			}
+			url: 'sites/@site/cms/pages/' + this.get('page_id'),
+			method: 'POST'
 		}).then(function(data, meta) {
-			return data;
+			var copy = that.clone();
+			copy.set(copy.parse({
+				data: data,
+				meta: meta
+			}));
+			return copy;
 		});
 	}
 

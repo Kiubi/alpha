@@ -85,11 +85,6 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	onChildviewFieldChange: function() {
-		// proxy filepicker event
-		this.triggerMethod('field:change');
-	},
-
 	onChildviewChangeLayout: function(layout_id) {
 		if (layout_id == this.model.get('layout_id')) return;
 

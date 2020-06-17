@@ -61,13 +61,7 @@ var NewRowView = Marionette.View.extend({
 		}
 	},
 
-	onActionCancel: function() {
-		this.getUI('form').hide();
-		Forms.clearErrors(this.getUI('errors'), this.el);
-	},
-
 	onActionSave: function() {
-		Forms.clearErrors(this.getUI('errors'), this.el);
 
 		var m = new this.collection.model({
 			form_id: this.collection.form_id
@@ -83,10 +77,6 @@ var NewRowView = Marionette.View.extend({
 			.fail(function(error) {
 				Forms.displayErrors(error, this.getUI('errors'), this.el);
 			}.bind(this));
-	},
-
-	onActionShow: function() {
-		this.getUI('form').show();
 	}
 
 });
@@ -151,18 +141,7 @@ var RowView = Marionette.View.extend({
 		return this.model.destroy();
 	},
 
-	onActionEdit: function() {
-		this.getUI('list').hide();
-		this.getUI('form').show();
-
-	},
-	onActionCancel: function() {
-		this.getUI('form').hide();
-		this.getUI('list').show();
-	},
-
 	onActionSave: function() {
-		Forms.clearErrors(this.getUI('errors'), this.el);
 
 		return this.model.save(
 			Forms.extractFields(['is_enabled', 'is_required', 'name', 'help', 'type', 'use_for_exp', 'is_in_subject',
@@ -214,6 +193,15 @@ module.exports = Marionette.View.extend({
 	},
 
 	onSave: function() {
+
+		if (this.getChildView('list')) {
+			this.getChildView('list').getChildren().each(function(rowView) {
+				if (rowView.isEditing) {
+					rowView.onActionSave();
+				}
+			});
+		}
+
 		return this.model.save(
 			Forms.extractFields(this.fields, this, {
 				selector: 'form[data-role="part"]'

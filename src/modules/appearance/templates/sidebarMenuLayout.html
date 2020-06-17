@@ -17,6 +17,7 @@
 </div>
 <% } %>
 
+<% if (models.length) { %>
 <div class="page_template">
 	<h2>Template appliqué</h2>
 	<div class="form-group">
@@ -25,9 +26,12 @@
 		</select>
 	</div>
 </div>
+<% } %>
 
+<% if(canEditName) { %>
 <h2>Intitulé</h2>
 <div class="form-group has-feedback">
 	<input class="form-control form-control-sidebar" data-role="name" placeholder="Intitulé par défaut" value="<%- name %>" type="text">
 	<span class="md-feedback md-edit"></span>
 </div>
+<% } %>

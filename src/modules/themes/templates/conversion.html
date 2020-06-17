@@ -1,0 +1,95 @@
+<% if(step == 0)  { %>
+	<article class="post-article">
+		<header class="post-header">
+			<h1>Gestion des composants</h1>
+		</header>
+		<div class="post-content">
+
+			<% if(is_loading) { %>
+				<div class="text-center list-item-empty">
+					<div class="loader spinner-border text-muted" role="status">
+						<span class="sr-only">Analyse en cours...</span>
+					</div>
+				</div>
+			<% } else { %>
+
+				<% if (warnings && warnings.length > 0) { %>
+				<div class="alert alert-warning">
+					<strong>Il y a des alertes</strong><% if(is_compatible) { %> mais vous pouvez quand même convertir votre site<% } %>.<br/>
+					Il est cependant conseillé avant de valider un import d'<a href="/modules/backups" target="_blank">effectuer un
+					point de sauvegarde</a> de son site.<br/><br/>
+					<ul>
+						<% _.each(warnings, function(msg){ %>
+						<li><%= msg %></li>
+						<% }); %>
+					</ul>
+				</div>
+				<% } %>
+
+				<% if (errors && errors.length > 0) { %>
+				<div class="alert alert-danger">
+					<strong>Il y a des erreurs bloquantes</strong>, vous ne pouvez pas convertir votre site dans l'état actuel.
+					Veuillez <a
+						href="https://aide.kiubi.com/"
+						target="_blank" class="alert-link">consulter la documentation en ligne</a> afin de corriger ces erreurs.<br/><br/>
+					<ul>
+						<% _.each(errors, function(msg){ %>
+						<li><%= msg %></li>
+						<% }); %>
+					</ul>
+				</div>
+				<% } %>
+
+				<% if(is_compatible && warnings.length == 0 && errors.length == 0) { %>
+				<div class="alert alert-info">
+					<strong>Les site est prêt à être converti.</strong><br/>
+					Il est cependant conseillé avant de valider un import d'<a href="/modules/backups" target="_blank" class="alert-link">effectuer un point de sauvegarde</a>
+					de son site.
+				</div>
+				<% } %>
+
+				<% if (is_compatible) { %>
+				<form>
+					<div class="form-group">
+						<label>Zone par défaut</label>
+						<p>Choisissez une zone par défaut à laquelle les billets du site web vont être assignés. </p>
+						<div class="form-check">
+							<select data-style="selectify" name="zone">
+								<% _.each(zones, function(zone){ %>
+								<option value="<%- zone.id %>"><%- zone.name %></option>
+								<% }) %>
+							</select>
+						</div>
+					</div>
+				</form>
+				<% } %>
+
+			<% } %>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<div class="save">
+		<div class="btn-toolbar" role="toolbar">
+			<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel">Retour</button>
+			<% if (is_compatible) { %>
+			<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Convertir</button>
+			<% } %>
+		</div>
+	</div>
+
+<% } else { %>
+
+	<div class="alert alert-success">
+		<strong>Conversion réussie</strong>, la gestion des composants est activé sur le site !
+	</div>
+
+	<div class="save">
+		<div class="btn-toolbar" role="toolbar">
+			<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel">Retour</button>
+		</div>
+	</div>
+
+<% } %>
+
+<footer class="footer"></footer>

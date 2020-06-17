@@ -60,9 +60,10 @@ var DefaultController = Controller.extend({
 
 	/*
 	 *	Show NotFound Page
+	 * @param {String} message
 	 */
-	notFound: function() {
-		if (this.navigationController.getSidebarMenuService() == null) {
+	notFound: function(message) {
+		if (this.navigationController.getSidebarMenuService() === null) {
 			this.navigationController.hideSidebarMenu();
 
 			this.setHeader([{
@@ -75,7 +76,9 @@ var DefaultController = Controller.extend({
 			]);
 		}
 
-		this.navigationController.showContent(new NotFoundView());
+		this.navigationController.showContent(new NotFoundView({
+			message: message
+		}));
 	},
 
 	/*

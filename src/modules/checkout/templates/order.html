@@ -110,6 +110,17 @@
 				</div>
 				<%}) %>
 
+				<% if (voucher && voucher_label) { %>
+				<div class="list-item order-item">
+					<div class="row">
+						<div class="col item-body">
+							<h4>Bon de réduction</h4>
+							<%- voucher_label %> avec le code "<%- voucher.code %>"
+						</div>
+					</div>
+				</div>
+				<% } %>
+
 				<% if (fidelity_reward > 0) { %>
 				<div class="list-item order-item">
 					<span class="md-icon md-card-membership icon-left"></span> <%- fidelity_reward %> points de fidélité ajoutés au compte du membre
@@ -220,7 +231,7 @@
 				</div>
 				<% } %>
 				<div class="post-subcontent">
-					<a href="#" class="md-icon md-credit_card float-right"></a>
+					<a href="/checkout/payments/<%- payment_id %>" class="md-icon md-credit_card float-right"></a>
 					<h4>Mode de paiement</h4>
 					<%- payment_name %>
 				</div>

@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var Forms = require('kiubi/utils/forms.js');
 
+var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
 
 /* Models */
@@ -22,6 +23,7 @@ var Linked = require('./models/linked');
 var Settings = require('./models/settings');
 var Files = require('./models/downloads');
 var Folders = require('./models/folders');
+var TierPrices = require('kiubi/modules/modules/models/tier_prices');
 
 /* Views */
 var ProductView = require('./views/product');
@@ -220,7 +222,8 @@ var CatalogController = Controller.extend({
 
 		var qs = this.parseQueryString(queryString, {
 			'term': null,
-			'stock': null
+			'stock': null,
+			'tier_prices': null
 		});
 
 		var promise, m;
@@ -234,6 +237,8 @@ var CatalogController = Controller.extend({
 			promise = Backbone.$.Deferred().resolve();
 		}
 
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 		promise.done(function() {
 				var c = new Products();
 				var view = new ProductsView({
@@ -241,6 +246,7 @@ var CatalogController = Controller.extend({
 					categories: new Categories(),
 					tags: new Tags(),
 					brands: new Brands(),
+					tier_prices: Session.hasFeature('tier_prices') && new TierPrices(),
 					category_id: category_id ? category_id : null,
 					filters: qs
 				});
@@ -267,12 +273,14 @@ var CatalogController = Controller.extend({
 		var m = new Product({
 			product_id: id
 		});
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 		Backbone.$.when(t.fetch(), m.fetch({
 			data: {
-				extra_fields: 'texts,variants,price_label,images,defaults'
+				extra_fields: 'texts,variants,price_label,images,defaults' + (Session.hasFeature('tier_prices') ? ',tier_prices' : '')
 			}
 		})).done(function() {
-			var Session = Backbone.Radio.channel('app').request('ctx:session');
 
 			var variants = new Variants();
 			variants.product_id = m.get('product_id');
@@ -288,6 +296,7 @@ var CatalogController = Controller.extend({
 				tags: new Tags(),
 				variants: variants,
 				taxes: t,
+				tier_prices: Session.hasFeature('tier_prices') && new TierPrices(),
 				images: i,
 				enableSeo: Session.hasScope('site:seo'),
 				enableLayout: Session.hasScope('site:layout')
@@ -733,7 +742,7 @@ var CatalogController = Controller.extend({
 
 });
 
-module.exports = Marionette.AppRouter.extend({
+module.exports = Router.extend({
 	controller: new CatalogController(),
 	appRoutes: {
 		'catalog': 'showProducts',
@@ -752,12 +761,12 @@ module.exports = Marionette.AppRouter.extend({
 		'catalog/variants': 'showVariants'
 	},
 
-	onRoute: function(name, path, args) {
+	onRoute: function(name) {
 
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		if (!Session.hasScope('site:catalog') || !Session.hasFeature('catalog')) {
 			this.controller.navigationController.navigate('/');
-			return;
+			return false;
 		}
 
 		this.controller.showSidebarMenu();

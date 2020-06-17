@@ -77,6 +77,23 @@ var WidgetGridView = Marionette.CollectionView.extend({
 	}
 });
 
+var MessagesView = Marionette.View.extend({
+	template: _.template(
+		'<div>' +
+		'<% _.each(messages, function(message){ %><div class="alert alert-warning d-flex justify-content-between align-items-center p-3" role="alert"><span><%= message %></span></div><% }) %>' +
+		'</div>'),
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['messages']);
+	},
+
+	templateContext: function() {
+		return {
+			messages: this.messages
+		};
+	}
+
+});
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/dashboard.html'),
@@ -84,6 +101,10 @@ module.exports = Marionette.View.extend({
 	behaviors: [TooltipBehavior],
 
 	regions: {
+		messages: {
+			el: "div[data-role='messages']",
+			replaceElement: true
+		},
 		graph: {
 			el: "article[data-role='graph']",
 			replaceElement: true
@@ -183,6 +204,13 @@ module.exports = Marionette.View.extend({
 					report: this.report
 				}
 			}));
+
+			if (this.dashboardPrefs.get('messages') && this.dashboardPrefs.get('messages').length > 0) {
+				var MsgView = new MessagesView({
+					messages: this.dashboardPrefs.get('messages')
+				});
+				this.showChildView('messages', MsgView);
+			}
 
 		}.bind(this)).fail(function() {
 			console.log('Dashboard - FAILED'); // TODO

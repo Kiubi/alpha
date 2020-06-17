@@ -17,7 +17,8 @@ var Carrier = CollectionUtils.KiubiModel.extend({
 		"description": '',
 		"position": 0,
 		"type": '',
-		"use_coliship": false,
+		// "use_coliship": false,
+		"export_type": false,
 		// "tax_id": null,
 		// "company": '',
 		// "address": '',
@@ -41,16 +42,22 @@ var Carrier = CollectionUtils.KiubiModel.extend({
 		"socolissimo_secret": null,
 		"socolissimo_be_enabled": null,
 		"socolissimo_be_extra": null,
-		"socolissimo_pickup_franco": null
+		"socolissimo_pickup_franco": null,
+		// dpd
+		'dpd_customer_center': null,
+		'dpd_customer': null,
+		'dpd_gmaps': null,
+		'dpd_insurance_threshold': null,
+		'dpd_gsm_notification': null
 	},
 
 	isSupported: function() {
 		return (this.get('type') == 'magasin' || this.get('type') == 'socolissimo' || this.get('type') == 'local' || this.get(
-			'type') == 'tranchespoids');
+			'type') == 'tranchespoids' || this.get('type') == 'dpd');
 	},
 
 	isDeletable: function() {
-		return (this.get('is_deletable') == true);
+		return (this.get('is_deletable') === true);
 	}
 
 });

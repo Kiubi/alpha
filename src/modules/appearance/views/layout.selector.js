@@ -66,7 +66,9 @@ module.exports = Marionette.View.extend({
 	selectLayout: function() {
 		this.layout_id = parseInt(this.getUI('select').val());
 		this.render();
-		this.triggerMethod('change:layout', this.layout_id);
+		this.triggerMethod('change:layout', this.layout_id, this.collection.findWhere({
+			layout_id: this.layout_id
+		}));
 	},
 
 	willCreate: function() {

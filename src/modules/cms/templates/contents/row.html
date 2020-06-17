@@ -1,0 +1,26 @@
+<div class="row no-gutters">
+    <div class="col-auto">
+        <input id="cms_content_<%- content_id %>" name="selection" value="<%- content_id %>" type="checkbox">
+        <label for="cms_content_<%- content_id %>"></label>
+    </div>
+    <div class="col-auto"><a href="#" class="md-icon md-drag btn-drag"></a></div>
+    <div class="col item-body">
+        <h4><%- title %></h4>
+        <% if (is_visible) { %>
+        <span class="md-icon md-item-type <%- classType %>"></span><%- typeName %>
+        <% } else { %>
+        <span class="md-icon md-item-type <%- classType %> text-danger"></span><span class="text-danger">Masqué</span>
+        <% } %>
+    </div>
+    <% if(post && post.group != '') { %>
+    <div class="col-3"><span class="badge badge-secondary"><%- post.group %></span></div>
+    <% } %>
+    <div class="col-auto">
+        <div class="btn-group float-right"><a class="btn btn-primary" href="<%- linkEdit %>" role="button">Détail</a>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="#" class="dropdown-item" data-role="action" data-action="delete" data-confirm="warning">Supprimer</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

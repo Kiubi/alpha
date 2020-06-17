@@ -62,18 +62,18 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="required" for="name">Label du champ</label>
-		<input class="form-control" id="name" name="name" value="<%- name %>" placeholder="Label du champ tel qu'il apparaitra dans le formulaire" type="text">
+		<label class="required" for="f_<%- field_id %>name">Label du champ</label>
+		<input class="form-control" id="f_<%- field_id %>name" name="name" value="<%- name %>" placeholder="Label du champ tel qu'il apparaitra dans le formulaire" type="text">
 	</div>
 	<div class="form-group" data-role="inputs">
-		<label for="help">Aide à la saisie</label>
-		<input class="form-control" id="help" name="help" value="<%- help %>" placeholder="Courte description pour aider à correctement renseigner le champ" type="text">
+		<label for="f_<%- field_id %>help">Aide à la saisie</label>
+		<input class="form-control" id="f_<%- field_id %>help" name="help" value="<%- help %>" placeholder="Courte description pour aider à correctement renseigner le champ" type="text">
 	</div>
 	<div class="row">
 		<div class="col-4">
 			<div class="form-group">
-				<label for="type">Type de champ</label>
-				<select name="type" id="type" data-style="selectify">
+				<label for="f_<%- field_id %>type">Type de champ</label>
+				<select name="type" id="f_<%- field_id %>type" data-style="selectify">
 					<% _.each(typeList, function(t){ %>
 					<option value="<%- t.type %>" <%= (type == t.type) ? 'selected="selected"' : '' %>><%- t.label %></option>
 					<% }) %>

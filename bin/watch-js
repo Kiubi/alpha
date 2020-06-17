@@ -20,6 +20,11 @@ if ! test -d "${dest}"; then
 	exit 0;
 fi
 
+if [ ! -f ./src/config.js ]; then
+  echo " - configuration"
+  cp ./src/config.example.js "./src/config.js"
+fi
+
 output="${dest}/app.js";
 
 plugin="[minifyify --map app.js.map --output  ${dest}/app.js.map]";

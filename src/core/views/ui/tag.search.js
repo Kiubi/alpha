@@ -2,6 +2,8 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+var SaveBehavior = require('kiubi/behaviors/save_detection.js');
+
 var TagView = Marionette.View.extend({
 	template: _.template(
 		'<span class="badge-content" title="<%- label %>"><%- label %></span><span data-role="delete" class="md-icon md-close"></span>'
@@ -31,6 +33,8 @@ var TagsView = Marionette.CollectionView.extend({
 module.exports = Marionette.View.extend({
 	template: require('../../templates/ui/tag.search.html'),
 	tagName: 'div',
+
+	behaviors: [SaveBehavior],
 
 	regions: {
 		'list': {
@@ -102,8 +106,14 @@ module.exports = Marionette.View.extend({
 		});
 
 		if (this.getOption('tags')) {
-			this.collection.add(this.getOption('tags'));
+			this.collection.add(this.getOption('tags'), {
+				silent: true
+			});
 		}
+
+		this.listenTo(this.collection, 'update', function() {
+			this.triggerMethod('field:change');
+		}.bind(this));
 
 	},
 

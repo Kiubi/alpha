@@ -1,36 +1,71 @@
 <article class="post-article">
-	<header class="post-header">
-		<h1>Coliship</h1>
+	<header class="post-header no-border">
+		<h1>Gestion des colis</h1>
 	</header>
 	<div class="post-content">
-		<p>Coliship est une plateforme fournie par La Poste pour optimiser la chaîne de travail et notamment l’édition
-			des étiquettes de colisage. Les commandes utilisant ce transporteur peuvent être incluses dans les exports au
-			format Coliship ou Expeditor INET.
-		</p>
-		<div class="row">
-			<div class="col-4">
-				<div class="form-group">
-					<label>Inclure dans l'export Coliship</label>
-					<div class="form-check">
-						<input name="use_coliship" id="use_coliship1" value="1" type="radio" <%= use_coliship ? 'checked="checked"' : ''%>>
-						<label for="use_coliship1">Oui</label>
-						<input name="use_coliship" id="use_coliship0" value="0" type="radio" <%= !use_coliship ? 'checked="checked"' : ''%>>
-						<label for="use_coliship0">Non</label>
-					</div>
-				</div>
-			</div>
-			<div class="col-8">
-				<div class="form-group">
-					<label>Remise contre signature (si possible)</label>
-					<div class="form-check">
-						<input name="coliship_type" id="coliship_type1" value="expert" type="radio" <%= coliship_type == 'expert' ? 'checked="checked"' : ''%>>
-						<label for="coliship_type1">Oui (Colissimo Expert)</label>
-						<input name="coliship_type" id="coliship_type0" value="access" type="radio" <%= coliship_type == 'access' ? 'checked="checked"' : ''%>>
-						<label for="coliship_type0">Non (Colissimo Access)</label>
+		<div class="post-group">
+			<div class="row">
+				<div class="col-6">
+					<div class="form-group">
+						<label for="export_type">Transporteur et solution de colisage</label>
+						<select data-role="export_type" class="form-control" id="export_type" name="export_type" data-style="selectify">
+							<option value="">Pas de solution de colisage</option>
+							<option value="coliship" <%= export_type == 'coliship' ? 'selected="selected"' : '' %>>Colissimo pour Coliship ou Expeditor INET</option>
+							<option value="dpd" <%= export_type == 'dpd' ? 'selected="selected"' : '' %>>DPD pour Station DPD</option>
+						</select>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<div data-role="coliship" style="display: none; margin-bottom: -30px;">
+			<p>Les commandes utilisant ce transporteur peuvent être incluses dans les exports au format Coliship ou Expeditor INET.</p>
+			<div class="row">
+				<div class="col-8">
+					<div class="form-group">
+						<label>Remise contre signature (si possible)</label>
+						<div class="form-check">
+							<input name="coliship_type" id="coliship_type1" value="expert" type="radio" <%= coliship_type != 'access' ? 'checked="checked"' : ''%>>
+							<label for="coliship_type1">Oui (Colissimo Expert)</label>
+							<input name="coliship_type" id="coliship_type0" value="access" type="radio" <%= coliship_type == 'access' ? 'checked="checked"' : ''%>>
+							<label for="coliship_type0">Non (Colissimo Access)</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div data-role="dpd" style="display: none;">
+			<p>Les commandes utilisant ce transporteur peuvent être incluses dans les exports au format Station DPD.</p>
+			<div class="row">
+				<div class="col-6">
+					<div class="form-group">
+						<label class="required" for="dpd_customer_center">Code agence DPD</label>
+						<input class="form-control" id="dpd_customer_center" name="dpd_customer_center" value="<%- dpd_customer_center %>" placeholder="Série de chiffres fournie par DPD" type="text">
+					</div>
+				</div>
+				<div class="col-6">
+					<div class="form-group">
+						<label class="required" for="dpd_customer">Numéro de contrat DPD</label>
+						<input class="form-control" id="dpd_customer" name="dpd_customer" value="<%- dpd_customer %>" placeholder="Série de chiffres fournie par DPD" type="text">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="dpd_insurance_threshold">Assurance Ad Valorem</label>
+				<p>Souscrite automatiquement pour les commandes dont le montant total TTC, est supérieur ou égal au seuil défini.</p>
+				<div class="row">
+					<div class="col-6">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text">À partir de</span></div>
+							<input class="form-control" id="dpd_insurance_threshold" name="dpd_insurance_threshold" value="<%- dpd_insurance_threshold %>" placeholder="—" type="text">
+							<div class="input-group-append"><span class="input-group-text"><%= currency %> TTC</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 	<footer class="post-footer"></footer>
 </article>

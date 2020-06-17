@@ -163,12 +163,23 @@ module.exports = Marionette.View.extend({
 				feature: 'multi_pickup',
 				price: '19,00€/mois',
 				is_spotlight: true
+			}, {
+				name: 'Tarifs dégressifs',
+				icon: 'trending_down',
+				color: '#a15db1',
+				desc: 'Créer des grilles de tarifs dégressifs en fonction de la quantité de produits achetée.',
+				href: '/modules/tier_prices',
+				subscribe: true,
+				scope: 'site:catalog',
+				feature: 'tier_prices',
+				price: '9,00€/mois',
+				is_spotlight: true
 			},
 
 			// Modules
 			{
 				name: 'Google Analytics',
-				icon: 'bar_chart',
+				icon: 'analytics',
 				desc: 'Paramétrer le tracking de Google Analytics sur l\'ensemble du site.',
 				href: '/modules/analytics',
 				scope: 'site:modules'
@@ -205,8 +216,8 @@ module.exports = Marionette.View.extend({
 			}, {
 				name: 'Import dans le Site Web',
 				icon: 'description',
-				desc: 'Importer des billets dans les pages du site web.',
-				href: '/modules/import/posts',
+				desc: 'Importer des contenus dans les pages du site web.',
+				href: '/modules/import/contents',
 				scope: 'site:cms'
 			}, {
 				name: 'Import depuis Wordpress',

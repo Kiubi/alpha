@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
 
 /* Models */
@@ -392,7 +393,7 @@ var MediaController = Controller.extend({
 
 });
 
-module.exports = Marionette.AppRouter.extend({
+module.exports = Router.extend({
 	controller: new MediaController(),
 	appRoutes: {
 		'media': 'showIndex',
@@ -402,7 +403,7 @@ module.exports = Marionette.AppRouter.extend({
 		'media/ftp': 'importFTP'
 	},
 
-	onRoute: function(name, path, args) {
+	onRoute: function(name) {
 		this.controller.showSidebarMenu();
 	}
 });

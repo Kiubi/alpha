@@ -51,10 +51,6 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	onChildviewChangeRestrictions: function() {
-		this.triggerMethod('field:change');
-	},
-
 	onSave: function() {
 
 		var data = Forms.extractFields(this.fields, this);

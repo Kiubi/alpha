@@ -1,9 +1,8 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var _ = require('underscore');
 
+var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
-var ControllerChannel = Backbone.Radio.channel('controller');
 
 var Builder = require('./models/builder');
 var Layout = require('./models/layout');
@@ -12,9 +11,9 @@ var Layouts = require('./models/layouts');
 // var IndexView = require('./views/index');
 var LayoutsView = require('./views/layouts');
 var LayoutView = require('./views/layout');
+var SidebarMenuLayoutView = require('./views/layout.sidebar');
 
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
-var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 
 /* Actions */
 function getHeadersAction(options) {
@@ -53,81 +52,6 @@ var SidebarMenuView = Marionette.View.extend({
 		};
 	}
 
-});
-
-var SidebarMenuLayoutView = Marionette.View.extend({
-	template: require('./templates/sidebarMenuLayout.html'),
-	service: 'layout',
-	behaviors: [ActiveLinksBehaviors, SelectifyBehavior],
-
-	tree: [],
-	models: [],
-	folder_id: null,
-
-	ui: {
-		'folderSelector': "select[data-role='select-folder']",
-		'modelSelector': "select[data-role='select-model']",
-		'inputName': "input[data-role='name']"
-	},
-
-	events: {
-		'change @ui.folderSelector': function(event) {
-			this.folder_id = Backbone.$(event.currentTarget).val();
-			this.render();
-		},
-		'change @ui.modelSelector': function(event) {
-			ControllerChannel.trigger('change:model', Backbone.$(event.currentTarget).val());
-		},
-		'change @ui.inputName': function(event) {
-			ControllerChannel.trigger('change:name', Backbone.$(event.currentTarget).val());
-		}
-	},
-
-	initialize: function(options) {
-
-		this.tree = [];
-		this.models = [];
-		this.builder = null;
-		this.folder_id = 0;
-
-		this.listenTo(ControllerChannel, 'refresh:widgets', function(widgets, models, builder) {
-			this.tree = widgets;
-			this.models = models;
-			this.builder = builder;
-			this.render();
-		});
-
-	},
-
-	templateContext: function() {
-
-		var folders = this.tree;
-		var categories = [];
-		var widgets = [];
-
-		if (this.folder_id != null && folders[this.folder_id]) {
-			categories = folders[this.folder_id].categories;
-		}
-		_.each(categories, function(category) {
-			widgets = widgets.concat(category.widgets);
-		});
-
-		return {
-			folders: folders,
-			folder_id: this.folder_id,
-			categories: categories,
-			widgets: widgets,
-			models: this.models,
-			name: this.builder ? this.builder.get('name') : '',
-			current_model: this.builder ? this.builder.get('model').id : ''
-		};
-	},
-
-	onRender: function() {
-		if (this.tree.length > 0) {
-			ControllerChannel.trigger('rendered:widgets');
-		}
-	}
 });
 
 var AppearanceController = Controller.extend({
@@ -241,7 +165,7 @@ var AppearanceController = Controller.extend({
 
 });
 
-module.exports = Marionette.AppRouter.extend({
+module.exports = Router.extend({
 	controller: new AppearanceController(),
 	appRoutes: {
 		'appearance': 'showIndex',
@@ -250,7 +174,7 @@ module.exports = Marionette.AppRouter.extend({
 		'appearance/drafts/:id': 'showDraft'
 	},
 
-	onRoute: function(name, path, args) {
+	onRoute: function(name) {
 
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		if (!Session.hasScope('site:layout')) {

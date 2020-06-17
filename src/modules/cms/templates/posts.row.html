@@ -1,7 +1,7 @@
 <div class="row no-gutters">
 	<div class="col-auto">
-		<input id="cms_post_<%- post_id %>" name="selection" value="<%- post_id %>" type="checkbox">
-		<label for="cms_post_<%- post_id %>"></label>
+		<input id="cms_post_<%- content_id %>" name="selection" value="<%- content_id %>" type="checkbox">
+		<label for="cms_post_<%- content_id %>"></label>
 	</div>
 	<% if(canMove) { %>
 	<div class="col-auto"><a href="#" class="md-icon md-drag btn-drag"></a></div>
@@ -9,12 +9,10 @@
 	<div class="col item-body">
 		<h4><%- label %></h4>
 		<% if (showType) { %>
-
-			<span class="tags tags-color-<%- type_pos %>"></span>
 			<% if (is_visible) { %>
-			<%- type_name %>
+			<span class="md-icon md-item-type md-billet tags-color-<%- type_pos %>"></span><%- type_name %>
 			<% } else { %>
-			<span class="text-danger">Masqué</span>
+				<span class="md-icon md-item-type md-billet text-danger"></span><span class="text-danger">Masqué</span>
 			<% } %>
 
 		<% } else { %>
@@ -23,10 +21,10 @@
 
 		<% } %>
 	</div>
-	<div class="col-4"><% if(group) { %><span class="badge badge-primary"><%- group %><% } %></span></div>
+	<div class="col-4"><% if(group) { %><span class="badge badge-secondary"><%- group %><% } %></span></div>
 	<div class="col-auto">
 		<div class="btn-group float-right">
-			<a class="btn btn-primary" href="/cms/posts/<%- post_id %>" role="button">Détail</a>
+			<a class="btn btn-primary" href="/cms/contents/<%- content_id %>" role="button">Détail</a>
 			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"></button>
 			<ul class="dropdown-menu dropdown-menu-right">

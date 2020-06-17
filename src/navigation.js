@@ -309,6 +309,15 @@ module.exports = Marionette.Object.extend({
 		return this.layoutView.getChildView('content');
 	},
 
+	/**
+	 * Trigger an event on content view (if set)
+	 * @returns {Marionette.View}
+	 */
+	triggerContent: function(event, params) {
+		if (!this.layoutView.getChildView('content')) return;
+
+		this.layoutView.getChildView('content').triggerMethod(event, params)
+	},
 
 	/*
 	 * MODAL
@@ -335,6 +344,9 @@ module.exports = Marionette.Object.extend({
 	 * 							- {Object} action {title:{String}}
 	 */
 	showInModal: function(view, modalSettings) {
+		if (view.getTabs) {
+			modalSettings.tabs = view.getTabs();
+		}
 		var modalView = new ModalView(modalSettings);
 		this.showModal(modalView);
 		// Attach modalView to DOM before attaching the view
@@ -357,6 +369,11 @@ module.exports = Marionette.Object.extend({
 		if (!_.isString(error)) {
 			if (error.handled) return;
 			errorMsg = error.message ? error.message : "Une erreur inattendue s'est produite";
+			if (error.fields && _.isArray(error.fields) && error.fields.length > 0) {
+				errorMsg += ' : <ul>' + _.reduce(error.fields, function(acc, field) {
+					return acc + '<li>' + field.message + '</li>';
+				}, '') + '</ul>';
+			}
 		} else {
 			errorMsg = error;
 		}
@@ -409,11 +426,20 @@ module.exports = Marionette.Object.extend({
 	},
 
 	/**
-	 * Call notfound handler on the default router
+	 * Get current URL path
 	 *
+	 * @returns {String}
 	 */
-	notFound: function() {
-		this.application.router.controller.notFound();
+	getPath: function() {
+		return document.location.pathname;
+	},
+
+	/**
+	 * Call notfound handler on the default router
+	 * @param {String} message
+	 */
+	notFound: function(message) {
+		this.application.router.controller.notFound(message);
 	},
 
 	/**

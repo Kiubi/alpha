@@ -55,6 +55,11 @@ else
 	cat ./src/vendor/tinymce/skins/lightgray/skin.css >> ./$dest/vendor/tinymce/skins/lightgray/skin.min.css
 fi
 
+if [ ! -f ./src/config.js ]; then
+  echo " - configuration"
+  cp ./src/config.example.js "./src/config.js"
+fi
+
 echo "Bundle locales"
 
 locales=""

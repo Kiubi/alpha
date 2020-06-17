@@ -2,6 +2,8 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 
@@ -64,6 +66,14 @@ module.exports = Marionette.View.extend({
 		return this.model.import(data).done(function(report) {
 			this.step = 1;
 			this.report = report;
+			if (this.report.errors && this.report.errors.length === 0) {
+				// Refresh features
+				Session.site.fetch({
+					data: {
+						extra_fields: 'scopes,features'
+					}
+				});
+			}
 			this.render();
 		}.bind(this)).always(function() {
 			navigationController.hideModal();

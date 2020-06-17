@@ -1,0 +1,57 @@
+<article class="post-article tab-content mt-3">
+
+	<div class="post-content m-0 tab-pane show active" id="content-tab">
+		<% if (loading) { %>
+			<div class="text-center list-item-empty">
+				<div class="loader spinner-border text-muted" role="status">
+					<span class="sr-only">Chargement...</span>
+				</div>
+			</div>
+		<% } else { %>
+			<div class="list-group mb-4" data-role="post">
+				<p>Billets (<%- post_types.length %>)</p>
+				<% if(post_types.length == 0) { %>
+				<span class="list-item-empty"><span class="md-icon md-empty mb-2"></span>Aucun type de billet disponible</span>
+				<% } %>
+				<% _.each(post_types, function(type){%>
+				<a href="#" class="list-group-item" data-id="<%- type.type %>"><span class="md-icon md-item-type md-billet"></span><%- type.name %></a>
+				<%}); %>
+			</div>
+			<% if (enableComponent) { %>
+			<div class="list-group" data-role="component">
+				<p>Composants (<%- component_types.length %>)</p>
+				<% if(component_types.length == 0) { %>
+				<span class="list-item-empty"><span class="md-icon md-empty mb-2"></span>Aucun type de composant disponible</span>
+				<% } %>
+				<% _.each(component_types, function(type){%>
+				<a href="#" class="list-group-item" data-id="<%- type.type %>"><span class="md-icon md-item-type md-composant"></span><%- type.name %></a>
+				<%}); %>
+			</div>
+			<% } %>
+		<% } %>
+	</div>
+
+	<% if(enableComponent && container_type == 'page') { %>
+		<div class="post-content m-0 tab-pane" id="symbole-tab">
+			<% if (loading) { %>
+				<div class="text-center list-item-empty">
+					<div class="loader spinner-border text-muted" role="status">
+						<span class="sr-only">Chargement...</span>
+					</div>
+				</div>
+			<% } else { %>
+				<div class="list-group" data-role="symbol">
+					<p>Symboles partagés par plusieurs pages (<%- symbols.length %>)</p>
+					<% if(symbols.length == 0) { %>
+					<span class="list-item-empty"><span class="md-icon md-empty mb-2"></span>Aucun symbole disponible</span>
+					<% } %>
+					<% _.each(symbols, function(symbol){%>
+					<a href="#" class="list-group-item" data-id="<%- symbol.symbol_id %>"><span class="md-icon md-item-type md-symbole"></span><%- symbol.params.title %></a>
+					<%}); %>
+				</div>
+			<% } %>
+		</div>
+	<% } %>
+
+	<footer class="post-footer"></footer>
+</article>

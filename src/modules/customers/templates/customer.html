@@ -95,40 +95,27 @@
 
 			<article class="post-article post-article-aside">
 				<div class="post-content">
-					<div class="row">
-
-						<% if(customer_id) { %>
-							<div class="col-lg-12 order-lg-3 col-4">
-							<div class="form-group post-subcontent">
-								<label>Date d'inscription</label>
-
-								<p class="form-control-static"><%- creation_date %></p>
-							</div>
-						</div>
-						<div class="col-lg-12 order-lg-2 col-4">
-							<div class="form-group post-subcontent mb-0">
-								<label>Numéro client</label>
-
-								<p class="form-control-static">#<%- number %></p>
-							</div>
-						</div>
-						<% } %>
-
-
-						<div class="col-lg-12 order-lg-1 col-4">
-							<div class="form-group <%= (customer_id) ?	'mb-lg-0' : '' %>">
-								<label>Accès</label>
-								<div class="form-check">
-									<input name="is_enabled" id="is_enabled1" value="1" <%= (is_enabled) ?
-									'checked="checked"' : '' %> type="radio">
-									<label for="is_enabled1" class="visible">Autorisé</label>
-									<input name="is_enabled" id="is_enabled0" value="0" <%= (!is_enabled) ?
-									'checked="checked"' : '' %> type="radio">
-									<label for="is_enabled0" class="not-visible">Bloqué</label>
-								</div>
-							</div>
+					<div class="form-group post-subcontent">
+						<label>Accès</label>
+						<div class="form-check">
+							<input name="is_enabled" id="is_enabled1" value="1" <%= (is_enabled) ?
+							'checked="checked"' : '' %> type="radio">
+							<label for="is_enabled1" class="visible">Autorisé</label>
+							<input name="is_enabled" id="is_enabled0" value="0" <%= (!is_enabled) ?
+							'checked="checked"' : '' %> type="radio">
+							<label for="is_enabled0" class="not-visible">Bloqué</label>
 						</div>
 					</div>
+					<% if(customer_id) { %>
+						<div class="form-group post-subcontent">
+							<label>Numéro client</label>
+							<p>#<%- number %></p>
+						</div>
+						<div class="form-group post-subcontent">
+							<label>Date d'inscription</label>
+							<p><%- creation_date %></p>
+						</div>
+					<% } %>
 				</div>
 				<footer class="post-footer"></footer>
 			</article>

@@ -9,7 +9,8 @@ module.exports = CollectionUtils.KiubiModel.extend({
 	},
 
 	defaults: {
-		"widgets": []
+		"widgets": [],
+		"messages": []
 	},
 
 	/**

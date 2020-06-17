@@ -1,0 +1,58 @@
+<article class="post-article">
+    <div class="post-content">
+        <div class="form-group">
+            <label for="model">Type de symbole</label>
+            <p>Définie l'apparence, le template et la nature du contenu du symbole :</p>
+            <select id="model" name="model" data-style="selectify">
+                <% _(models).each(function(item){ %>
+                <option value="<%- item.id %>" <%= (item.id == currentModel) ? 'selected="selected"':''  %> data-tags="md-symbole <%- item.error ? 'text-danger' : '' %>"><%- item.error ? 'Type inconnu : ' : '' %> <%- item.name %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <footer class="post-footer"></footer>
+</article>
+
+<% if (fields.length) { %>
+<article class="post-article post-article-aside">
+    <div class="post-content">
+
+        <% _(fields).each(function(field){ %>
+
+        <% switch(field.type){ case 'text': %>
+        <div class="form-group post-subcontent">
+            <label for="<%- field.field %>"><%- field.name %></label>
+            <% if (field.help) { %><p><%- field.help %></p><% } %>
+            <input class="form-control" id="<%- field.field %>" name="<%- field.field %>" value="<%- symbol[field.field] %>" placeholder="<%- field.default %>">
+        </div>
+        <% break; case 'textarea': %>
+        <div class="form-group post-subcontent">
+            <label for="<%- field.field %>"><%- field.name %></label>
+            <% if (field.help) { %><p><%- field.help %></p><% } %>
+            <textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" rows="5" placeholder="<%- field.default %>"><%- symbol[field.field] %></textarea>
+        </div>
+        <% break; case 'wysiwyg': %>
+        <div class="form-group post-subcontent">
+            <label for="<%- field.field %>"><%- field.name %></label>
+            <% if (field.help) { %><p><%- field.help %></p><% } %>
+            <textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" rows="21" placeholder="<%- field.default %>" data-role="wysiwyg" ><%- symbol[field.field] %></textarea>
+        </div>
+        <% break; case 'select': %>
+        <div class="form-group post-subcontent">
+            <label for="<%- field.field %>"><%- field.name %></label>
+            <% if (field.help) { %><p><%- field.help %></p><% } %>
+            <select id="<%- field.field %>" name="<%- field.field %>" data-style="selectify">
+                <% _(field.options).each(function(option){ %>
+                <option value="<%- option.value %>" <%= ((symbol[field.field] != '' && option.value == symbol[field.field]) || option.value == field.default) ? 'selected="selected"':''  %>><%- option.label %></option>
+                <% }) %>
+            </select>
+        </div>
+        <% break; case 'image':case 'file': %>
+        <div class="post-subcontent" data-role="filepicker-<%- field.field %>"></div>
+        <% break;} %>
+
+        <% }) %>
+    </div>
+    <footer class="post-footer"></footer>
+</article>
+<% } %>

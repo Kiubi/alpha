@@ -8,13 +8,14 @@ var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var Forms = require('kiubi/utils/forms.js');
+var SaveBehavior = require('kiubi/behaviors/save_detection.js');
 
 var TypeSelectorView = Marionette.View.extend({
 	template: require('../templates/post.type.html'),
 	className: 'post-article w-100',
 	tagName: 'article',
 
-	behaviors: [WysiwygBehavior, SelectifyBehavior],
+	behaviors: [WysiwygBehavior, SelectifyBehavior, SaveBehavior],
 
 	ui: {
 		'select': "select[name='type']"
@@ -118,7 +119,8 @@ var TypeSelectorView = Marionette.View.extend({
 				fieldname: field.field,
 				fieldLabel: field.name,
 				type: field.type,
-				value: this.post.get(field.field)
+				value: this.post.get(field.field),
+				comment: field.help ? field.help : null
 			}));
 		}.bind(this));
 	}
@@ -132,11 +134,13 @@ module.exports = Marionette.View.extend({
 	behaviors: [FormBehavior],
 
 	fields: [
+		'is_visible'
+	],
+
+	postFields: [
 		'title',
 		'subtitle',
-		'is_visible',
 		'group',
-		'page_id',
 		'type',
 		'text1',
 		'text2',
@@ -175,10 +179,17 @@ module.exports = Marionette.View.extend({
 	},
 
 	menus: null,
+	container: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['model', 'page', 'menus', 'typesSource']);
-		this.listenTo(this.model, 'change:page_id', this.onPageChange);
+		this.mergeOptions(options, ['model', 'content', 'container', 'menus', 'typesSource']);
+	},
+
+	templateContext: function() {
+		return {
+			'is_visible': this.content.get('is_visible'),
+			'container': this.container.get('page_id') ? 'page' : 'symbol'
+		};
 	},
 
 	onRender: function() {
@@ -189,27 +200,26 @@ module.exports = Marionette.View.extend({
 			formEl: this.getUI('form')
 		});
 		this.showChildView('type', view);
-		// proxy filepickers events
-		this.listenTo(view, 'childview:field:change', function() {
-			this.triggerMethod('field:change');
-		}.bind(this));
 
-		this.showChildView('page', new SelectView({
-			collection: this.menus,
-			selected: this.model.get('page_id'),
-			name: 'page_id'
-		}));
-		this.menus.fetch({
-			data: {
-				extra_fields: 'pages'
-			}
-		});
-		this.menus.selectPayloadFilter = function(item, page) {
-			if (page == null || page.page_type != 'page') {
-				item.is_group = true;
-			}
-			return item;
-		};
+		// If container is a page
+		if (this.menus) {
+			this.showChildView('page', new SelectView({
+				collection: this.menus,
+				selected: this.container.get('page_id'),
+				name: 'page_id'
+			}));
+			this.menus.fetch({
+				data: {
+					extra_fields: 'pages'
+				}
+			});
+			this.menus.selectPayloadFilter = function(item, page) {
+				if (page == null || page.page_type != 'page') {
+					item.is_group = true;
+				}
+				return item;
+			};
+		}
 
 		this.showChildView('group', new SelectView({
 			collectionPromise: this.model.getGroups(),
@@ -225,12 +235,12 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
-	onPageChange: function() {
-		this.page.clear({
+	onPageChange: function(page_id) {
+		this.container.clear({
 			silent: true
 		});
-		this.page.set('page_id', this.model.get('page_id'));
-		this.page.fetch();
+		this.container.set('page_id', page_id);
+		this.container.fetch();
 	},
 
 	selectGroup: function(value) {
@@ -240,16 +250,29 @@ module.exports = Marionette.View.extend({
 	},
 
 	onSave: function() {
-		return this.model.save(
-			Forms.extractFields(this.fields, this), {
+
+		var contentData = Forms.extractFields(this.fields, this);
+		if (this.container.get('page_id')) {
+			if (this.container.get('page_id') != this.getChildView('page').selected) {
+				contentData.container_id = this.getChildView('page').selected;
+				this.onPageChange(contentData.container_id);
+			}
+		}
+
+		return Backbone.$.when(
+			this.content.save(contentData, {
 				patch: true,
 				wait: true
-			}
+			}),
+			this.model.save(Forms.extractFields(this.postFields, this), {
+				patch: true,
+				wait: true
+			})
 		);
 	},
 
 	onDelete: function() {
-		return this.model.destroy({
+		return this.content.destroy({
 			wait: true
 		});
 	}

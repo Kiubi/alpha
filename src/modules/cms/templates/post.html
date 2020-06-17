@@ -11,25 +11,21 @@
 		<div class="col-lg-4 col-12">
 			<article class="post-article post-article-aside">
 				<div class="post-content">
-					<div class="row">
-						<div class="col-lg-12 order-lg-2 col-6">
-							<div class="form-group post-subcontent">
-								<label>Page du billet</label>
-								<div data-role="page"></div>
-							</div>
-						</div>
-						<div class="col-lg-12 order-lg-1 col-6">
-							<div class="form-group mb-lg-0">
-								<label>Affichage</label>
-								<div class="form-check">
-									<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
-									<label for="is_visible1" class="visible">Visible</label>
-									<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
-									<label for="is_visible0" class="not-visible">Masqué</label>
-								</div>
-							</div>
+					<div class="form-group post-subcontent">
+						<label>Affichage</label>
+						<div class="form-check">
+							<input name="is_visible" id="is_visible1" value="1" <%= is_visible ? 'checked="checked"' : '' %> type="radio">
+							<label for="is_visible1" class="visible">Visible</label>
+							<input name="is_visible" id="is_visible0" value="0" <%= !is_visible ? 'checked="checked"' : '' %> type="radio">
+							<label for="is_visible0" class="not-visible">Masqué</label>
 						</div>
 					</div>
+                    <% if(container == 'page') { %>
+                    <div class="form-group post-subcontent">
+                        <label>Page du billet</label>
+                        <div data-role="page"></div>
+                    </div>
+                    <% } %>
 				</div>
 				<footer class="post-footer"></footer>
 			</article>

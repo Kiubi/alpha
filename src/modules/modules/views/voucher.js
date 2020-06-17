@@ -150,9 +150,6 @@ module.exports = Marionette.View.extend({
 			searchPlaceholder: 'Recherche des membres ou groups extranet',
 			tags: formatCustomersTags(restrictions.allow.customers, restrictions.allow.groups)
 		}));
-		this.listenTo(this.getChildView('allowed_customers').collection, 'update', function() {
-			this.triggerMethod('field:change');
-		}.bind(this));
 
 		// Denied customers & groups
 		this.showChildView('denied_customers', new TagView({
@@ -160,9 +157,6 @@ module.exports = Marionette.View.extend({
 			searchPlaceholder: 'Recherche des membres ou groups extranet',
 			tags: formatCustomersTags(restrictions.deny.customers, restrictions.deny.groups)
 		}));
-		this.listenTo(this.getChildView('denied_customers').collection, 'update', function() {
-			this.triggerMethod('field:change');
-		}.bind(this));
 
 		if (this.model.get('type') != 'shipping') {
 			// Allowed products & categories
@@ -171,9 +165,6 @@ module.exports = Marionette.View.extend({
 				searchPlaceholder: 'Recherche des produits ou catégories de produits',
 				tags: formatProductsTags(restrictions.allow.products, restrictions.allow.categories)
 			}));
-			this.listenTo(this.getChildView('allowed_products').collection, 'update', function() {
-				this.triggerMethod('field:change');
-			}.bind(this));
 
 			// Denied products & categories
 			this.showChildView('denied_products', new TagView({
@@ -181,9 +172,6 @@ module.exports = Marionette.View.extend({
 				searchPlaceholder: 'Recherche des produits ou catégories de produits',
 				tags: formatProductsTags(restrictions.deny.products, restrictions.deny.categories)
 			}));
-			this.listenTo(this.getChildView('denied_products').collection, 'update', function() {
-				this.triggerMethod('field:change');
-			}.bind(this));
 		} else {
 			this.showChildView('carriers', new SelectView({
 				collectionPromise: this.carriers.promisedSelect(this.model.get('carrier_id'), {

@@ -58,13 +58,7 @@ var NewRowView = Marionette.View.extend({
 		this.linked_product_id = selected.value;
 	},
 
-	onActionCancel: function() {
-		this.getUI('form').hide();
-		Forms.clearErrors(this.getUI('errors'), this.el);
-	},
-
 	onActionSave: function() {
-		Forms.clearErrors(this.getUI('errors'), this.el);
 
 		var data = Forms.extractFields(['link'], this);
 		data.product_id = this.collection.product_id;
@@ -84,10 +78,6 @@ var NewRowView = Marionette.View.extend({
 			.fail(function(error) {
 				Forms.displayErrors(error, this.getUI('errors'), this.el);
 			}.bind(this));
-	},
-
-	onActionShow: function() {
-		this.getUI('form').show();
 	}
 
 });
@@ -173,7 +163,7 @@ module.exports = Marionette.View.extend({
 			}
 		}).done(function() {
 			// restore product_id for each link
-			this.collection.each(function (model) {
+			this.collection.each(function(model) {
 				model.set('product_id', model.collection.product_id)
 			})
 		}.bind(this));

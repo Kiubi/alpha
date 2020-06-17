@@ -3,13 +3,25 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var Job = require('./job');
 
-function checkImport(job) {
+function checkAnalyse(job) {
 
-	var result = job.get('result').split(';');
-	var token = result[1];
+	var token = job.get('result');
 
 	return Backbone.ajax({
-		url: 'sites/@site/import/cms/posts/' + token,
+		url: 'sites/@site/import/cms/contents/' + token,
+		method: 'GET'
+	}).then(function(data) {
+
+		data.token = token;
+
+		return data;
+	});
+}
+
+function checkImport(token) {
+
+	return Backbone.ajax({
+		url: 'sites/@site/import/cms/contents/' + token,
 		method: 'GET'
 	}).then(function(data, meta) {
 		return data;
@@ -18,18 +30,14 @@ function checkImport(job) {
 
 module.exports = CollectionUtils.KiubiModel.extend({
 
-	url: 'sites/@site/import/cms/posts',
+	url: 'sites/@site/import/cms/contents',
 
 	isNew: function() {
 		return false;
 	},
 
 	defaults: {
-		'is_enabled': false,
-		'page_id': null,
-		'mode': '',
-		'type': '',
-		'file': null
+
 	},
 
 	/**
@@ -37,8 +45,7 @@ module.exports = CollectionUtils.KiubiModel.extend({
 	 * @param {Object} params
 	 * @returns {Promise}
 	 */
-	import: function(params) {
-
+	analyse: function(params) {
 		var data = new FormData();
 		_.each(params, function(v, k) {
 			data.append(k, v);
@@ -57,7 +64,27 @@ module.exports = CollectionUtils.KiubiModel.extend({
 			});
 
 			return job.watch().then(function() {
-				return checkImport(job);
+				return checkAnalyse(job);
+			});
+		});
+	},
+
+	/**
+	 *
+	 * @param {String} token
+	 */
+	import: function(token) {
+		return Backbone.ajax({
+			url: this.url + '/' + token,
+			method: 'PUT'
+		}).then(function(data) {
+
+			var job = new Job({
+				job_id: data.job_id
+			});
+
+			return job.watch().then(function() {
+				return checkImport(token);
 			});
 		});
 	}

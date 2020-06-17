@@ -16,6 +16,14 @@ module.exports = CollectionUtils.KiubiModel.extend({
 		js_body: '',
 		layout_id: null,
 		service_path: ''
+	},
+
+	getTitle: function() {
+		return this.get('name');
+	},
+
+	getBackURL: function() {
+		return '/cms';
 	}
 
 });

@@ -1,17 +1,20 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
+var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
 
 /* Models */
 var Ftp = require('../prefs/models/ftp');
 var Themes = require('./models/themes');
+var Conversion = require('./models/conversion');
 var ImportTheme = require('kiubi/modules/modules/models/import.theme');
 
 /* Views */
 var ThemeView = require('./views/theme');
 var CustomView = require('./views/custom');
 var ImportView = require('./views/import');
+var ConversionView = require('./views/conversion');
 
 var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
 var SidebarMenuView = Marionette.View.extend({
@@ -35,17 +38,35 @@ var ThemesController = Controller.extend({
 		var f = new Ftp();
 		var themes = new Themes();
 
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
 		Backbone.$.when(f.fetch(), themes.getCurrent()).done(function(ftp, theme) {
 			var view = new ThemeView({
 				ftp: f,
 				themes: themes,
-				current: theme
+				current: theme,
+				enableConversion: !Session.hasFeature('component')
 			});
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: 'Thème graphique'
 			});
-		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
+		}.bind(this)).fail(
+			function(error, meta) {
+				if (error.code === 4015) { // Theme invalide
+					this.notFound(error.message);
+					this.setHeader({
+						title: 'Thème graphique'
+					});
+				} else {
+					// Handle all others like 404
+					this.notFound();
+					this.setHeader({
+						title: 'Thème graphique'
+					});
+				}
+			}.bind(this)
+		);
 	},
 
 	showCustom: function() {
@@ -76,24 +97,41 @@ var ThemesController = Controller.extend({
 		this.setHeader({
 			title: 'Importer un thème'
 		});
+	},
+
+	showConversion: function() {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		if (Session.hasFeature('component')) {
+			this.navigationController.navigate('/');
+			return;
+		}
+
+		this.navigationController.showContent(new ConversionView({
+			model: new Conversion()
+		}));
+		this.setHeader({
+			title: 'Analyse du thème'
+		});
 	}
 
 });
 
-module.exports = Marionette.AppRouter.extend({
+module.exports = Router.extend({
 	controller: new ThemesController(),
 	appRoutes: {
 		'themes': 'showTheme',
 		'themes/custom': 'showCustom',
-		'themes/import': 'showImport'
+		'themes/import': 'showImport',
+		'themes/conversion': 'showConversion'
 	},
 
-	onRoute: function(name, path, args) {
+	onRoute: function(name) {
 
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		if (!Session.hasScope('site:theme')) {
 			this.controller.navigationController.navigate('/');
-			return;
+			return false;
 		}
 
 		this.controller.showSidebarMenu();

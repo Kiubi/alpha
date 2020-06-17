@@ -21,6 +21,7 @@ var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 var VatBehavior = require('kiubi/behaviors/vat.js');
+var SaveBehavior = require('kiubi/behaviors/save_detection.js');
 
 var format = require('kiubi/utils/format.js');
 var Forms = require('kiubi/utils/forms.js');
@@ -195,13 +196,7 @@ var NewVariantRowView = Marionette.View.extend({
 		};
 	},
 
-	onActionCancel: function() {
-		this.getUI('form').hide();
-		Forms.clearErrors(this.getUI('errors'), this.el);
-	},
-
 	onActionSave: function() {
-		Forms.clearErrors(this.getUI('errors'), this.el);
 
 		var m = new this.collection.model();
 
@@ -216,10 +211,6 @@ var NewVariantRowView = Marionette.View.extend({
 			.fail(function(error) {
 				Forms.displayErrors(error, this.getUI('errors'), this.el);
 			}.bind(this));
-	},
-
-	onActionShow: function() {
-		this.getUI('form').show();
 	}
 
 });
@@ -285,15 +276,12 @@ var VariantRowView = Marionette.View.extend({
 		'file_id'
 	],
 
-	editing: false,
-
 	initialize: function(options) {
 		this.taxes = options.taxes;
 		this.images = options.images;
 		this.names = options.names;
 		this.currency = options.currency;
 		this.is_virtual = options.is_virtual;
-		this.editing = false;
 		this.listenTo(this.images, 'add remove', this.onImageSync);
 	},
 
@@ -398,7 +386,7 @@ var VariantRowView = Marionette.View.extend({
 		}.bind(this));
 	},
 
-	onActionDuplicateRow: function() {
+	onActionDuplicate: function() {
 		return this.model.duplicate()
 			.done(function(duplicate) {
 				this.model.collection.add(duplicate);
@@ -409,7 +397,7 @@ var VariantRowView = Marionette.View.extend({
 			});
 	},
 
-	onActionDeleteRow: function() {
+	onActionDelete: function() {
 		return this.model.destroy({
 			wait: true
 		}).fail(function(error) {
@@ -418,38 +406,20 @@ var VariantRowView = Marionette.View.extend({
 		});
 	},
 
-	onActionEditRow: function() {
-		this.editing = true;
-		this.getUI('list').hide();
-		this.getUI('form').show();
-
-	},
-
-	onActionCancelRow: function() {
-		this.editing = false;
-		this.getUI('form').hide();
-		this.getUI('list').show();
-	},
-
-	onActionSaveRow: function() {
-		Forms.clearErrors(this.getUI('errors'), this.el);
-
+	onActionSave: function() {
 		var data = Forms.extractFields(this.fields, this);
 		if (data.is_stock_unlimited) {
 			data.stock = null; // Be sure to nullify any value
 		}
 
 		return this.model.save(
-				data, {
-					patch: true,
-					wait: true
-				}
-			).done(function() {
-				this.editing = false;
-			}.bind(this))
-			.fail(function(error) {
-				Forms.displayErrors(error, this.getUI('errors'), this.el);
-			}.bind(this));
+			data, {
+				patch: true,
+				wait: true
+			}
+		).fail(function(error) {
+			Forms.displayErrors(error, this.getUI('errors'), this.el);
+		}.bind(this));
 	}
 
 });
@@ -623,7 +593,7 @@ var TypeSelectorView = Marionette.View.extend({
 		}
 	},
 
-	behaviors: [CharCountBehavior, WysiwygBehavior, SelectifyBehavior],
+	behaviors: [CharCountBehavior, WysiwygBehavior, SelectifyBehavior, SaveBehavior],
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['type', 'typesSource', 'product', 'formEl']);
@@ -693,7 +663,8 @@ var TypeSelectorView = Marionette.View.extend({
 				fieldname: field.field,
 				fieldLabel: field.name,
 				type: field.type,
-				value: this.product.get(field.field)
+				value: this.product.get(field.field),
+				comment: field.help ? field.help : null
 			}));
 		}.bind(this));
 	}
@@ -744,6 +715,10 @@ module.exports = Marionette.View.extend({
 		seo: {
 			el: "article[data-role='seo']",
 			replaceElement: true
+		},
+		tier_prices: {
+			el: "div[data-role='tier_prices']",
+			replaceElement: true
 		}
 	},
 
@@ -784,7 +759,7 @@ module.exports = Marionette.View.extend({
 	],
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['model', 'typesSource', 'categories', 'brands', 'tags', 'variants', 'taxes', 'images']);
+		this.mergeOptions(options, ['model', 'typesSource', 'categories', 'brands', 'tags', 'variants', 'taxes', 'images', 'tier_prices']);
 
 		if (this.getOption('enableLayout')) {
 			this.layoutSelector = new LayoutSelectorView({
@@ -828,7 +803,8 @@ module.exports = Marionette.View.extend({
 			available_date: format.formatDateTime(this.model.get('available_date')),
 			extra_shipping: format.formatFloat(this.model.get('extra_shipping')),
 			'base_price': this.model.meta.base_price,
-			'currency': format.currencyEntity(this.model.meta.currency)
+			'currency': format.currencyEntity(this.model.meta.currency),
+			enableTierPrices: this.getOption('tier_prices')
 		};
 	},
 
@@ -856,10 +832,6 @@ module.exports = Marionette.View.extend({
 			formEl: this.getUI('form')
 		});
 		this.showChildView('type', view);
-		// proxy filepickers events
-		this.listenTo(view, 'childview:field:change', function() {
-			this.triggerMethod('field:change');
-		}.bind(this));
 
 		this.showChildView('images', this.imagesView);
 		this.showChildView('variants', this.variantsView);
@@ -888,10 +860,6 @@ module.exports = Marionette.View.extend({
 			searchPlaceholder: 'Rechercher une catégorie',
 			tags: other_categories
 		}));
-		this.listenTo(this.getChildView('other-categ').collection, 'update', function() {
-			this.triggerMethod('field:change');
-		}.bind(this));
-
 
 		// Brand
 		this.showChildView('brand', new AutocompleteView({
@@ -903,6 +871,19 @@ module.exports = Marionette.View.extend({
 				value: this.model.get('brand_id')
 			}
 		}));
+
+		// TierPrices
+		if (this.getOption('tier_prices')) {
+			this.showChildView('tier_prices', new AutocompleteView({
+				searchPlaceholder: 'Rechercher une grille',
+				isMandatory: false,
+				evtSuffix: 'tierPrices',
+				current: {
+					label: this.model.get('tier_prices_name'),
+					value: this.model.get('tier_prices_id')
+				}
+			}));
+		}
 
 		// Tags
 		var tags = _.map(this.model.get('tags'), function(tag) {
@@ -916,9 +897,6 @@ module.exports = Marionette.View.extend({
 			searchPlaceholder: 'Rechercher un tag',
 			tags: tags
 		}));
-		this.listenTo(this.getChildView('tags').collection, 'update', function() {
-			this.triggerMethod('field:change');
-		}.bind(this));
 
 		// Seo
 		if (this.getOption('enableSeo')) {
@@ -949,11 +927,9 @@ module.exports = Marionette.View.extend({
 	},
 
 	onChildviewChangeBrand: function(selected, view) {
-
 		this.model.set('brand_id', selected.value, {
 			silent: true
 		});
-
 	},
 
 	onChildviewAddBrand: function(term, view) {
@@ -972,8 +948,34 @@ module.exports = Marionette.View.extend({
 				this.model.set('brand_id', model.get('brand_id'), {
 					silent: true
 				});
+				this.triggerMethod('field:change');
 			}.bind(this)
 			// TODO failure
+		});
+	},
+
+	// Tier price management
+
+	onChildviewInputTierPrices: function(term, view) {
+		this.getOption('tier_prices').fetch({
+			data: {
+				term: term,
+				limit: 5
+			}
+		}).done(function(grids) {
+			var results = _.map(grids, function(grid) {
+				return {
+					label: grid.name,
+					value: grid.grid_id
+				};
+			});
+			view.showResults(results);
+		}.bind(this));
+	},
+
+	onChildviewChangeTierPrices: function(selected, view) {
+		this.model.set('tier_prices_id', selected.value, {
+			silent: true
 		});
 	},
 
@@ -1145,8 +1147,8 @@ module.exports = Marionette.View.extend({
 
 		// Save all current editing
 		this.variantsView.getChildren().each(function(rowView) {
-			if (rowView.editing) {
-				rowView.onActionSaveRow();
+			if (rowView.isEditing) {
+				rowView.onActionSave();
 			}
 		});
 
@@ -1154,6 +1156,7 @@ module.exports = Marionette.View.extend({
 			selector: 'form[data-role="part"]'
 		});
 		data.brand_id = this.model.get('brand_id') || '';
+		if (this.getOption('tier_prices')) data.tier_prices_id = this.model.get('tier_prices_id') || ''; // hack to explicit removal
 		data.tags = _.pluck(this.getChildView('tags').getTags(), 'label'); // API can handle label. Simpler, safer
 		if (data.tags.length == 0) data.tags = ''; // hack to explicit removal
 		var c = [this.getChildView('primary-categ').getCurrent().value];

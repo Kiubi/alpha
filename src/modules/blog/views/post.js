@@ -11,6 +11,7 @@ var CharCountBehavior = require('kiubi/behaviors/char_count.js');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
+var SaveBehavior = require('kiubi/behaviors/save_detection.js');
 
 var Forms = require('kiubi/utils/forms.js');
 var format = require('kiubi/utils/format');
@@ -36,7 +37,7 @@ var TypeSelectorView = Marionette.View.extend({
 		}
 	},
 
-	behaviors: [WysiwygBehavior, SelectifyBehavior, CharCountBehavior],
+	behaviors: [WysiwygBehavior, SelectifyBehavior, CharCountBehavior, SaveBehavior],
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['type', 'typesSource', 'post']);
@@ -97,7 +98,8 @@ var TypeSelectorView = Marionette.View.extend({
 				fieldname: field.field,
 				fieldLabel: field.name,
 				type: field.type,
-				value: this.post.get(field.field)
+				value: this.post.get(field.field),
+				comment: field.help ? field.help : null
 			}));
 		}.bind(this));
 	}
@@ -227,11 +229,6 @@ module.exports = Marionette.View.extend({
 				model: this.model
 			}));
 		}
-	},
-
-	onChildviewFieldChange: function() {
-		// proxy filepicker event
-		this.triggerMethod('field:change');
 	},
 
 	onChildviewChangeLayout: function(layout_id) {

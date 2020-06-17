@@ -4,6 +4,7 @@ var _ = require('underscore');
 
 var Groups = require('kiubi/modules/customers/models/groups');
 var Customers = require('kiubi/modules/customers/models/customers');
+var SaveBehavior = require('kiubi/behaviors/save_detection.js');
 
 function formatCustomer(data, index) {
 	return '<li data-role="selection" data-index="' + index + '"><a class="dropdown-item" href="#">' + data.firstname +
@@ -45,6 +46,8 @@ var TagsView = Marionette.CollectionView.extend({
 module.exports = Marionette.View.extend({
 	template: require('../templates/restrictions.html'),
 	className: 'row',
+
+	behaviors: [SaveBehavior],
 
 	regions: {
 		'customers': {
@@ -148,10 +151,10 @@ module.exports = Marionette.View.extend({
 		this.selected_groups.add(groups);
 
 		this.listenTo(this.selected_customers, 'update', function() {
-			this.triggerMethod('change:restrictions');
+			this.triggerMethod('field:change');
 		}.bind(this));
 		this.listenTo(this.selected_groups, 'update', function() {
-			this.triggerMethod('change:restrictions');
+			this.triggerMethod('field:change');
 		}.bind(this));
 	},
 

@@ -174,9 +174,11 @@ module.exports = Marionette.View.extend({
 
 		this.widgets = [];
 
+		var layoutPage = this.model.get('type').page;
+
 		Backbone.$.when(
-			this.model.getWidgets(this.model.get('type').page),
-			this.model.getModels()
+			this.model.getWidgets(layoutPage),
+			layoutPage == 'symbol' ? [] : this.model.getModels() // symbols are using its own models
 		).done(function(tree, models) {
 			var widgets = [];
 
@@ -247,7 +249,7 @@ module.exports = Marionette.View.extend({
 
 			var zoneHtml = tplZone({
 				col_count: parseInt(zone.colmax), // supports '2g' and '2d'
-				name: zone.intitule,
+				name: zone.name,
 				zone_id: zone.id,
 				blocs: blocsBuffer.join('')
 			});
@@ -373,9 +375,9 @@ module.exports = Marionette.View.extend({
 
 			$widget.remove();
 
-		}.bind(this)).fail(function() {
+		}.bind(this)).fail(function(error) {
 			var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
-			navigationController.showErrorModal(xhr);
+			navigationController.showErrorModal(error);
 		}.bind(this));
 	},
 

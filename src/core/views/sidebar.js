@@ -28,9 +28,10 @@ var UsageView = Marionette.View.extend({
 			prct_forms = 0;
 
 		if (this.model.get('space').total) {
-			prct_medias = Math.round(this.model.get('space').medias * 100 / this.model.get('space').total);
-			prct_ftp = Math.round(this.model.get('space').ftp * 100 / this.model.get('space').total);
-			prct_datas = Math.round(this.model.get('space').datas * 100 / this.model.get('space').total);
+			var total_used = Math.max(this.model.get('space').used, this.model.get('space').total);
+			prct_medias = Math.round(this.model.get('space').medias * 100 / total_used);
+			prct_ftp = Math.round(this.model.get('space').ftp * 100 / total_used);
+			prct_datas = Math.round(this.model.get('space').datas * 100 / total_used);
 		}
 		if (this.model.get('products').total) {
 			prct_products = Math.round(this.model.get('products').used * 100 / this.model.get('products').total);
@@ -47,7 +48,7 @@ var UsageView = Marionette.View.extend({
 			prct_medias: prct_medias,
 			prct_ftp: prct_ftp,
 			prct_datas: prct_datas,
-			prct_free: (100 - prct_medias - prct_ftp - prct_datas),
+			prct_free: Math.max(0, 100 - prct_medias - prct_ftp - prct_datas),
 			prct_products: prct_products,
 			prct_users: prct_users,
 			prct_forms: prct_forms

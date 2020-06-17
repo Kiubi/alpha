@@ -109,9 +109,10 @@ module.exports = Marionette.Object.extend({
 	/**
 	 * Helper to show a "Not Found" Page
 	 *
+	 * @param {String} message
 	 */
-	notFound: function() {
-		this.navigationController.notFound();
+	notFound: function(message) {
+		this.navigationController.notFound(message);
 	},
 
 	/**
@@ -195,13 +196,14 @@ module.exports = Marionette.Object.extend({
 	 * Handle common API errors
 	 *
 	 * @param {String} defaultError
+	 * @param {String} defaultMessage
 	 * @returns {function}
 	 */
-	failHandler: function(defaultError) {
+	failHandler: function(defaultError, defaultMessage) {
 		return function() {
 
 			// Handle all others like 404
-			this.notFound();
+			this.notFound(defaultMessage);
 			this.setHeader({
 				title: defaultError
 			});

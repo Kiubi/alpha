@@ -1,0 +1,37 @@
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Livraison en Point Relais</h1>
+	</header>
+	<form data-role="pickup">
+	<div class="post-content post-list">
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<label for="free_threshold">Francos de port</label>
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text">Gratuit à partir de</span></div>
+						<input class="form-control" id="free_threshold" name="free_threshold" value="" placeholder="—">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achat</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-6">
+				<div class="form-group">
+					<label for="delay">Délai de livraison</label>
+					<input class="form-control" id="delay" name="delay" value="" type="text" placeholder="3 jours, 1 semaine...">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-4"><label>Tranche de poids</label></div>
+			<div class="col-3"><label>Frais du port</label></div>
+		</div>
+
+		<div data-role="pickup"></div>
+
+		<div class="list-item no-hover"><a href="#" data-role="pickup-add">Ajouter une tranche de poids</a></div>
+	</div>
+	</form>
+	<footer class="post-footer"></footer>
+</article>

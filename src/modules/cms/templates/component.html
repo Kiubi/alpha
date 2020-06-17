@@ -1,0 +1,103 @@
+<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+  <div class="row">
+    <div class="col-lg-8 col-12">
+      <form data-role="part">
+      <article class="post-article">
+        <header class="post-header">
+          <h1>Détail du composant</h1>
+        </header>
+        <div class="post-content">
+
+          <% _(type.fields).each(function(field){ %>
+
+          <% switch(field.type){ case 'text': %>
+          <div class="form-group">
+            <label for="<%- field.field %>"><%- field.name %></label>
+            <% if (field.help) { %><p><%- field.help %></p><% } %>
+            <input class="form-control" id="<%- field.field %>" name="<%- field.field %>" placeholder="<%- field.default %>" value="<%- fields[field.field] %>">
+          </div>
+          <% break; case 'textarea': %>
+          <div class="form-group">
+            <label for="<%- field.field %>"><%- field.name %></label>
+            <% if (field.help) { %><p><%- field.help %></p><% } %>
+            <textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" placeholder="<%- field.default %>" rows="5"><%- fields[field.field] %></textarea>
+          </div>
+          <% break; case 'wysiwyg': %>
+          <div class="form-group">
+            <label for="<%- field.field %>"><%- field.name %></label>
+            <% if (field.help) { %><p><%- field.help %></p><% } %>
+            <textarea class="form-control" id="<%- field.field %>" name="<%- field.field %>" placeholder="<%- field.default %>" data-role="wysiwyg" rows="21"><%- fields[field.field] %></textarea>
+          </div>
+          <% break; case 'select': %>
+          <div class="form-group">
+            <label for="<%- field.field %>"><%- field.name %></label>
+            <% if (field.help) { %><p><%- field.help %></p><% } %>
+            <div class="row">
+              <div class="col-6">
+                <select id="<%- field.field %>" name="<%- field.field %>" data-style="selectify">
+                  <% _(field.options).each(function(option){ %>
+                  <option value="<%- option.value %>" <%= ((fields[field.field] != '' && option.value == fields[field.field]) || option.value == field.default) ? 'selected="selected"':''  %>><%- option.label %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </div>
+          <% break; case 'image':case 'file': %>
+          <div data-role="filepicker-<%- field.field %>"></div>
+          <% break;} %>
+
+          <% }) %>
+
+        </div>
+        <footer class="post-footer"></footer>
+      </article>
+      </form>
+
+      <article data-role='list'></article>
+
+    </div>
+    <div class="col-lg-4 col-12">
+      <form data-role="part">
+      <article class="post-article post-article-aside">
+        <div class="post-content">
+          <div class="form-group post-subcontent">
+            <label>Affichage</label>
+            <div class="form-check">
+              <input name="is_visible" id="is_visible1" value="1" type="radio" <%= is_visible ? 'checked="checked"' : '' %>>
+              <label for="is_visible1" class="visible">Visible</label>
+              <input name="is_visible" id="is_visible0" value="0" type="radio" <%= !is_visible ? 'checked="checked"' : '' %>>
+              <label for="is_visible0" class="not-visible">Masqué</label>
+            </div>
+          </div>
+          <% if(container == 'page') { %>
+            <div class="form-group post-subcontent">
+              <label>Page du composant</label>
+              <div data-role="page"></div>
+            </div>
+          <% } %>
+        </div>
+        <footer class="post-footer"></footer>
+      </article>
+      <article class="post-article">
+        <div class="post-content">
+          <div class="">
+            <div class="form-group">
+              <label>Type de composant</label>
+              <p class="mb-3">Détermine l'affichage du composant dans une page et la nature de son contenu :</p>
+              <span class="text-dark"><span class="md-icon md-item-type md-composant"></span><%- type_name %></span>
+            </div>
+          </div>
+        </div>
+        <footer class="post-footer"></footer>
+      </article>
+      </form>
+    </div>
+  </div>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <button type="button" class="btn btn-lg btn-danger btn-delete" data-role="delete">Supprimer</button>
+    <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
+  </div>
+</div>
+<footer class="footer"></footer>

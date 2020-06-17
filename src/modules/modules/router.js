@@ -3,6 +3,7 @@ var Marionette = require('backbone.marionette');
 var moment = require('moment');
 var _ = require('underscore');
 
+var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
 
 /* Models */
@@ -25,7 +26,7 @@ var Backups = require('./models/backups');
 var MerchantCenter = require('kiubi/modules/prefs/models/merchantcenter');
 var ImportProducts = require('./models/import.products');
 var ImportColiship = require('./models/import.coliship');
-var ImportPosts = require('./models/import.posts');
+var ImportContents = require('./models/import.contents');
 var ImportWordpress = require('./models/import.wordpress');
 var ImportFiles = require('./models/import.files');
 var Menus = require('kiubi/modules/cms/models/menus');
@@ -34,6 +35,8 @@ var Folders = require('kiubi/modules/media/models/folders');
 var Medias = require('kiubi/modules/prefs/models/medias');
 var Captcha = require('kiubi/modules/prefs/models/captcha');
 var Ads = require('kiubi/modules/prefs/models/ads');
+var Symbols = require('kiubi/modules/cms/models/symbols');
+var TierPrices = require('./models/tier_prices');
 
 /* Views */
 var IndexView = require('./views/index');
@@ -47,7 +50,7 @@ var VoucherView = require('./views/voucher');
 var VoucherAddModalView = require('./views/modal.voucher.add');
 var NewsletterView = require('./views/subscribers.settings');
 var SubscribersView = require('./views/subscribers');
-var ImportPostsView = require('./views/import.posts');
+var ImportContentsView = require('./views/import.contents');
 var ImportProductsView = require('./views/import.products');
 var ImportColishipView = require('./views/import.coliship');
 var ImportWordpressView = require('./views/import.wordpress');
@@ -59,6 +62,8 @@ var AvisVerifiesView = require('./views/avisverifies');
 var BackupsView = require('./views/backups');
 var CaptchaView = require('./views/captcha');
 var KpsView = require('./views/kps');
+var TierPricesView = require('./views/tier_prices');
+var TierPricesGridView = require('./views/tier_prices_grid');
 
 
 /* Actions */
@@ -68,6 +73,34 @@ function getHeadersActionVouchers(options) {
 	var actions = [{
 		title: 'Ajouter une réduction',
 		callback: 'showVoucherAdd'
+	}];
+
+	if (options.addSave) {
+
+		var saveAction = {
+			title: 'Enregistrer',
+			callback: 'actionSave',
+			activateOnEvent: 'modified:content',
+			bubbleOnEvent: 'modified:content'
+		};
+
+		if (actions.length <= 1) {
+			actions.push(saveAction);
+		} else {
+			actions.splice(1, 0, saveAction);
+		}
+
+	}
+
+	return actions;
+}
+
+function getHeadersActionTierPrices(options) {
+
+	options = options || {};
+	var actions = [{
+		title: 'Ajouter une grille',
+		callback: 'actionNewTPGrid'
 	}];
 
 	if (options.addSave) {
@@ -207,7 +240,8 @@ var SidebarMenuView = Marionette.View.extend({
 			has_feature_checkout: Session.hasFeature('checkout'),
 			has_feature_fidelity: Session.hasFeature('fidelity'),
 			has_feature_advanced_media: Session.hasFeature('advanced_media'),
-			has_feature_multi_pickup: Session.hasFeature('multi_pickup')
+			has_feature_multi_pickup: Session.hasFeature('multi_pickup'),
+			has_feature_tier_prices: Session.hasFeature('tier_prices')
 		};
 	}
 
@@ -446,15 +480,14 @@ var ModulesController = Controller.extend({
 		}.bind(this)).fail(this.failHandler('Paramètres introuvables'));
 	},
 
-	showImportPosts: function() {
-		var c = new Posts();
-		this.navigationController.showContent(new ImportPostsView({
-			model: new ImportPosts(),
-			post: new c.model(),
-			menus: new Menus()
+	showImportContents: function() {
+		this.navigationController.showContent(new ImportContentsView({
+			model: new ImportContents(),
+			menus: new Menus(),
+			symbols: new Symbols()
 		}));
 		this.setHeader({
-			title: 'Import de billets dans le site web'
+			title: 'Import de contenus dans le site web'
 		});
 	},
 
@@ -627,6 +660,73 @@ var ModulesController = Controller.extend({
 
 	},
 
+	showTierPrices: function() {
+		var view = new TierPricesView({
+			collection: new TierPrices()
+		});
+
+		this.navigationController.showContent(view);
+		view.start();
+		this.setHeader({
+			title: 'Tous les tarifs dégressifs'
+		}, getHeadersActionTierPrices({
+			addSave: false
+		}));
+	},
+
+	showTierPricesGrid: function(id) {
+
+		var c = new TierPrices();
+		var m = new c.model({
+			grid_id: id
+		});
+
+		m.fetch().done(function() {
+			var view = new TierPricesGridView({
+				model: m,
+			});
+
+			this.listenTo(m, 'change', function(model) {
+				if (model.hasChanged('name')) {
+					this.setBreadCrum([{
+						href: '/modules/tier_prices',
+						title: 'Tarifs dégressifs'
+					}, {
+						title: model.get('name')
+					}], true);
+				}
+			}.bind(this));
+			this.listenTo(m, 'destroy', function() {
+				this.navigationController.showOverlay(300);
+				this.navigationController.navigate('/modules/tier_prices');
+			});
+			this.navigationController.showContent(view);
+			this.setHeader([{
+				href: '/modules/tier_prices',
+				title: 'Tarifs dégressifs'
+			}, {
+				title: m.get('name')
+			}], getHeadersActionTierPrices({
+				addSave: true
+			}));
+		}.bind(this)).fail(this.failHandler('Grille de tarifs dégressifs introuvable'));
+	},
+
+	actionNewTPGrid: function() {
+
+		var m = new(new TierPrices).model({
+			name: 'Grille sans titre',
+		});
+
+		return m.save().done(function() {
+			this.navigationController.showOverlay(300);
+			this.navigationController.navigate('/modules/tier_prices/' + m.get('grid_id'));
+		}.bind(this)).fail(function(error) {
+			this.navigationController.showErrorModal(error);
+		}.bind(this));
+
+	},
+
 	/*
 	 * Modal
 	 */
@@ -646,7 +746,7 @@ var ModulesController = Controller.extend({
 
 });
 
-module.exports = Marionette.AppRouter.extend({
+module.exports = Router.extend({
 	controller: new ModulesController(),
 	appRoutes: {
 		'modules': 'showIndex',
@@ -659,7 +759,7 @@ module.exports = Marionette.AppRouter.extend({
 		'modules/vouchers/:id': 'showVoucher',
 		'modules/subscribers': 'showSubscribers',
 		'modules/subscribers/settings': 'showSubscribersSettings',
-		'modules/import/posts': 'showImportPosts',
+		'modules/import/contents': 'showImportContents',
 		'modules/import/products': 'showImportProducts',
 		'modules/import/coliship': 'showImportColiship',
 		'modules/import/wordpress': 'showImportWordpress',
@@ -670,10 +770,12 @@ module.exports = Marionette.AppRouter.extend({
 		'modules/avisverifies': 'showAvisVerifies',
 		'modules/captcha': 'showCaptcha',
 		'modules/backups': 'showBackups',
-		'modules/kps': 'showKps'
+		'modules/kps': 'showKps',
+		'modules/tier_prices': 'showTierPrices',
+		'modules/tier_prices/:id': 'showTierPricesGrid',
 	},
 
-	onRoute: function(name, path, args) {
+	onRoute: function(name) {
 
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		var scope = ctlScope(name);
@@ -681,13 +783,13 @@ module.exports = Marionette.AppRouter.extend({
 		if (scope) {
 			if (!Session.hasScope(scope)) {
 				this.controller.navigationController.navigate('/');
-				return;
+				return false;
 			}
 		}
 		if (feature) {
 			if (!Session.hasFeature(feature)) {
 				this.controller.navigationController.navigate('/');
-				return;
+				return false;
 			}
 		}
 

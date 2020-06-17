@@ -97,14 +97,29 @@
 			</div>
 		<%}); %>
 		</div>
-	<%} %>
-
 	</div>
 	<footer class="post-footer"></footer>
 </article>
+<%} %>
 
+<% if(show_conversion) { %>
+<article class="post-article">
+	<header class="post-header">
+		<h1>Activer la gestion des composants et des symboles</h1>
+	</header>
+	<div class="post-content">
+		<p>Votre site ne profite pas du système de composants et de symboles qui permet de gérer plus efficacement les contenus de vos pages.</p>
 
+		<p>
+		Si votre thème graphique est déjà compatible, vous pouvez lancer la migration de votre site. Dans le cas
+		contraire, l'analyse du thème vous indiquera les modifications minimales à apporter pour le rendre compatible.
+   </p>
 
+		<a class="btn btn-lg btn-success" href="/themes/conversion" role="button">Analyser le thème</a>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+<% } %>
 
 <% if(theme.code == 'theme') { %>
 
@@ -174,7 +189,7 @@
 				</p>
 				<p>
 					Si vous souhaitez une prestation sur mesure pour votre projet, nos agences web partenaires sont à votre disposition.<br>
-					<a class="btn btn-primary mt-3" href="https://www.kiubi.com/contact.html" target="_blank">Contacter un
+					<a class="btn btn-primary mt-3" href="https://www.kiubi.com/agences-partenaires.html" target="_blank">Contacter un
 						expert</a>
 					</p>
 				</div>

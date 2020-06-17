@@ -14,16 +14,19 @@ var RowView = Marionette.View.extend({
 		var type_label;
 		switch (this.model.get('type')) {
 			case 'magasin':
-				type_label = "Commande à récupérer à l'adresse de la boutique";
+				type_label = "Retrait en magasin pour le Click & Collect";
 				break;
 			case 'socolissimo':
-				type_label = "Options de livraison multiples (points relais, sur rendez-vous, etc.)";
+				type_label = "Retrait en points relais ou sur rendez-vous du réseau La Poste";
 				break;
 			case 'local':
-				type_label = "Commande envoyée à l'adresse de livraison (locale)";
+				type_label = "Livraison locale limitée à certain codes postaux";
 				break;
 			case 'tranchespoids':
-				type_label = "Commande envoyée à l'adresse de livraison (nationale et internationale)";
+				type_label = "Livraison nationale et internationale limitée à certain pays";
+				break;
+			case 'dpd':
+				type_label = "Retrait en points relais du réseau DPD Relais Pickup";
 				break;
 			default:
 				break;

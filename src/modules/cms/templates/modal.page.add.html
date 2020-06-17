@@ -1,17 +1,17 @@
 <article class="post-article">
 	<div class="post-content">
 		<div class="row no-gutters">
-			<div class="col-6">
+			<div class="col-6 border-bottom border-right">
 
 				<div class="card card-select" data-role="select-page">
-					<div class="md-icon md-website"></div>
+					<div class="md-icon md-page"></div>
 					<div class="card-body">
 						<h4>Contenu libre</h4>
 						<p>Une page de contenu modifiable</p>
 					</div>
 				</div>
 			</div>
-			<div class="col-6">
+			<div class="col-6 border-bottom">
 
 				<div class="card card-select" data-role="select-intlink">
 					<div class="md-icon md-directions"></div>
@@ -21,7 +21,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-6">
+			<div class="col-6 border-bottom border-right">
 
 				<div class="card card-select" data-role="select-extlink">
 					<div class="md-icon md-link"></div>
@@ -33,7 +33,8 @@
 				</div>
 
 			</div>
-			<div class="col-6">
+
+			<div class="col-6 border-bottom">
 				<div class="card card-select" data-role="select-separator">
 					<div class="md-icon md-spacer"></div>
 					<div class="card-body">
@@ -42,7 +43,30 @@
 					</div>
 				</div>
 			</div>
-		</div>
+
+			<div class="col-6 border-right">
+				<div class="card card-select" data-role="select-menu">
+					<div class="md-icon md-menu"></div>
+					<div class="card-body">
+						<h4>Menu</h4>
+						<p>Une nouvelle arborescence de pages</p>
+					</div>
+				</div>
+			</div>
+
+			<% if(enableSymbol) { %>
+			<div class="col-6">
+				<div class="card card-select" data-role="select-symbol">
+					<div class="md-icon md-symbole"></div>
+					<div class="card-body">
+						<h4>Symbole</h4>
+						<p>Un contenu et des widgets partagés</p>
+					</div>
+				</div>
+			</div>
+			<% } %>
+
+			</div>
 		<div class="w-100"></div>
 	</div>
 	<footer class="post-footer"></footer>

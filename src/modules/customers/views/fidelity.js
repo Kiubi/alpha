@@ -31,13 +31,7 @@ var NewRowView = Marionette.View.extend({
 		this.getUI('sum').text(sum);
 	},
 
-	onActionCancel: function() {
-		this.getUI('form').hide();
-		Forms.clearErrors(this.getUI('errors'), this.el);
-	},
-
 	onActionSave: function() {
-		Forms.clearErrors(this.getUI('errors'), this.el);
 
 		var data = Forms.extractFields(['qt', 'comment', 'operation'], this);
 
@@ -50,11 +44,6 @@ var NewRowView = Marionette.View.extend({
 		}.bind(this)).fail(function(error) {
 			Forms.displayErrors(error, this.getUI('errors'), this.el);
 		}.bind(this));
-	},
-
-	onActionShow: function() {
-		Backbone.$('input').val('');
-		this.getUI('form').show();
 	}
 
 });

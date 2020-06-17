@@ -7,7 +7,7 @@ var VatBehavior = require('kiubi/behaviors/vat.js');
 var RowActionsBehavior = require('kiubi/behaviors/ui/row_actions.js');
 
 var RowView = Marionette.View.extend({
-	template: require('../templates/carrier/steps.row.html'),
+	template: require('../../templates/carrier/steps.row.html'),
 	className: 'list-item list-item-form',
 
 	behaviors: [

@@ -75,7 +75,7 @@ module.exports = Marionette.View.extend({
 
 	start: function() {
 		var data = {};
-		if (this.filters.term != null) data.term = this.filters.term;
+		if (this.filters.term !== null && this.filters.term !== '') data.term = this.filters.term;
 
 		this.collection.fetch({
 			reset: true,

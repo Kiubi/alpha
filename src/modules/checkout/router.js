@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
+var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
 var ControllerChannel = Backbone.Radio.channel('controller');
 
@@ -108,6 +109,13 @@ function getOrderAction(options) {
 		actions.push({
 			title: 'Exporter pour Coliship',
 			callback: ['actionOpenURL', options.coliship]
+		});
+	}
+
+	if (options.dpd) {
+		actions.push({
+			title: 'Exporter pour DPD',
+			callback: ['actionOpenURL', options.dpd]
 		});
 	}
 
@@ -257,7 +265,8 @@ var CheckoutController = Controller.extend({
 			}, getOrderAction({
 				xls: m.get('download').xls ? m.get('download').xls : null,
 				coliship: m.get('download').coliship ? m.get('download').coliship : null,
-				form: m.get('download').form ? m.get('download').form : null
+				form: m.get('download').form ? m.get('download').form : null,
+				dpd: m.get('download').dpd ? m.get('download').dpd : null
 			}));
 		}.bind(this)).fail(this.failHandler('Commande introuvable'));
 	},
@@ -562,7 +571,7 @@ var CheckoutController = Controller.extend({
 
 });
 
-module.exports = Marionette.AppRouter.extend({
+module.exports = Router.extend({
 	controller: new CheckoutController(),
 	appRoutes: {
 		'checkout': 'redirectToPending',
@@ -579,12 +588,12 @@ module.exports = Marionette.AppRouter.extend({
 		'checkout/carriers/:id': 'showCarrier'
 	},
 
-	onRoute: function(name, path, args) {
+	onRoute: function(name) {
 
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		if (!Session.hasScope('site:checkout') || !Session.hasFeature('checkout')) {
 			this.controller.navigationController.navigate('/');
-			return;
+			return false;
 		}
 
 		this.controller.showSidebarMenu();

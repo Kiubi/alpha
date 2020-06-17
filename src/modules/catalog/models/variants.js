@@ -35,26 +35,6 @@ var Variant = CollectionUtils.KiubiModel.extend({
 		file_id: null
 		//creation_date: '',
 		//modification_date: '',
-	},
-
-	/**
-	 * Duplicate current variant
-	 *
-	 * @return {Promise}
-	 */
-	duplicate: function() {
-		var that = this;
-		return Backbone.ajax({
-			url: 'sites/@site/catalog/products/' + this.get('product_id') + '/variants',
-			method: 'POST',
-			data: {
-				variant_id: this.get('variant_id')
-			}
-		}).then(function(data) {
-			var copy = that.clone();
-			copy.set(data);
-			return copy;
-		});
 	}
 
 });

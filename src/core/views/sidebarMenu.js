@@ -9,7 +9,7 @@ var BlogPosts = require('kiubi/modules/blog/models/posts');
 var Customers = require('kiubi/modules/customers/models/customers');
 var Orders = require('kiubi/modules/checkout/models/orders');
 var Files = require('kiubi/modules/media/models/files');
-var CmsPosts = require('kiubi/modules/cms/models/posts');
+var Contents = require('kiubi/modules/cms/models/contents');
 
 function getTypeIcon(type) {
 	switch (type) {
@@ -51,11 +51,11 @@ function searchConfig(type) {
 			return searchConfig(def);
 
 		case 'cms':
-			collection = CmsPosts;
-			mapSuggestion = function(post) {
+			collection = Contents;
+			mapSuggestion = function(content) {
 				return {
-					label: post.label,
-					href: '/cms/posts/' + post.post_id,
+					label: content.label,
+					href: '/cms/contents/' + content.content_id,
 					icon: icon
 				};
 			};

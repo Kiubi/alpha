@@ -10,7 +10,9 @@ module.exports = Marionette.View.extend({
 		'select-page': 'div[data-role="select-page"]',
 		'select-intlink': 'div[data-role="select-intlink"]',
 		'select-extlink': 'div[data-role="select-extlink"]',
-		'select-separator': 'div[data-role="select-separator"]'
+		'select-separator': 'div[data-role="select-separator"]',
+		'select-menu': 'div[data-role="select-menu"]',
+		'select-symbol': 'div[data-role="select-symbol"]'
 	},
 
 	events: {
@@ -33,11 +35,23 @@ module.exports = Marionette.View.extend({
 			this.trigger('select:separator', {
 				menu_id: this.getOption('menu_id')
 			});
+		},
+		'click @ui.select-menu': function() {
+			this.trigger('select:menu');
+		},
+		'click @ui.select-symbol': function() {
+			this.trigger('select:symbol');
 		}
 	},
 
 	initialize: function(options) {
 		this.mergeOptions(options);
+	},
+
+	templateContext: function() {
+		return {
+			enableSymbol: (this.getOption('enableSymbol') === true)
+		};
 	}
 
 });

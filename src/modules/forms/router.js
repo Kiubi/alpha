@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
+var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
 var ControllerChannel = Backbone.Radio.channel('controller');
 
@@ -249,7 +250,7 @@ var FormsController = Controller.extend({
 
 });
 
-module.exports = Marionette.AppRouter.extend({
+module.exports = Router.extend({
 	controller: new FormsController(),
 	appRoutes: {
 		'forms/inbox': 'showInbox',
@@ -259,12 +260,12 @@ module.exports = Marionette.AppRouter.extend({
 		'forms/:id/gdpr': 'showGdpr'
 	},
 
-	onRoute: function(name, path, args) {
+	onRoute: function(name) {
 
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		if (!Session.hasScope('site:modules')) {
 			this.controller.navigationController.navigate('/');
-			return;
+			return false;
 		}
 
 		this.controller.showSidebarMenu();

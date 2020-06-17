@@ -19,18 +19,7 @@ var RowView = Marionette.View.extend({
 
 	behaviors: [RowActionsBehavior],
 
-	onActionEdit: function() {
-		this.getUI('list').hide();
-		this.getUI('form').show();
-
-	},
-	onActionCancel: function() {
-		this.getUI('form').hide();
-		this.getUI('list').show();
-	},
-
 	onActionSave: function() {
-		Forms.clearErrors(this.getUI('errors'), this.el);
 
 		var data = Forms.extractFields(['name'], this);
 

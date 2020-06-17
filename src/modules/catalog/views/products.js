@@ -54,7 +54,7 @@ module.exports = Marionette.View.extend({
 	filters: null,
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['collection', 'categories', 'tags', 'category_id', 'brands']);
+		this.mergeOptions(options, ['collection', 'categories', 'tags', 'category_id', 'brands', 'tier_prices']);
 
 		var stock = this.getOption('filters') && this.getOption('filters').stock ? this.getOption('filters').stock : null;
 		if (stock != 'yes' && stock != 'partial' && stock != 'no') {
@@ -64,12 +64,70 @@ module.exports = Marionette.View.extend({
 			stock: stock,
 			category_id: this.category_id,
 			tag_id: null,
-			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null
+			term: this.getOption('filters') && this.getOption('filters').term ? this.getOption('filters').term : null,
+			tier_prices: this.getOption('filters') && this.getOption('filters').tier_prices ? this.getOption('filters').tier_prices : null
 		};
 	},
 
 	onRender: function() {
 
+
+		var filterCollection = new CollectionUtils.SelectCollection([{
+			'value': 'stock',
+			'label': 'Stock'
+		}, {
+			'value': 'tag',
+			'label': 'Tag'
+		}, {
+			'value': 'price',
+			'label': 'Prix'
+		}, {
+			'value': 'weight',
+			'label': 'Poids'
+		}, {
+			'value': 'available',
+			'label': 'Disponibilité'
+		}, {
+			'value': 'visible',
+			'label': 'Visibilité'
+		}, {
+			'value': 'spotlight',
+			'label': 'Produit vedette'
+		}, {
+			'value': 'type',
+			'label': 'Type'
+		}, {
+			'value': 'name',
+			'label': 'Intitulé de variante'
+		}, {
+			'value': 'reference',
+			'label': 'Référence de variante'
+		}, {
+			'value': 'linked',
+			'label': 'Nb produits associés'
+		}, {
+			'value': 'rate',
+			'label': 'Note'
+		}, {
+			'value': 'comments',
+			'label': 'Nb de commentaires'
+		}, {
+			'value': 'brand',
+			'label': 'Marque'
+		}, {
+			'value': 'condition',
+			'label': 'État'
+		}, {
+			'value': 'gtin',
+			'label': 'Code barre de variante'
+		}]);
+
+		if (this.getOption('tier_prices')) {
+			filterCollection.add({
+				'value': 'tierPrices',
+				'label': 'Tarifs dégressifs'
+			});
+		}
 
 		var filters = [];
 		if (this.category_id == null) {
@@ -91,55 +149,7 @@ module.exports = Marionette.View.extend({
 			extraClassname: 'filter-add',
 			type: 'dropdown',
 			disableLabelUpdate: true,
-			collectionPromise: new CollectionUtils.SelectCollection([{
-				'value': 'stock',
-				'label': 'Stock'
-			}, {
-				'value': 'tag',
-				'label': 'Tag'
-			}, {
-				'value': 'price',
-				'label': 'Prix'
-			}, {
-				'value': 'weight',
-				'label': 'Poids'
-			}, {
-				'value': 'available',
-				'label': 'Disponibilité'
-			}, {
-				'value': 'visible',
-				'label': 'Visibilité'
-			}, {
-				'value': 'spotlight',
-				'label': 'Produit vedette'
-			}, {
-				'value': 'type',
-				'label': 'Type'
-			}, {
-				'value': 'name',
-				'label': 'Intitulé de variante'
-			}, {
-				'value': 'reference',
-				'label': 'Référence de variante'
-			}, {
-				'value': 'linked',
-				'label': 'Nb produits associés'
-			}, {
-				'value': 'rate',
-				'label': 'Note'
-			}, {
-				'value': 'comments',
-				'label': 'Nb de commentaires'
-			}, {
-				'value': 'brand',
-				'label': 'Marque'
-			}, {
-				'value': 'condition',
-				'label': 'État'
-			}, {
-				'value': 'gtin',
-				'label': 'Code barre de variante'
-			}])
+			collectionPromise: filterCollection
 		});
 
 		var listView = new ListView({
@@ -194,6 +204,7 @@ module.exports = Marionette.View.extend({
 
 		this.showChildView('list', listView);
 		if (this.filters.stock) listView.showFilter('stock');
+		if (this.filters.tier_prices) listView.showFilter('tierPrices');
 	},
 
 	start: function() {
@@ -238,6 +249,7 @@ module.exports = Marionette.View.extend({
 			data.comments_max = this.filters.comments[1];
 		}
 		if (this.filters.brand != null) data.brand_id = this.filters.brand;
+		if (this.filters.tier_prices != null) data.tier_prices_id = this.filters.tier_prices;
 
 		this.collection.fetch({
 			reset: true,
@@ -341,6 +353,7 @@ module.exports = Marionette.View.extend({
 				data.comments_max = this.filters.comments[1];
 			}
 			if (this.filters.brand != null) data.brand_id = this.filters.brand;
+			if (this.filters.tier_prices != null) data.tier_prices_id = this.filters.tier_prices;
 
 			this.collection.exportAll(data).done(function(data) {
 				view.overrideExtraClassname('');
@@ -448,6 +461,11 @@ module.exports = Marionette.View.extend({
 		this.start();
 	},
 
+	onTierPricesFilterChange: function(filter) {
+		this.filters.tier_prices = filter.value;
+		this.start();
+	},
+
 	onChildviewFilterInput: function(filter) {
 
 		if (!filter.view || !filter.view.showResults) return;
@@ -489,6 +507,25 @@ module.exports = Marionette.View.extend({
 					return {
 						label: brand.name,
 						value: brand.brand_id
+					};
+				});
+
+				filter.view.showResults(results);
+			}.bind(this));
+			return;
+		}
+
+		if (filter.model.get('id') == 'tierPrices') {
+			this.getOption('tier_prices').fetch({
+				data: {
+					name: filter.value,
+					limit: 5
+				}
+			}).done(function(grids) {
+				var results = _.map(grids, function(grid) {
+					return {
+						label: grid.name,
+						value: grid.grid_id
 					};
 				});
 
@@ -688,6 +725,14 @@ module.exports = Marionette.View.extend({
 					title: 'Code barre',
 					type: 'input',
 					value: '',
+					canDelete: true
+				};
+				break;
+			case 'tierPrices':
+				cfg = {
+					id: filter.value,
+					title: 'Toutes les grilles',
+					type: 'search',
 					canDelete: true
 				};
 				break;

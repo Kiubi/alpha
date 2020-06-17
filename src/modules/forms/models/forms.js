@@ -33,10 +33,11 @@ var Form = CollectionUtils.KiubiModel.extend({
 	 */
 	duplicate: function(attributes) {
 		var that = this;
+		var data = attributes || {};
 		return Backbone.ajax({
 			url: 'sites/@site/forms/' + this.get('form_id'),
 			method: 'POST',
-			data: attributes
+			data: data
 		}).then(function(data, meta) {
 			var copy = that.clone();
 			copy.set(copy.parse({

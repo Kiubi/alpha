@@ -1,0 +1,47 @@
+<form>
+  <div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+  <div class="alert alert-warning" role="alert"><a href="https://aide.kiubi.com/site-web.html?#ajouter-un-symbole" class="md-icon md-help float-right" target="_blank"></a>
+    Un symbole (son contenu, ses widgets, ses paramètres et son type) peut être <strong>partagé par plusieurs pages</strong>.
+    Modifier le symbole le modifera sur toutes les pages dans lesquelles il a été ajouté.<span class="md-icon md-icon-outlined md-symbole icon-alert"></span></div>
+  <div class="row">
+    <div class="col-lg-8 col-12">
+      <article class="post-article">
+        <header class="post-header">
+          <h1>Paramètres du symbole</h1>
+        </header>
+        <div class="post-content">
+          <div class="form-group">
+            <label class="required" for="title">Intitulé</label>
+            <input class="form-control" id="title" name="title" value="<%- params.title %>" placeholder="Intitulé du symbole tel qu'il apparaîtra dans la console d'administration">
+          </div>
+          <!--<div class="form-group">
+            <label class="required" for="slug">Nom optimisé</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">https://maquettes.kiubi-web.com/</span></div>
+              <input class="form-control" id="slug" name="slug" value="contenu-redactionnel">
+              <div class="input-group-append"><span class="input-group-text"></span></div>
+            </div>
+          </div>-->
+        </div>
+        <footer class="post-footer"></footer>
+      </article>
+
+      <article data-role='list'></article>
+
+    </div>
+    <div class="col-lg-4 col-12">
+
+      <div data-role="models"></div>
+
+    </div>
+  </div>
+</form>
+
+<div class="save">
+  <div class="btn-toolbar" role="toolbar">
+    <button type="button" class="btn btn-lg btn-danger btn-delete" data-role="delete">Supprimer</button>
+    <button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="footer"></footer>

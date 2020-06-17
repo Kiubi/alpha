@@ -35,7 +35,9 @@ module.exports = Marionette.View.extend({
 			'title': this.getOption('title'),
 			'modalClass': this.getOption('modalClass'),
 			'modalDialogClass': this.getOption('modalDialogClass'),
-			'action': this.getOption('action')
+			'modalBodyClass': this.getOption('modalBodyClass'),
+			'action': this.getOption('action'),
+			'tabs': this.getOption('tabs')
 		};
 	},
 

@@ -115,9 +115,8 @@ module.exports = Marionette.Object.extend({
 				'</ul></div>';
 		} else {
 			// ROOT
-			html = '<div class="menu-tree"><ul class="nav nav-sidebar flex-column">' +
-				html + this.rootFooter(node) +
-				'</ul></div>';
+			html = this.rootFooter(node) + '<div class="menu-tree"><ul class="nav nav-sidebar flex-column">' +
+				html + '</ul></div>';
 		}
 
 		return {

@@ -3,9 +3,22 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="myModalLabel"><%- title %></h4>
-				<button type="button" class="close md-icon md-cancel" data-role="close" aria-label="Close"></button>
+				<button type="button" class="close md-icon md-close" data-role="close"></button>
 			</div>
-			<div class="modal-body"></div>
+
+			<% if(tabs) { %>
+			<ul class="nav nav-tab">
+				<% _.each(tabs, function(tab, index){%>
+				<li class="nav-item">
+					<a class="nav-link <%- index == 0 ? 'active' : '' %>" data-toggle="tab" href="#<%- tab.id %>" aria-selected="true">
+						<span class="md-icon <%- tab.icon %> mr-2" title="<%- tab.title %>"></span><%- tab.title %>
+					</a>
+				</li>
+				<%}) %>
+			</ul>
+			<% } %>
+
+			<div class="modal-body <%- modalBodyClass %>"></div>
 			<% if(action) { %>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="close">Fermer</button>

@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
+var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
 
 /* Models */
@@ -257,7 +258,7 @@ var PrefsController = Controller.extend({
 
 });
 
-module.exports = Marionette.AppRouter.extend({
+module.exports = Router.extend({
 	controller: new PrefsController(),
 	appRoutes: {
 		'prefs': 'showIndex',
@@ -272,14 +273,14 @@ module.exports = Marionette.AppRouter.extend({
 		'prefs/l10n/import': 'showL10nImport'
 	},
 
-	onRoute: function(name, path, args) {
+	onRoute: function(name) {
 
 		var scope = ctlScope(name);
 		if (scope) {
 			var Session = Backbone.Radio.channel('app').request('ctx:session');
 			if (!Session.hasScope(scope)) {
 				this.controller.navigationController.navigate('/');
-				return;
+				return false;
 			}
 		}
 

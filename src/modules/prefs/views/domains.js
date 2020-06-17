@@ -27,11 +27,6 @@ var NewRowView = Marionette.View.extend({
 		}
 	},
 
-	onActionCancel: function() {
-		this.getUI('form').hide();
-		Forms.clearErrors(this.getUI('errors'), this.el);
-	},
-
 	onActionSave: function() {
 		var data = Forms.extractFields(['name', 'sub'], this);
 
@@ -76,13 +71,10 @@ var NewRowView = Marionette.View.extend({
 		}
 
 		return promise.fail(function(error) {
-			Forms.displayErrors(error, this.getUI('errors'), this.el);
+			Forms.displayErrors(error, this.getUI('errors'), this.el, {
+				showErrors: true
+			});
 		}.bind(this));
-	},
-
-	onActionShow: function() {
-		Backbone.$('input[name="name"]', this.el).val('');
-		this.getUI('form').show();
 	}
 
 });

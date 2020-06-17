@@ -9,30 +9,9 @@ var LayoutSelectorView = require('kiubi/modules/appearance/views/layout.selector
 var SeoView = require('kiubi/core/views/ui/seo.js');
 
 var Forms = require('kiubi/utils/forms.js');
-var Posts = require('../models/posts');
+var Contents = require('../models/contents');
 
-var ListView = require('kiubi/core/views/ui/list.js');
-
-var RowView = Marionette.View.extend({
-	template: require('../templates/posts.row.html'),
-	className: 'list-item',
-
-	behaviors: [RowActionsBehavior],
-
-	onActionDelete: function() {
-		return this.model.destroy();
-	},
-
-	templateContext: function() {
-		return {
-			label: this.model.getLabel(),
-			showType: true,
-			canMove: true
-		};
-	}
-
-});
-
+var ContentsView = require('./contents.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/index.html'),
@@ -67,7 +46,7 @@ module.exports = Marionette.View.extend({
 	],
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['model', 'collection']);
+		this.mergeOptions(options, ['model', 'contents']);
 
 		if (this.getOption('enableLayout')) {
 			this.layoutSelector = new LayoutSelectorView({
@@ -80,24 +59,24 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
-		this.collection = new Posts();
-		this.collection.page_id = this.model.get('page_id');
+		this.contents = new Contents();
+		this.contents.page_id = this.model.get('page_id');
 
-		this.showChildView('list', new ListView({
-			collection: this.collection,
-			rowView: RowView,
-			fixRelativeDragNDrop: true,
+		this.showChildView('list', new ContentsView({
+			zoneList: this.model.get('zones'),
+			collection: this.contents,
+			enableZones: this.getOption('enableZones'),
 
-			title: 'Liste des billets',
+			title: 'Contenu de la page',
 			selection: [{
 				title: 'Afficher',
-				callback: this.showPosts.bind(this)
+				callback: this.showContents.bind(this)
 			}, {
 				title: 'Masquer',
-				callback: this.hidePosts.bind(this)
+				callback: this.hideContents.bind(this)
 			}, {
 				title: 'Supprimer',
-				callback: this.deletePosts.bind(this),
+				callback: this.deleteContents.bind(this),
 				confirm: true
 			}],
 			scrollThreshold: 920, // TODO
@@ -107,11 +86,7 @@ module.exports = Marionette.View.extend({
 				type: 'button',
 				collectionPromise: new CollectionUtils.SelectCollection([{
 					'value': 'export-page',
-					'label': 'Exporter les billets',
-					'selected': false
-				}, {
-					'value': 'export',
-					'label': 'Exporter tout le site web',
+					'label': 'Exporter les contenus',
 					'selected': false
 				}])
 			}]
@@ -128,33 +103,39 @@ module.exports = Marionette.View.extend({
 	},
 
 	start: function() {
-		this.collection.fetch();
+		this.contents.fetch({
+			data: {
+				limit: 40
+			}
+		});
 	},
 
-	showPosts: function(ids) {
-		return this.collection.bulkShow(ids);
+	showContents: function(ids) {
+		return this.contents.bulkShow(ids);
 	},
 
-	hidePosts: function(ids) {
-		return this.collection.bulkHide(ids);
+	hideContents: function(ids) {
+		return this.contents.bulkHide(ids);
 	},
 
-	deletePosts: function(ids) {
-		return this.collection.bulkDelete(ids);
+	deleteContents: function(ids) {
+		return this.contents.bulkDelete(ids);
 	},
 
-	onChildviewChangeLayout: function(layout_id) {
+	onChildviewChangeLayout: function(layout_id, model) {
 		if (layout_id == this.model.get('layout_id')) return;
 
 		this.model.save({
 			layout_id: layout_id
 		}, {
 			patch: true
-		});
+		}).done(function() {
+			this.getChildView('list').resetZones(model.get('model').zones);
+		}.bind(this));
 	},
 
 	onChildviewSortChange: function(data) {
-		this.collection.reOrder(this.model.get('page_id'), data.list);
+		this.contents.reOrder(this.model.get('page_id'), data.list);
 	},
 
 	/* Filters */
@@ -168,9 +149,9 @@ module.exports = Marionette.View.extend({
 		if (!filter.view) return;
 		var view = filter.view;
 
-		if (filter.value == 'export' || filter.value == 'export-page') {
+		if (filter.value == 'export-page') {
 
-			if (view.collection.length > 2) {
+			if (view.collection.length > 1) {
 				return;
 			}
 
@@ -178,11 +159,11 @@ module.exports = Marionette.View.extend({
 			view.render();
 
 			var data = {
-				format: 'xls'
+				container_id: this.model.get('page_id'),
+				container_type: 'page'
 			};
-			if (filter.value == 'export-page') data.page_id = this.model.get('page_id');
 
-			this.collection.exportAll(data).done(function(data) {
+			this.contents.exportAll(data).done(function(data) {
 				view.overrideExtraClassname('');
 				view.collection.add([{
 					value: null,
@@ -210,6 +191,11 @@ module.exports = Marionette.View.extend({
 				view.collection.pop();
 			}
 		}
+	},
+
+	onAddSymbol: function() {
+		// a symbol has been added, need to refetch content
+		this.start();
 	},
 
 	onSave: function() {

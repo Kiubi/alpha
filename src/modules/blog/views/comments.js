@@ -33,14 +33,7 @@ var NewRowView = Marionette.View.extend({
 		Backbone.$('textarea').val('');
 	},
 
-	onActionCancel: function() {
-		this.getUI('form').hide();
-		Forms.clearErrors(this.getUI('errors'), this.el);
-		this.clearFields();
-	},
-
 	onActionSave: function() {
-		Forms.clearErrors(this.getUI('errors'), this.el);
 
 		var data = Forms.extractFields(['is_visible', 'comment'], this);
 		data.post_id = this.getOption('post_id');
@@ -55,10 +48,6 @@ var NewRowView = Marionette.View.extend({
 			.fail(function(error) {
 				Forms.displayErrors(error, this.getUI('errors'), this.el);
 			}.bind(this));
-	},
-
-	onActionShow: function() {
-		this.getUI('form').show();
 	}
 
 });
@@ -86,18 +75,7 @@ var RowView = Marionette.View.extend({
 		return this.model.destroy();
 	},
 
-	onActionEdit: function() {
-		this.getUI('list').hide();
-		this.getUI('form').show();
-
-	},
-	onActionCancel: function() {
-		this.getUI('form').hide();
-		this.getUI('list').show();
-	},
-
 	onActionSave: function() {
-		Forms.clearErrors(this.getUI('errors'), this.el);
 
 		return this.model.save(
 			Forms.extractFields(['is_visible', 'comment'], this), {

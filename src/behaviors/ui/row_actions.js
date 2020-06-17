@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var Forms = require('kiubi/utils/forms.js');
 
 
 module.exports = Marionette.Behavior.extend({
@@ -36,9 +37,6 @@ module.exports = Marionette.Behavior.extend({
 		var callback = 'onAction' +
 			action.charAt(0).toUpperCase() +
 			action.slice(1);
-		if (!this.view[callback]) {
-			return;
-		}
 
 		var confirm = btn.data('confirm');
 		if (confirm) {
@@ -55,6 +53,16 @@ module.exports = Marionette.Behavior.extend({
 			return;
 		}
 		this.lock = true;
+
+		if (this[callback]) {
+			this[callback]();
+		}
+
+		if (!this.view[callback]) {
+			this.lock = false;
+			return;
+		}
+
 		var promise = this.view[callback]();
 		if (!promise) {
 			this.lock = false;
@@ -72,6 +80,32 @@ module.exports = Marionette.Behavior.extend({
 			btn.text(old);
 			that.lock = false;
 		});
+	},
+
+	onActionShow: function() {
+		this.view.isEditing = true;
+		this.view.getUI('form').show();
+		// Clear Fields : clear type text and inputs without type
+		Backbone.$('input[type="text"]', this.el).val('');
+		Backbone.$('input:not([type])', this.el).val('');
+	},
+
+	onActionEdit: function() {
+		this.view.isEditing = true;
+		if (this.view.getUI('list')) this.view.getUI('list').hide();
+		this.view.getUI('form').show();
+	},
+
+	onActionCancel: function() {
+		this.view.isEditing = false;
+		this.view.getUI('form').hide();
+		Forms.clearErrors(this.view.getUI('errors'), this.el);
+		if (this.view.getUI('list')) this.view.getUI('list').show();
+	},
+
+	onActionSave: function() {
+		this.view.triggerMethod('before:save');
+		Forms.clearErrors(this.view.getUI('errors'), this.el);
 	},
 
 	/**
@@ -97,9 +131,11 @@ module.exports = Marionette.Behavior.extend({
 		if (this.view.getOption('model')) {
 			this.view.listenTo(this.view.getOption('model'), 'sync', this.view.render);
 		}
+		this.view.isEditing = false;
 	},
 
 	onRender: function() {
+		this.view.isEditing = false;
 		this.getUI('selection').prop('checked', this.isSelected);
 	},
 

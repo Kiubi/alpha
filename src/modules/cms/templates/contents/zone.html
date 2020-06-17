@@ -1,0 +1,12 @@
+<div class="list-item-zone">
+    <% if(showTitle) { %>
+        <span class="badge rounded-pill <%- !is_allowed ? "text-danger" : "" %>"><span class="md-icon md-zone mr-2"></span>
+        <% if(is_allowed) { %>
+            <%- zone %>
+        <% } else { %>
+            zone inconnue<%- zone ? " ("+zone+")" : "" %>
+        <% } %>
+        </span>
+    <% } %>
+</div>
+<div data-role="list"></div>

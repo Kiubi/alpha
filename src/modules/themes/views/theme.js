@@ -106,7 +106,8 @@ module.exports = Marionette.View.extend({
 			theme: this.current.toJSON(),
 			theme_img: Session.convertThemePath('/themes/' + this.current.get('code') + '/illustration.jpg'),
 			theme_download: (this.current.get('code') == 'theme') ? null : Session.convertThemePath('/themes/' + this.current
-				.get('code') + '/' + this.current.get('code') + '.zip')
+				.get('code') + '/' + this.current.get('code') + '.zip'),
+			show_conversion: this.getOption('enableConversion')
 		};
 	}
 

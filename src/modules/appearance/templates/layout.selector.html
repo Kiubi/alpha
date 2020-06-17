@@ -4,7 +4,7 @@
 		<p>Définie l'apparence, le template et la configuration des widgets de cette page :</p>
 		<select data-style="selectify">
 			<% _(layouts).each(function(item){%>
-				<option value="<%- item.layout_id %>" <%= layout_id == item.layout_id ? 'selected="selected"' : '' %>><%- item.name %></option>
+				<option value="<%- item.layout_id %>" <%= layout_id == item.layout_id ? 'selected="selected"' : '' %> data-tags="md-layout"><%- item.name %></option>
 				<% }) %>
 			</select>
 		</div>

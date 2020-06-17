@@ -38,7 +38,12 @@
 	<% if(has_scope_checkout && has_feature_multi_pickup) { %>
 	<li class="nav-item"><a class="nav-link" href="/checkout/carriers">Points de retrait multiples</a></li>
 	<% } else { %>
-	<li class="nav-item"><span class="nav-link disabled">IPoints de retrait multiples</span></li>
+	<li class="nav-item"><span class="nav-link disabled">Points de retrait multiples</span></li>
+	<% } %>
+	<% if(has_scope_checkout && has_feature_tier_prices) { %>
+	<li class="nav-item"><a class="nav-link" href="/modules/tier_prices">Tarifs dégressifs</a></li>
+	<% } else { %>
+	<li class="nav-item"><span class="nav-link disabled">Tarifs dégressifs</span></li>
 	<% } %>
 </ul>
 <h2>Autres modules</h2>
@@ -68,7 +73,7 @@
 		<li class="nav-item"><span class="nav-link disabled">Authorized Digital Sellers</span></li>
 		<% } %>
 		<% if(has_scope_cms) { %>
-		<li class="nav-item"><a class="nav-link" href="/modules/import/posts">Import dans le Site Web</a></li>
+		<li class="nav-item"><a class="nav-link" href="/modules/import/contents">Import dans le Site Web</a></li>
 		<% } else { %>
 		<li class="nav-item"><span class="nav-link disabled">Import dans le Site Web</span></li>
 		<% } %>

@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+var SaveBehavior = require('kiubi/behaviors/save_detection.js');
 
 /**
  * Empty a dropdown except for first child
@@ -17,6 +18,8 @@ module.exports = Marionette.View.extend({
 	template: require('../../templates/ui/select.search.html'),
 	tagName: 'div',
 	className: 'dropdown',
+
+	behaviors: [SaveBehavior],
 
 	ui: {
 		'label': 'span[data-role="label"]',
@@ -46,6 +49,7 @@ module.exports = Marionette.View.extend({
 
 			this.setCurrent(this.suggestions[index]);
 			this.triggerMethod(this.eventName('change'), this.suggestions[index], this);
+			this.triggerMethod('field:change');
 		},
 
 		'click @ui.lixtra': function(event) {
@@ -70,6 +74,7 @@ module.exports = Marionette.View.extend({
 			});
 
 			this.triggerMethod(this.eventName('change'), this.current, this);
+			this.triggerMethod('field:change');
 			return false;
 		}
 	},

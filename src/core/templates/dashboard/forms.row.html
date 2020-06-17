@@ -2,6 +2,6 @@
 	<div class="col item-body"><span class="read <%- is_read ? '' : 'not-read' %>"></span>
 		<h4><a href="/forms/inbox?r=<%- response_id %>">#<%- response_id %></a></h4>
 		<%- creation_date_fromnow %> <span><%- subject %></span>
-		<p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 25px;"><%- summary %></p>
+		<p class="item-detail text-truncate" style="height: 25px;"><%- summary %></p>
  </div>
 </div>

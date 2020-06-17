@@ -94,6 +94,10 @@ module.exports = Marionette.View.extend({
 			'value': 'export-coliship',
 			'label': 'Exporter pour Coliship',
 			'selected': false
+		}, {
+			'value': 'export-dpd',
+			'label': 'Exporter pour DPD',
+			'selected': false
 		}];
 
 		if (this.hasAccounting) {
@@ -355,12 +359,12 @@ module.exports = Marionette.View.extend({
 		if (!filter.view) return;
 		var view = filter.view;
 
-		var max = 2;
+		var max = 3;
 		if (this.hasAccounting) {
 			max++;
 		}
 
-		if (filter.value == 'export' || filter.value == 'export-coliship' || filter.value == 'export-accounting') {
+		if (filter.value == 'export' || filter.value == 'export-coliship' || filter.value == 'export-dpd' || filter.value == 'export-accounting') {
 			if (view.collection.length > max) {
 				return;
 			}
@@ -371,6 +375,7 @@ module.exports = Marionette.View.extend({
 			var data = {};
 			if (filter.value == 'export-coliship') data.type = 'coliship';
 			else if (filter.value == 'export-accounting') data.type = 'accounting';
+			else if (filter.value == 'export-dpd') data.type = 'dpd';
 
 			if (this.filters.status != null) data.status = this.filters.status;
 			if (this.filters.is_paid != null) data.is_paid = this.filters.is_paid;

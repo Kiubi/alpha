@@ -3,6 +3,7 @@ var Marionette = require('backbone.marionette');
 var moment = require('moment');
 var Forms = require('kiubi/utils/forms.js');
 
+var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
 var ControllerChannel = Backbone.Radio.channel('controller');
 
@@ -529,7 +530,7 @@ var BlogController = Controller.extend({
 
 });
 
-module.exports = Marionette.AppRouter.extend({
+module.exports = Router.extend({
 	controller: new BlogController(),
 	appRoutes: {
 		'blog': 'showPosts',
@@ -543,11 +544,11 @@ module.exports = Marionette.AppRouter.extend({
 		'blog/categories/:id/posts': 'showPostsByCategory'
 	},
 
-	onRoute: function(name, path, args) {
+	onRoute: function(name) {
 		var Session = Backbone.Radio.channel('app').request('ctx:session');
 		if (!Session.hasScope('site:blog')) {
 			this.controller.navigationController.navigate('/');
-			return;
+			return false;
 		}
 		this.controller.showSidebarMenu();
 	}

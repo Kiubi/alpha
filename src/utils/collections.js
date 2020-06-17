@@ -103,6 +103,8 @@ var KiubiModel = Backbone.Model.extend({
 
 				this.meta = payload.meta;
 
+				this.parseMeta(this.meta);
+
 				if (payload.meta.link && payload.meta.link.preview) {
 					this.previewLink = payload.meta.link.preview;
 				}
@@ -113,6 +115,40 @@ var KiubiModel = Backbone.Model.extend({
 
 		// Data from a KiubiCollection::parse()
 		return payload;
+	},
+
+	/**
+	 * Custom meta payload parser
+	 *
+	 * @param {Object} meta
+	 */
+	parseMeta: function(meta) {
+		// do nothing
+	},
+
+	/**
+	 * Duplicate current Model
+	 *
+	 * @param {Object} attributes
+	 * @return {Promise} Will return new Model
+	 */
+	duplicate: function(attributes) {
+		var that = this;
+		var data = attributes || {};
+		if (!data[this.idAttribute]) data[this.idAttribute] = this.get(this.idAttribute);
+
+		return Backbone.ajax({
+			url: _.isFunction(this.urlRoot) ? this.urlRoot() : this.urlRoot,
+			method: 'POST',
+			data: data
+		}).then(function(data, meta) {
+			var copy = that.clone();
+			copy.set(copy.parse({
+				data: data,
+				meta: meta
+			}));
+			return copy;
+		});
 	}
 
 });
@@ -133,6 +169,20 @@ var KiubiCollection = Backbone.Collection.extend({
 
 	/**
 	 *
+	 * @returns {Promise | Boolean}
+	 */
+	fetchNext: function() {
+		if (!this.meta || !this.meta.link || !this.meta.link.next_page) {
+			return false;
+		}
+		return this.fetch({
+			url: this.meta.link.next_page,
+			remove: false
+		});
+	},
+
+	/**
+	 *
 	 * @param {Number[]} ids
 	 * @param {String} eventName
 	 * @returns {Promise}
@@ -143,6 +193,24 @@ var KiubiCollection = Backbone.Collection.extend({
 			return model.destroy();
 		}, ids, eventName);
 
+	},
+
+	/**
+	 *
+	 * @returns {Number}
+	 */
+	getQuota: function() {
+		if (this.meta && this.meta.quota && this.meta.quota.limit) return this.meta.quota.limit;
+		return 0;
+	},
+
+	/**
+	 *
+	 * @returns {Number}
+	 */
+	getEstimatedUsage: function() {
+		if (this.meta && this.meta.quota && this.meta.quota.usage) return this.meta.quota.usage;
+		return 0;
 	}
 
 });

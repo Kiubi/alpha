@@ -1,0 +1,13 @@
+<% _.each(items, function(menu){ %>
+
+	<h2 data-toggle="tooltip" title="Détail du menu"><a href="/cms/menus/<%- menu.menu_id %>" class="text-truncate"><%- menu.name %></a></h2>
+
+	<%= renderMenu(menu.menu_id) %>
+
+<% }) %>
+
+
+
+
+
+

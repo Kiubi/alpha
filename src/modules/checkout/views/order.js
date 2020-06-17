@@ -94,7 +94,21 @@ module.exports = Marionette.View.extend({
 				shipping.scheduled);
 		}
 
+		var voucher_label = '';
+		if (this.model.get('voucher') && this.model.get('voucher').type) {
+			// "amount" vouchers are already included in  this.model.get('items')
+			switch (this.model.get('voucher').type) {
+				case 'shipping':
+					voucher_label = 'Frais de port fixes';
+					break;
+				case 'percent':
+					voucher_label = 'Remise de ' + this.model.get('voucher').amount + '%';
+					break;
+			}
+		}
+
 		return {
+			voucher_label: voucher_label,
 			shipping_map: shipping_map,
 			billing_map: billing_map,
 			scheduled_date: scheduled_date

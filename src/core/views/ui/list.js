@@ -116,7 +116,7 @@ var ListView = Marionette.CollectionView.extend({
 	},
 
 	onAddChild: function(collectionView, rowView) {
-		rowView.$el.attr('data-id', rowView.model.id);
+		if (rowView.model) rowView.$el.attr('data-id', rowView.model.id);
 	},
 
 	onSortUpdate: function(e, ui) {
@@ -207,7 +207,8 @@ module.exports = Marionette.View.extend({
 		'action-main': '[data-role="bulk-action"]',
 		'row-select': 'input[name="selection"]',
 		'select-all': '[data-role="select-all"]',
-		'counter': '[data-role="counter"]'
+		'counter': '[data-role="counter"]',
+		'quota': '[data-role="quota"]'
 	},
 
 	events: {
@@ -223,6 +224,7 @@ module.exports = Marionette.View.extend({
 		this.listenTo(this.getOption('collection'), 'request', this.onCollectionRequest);
 		this.listenTo(this.getOption('collection'), 'sync', this.onCollectionSync);
 		this.listenTo(this.getOption('collection'), 'sync update', this.selectRow);
+		this.listenTo(this.getOption('collection'), 'add remove', this.onCollectionCount);
 	},
 
 	templateContext: function() {
@@ -302,7 +304,7 @@ module.exports = Marionette.View.extend({
 
 		}
 
-		if (this.newRowView != null) {
+		if (this.newRowView !== null) {
 
 			var options = _.extend({
 				proxy: this,
@@ -325,9 +327,33 @@ module.exports = Marionette.View.extend({
 
 	onCollectionSync: function(event) {
 		this.getUI('loading').hide();
+		this.onCollectionCount();
+	},
+
+	onCollectionCount: function(event) {
+		if (this.getOption('enableQuota') && this.collection.getQuota()) {
+			this.getUI('quota').text(this.collection.length + ' / ' + this.collection.getQuota());
+			if (this.collection.getQuota() === 0) {
+				this.getUI('quota').removeClass('text-danger').removeClass('text-warning');
+			} else {
+				var rap = this.collection.length / this.collection.getQuota();
+				var classUsage = '';
+				if (rap < 0.75) {
+					this.getUI('quota').removeClass('text-danger').removeClass('text-warning');
+				} else if (rap < 0.9) {
+					this.getUI('quota').removeClass('text-danger').addClass('text-warning');
+				} else {
+					this.getUI('quota').addClass('text-danger').removeClass('text-warning');
+				}
+			}
+		}
 	},
 
 	/** Row events **/
+
+	addChildView: function(view, index) {
+		return this.getChildView('list').addChildView(view, index);
+	},
 
 	selectRow: function() {
 

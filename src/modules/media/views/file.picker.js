@@ -6,10 +6,11 @@ var Folders = require('kiubi/modules/media/models/folders.js');
 
 var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
 var ModalPickerView = require('kiubi/modules/media/views/modal.picker.js');
+var SaveBehavior = require('kiubi/behaviors/save_detection.js');
 
 module.exports = Marionette.View.extend({
 	template: require('../templates/file.picker.html'),
-	className: 'form-group',
+	className: 'form-group form-filepicker',
 
 	fieldname: '',
 	fieldLabel: '',
@@ -30,6 +31,8 @@ module.exports = Marionette.View.extend({
 			this.render();
 		}
 	},
+
+	behaviors: [SaveBehavior],
 
 	loaded: null,
 

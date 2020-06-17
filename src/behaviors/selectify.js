@@ -80,7 +80,7 @@ function selectify(selector, customOptions) {
 }
 
 function getLabel($option) {
-	return ($option.data('tags') ? '<span class="tags tags-color-' + $option.data('tags') + '"></span>' : '') + _.escape(
+	return ($option.data('tags') ? '<span class="md-icon md-item-type ' + $option.data('tags') + '"></span>' : '') + _.escape(
 		$option.text());
 }
 

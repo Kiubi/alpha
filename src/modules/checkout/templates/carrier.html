@@ -54,7 +54,10 @@
 		Un transporteur local est défini pour une livraison à l'adresse indiquée dans une commande.
 		Les frais de port sont calculés en fonction du <strong>code postal</strong> de livraison, par <strong>tranche de
 		poids</strong>.
-		<% } %>
+		<% } else if(type == 'dpd') { %>
+		DPD Relais Pickup est une solution de livraison en points relais dans toute la France. Pour plus d'informations,
+		<a href="https://www.dpd.fr/pickup" target="_blank">rendez-vous sur le site officiel de DPD</a>.
+	  <% } %>
 	</div>
 	<% } %>
 

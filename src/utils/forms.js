@@ -64,8 +64,13 @@ function extractFormFields(fields, $forms, options) {
  * @param {Object} error
  * @param {jQuery} $errorEl
  * @param {Node} el
+ * @param {Object} options
  */
-function displayErrors(error, $errorEl, el) {
+function displayErrors(error, $errorEl, el, options) {
+
+	options = _.defaults(options || {}, {
+		showErrors: false
+	});
 
 	if (!error || !error.message) {
 		$errorEl.text('Erreur inattendue');
@@ -73,7 +78,18 @@ function displayErrors(error, $errorEl, el) {
 		return;
 	}
 
-	$errorEl.text(error.message);
+	if (options.showErrors) {
+		var html = '<p>' + error.message + '</p>';
+		if (error.fields.length) {
+			html += '<ul>' + _.reduce(error.fields, function(acc, field) {
+				acc.push('<li>' + field.message + '</li>');
+				return acc
+			}, []).join('') + '</ul>';
+		}
+		$errorEl.html(html);
+	} else {
+		$errorEl.text(error.message);
+	}
 	$errorEl.show();
 
 	if (error && error.fields) {

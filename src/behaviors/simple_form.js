@@ -10,6 +10,7 @@ var ControllerChannel = Backbone.Radio.channel('controller');
 
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var ScrollFixBehavior = require('kiubi/behaviors/scroll_fix.js');
+var SaveBehavior = require('kiubi/behaviors/save_detection.js');
 
 module.exports = Marionette.Behavior.extend({
 
@@ -17,22 +18,16 @@ module.exports = Marionette.Behavior.extend({
 		save: "button[data-role='save']",
 		cancel: "button[data-role='cancel']",
 		delete: "button[data-role='delete']",
-		errors: "div[data-role='errors']",
-		form: 'form',
-		radioInputs: 'input[type="radio"]'
+		errors: "div[data-role='errors']"
 	},
 
 	events: {
 		'click @ui.save': 'onSave',
 		'click @ui.cancel': 'onCancel',
 		'click @ui.delete': 'onDelete',
-		'input @ui.form': 'onFieldChange',
-		'change @ui.radioInputs': function() {
-			this.getUI('form').trigger('input');
-		} // Fix input event on radio
 	},
 
-	behaviors: [SelectifyBehavior, ScrollFixBehavior],
+	behaviors: [SelectifyBehavior, ScrollFixBehavior, SaveBehavior],
 
 	initialize: function(options) {
 		this.mergeOptions(options);
@@ -41,10 +36,6 @@ module.exports = Marionette.Behavior.extend({
 		this.lockDelete = false;
 
 		this.listenTo(ControllerChannel, 'meta:s:shortcut', this.onSave.bind(this));
-	},
-
-	onFieldChange: function() {
-		ControllerChannel.trigger('modified:content');
 	},
 
 	/**
@@ -205,10 +196,6 @@ module.exports = Marionette.Behavior.extend({
 	/**
 	 * PROXY child view events for Meta+S keycombo and change detection
 	 */
-
-	onChildviewFieldChange: function() {
-		this.view.triggerMethod('field:change');
-	},
 
 	onChildviewSave: function() {
 		this.view.triggerMethod('save');
