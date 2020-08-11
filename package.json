@@ -32,7 +32,7 @@
     "moment": "^2.24.0",
     "pc-bootstrap4-datetimepicker": "^4.17.50",
     "popper.js": "^1.16.0",
-    "tinymce": "^4.9.6",
+    "tinymce": "^4.9.11",
     "underscore": "1.8.3",
     "underscore.string": "^3.3.5"
   },
