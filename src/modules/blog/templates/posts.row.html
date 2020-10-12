@@ -7,7 +7,7 @@
 					<div class="media-object md-icon md-image img-default"></div>
 					<% if(thumb) { %>
 						<div class="media-object no-ratio">
-							<img alt="" src="<%= convertMediaPath(thumb.url_miniature) %>" />
+							<img alt="" src="<%= convertMediaPath(thumb.url_miniature) %>&fallback=false" />
 						</div>
 						<% } %>
 					</div>

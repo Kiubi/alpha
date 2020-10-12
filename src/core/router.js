@@ -6,12 +6,15 @@ var TooltipBehavior = require('kiubi/behaviors/tooltip');
 
 var NotFoundView = require('./views/notFound');
 var DashboardView = require('./views/dashboard');
+var HomeboardView = require('./views/homeboard');
 var LoginView = require('./views/login');
+var HelpView = require('./views/help');
 
 var Stats = require('./models/stats');
 var Report = require('./models/graphs');
 var Live = require('./models/live');
 var Cobranding = require('./models/cobranding');
+var Contact = require('./models/contact');
 
 var statsModel = new Stats();
 
@@ -132,7 +135,25 @@ var DefaultController = Controller.extend({
 	/*
 	 *	Dashboard
 	 */
-	dashboard: function() {
+
+	chooseBoard: function() {
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+
+		// Dashboard for non-admin, experts, or expired trial
+		if (
+			!Session.user.isAdmin() ||
+			(Session.site.get('account').account_type === 'prestataire' && Session.site.get('account').account_level === 'expert') ||
+			!Session.site.get('plan').is_trial
+		) {
+			this.navigationController.navigate('/dashboard');
+		} else {
+			this.navigationController.navigate('/homeboard');
+		}
+
+	},
+
+	showDashboard: function() {
 		this.showSidebarMenu();
 
 		var view = new DashboardView({
@@ -159,16 +180,60 @@ var DefaultController = Controller.extend({
 				title: 'Bienvenue sur Kiubi'
 			}
 		]);
+	},
+
+	showHomeboard: function() {
+		this.showSidebarMenu();
+
+		var view = new HomeboardView();
+
+		this.navigationController.showContent(view);
+
+		this.setHeader([{
+				title: 'Tableau de bord',
+				href: '/'
+			},
+			{
+				title: 'Bienvenue sur Kiubi'
+			}
+		]);
+	},
+
+	/**
+	 * Show login page
+	 */
+	showHelp: function() {
+
+		this.showSidebarMenu();
+
+		var view = new HelpView({
+			model: new Contact()
+		});
+
+		this.navigationController.showContent(view);
+		this.setHeader([{
+				title: 'Tableau de bord',
+				href: '/'
+			},
+			{
+				title: 'Centre d\'aide'
+			}
+		]);
 	}
+
 });
 
 module.exports = Marionette.AppRouter.extend({
 
 	appRoutes: {
-		"": "dashboard",
+		"": "chooseBoard",
+		"dashboard": "showDashboard",
+		"homeboard": "showHomeboard",
 		"login": "loadLogin",
+		"help": "showHelp",
 		"*notFound": "notFound"
 	},
+
 	/**
 	 * Surcharge de la méthode Marionette.AppRouter.navigate
 	 * Ajout de l'option preventPushState permettant de router l'application

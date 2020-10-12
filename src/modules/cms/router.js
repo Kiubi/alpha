@@ -557,7 +557,7 @@ var CMSController = Controller.extend({
 
 	actionNewPage: function(position) {
 		var m = new Page({
-			title: 'Intitulé par défaut',
+			name: 'Intitulé par défaut',
 			slug: Forms.tmpSlug(),
 			is_visible: false,
 			page_type: 'page' //,

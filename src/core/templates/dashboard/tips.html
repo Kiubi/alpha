@@ -1,0 +1,11 @@
+<div class="post-content">
+    <div class="row no-gutters align-items-center">
+        <div class="col-auto"><span class="md-icon md-icon-outlined md-tips"></span></div>
+        <div class="col">
+            <h4 class="d-inline-block mr-2">Le saviez-vous ?</h4>
+            <%- tip.msg %>
+            <% if(tip.link) { %><a <% if(is_external) { %>target="_blank"<% } %> href="<%- tip.link %>" data-tracking="Tips">Plus d'infos</a><% } %>
+        </div>
+    </div>
+</div>
+<footer class="post-footer"></footer>

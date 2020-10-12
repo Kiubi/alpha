@@ -1,0 +1,78 @@
+<header class="post-header no-border">
+    <h1>Quelques conseils pour bien débuter</h1>
+</header>
+<div class="post-content">
+    <div class="nav-full">
+        <div class="row no-gutters">
+            <div class="col">
+                <div class="nav flex-column nav-pills">
+                    <% if(has_theme)  { %>
+                    <a class="nav-link <%- activeTab == 'theme' ? 'active' : '' %>" data-toggle="pill" href="#prestataires-tuto-theme"><span class="md-icon md-icon-outlined md-theme"></span>Personnaliser le thème</a>
+                    <% } %>
+                    <a class="nav-link" data-toggle="pill" href="#prestataires-tuto-api"><span class="md-icon md-icon-outlined md-extension"></span>Utiliser les API</a>
+                    <a class="nav-link" data-toggle="pill" href="#prestataires-tuto-support"><span class="md-icon md-icon-outlined md-support"></span>Accéder au support</a>
+                    <a class="nav-link <%- activeTab == 'doc' ? 'active' : '' %>" data-toggle="pill" href="#prestataires-tuto-help"><span class="md-icon md-icon-outlined md-help"></span>Consulter le centre d'aide</a>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="tab-content">
+
+                    <% if(has_theme)  { %>
+                    <div class="tab-pane <%- activeTab == 'theme' ? 'show active' : 'fade' %>" id="prestataires-tuto-theme">
+                        <a href="https://aide.kiubi.com/design-generalites.html" target="_blank" class="md-icon md-help-outline"
+                           data-toggle="tooltip" data-placement="bottom" data-container="body" title="En savoir plus"></a>
+                        <div class="row">
+                            <div class="col">
+                                <h2>Personnaliser ce que vous voulez</h2>
+                                <p>Sur Kiubi, tous les composants des sites sont accessibles et modifiables, vous pouvez librement créer, modifier et paramétrer chaque templates, chaque widgets.
+                                </p>
+                            </div>
+                            <div class="col-auto"><img src="/assets/img/illus_theme.png" class="img-fluid"/></div>
+                        </div>
+                        <a href="/themes" data-tracking class="btn btn-lg btn-success">Personnaliser le thème</a>
+                    </div>
+                    <% } %>
+
+                    <div class="tab-pane fade" id="prestataires-tuto-api">
+                        <div class="row">
+                            <div class="col">
+                                <h2>De nouvelles applications</h2>
+                                <p>Les API de Kiubi couvrent 100% du périmètre fonctionnel de la plateforme.
+                                    Une ouverture indispensable pour le développement de services et d'applications tiers.
+                                </p>
+                            </div>
+                            <div class="col-auto"><img src="/assets/img/illus_api.png" class="img-fluid"/></div>
+                        </div>
+                        <a href="https://aide.kiubi.com/api-front-generalites.html" data-tracking target="_blank" class="btn btn-lg btn-success mr-3">API Front-Office</a>
+                        <a href="https://aide.kiubi.com/api-dev-generalites.html" data-tracking target="_blank" class="btn btn-lg btn-primary">API Developers</a>
+                    </div>
+
+                    <div class="tab-pane fade" id="prestataires-tuto-support">
+                        <div class="row">
+                            <div class="col">
+                                <h2>Profiter d'un support dédié</h2>
+                                <p>Vous avez une question sur l'utilisation de Kiubi ? Ouvrez un ticket dans le support en ligne et notre équipe s'efforcera d'y répondre dans les meilleurs délais.</p>
+                            </div>
+                            <div class="col-auto"><img src="/assets/img/illus_support.png" class="img-fluid"/></div>
+                        </div>
+                        <a href="#" data-tracking data-role="support" class="btn btn-lg btn-success">Accéder au support</a>
+                    </div>
+
+                    <div class="tab-pane <%- activeTab == 'doc' ? 'show active' : 'fade' %>" id="prestataires-tuto-help">
+                        <div class="row">
+                            <div class="col">
+                                <h2>Maîtriser Kiubi rapidement</h2>
+                                <p>Une documentation, un guide pour le webdesign, un support technique, etc.
+                                  Autant de ressources pour que vous soyez tout de suite efficace.</p>
+                            </div>
+                            <div class="col-auto"><img src="/assets/img/illus_help.png" class="img-fluid"/></div>
+                        </div>
+                        <a href="/help" data-tracking class="btn btn-lg btn-success">Consulter le centre d'aide</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="post-footer"></footer>

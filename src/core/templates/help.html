@@ -1,0 +1,146 @@
+<div class="container">
+
+<article class="post-article post-article-empty text-center">
+  <header class="post-header">
+    <h1>Avec Kiubi, vous n'êtes jamais seul</h1>
+  </header>
+  <div class="post-content">
+    <p class="lead">Une documentation complète, un guide pour le webdesign, de puissantes API, etc.
+      <br>Nous mettons constamment de nouvelles ressources à votre disposition pour que vous soyez toujours plus efficace.</p>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+  <div class="post-content">
+    <div class="nav-full">
+      <div class="row no-gutters">
+        <div class="col">
+          <div class="nav flex-column nav-pills">
+            <a class="nav-link active" data-toggle="pill" href="#help-tuto-support"><span class="md-icon md-icon-outlined md-support"></span>Support technique</a>
+            <a class="nav-link" data-toggle="pill" href="#help-tuto-help"><span class="md-icon md-icon-outlined md-help"></span>Guide d'utilisation</a>
+					  <a class="nav-link" data-toggle="pill" href="#help-tuto-theme"><span class="md-icon md-icon-outlined md-theme"></span>Création de thèmes</a>
+						<a class="nav-link" data-toggle="pill" href="#help-tuto-api"><span class="md-icon md-icon-outlined md-extension"></span>Utiliser les API</a>
+					</div>
+        </div>
+        <div class="col-8">
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="help-tuto-support">
+              <div class="row">
+                <div class="col">
+                  <h2>Support technique</h2>
+                  <p>Vous avez une question sur l'utilisation de Kiubi ? Ouvrez un ticket dans le support en ligne et notre équipe s'efforcera d'y répondre dans les meilleurs délais.</p>
+                </div>
+                <div class="col-auto"><img src="/assets/img/illus_support_help.png" class="img-fluid"/></div>
+              </div>
+              <% if (user.is_admin) { %>
+                <a href="https://www.kiubi-admin.com/support/" data-tracking target="_blank" class="btn btn-lg btn-success">Ouvrir un ticket</a>
+              <% } else { %>
+                <button type="button" class="btn btn-lg btn-success" data-tracking data-toggle="modal" data-target="#technicalSupport">Contacter le support</button>
+              <% } %>
+            </div>
+            <div class="tab-pane fade" id="help-tuto-help">
+              <div class="row">
+                <div class="col">
+                  <h2>Guide d'utilisation </h2>
+                  <p>Appropriez-vous Kiubi grâce à une documentation en ligne complète.
+                    Cliquez également sur les icônes <a href="https://aide.kiubi.com/" target="_blank" class="md-icon md-help-outline align-text-top"
+                    data-toggle="tooltip" data-placement="bottom" data-container="body" title="En savoir plus"></a>
+                    pour accéderez directement à la fiche d'aide associée.</p>
+                </div>
+                <div class="col-auto"><img src="/assets/img/illus_help.png" class="img-fluid"/></div>
+              </div>
+               <a href="https://aide.kiubi.com/" data-tracking target="_blank" class="btn btn-lg btn-success">Consulter la documentation</a>
+            </div>
+            <div class="tab-pane fade " id="help-tuto-theme">
+              <div class="row">
+                <div class="col">
+                  <h2>Création de thèmes</h2>
+                  <p>Le guide du webdesigner est à votre disposition pour vous aider à exploiter les possibilités de personnalisation offertes par Kiubi.
+                    </p>
+                </div>
+                <div class="col-auto"><img src="/assets/img/illus_theme.png" class="img-fluid"/></div>
+              </div>
+              <a href="https://aide.kiubi.com/design-generalites.html" data-tracking target="_blank" class="btn btn-lg btn-success">Consulter le guide</a>
+            </div>
+						<div class="tab-pane fade" id="help-tuto-api">
+		          <div class="row">
+                <div class="col">
+                  <h2>Utiliser les API</h2>
+									<p>Les API de Kiubi couvrent 100% du périmètre fonctionnel de la plateforme.
+									Une ouverture indispensable pour le développement de services et d'applications tiers.
+                  </p>
+                </div>
+                <div class="col-auto"><img src="/assets/img/illus_api.png" class="img-fluid"/></div>
+              </div>
+							<a href="https://aide.kiubi.com/api-front-generalites.html" data-tracking target="_blank" class="btn btn-lg btn-success mr-3">API Front-Office</a>
+                            <a href="https://aide.kiubi.com/api-dev-generalites.html" data-tracking target="_blank" class="btn btn-lg btn-primary">API Developers</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="post-footer"></footer>
+</article>
+
+  <article class="post-article post-article-illus">
+    <div class="post-content">
+      <div class="row no-gutters">
+        <div class="col col-content">
+          <h1>Kiubi Professionnal Services</h1>
+          <p>Vous avez des attentes particulières ?
+            Vous souhaitez interfacer votre site avec votre CRM ? Votre projet nécessite un hébergement dédié ?<br>
+            Les Kiubi Professional Services sont faits pour vous.</p>
+          <a class="btn btn-outline-primary" href="/modules/kps" data-tracking>En savoir plus sur les KPS</a></div>
+        <div class="col-5"><img src="/assets/img/illus_kps.jpg" class="img-fluid"/></div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+	<article class="post-article post-article-illus">
+    <div class="post-content">
+      <div class="row no-gutters">
+        <div class="col col-content">
+          <h1>Tenez-vous informé</h1>
+          <p>Suivez toute l'actualité de Kiubi et les dernières nouveautés sur notre blog. Retrouvez-nous également sur les réseaux sociaux,
+            <a href="https://www.facebook.com/Kiubi" data-tracking target="_blank">Facebook</a>, <a href="https://twitter.com/kiubi" data-tracking target="_blank">Twitter</a>
+             et <a href="https://www.linkedin.com/company/kiubi-cms/" data-tracking target="_blank">Linkedin</a>.</p>
+          <a class="btn btn-outline-primary" href="https://www.kiubi.com/blog/" data-tracking target="_blank">Consulter le blog de Kiubi</a></div>
+        <div class="col-5"><img src="/assets/img/illus_blog.jpg" class="img-fluid"/></div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article data-role="tips"></article>
+
+</div>
+
+<% if (!user.is_admin) { %>
+  <div class="modal fade" tabindex="-1" role="dialog" id="technicalSupport">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Support technique</h4>
+          <button type="button" class="close md-icon md-close" data-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <article class="post-article">
+            <div class="post-content">
+              <p>Un administrateur est requis pour ouvrir un ticket de support.
+                Nous vous invitons à contactez votre administrateur pour toutes questions techniques :</p>
+                <p><h2 class="mb-2"><%- contact.company_name %></h2>
+                  <%- contact.civility %> <%- contact.firstname %> <%- contact.lastname %><br>
+                  Email : <a href="mailto:<%- contact.email %>"><%- contact.email %></a><br>
+                  Tél : <a href="tel:<%- contact.phone %>"><%- contact.phone %></a>
+                </p>
+              </div>
+              <footer class="post-footer"></footer>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>

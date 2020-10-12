@@ -2,41 +2,12 @@
 
 	<div data-role="messages"></div>
 
-	<% if(has_scope_subscription) { %>
-		<% if (site.plan.is_trial) { %>
-			<div class="alert alert-warning d-flex justify-content-between align-items-center p-3" role="alert">
-				<span>
-					Bienvenue <%- user.firstname %> <%- user.lastname %>, vous bénéficiez d'une période d'essai gratuite de
-					<%- plural(interval_trial, '%d jour', '%d jours') %>, jusqu'au <%- endtrial_date %>
-				</span>
-
-				<a href="#" data-role="plan" class="btn btn-success align-middle text-nowrap">Choisir une offre</a>
-			</div>
-		<% } else if (!site.plan.is_free) { %>
-			<% if (site.plan.is_closed) { %>
-				<div class="alert alert-danger d-flex justify-content-between align-items-center p-3" role="alert">
-					<span>
-						<span class="md-icon md-warning align-middle mr-2"></span>Attention, le site Internet est fermé depuis le
-						<%- closing_date %> et sera supprimé dans <%- plural(180 + interval_closing, '%d jour', '%d jours') %>
-					</span>
-
-					<a href="#" data-role="subscription" class="btn btn-success align-middle text-nowrap">Créditer le site</a>
-				</div>
-			<% } else if (interval_closing <= 7) { %>
-				<div class="alert alert-warning d-flex justify-content-between align-items-center p-3" role="alert">
-					<span>
-						<%- user.firstname %> <%- user.lastname %>, l'abonnement du site Internet va expirer dans <%- plural(interval_closing, '%d jour', '%d jours') %>
-						, le <%- closing_date %>
-					</span>
-
-					<a href="#" data-role="subscription" class="btn btn-success align-middle text-nowrap">Créditer le site</a>
-				</div>
-			<% } %>
-		<% } %>
-	<% } %>
+	<div data-role="plan"></div>
 
 	<article data-role="graph"></article>
-	
+
 	<div data-role="widgets"></div>
-	
+
+	<article data-role="tips"></article>
+
 </div>

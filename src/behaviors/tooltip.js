@@ -18,9 +18,11 @@ module.exports = Marionette.Behavior.extend({
 	onRender: function() {
 		this.cache = Backbone.$('[data-toggle="tooltip"]', this.view.el).tooltip({
 			delay: {
-				"show": 400,
-				"hide": 100
-			}
+				"show": 0,
+				"hide": 0
+			},
+			trigger: "hover",
+			offset: "0, 4px"
 		});
 	}
 

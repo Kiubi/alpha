@@ -122,7 +122,7 @@ function allowedSite(site) {
 	var d = Backbone.$.Deferred();
 
 	api.get('sites/' + site, {
-		extra_fields: 'scopes,features'
+		extra_fields: 'scopes,features,account'
 	}).done(function(data) {
 		d.resolve(data);
 	}).fail(function(error) {
@@ -163,6 +163,7 @@ function setCredidentials(AuthPromise, Session) {
 		Session.user.set('lastname', data.user.lastname);
 		Session.user.set('avatar', data.user.avatar);
 		Session.user.set('email', data.user.email);
+		Session.user.set('gender', data.user.gender);
 		Session.user.set('is_admin', data.user.is_admin);
 		Session.user.set('scopes', data.user.scopes || []);
 

@@ -195,7 +195,7 @@ module.exports = Marionette.Object.extend({
 				className: 'md-layout',
 				scope: 'site:layout'
 			}, {
-				name: "Thèmes graphiques",
+				name: "Thème graphique",
 				path: "/themes",
 				className: 'md-theme',
 				scope: 'site:theme'

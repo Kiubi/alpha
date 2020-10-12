@@ -73,6 +73,8 @@ module.exports = Marionette.View.extend({
 
 	template: require('../templates/sidebar.html'),
 
+	behaviors: [TooltipBehavior],
+
 	regions: {
 		'usage': {
 			el: '[data-role="usage"]',
@@ -93,8 +95,9 @@ module.exports = Marionette.View.extend({
 		},
 		'click a[data-role="me"]': function() {
 			if (this.session.user.isAdmin()) {
-				window.open(this.session.autologAccountLink('/dashboard/'));
+				window.open(this.session.autologAccountLink('/users/'));
 			} else {
+				if (!this.session.hasScope('site:users')) return;
 				window.open(this.session.autologBackLink('/comptes/users/'));
 			}
 		},
@@ -107,13 +110,35 @@ module.exports = Marionette.View.extend({
 		'click a[data-role="bill"]': function() {
 			window.open(this.session.autologBackLink('/comptes/factures/'));
 		},
-		'click a[data-role="support"]': function() {
-			window.open(this.session.autologAccountLink('/support/'));
+		'click a[data-role="account"]': function() {
+			window.open(this.session.autologAccountLink('/dashboard/'));
 		}
 	},
 
+	ui: {
+		'items': '.nav-item'
+	},
+
 	templateContext: function() {
-		var plan = this.session.site.get('plan');
+		var plan = this.session.site.get('plan'),
+			account_label,
+			account_badge;
+
+		switch (this.session.site.get('account') && this.session.site.get('account').account_level) {
+			case 'expert':
+				account_label = 'Expert';
+				account_badge = 'badge-warning';
+				break;
+			case 'premium':
+				account_label = 'Premium';
+				account_badge = 'badge-success';
+				break;
+			default:
+				account_label = 'Admin';
+				account_badge = 'badge-secondary';
+				break;
+		}
+
 		return {
 			user: this.session.user.toJSON(),
 			site: this.session.site.toJSON(),
@@ -125,7 +150,9 @@ module.exports = Marionette.View.extend({
 			closing_date: plan ? format.formatDate(plan.closing_date) : '',
 			has_scope_subscription: this.session.hasScope('site:subscription'),
 			has_scope_users: this.session.hasScope('site:users'),
-			has_scope_support: this.session.hasScope('account:support')
+			userAvatar: this.session.user.getAvatar(),
+			accountBadge: account_badge,
+			accountLabel: account_label
 		};
 	},
 
@@ -172,29 +199,11 @@ module.exports = Marionette.View.extend({
 	 * @param {Object} data
 	 */
 	onChangeURL: function(data) {
-		var activeItem = this.collection.findWhere({
-			is_active: true
-		});
-
 		var root = '/' + (data.path + "/").split(/\/|\?/)[1];
-		if (activeItem && activeItem.get('path') == root) {
-			// no change needed
-			return;
-		}
+		this.getUI('items').removeClass('active');
 
-		var model = this.collection.findWhere({
-			path: root
-		});
-		if (!model) {
-			return;
-		}
-		if (activeItem) {
-			// in doubt clear all items
-			this.collection.invoke('set', 'is_active', false);
-		}
-		model.set('is_active', true);
-
-		this.render();
+		var query = (root === '/') ? "a[href='" + root + "']" : "a[href^='" + root + "']";
+		this.getUI('items').find(query).parent().addClass('active');
 	}
 
 });

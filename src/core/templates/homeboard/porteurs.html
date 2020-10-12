@@ -1,0 +1,89 @@
+<header class="post-header no-border">
+    <h1>Quelques conseils pour bien débuter</h1>
+</header>
+<div class="post-content">
+    <div class="nav-full">
+        <div class="row no-gutters">
+            <div class="col">
+                <div class="nav flex-column nav-pills">
+                    <% if(has_cms) { %>
+                    <a class="nav-link <%- activeTab == 'cms' ? 'active' : '' %>" data-toggle="pill" href="#porteurs-tuto-page"><span class="md-icon md-icon-outlined md-add-page"></span>Créer une page</a>
+                    <% } %>
+                    <% if(has_catalog) { %>
+                    <a class="nav-link <%- activeTab == 'catalog' ? 'active' : '' %>" data-toggle="pill" href="#porteurs-tuto-product"><span class="md-icon md-icon-outlined md-product-item"></span>Ajouter un produit</a>
+                    <% } %>
+                    <% if(has_domains) { %>
+                    <a class="nav-link <%- activeTab == 'domains' ? 'active' : '' %>" data-toggle="pill" href="#porteurs-tuto-domaine"><span class="md-icon md-icon-outlined md-domaine"></span>Associer un nom de domaine</a>
+                    <% } %>
+                    <a class="nav-link <%- activeTab == 'doc' ? 'active' : '' %>" data-toggle="pill" href="#porteurs-tuto-help"><span class="md-icon md-icon-outlined md-help"></span>Consulter le centre d'aide</a>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="tab-content">
+
+                    <% if(has_cms) { %>
+                    <div class="tab-pane <%- activeTab == 'cms' ? 'show active' : 'fade' %>" id="porteurs-tuto-page">
+                        <a href="https://aide.kiubi.com/site-web.html#ajouter-une-page" target="_blank" class="md-icon md-help-outline"
+                           data-toggle="tooltip" data-placement="bottom" data-container="body" title="En savoir plus"></a>
+                        <div class="row">
+                            <div class="col">
+                                <h2>Créer une première page de contenu</h2>
+                                <p>Vous pouvez créer dans votre site web autant de pages que vous le désirez.
+                                    Vous pouvez ainsi librement y ajouter et gérer votre contenu.</p>
+                            </div>
+                            <div class="col-auto"><img src="/assets/img/illus_page.png" class="img-fluid"/></div>
+                        </div>
+                        <button data-tracking data-role="page" type="button" class="btn btn-lg btn-success">Créer une page</button>
+                    </div>
+                    <% } %>
+
+                    <% if(has_catalog) { %>
+                    <div class="tab-pane <%- activeTab == 'catalog' ? 'show active' : 'fade' %>" id="porteurs-tuto-product">
+                        <a href="https://aide.kiubi.com/catalogue.html#ajouter-un-produit" target="_blank" class="md-icon md-help-outline"
+                           data-toggle="tooltip" data-placement="bottom" data-container="body" title="En savoir plus"></a>
+                        <div class="row">
+                            <div class="col">
+                                <h2>Remplir le catalogue avec vos produits</h2>
+                                <p>Tout est prévu dans Kiubi pour gérer et valoriser vos produits.
+                                    Mettez rapidement en vente votre premier produit, qu'il soit physique ou virtuel.
+                                </p>
+                            </div>
+                            <div class="col-auto"><img src="/assets/img/illus_product.png" class="img-fluid"/></div>
+                        </div>
+                        <button data-tracking data-role="product" type="button" class="btn btn-lg btn-success">Ajouter un produit</button>
+                    </div>
+                    <% } %>
+
+                    <% if(has_domains) { %>
+                    <div class="tab-pane <%- activeTab == 'domains' ? 'show active' : 'fade' %>" id="porteurs-tuto-domaine">
+                        <a href="https://aide.kiubi.com/preferences.html#noms-de-domaine" target="_blank" class="md-icon md-help-outline"
+                           data-toggle="tooltip" data-placement="bottom" data-container="body" title="En savoir plus"></a>
+                        <div class="row">
+                            <div class="col">
+                                <h2>Personnaliser votre nom de domaine</h2>
+                                <p>Si vous possédez un ou plusieurs noms de domaine, vous pouvez les associer à votre site web.
+                                    Sinon, nous vous en fournissons un par défaut.</p>
+                            </div>
+                            <div class="col-auto"><img src="/assets/img/illus_domaine.png" class="img-fluid"/></div>
+                        </div>
+                        <a href="/prefs/domains" data-tracking class="btn btn-lg btn-success">Associer un domaine</a>
+                    </div>
+                    <% } %>
+
+                    <div class="tab-pane <%- activeTab == 'doc' ? 'show active' : 'fade' %>" id="porteurs-tuto-help">
+                        <div class="row">
+                            <div class="col">
+                                <h2>Maîtriser Kiubi rapidement</h2>
+                                <p>Une documentation, un guide pour le webdesign, un support technique, etc.
+                                  Autant de ressources pour que vous soyez tout de suite efficace.</p>
+                            </div>
+                            <div class="col-auto"><img src="/assets/img/illus_help.png" class="img-fluid"/></div>
+                        </div>
+                        <a href="/help" data-tracking class="btn btn-lg btn-success">Consulter le centre d'aide</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="post-footer"></footer>

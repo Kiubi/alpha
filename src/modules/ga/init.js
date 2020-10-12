@@ -1,4 +1,5 @@
 var Backbone = require('backbone');
+var Marionette = require('backbone.marionette');
 
 module.exports = function() {
 
@@ -27,5 +28,13 @@ module.exports = function() {
 				'page_path': path
 			});
 		});
+
+		Backbone.Radio.channel('tracker').on('event', function(event) {
+			gtag('event', event.name || 'click', {
+				'event_category': event.category || '',
+				'event_label': event.label || ''
+			});
+		});
+
 	}
 };

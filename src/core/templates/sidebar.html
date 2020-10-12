@@ -6,9 +6,9 @@
 	<% _(mainItems).each(function(item){ %>
 	<li class="nav-item <%= item.is_active ? 'active' : '' %>">
 		<% if(item.is_enabled) { %>
-		<a href='<%- item.path %>' class="nav-link" title="<%- item.name %>"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
+		<a href='<%- item.path %>' class="nav-link" data-toggle="tooltip" data-placement="right" data-original-title="<%- item.name %>"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
 		<% } else { %>
-		<span class="nav-link disabled" title="<%- item.name %> indisponible"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
+		<span class="nav-link disabled" data-toggle="tooltip" data-placement="right" data-original-title="<%- item.name %> - Indisponible"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
 		<% } %>
 	</li>
 	<% }) %>
@@ -18,92 +18,118 @@
 	<% _(toolsItems).each(function(item){ %>
 	<li class="nav-item <%= item.is_active ? 'active' : '' %>">
 		<% if(item.is_enabled) { %>
-		<a href="<%- item.path %>" <%= item.blank ? 'target="_blank"' : '' %>  class="nav-link" title="<%- item.name %>"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
+		<a href="<%- item.path %>" <%= item.blank ? 'target="_blank"' : '' %>  class="nav-link"  data-toggle="tooltip" data-placement="right" data-offset="0, 14px" data-original-title="<%- item.name %>"><span class="md-icon md-icon-menu <%- item.className %>"></span></a>
 		<% } else { %>
-		<span class="nav-link disabled" title="<%- item.name %> (Désactivé) indisponible"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
+		<span class="nav-link disabled" data-toggle="tooltip" data-placement="right" data-original-title="<%- item.name %> - Indisponible"><span class="md-icon md-icon-menu <%- item.className %>"></span></span>
 		<% } %>
 	</li>
 	<% }) %>
-	<li class="nav-item bt-closed"><span class="nav-link" title="Réduire/Agrandir" data-role="close"><span class="md-icon md-icon-menu"></span></span></li>
+	<li class="nav-item bt-closed"><span class="nav-link" data-toggle="tooltip" data-placement="right" data-original-title="Réduire/Agrandir" data-role="close"><span class="md-icon md-icon-menu"></span></span></li>
 </ul>
 
 <% if(isAuth) { %>
 <div class="user dropup">
-	<a href="#" id="accountmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	<img src="<%- user.avatar %>" class="rounded-circle img-avatar d-block mx-auto" title="<%- user.firstname %> <%- user.lastname %>">
-	</a>
-	<div class="dropdown-menu ml-2 mb-2" aria-labelledby="accountmenu">
+
+	<button type="button" class="accountmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<div data-toggle="tooltip" data-placement="right" data-original-title="<%- user.firstname %> <%- user.lastname %>">
+			<div class="rounded-circle user-avatar" style="background-image: url('/assets/img/<%- userAvatar %>');">
+				<img src="<%- user.avatar %>&fallback=false" />
+			</div>
+			<span class="md-icon"></span>
+		</div>
+	</button>
+
+	<div class="dropdown-menu ml-2 mb-2">
 		<div class="user-detail dropdown-item-text text-nowrap">
-			<a href="#" data-role="me" class="d-inline-block" title="Gérer mon profil">
-				<img src="<%- user.avatar %>" class="rounded-circle img-avatar d-block float-left mr-3">
+
+			<a href="#" data-role="me" title="Voir votre profil">
+				<div class="rounded-circle user-avatar mr-3" style="background-image: url('/assets/img/<%- userAvatar %>');">
+					<img src="<%- user.avatar %>&fallback=false" />
+				</div>
 				<span>
 					<strong><%- user.firstname %> <%- user.lastname %></strong>
 					<br>
-					<small><%- user.email %></small>
+					<small>Voir votre profil</small>
 				</span>
+				<% if (user.is_admin) { %>
+				<span class="badge <%- accountBadge %> ml-auto"><%- accountLabel %></span>
+				<% } %>
 			</a>
 		</div>
 		<div class="dropdown-divider"></div>
 		<div class="row no-gutters">
-			<div class="col-5 d-none d-md-flex flex-column border-right border-light">
+			<div class="col-5 d-none d-md-flex flex-column border-right">
 				<% if (has_scope_subscription) { %>
-					<div class="text-nowrap">
-						<a class="dropdown-item" data-role="subscription" href="#" title="Gérer mon abonnement">
-						<%- site.plan.plan_name %><br>
+				<div class="text-nowrap">
+					<a class="dropdown-item" data-role="subscription" href="#" title="Gérer l'abonnement pour ce site">
+						Votre abonnement<br>
+						<small><%- site.plan.plan_name %></small><br>
 						<% if (site.plan.is_free) { %>
-							<small class="">Offert</small>
+						<small>Abonnement offert</small>
 						<% } else if (site.plan.is_trial) { %>
-							<small class="">Jusqu'au <%- endtrial_date %></small>
+						<small>Jusqu'au <%- endtrial_date %></small>
 						<% } else { %>
-							<small class="">Jusqu'au <%- closing_date %><br>
-							<%- plural(site.plan.balance, '%d crédit restant', '%d crédits restant') %><br>
-							</small>
+						<small>Jusqu'au <%- closing_date %><br>
+							<%- plural(site.plan.balance, '%d crédit restant', '%d crédits restant') %>
+						</small>
 						<% } %>
 					</a>
-					</div>
+				</div>
 				<% } else { %>
-					<div class="dropdown-item-text text-nowrap">
-						<%- site.plan.plan_name %><br>
-						<% if (site.plan.is_free) { %>
-							<small class="">Offert</small>
-						<% } else if (site.plan.is_trial) { %>
-							<small class="">Jusqu'au <%- endtrial_date %></small>
-						<% } else { %>
-							<small class="">Jusqu'au <%- closing_date %><br>
-							<%- plural(site.plan.balance, '%d crédit restant', '%d crédits restant') %><br>
-							</small>
-						<% } %>
-					</div>
+				<div class="dropdown-item-text text-nowrap">
+					Votre abonnement<br>
+					<small><%- site.plan.plan_name %></small><br>
+					<% if (site.plan.is_free) { %>
+					<small>Abonnement offert</small>
+					<% } else if (site.plan.is_trial) { %>
+					<small>Jusqu'au <%- endtrial_date %></small>
+					<% } else { %>
+					<small>Jusqu'au <%- closing_date %><br>
+						<%- plural(site.plan.balance, '%d crédit restant', '%d crédits restant') %>
+					</small>
+					<% } %>
+				</div>
 				<% } %>
 
 				<div class="dropdown-divider"></div>
-				<div><a class="dropdown-item py-2" target="_blank" href="https://aide.kiubi.com/" title="Documentation et aide en ligne">Documentation</a></div>
-				<% if(has_scope_support) { %>
-				<div><a class="dropdown-item py-2" href="#" data-role="support" title="Ouvrir un ticket de support">Support</a></div>
-				<% } else { %>
-				<div><span class="dropdown-item-text disabled py-2">Support</span></div>
-				<% } %>
-				<% if (has_scope_users) { %>
-				<div><a class="dropdown-item py-2" href="#" data-role="users" title="Gérer les utilisateurs">Utilisateurs</a></div>
-				<% } else { %>
-				<div><span class="dropdown-item-text disabled py-2">Utilisateurs</span></div>
-				<% } %>
+
 				<% if (has_scope_subscription) { %>
-				<div><a class="dropdown-item py-2" data-role="bill" href="#" title="Accéder aux factures">Factures</a></div>
+				<div><a class="dropdown-item py-2" data-role="bill" href="#" title="Vos factures pour ce site">Vos factures</a></div>
 				<% } else { %>
-				<div><span class="dropdown-item-text disabled py-2">Factures</span></div>
+				<div><span class="dropdown-item-text disabled py-2" title="Accès interdit, contactez votre administrateur">Vos factures</span></div>
 				<% } %>
+
+				<% if (has_scope_users) { %>
+				<div><a class="dropdown-item py-2" href="#" data-role="users" title="Vos utilisateurs pour ce site">Vos utilisateurs</a></div>
+				<% } else { %>
+				<div><span class="dropdown-item-text disabled py-2" title="Accès interdit, contactez votre administrateur">Vos utilisateurs</span></div>
+				<% } %>
+
+				<div class="dropdown-divider"></div>
+
+				<% if (user.is_admin) { %>
+				<div><a class="dropdown-item py-2" data-role="account" href="#" title="Votre compte">Votre compte</a></div>
+				<% } %>
+
+				<div><a class="dropdown-item py-2" href="/help" title="Centre d'aide">Centre d'aide</a></div>
+
 				<div class="dropdown-divider mt-auto"></div>
-				<div><a class="dropdown-item" href="#" data-role="logout" title="Se déconnecter de Kiubi">Se déconnecter</a></div>
+
+				<div><a class="dropdown-item" href="#" data-role="logout" title="Se déconnecter">Se déconnecter</a></div>
 			</div>
+
 			<div class="col-12 col-md-7 quotas">
-				<div data-role="usage"></div>
-				<% if(has_scope_subscription) { %>
-				<div>
-					Quand vos quotas sont atteints, <a href="#" data-role="subscription" class="text-info">faites évoluer votre abonnement</a>
-				</div>
+				<strong>Suivi de votre consommation</strong>
+				<% if (has_scope_subscription) { %>
+				<p  class="mt-1 mb-3">Quand les quotas du site sont atteints,
+					<a href="#" data-role="subscription" class="text-info"><strong>mettez à niveau votre abonnement</strong></a><br>
+				</p>
+				<% } else { %>
+				<p>Quand les quotas du site sont atteints, contactez votre administrateur<br></p>
 				<% } %>
+				<div data-role="usage"></div>
 			</div>
+
 		</div>
 	</div>
 </div>

@@ -435,3 +435,15 @@ div.mce-menubtn.mce-opened {
 .mce-i-code::before {
     content: "code";
 }
+
+.mce-i-fullscreen::before {
+    content: "fullscreen";
+}
+
+.mce-fullscreen .mce-i-fullscreen::before {
+  content: "fullscreen_exit";
+}
+
+.mce-fullscreen {
+    z-index: 2000;
+}

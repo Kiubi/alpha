@@ -11,13 +11,14 @@ module.exports = CollectionUtils.KiubiModel.extend({
 		firstname: '',
 		avatar: '',
 		email: '',
+		gender: '',
 		is_admin: false,
 		scopes: []
 	},
 
 	/**
-	 * Test if user is currently authenticated 
-	 * 
+	 * Test if user is currently authenticated
+	 *
 	 * @returns {boolean}
 	 */
 	isAuth: function() {
@@ -26,7 +27,7 @@ module.exports = CollectionUtils.KiubiModel.extend({
 
 	/**
 	 * Test user scope
-	 * 
+	 *
 	 * @param name
 	 * @returns {boolean}
 	 */
@@ -37,11 +38,25 @@ module.exports = CollectionUtils.KiubiModel.extend({
 
 	/**
 	 * Test if user is an administrator
-	 * 
+	 *
 	 * @returns {boolean}
 	 */
 	isAdmin: function() {
 		return this.get('is_admin') === true;
+	},
+
+	/**
+	 * Create user avatar file
+	 *
+	 */
+	getAvatar: function() {
+		var avatar;
+		if (this.get('gender') == 'M') {
+			avatar = 'user-avatar-m.png'
+		} else {
+			avatar = 'user-avatar-f.png'
+		}
+		return avatar;
 	}
 
 });

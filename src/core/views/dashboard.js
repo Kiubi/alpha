@@ -1,7 +1,5 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var format = require('kiubi/utils/format.js');
-var moment = require('moment');
 var _ = require('underscore');
 
 var TooltipBehavior = require('kiubi/behaviors/tooltip');
@@ -19,6 +17,8 @@ var ProductsView = require('./dashboard/products.js');
 var SearchView = require('./dashboard/search.js');
 var MapView = require('./dashboard/map.js');
 var ActivitiesView = require('./dashboard/activities.js');
+var TipsView = require('./dashboard/tips.js');
+var PlanView = require('./dashboard/plan.js');
 
 var EmptyWidgetView = Marionette.View.extend({
 	template: _.template('')
@@ -101,6 +101,10 @@ module.exports = Marionette.View.extend({
 	behaviors: [TooltipBehavior],
 
 	regions: {
+		plan: {
+			el: "div[data-role='plan']",
+			replaceElement: true
+		},
 		messages: {
 			el: "div[data-role='messages']",
 			replaceElement: true
@@ -112,15 +116,10 @@ module.exports = Marionette.View.extend({
 		widgets: {
 			el: "div[data-role='widgets']",
 			replaceElement: true
-		}
-	},
-
-	events: {
-		'click a[data-role="subscription"]': function() {
-			window.open(Session.autologBackLink('/comptes/formules/crediter.html'));
 		},
-		'click a[data-role="plan"]': function() {
-			window.open(Session.autologAccountLink('/sites/formule.html?code_site=' + Session.site.get('code_site')));
+		tips: {
+			el: "article[data-role='tips']",
+			replaceElement: true
 		}
 	},
 
@@ -135,36 +134,16 @@ module.exports = Marionette.View.extend({
 		this.live.fetch();
 	},
 
-	templateContext: function() {
-
-		var plan = Session.site.get('plan');
-		var interval_closing, interval_trial;
-		if (plan && plan.closing_date) {
-			// +1 => site is closed at the end of the closing day
-			interval_closing = Math.ceil(moment(plan.closing_date, 'YYYY-MM-DD').diff(moment(), 'days', true)) + 1;
-		}
-		if (plan && plan.endtrial_date) {
-			// +1 => trail is ended at the end of end trial day
-			interval_trial = Math.ceil(moment(plan.endtrial_date, 'YYYY-MM-DD').diff(moment(), 'days', true)) + 1;
-		}
-
-		return {
-			user: Session.user.toJSON(),
-			site: Session.site.toJSON(),
-			endtrial_date: plan ? format.formatDate(plan.endtrial_date) : '',
-			closing_date: plan ? format.formatDate(plan.closing_date) : '',
-			interval_closing: interval_closing,
-			interval_trial: interval_trial,
-			plural: format.plural,
-			has_scope_subscription: Session.hasScope('site:subscription')
-		};
-	},
-
 	onRender: function() {
+
+		if (Session.hasScope('site:subscription')) {
+			this.showChildView('plan', new PlanView({
+				session: Session
+			}));
+		}
 
 		this.stats.clear().set(this.stats.defaults); // RAZ stats when changing site
 		this.stats.fetch();
-
 
 		this.dashboardPrefs.fetch().done(function() {
 
@@ -212,9 +191,13 @@ module.exports = Marionette.View.extend({
 				this.showChildView('messages', MsgView);
 			}
 
+			this.showChildView('tips', new TipsView({}));
+
 		}.bind(this)).fail(function() {
 			console.log('Dashboard - FAILED'); // TODO
 		}.bind(this));
+
+
 
 	}
 

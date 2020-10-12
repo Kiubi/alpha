@@ -1,0 +1,207 @@
+<div class="container">
+
+<div data-role="plan"></div>
+
+<article data-role="advices"></article>
+
+<article class="post-article">
+<header class="post-header">
+  <h1>Accéder aux différents contenus</h1>
+  <p>La console d'administration est répartie en différents services, correspondant aux principales fonctionnalités qui composent votre site.
+    Ces services sont en permanence disponibles via la barre latérale principale, à l'extrème gauche de l'écran.</p>
+</header>
+<div class="post-content post-list no-hover module-list">
+  <% if(show_cms) { %>
+  <div class="list-item visible-btn">
+    <div class="row no-gutters">
+      <div class="col-auto mr-3"><span class="md-icon md-icon-module md-website rounded-circle"></span></div>
+      <div class="col item-body">
+        <h4>Site web</h4>
+        Kiubi, c'est avant tout un CMS ultra complet. Il est ainsi très facile d'ajouter des pages, de gérer des éléments de navigation et d'ajouter tous types de contenus à votre site. <a href="https://aide.kiubi.com/site-web.html" target="_blank">En savoir plus sur le CMS</a></div>
+      <div class="col-auto"><a class="btn btn-outline-primary" href="/cms" data-tracking="Utiliser le Site web">Utiliser</a> </div>
+    </div>
+  </div>
+  <% } %>
+
+  <% if(show_blog) { %>
+  <div class="list-item visible-btn">
+    <div class="row no-gutters">
+      <div class="col-auto mr-3"><span class="md-icon md-icon-module md-blog rounded-circle"></span></div>
+      <div class="col item-body">
+        <h4>Blog</h4>
+        Un blog est un puissant vecteur de communication, pour peu qu’il contienne une actualité régulière et un contenu cohérent par rapport à votre secteur d'activité. <a href="https://aide.kiubi.com/blog.html" target="_blank">En savoir plus sur le blog</a></div>
+      <div class="col-auto"><a class="btn btn-outline-primary" href="/blog" data-tracking="Utiliser le Blog">Utiliser</a> </div>
+    </div>
+  </div>
+  <% } %>
+
+  <% if(show_catalog) { %>
+  <div class="list-item visible-btn">
+    <div class="row no-gutters">
+      <div class="col-auto mr-3"><span class="md-icon md-icon-module md-product rounded-circle"></span></div>
+      <div class="col item-body">
+        <h4>Catalogue</h4>
+        Le catalogue permet de structurer et de personnaliser vos produits. Ses très nombreuses fonctionnalités et options s'adaptent à toutes les activités. <a href="https://aide.kiubi.com/catalogue.html" target="_blank">En savoir plus la gestion du catalogue</a></div>
+      <div class="col-auto"><a class="btn btn-outline-primary" href="/catalog" data-tracking="Utiliser le Catalogue">Utiliser</a> </div>
+    </div>
+  </div>
+  <% } %>
+
+  <% if(show_checkout) { %>
+  <div class="list-item visible-btn">
+    <div class="row no-gutters">
+      <div class="col-auto mr-3"><span class="md-icon md-icon-module md-order rounded-circle"></span></div>
+      <div class="col item-body">
+        <h4>Commandes</h4>
+        Tous les outils pour assurer la gestion et le suivi des commandes, la configuration des paiements, des transporteurs et de la logistique. <a href="https://aide.kiubi.com/commandes.html" target="_blank">En savoir plus sur la vente en ligne</a></div>
+      <div class="col-auto"><a class="btn btn-outline-primary" href="/checkout" data-tracking="Utiliser les Commandes">Utiliser</a> </div>
+    </div>
+  </div>
+  <% } %>
+
+  <div class="collapse" id="showServices">
+
+  <% if(show_customers) { %>
+    <div class="list-item visible-btn">
+      <div class="row no-gutters">
+        <div class="col-auto mr-3"><span class="md-icon md-icon-module md-member rounded-circle"></span></div>
+        <div class="col item-body">
+          <h4>Membres</h4>
+          Un membre, ou client, s'est ouvert un compte sur votre site pour y passer des commandes, poster des commentaires, accéder à des pages réservées. <a href="https://aide.kiubi.com/membres.html" target="_blank">En savoir plus sur les membres et les clients</a></div>
+        <div class="col-auto"><a class="btn btn-outline-primary" href="/customers" data-tracking="Utiliser les Membres">Utiliser</a> </div>
+      </div>
+    </div>
+    <% } %>
+
+    <div class="list-item visible-btn">
+      <div class="row no-gutters">
+        <div class="col-auto mr-3"><span class="md-icon md-icon-module md-extension rounded-circle"></span></div>
+        <div class="col item-body">
+          <h4>App & Modules</h4>
+          Optimiser votre site, fidéliser vos clients, améliorer votre référencement, booster votre productivité et accèder aux puissantes API de Kiubi. <a href="https://aide.kiubi.com/modules.html" target="_blank">En savoir plus sur les modules et le développement d'app</a></div>
+        <div class="col-auto"><a class="btn btn-outline-primary" href="/modules" data-tracking="Utiliser les Modules">Utiliser</a> </div>
+      </div>
+    </div>
+
+    <% if(show_layout) { %>
+    <div class="list-item visible-btn">
+      <div class="row no-gutters">
+        <div class="col-auto mr-3"><span class="md-icon md-icon-module md-layout rounded-circle"></span></div>
+        <div class="col item-body">
+          <h4>Mise en page</h4>
+          Le système de mise en page peut à première vue paraitre déroutant. Il a cependant été conçu pour être très pratique d'utilisation et extrèmement complet. <a href="https://aide.kiubi.com/mises-en-page.html" target="_blank">En savoir plus sur la mise en page</a></div>
+        <div class="col-auto"><a class="btn btn-outline-primary" href="/appearance" data-tracking="Utiliser les Mises en page">Utiliser</a> </div>
+      </div>
+    </div>
+    <% } %>
+
+    <% if(show_theme) { %>
+    <div class="list-item visible-btn">
+      <div class="row no-gutters">
+        <div class="col-auto mr-3"><span class="md-icon md-icon-module md-theme rounded-circle"></span></div>
+        <div class="col item-body">
+          <h4>Thème graphique</h4>
+          Vous pouvez personnaliser à 100% votre site, grâce à un accès à tous les templates HTML, CSS et JS qui le composent. Pas de limite pour vos designs ! <a href="https://aide.kiubi.com/design-generalites.html" target="_blank">En savoir plus la création de thèmes</a></div>
+        <div class="col-auto"><a class="btn btn-outline-primary" href="/themes" data-tracking="Utiliser le Thème graphique">Utiliser</a> </div>
+      </div>
+    </div>
+    <% } %>
+
+    <div class="list-item visible-btn">
+      <div class="row no-gutters">
+        <div class="col-auto mr-3"><span class="md-icon md-icon-module md-media rounded-circle"></span></div>
+        <div class="col item-body">
+          <h4>Médiathèque</h4>
+          La Médiathèque permet de gérer les fichiers (images, documents textes, pdf, sons, vidéos...) que vous allez utiliser pour enrichir le contenu d'un site. <a href="https://aide.kiubi.com/design-generalites.html#mediatheque" target="_blank">En savoir plus sur les médias</a></div>
+        <div class="col-auto"><a class="btn btn-outline-primary" href="/media" data-tracking="Utiliser la Médiathèque">Utiliser</a> </div>
+      </div>
+    </div>
+
+    <% if(show_pref) { %>
+    <div class="list-item visible-btn">
+      <div class="row no-gutters">
+        <div class="col-auto mr-3"><span class="md-icon md-icon-module md-settings rounded-circle"></span></div>
+        <div class="col item-body">
+          <h4>Préférences générales</h4>
+          Ouvrez ou fermez votre site, modifiez vos coordonnées, votre logo, ajoutez votre nom de domaine, activez votre accès HTTPS, définissez les métas par défaut, etc. <a href="https://aide.kiubi.com/preferences.html" target="_blank">En savoir plus sur les préférences</a></div>
+        <div class="col-auto"><a class="btn btn-outline-primary" href="/prefs" data-tracking="Utiliser les Préférences">Utiliser</a> </div>
+      </div>
+    </div>
+    <% } %>
+
+  </div>
+
+  <div class="list-item no-hover pb-2 text-center" data-toggle="collapse" data-target="#showServices" aria-expanded="false" aria-controls="showServices"> <a href="#">Afficher tous les services<span class="md-icon md-down align-bottom ml-2"></span></a> </div>
+  <footer class="post-footer"></footer>
+</div>
+</article>
+
+
+  <% if(account_type === 'porteur') { %>
+
+	<article class="post-article post-article-illus porteurs">
+    <div class="post-content">
+      <div class="row no-gutters">
+        <div class="col col-content">
+          <h1>Engagez le bon prestataire pour votre projet</h1>
+          <p>Vous voulez un site web, mais vous n'avez pas les compétences ou le temps nécessaire ?
+            Vous voulez vendre en ligne, pas vous prendre la tête ? <br>
+            Confiez votre projet à un Expert Kiubi.</p>
+          <a class="btn btn-outline-primary" href="https://www.kiubi.com/agences-partenaires.html" data-tracking target="_blank">Contacter un expert</a></div>
+        <div class="col-5"><img src="/assets/img/illus_prestataires.jpg" class="img-fluid"/></div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <article class="post-article post-article-illus porteurs">
+    <div class="post-content">
+      <div class="row no-gutters">
+        <div class="col col-content">
+          <h1>Découvrez les Kiubi Professionnal Services</h1>
+          <p>Vous avez des attentes particulières ?
+            Vous souhaitez interfacer votre site avec votre CRM ? Votre projet nécessite un hébergement dédié ?<br>
+            Les Kiubi Professional Services sont faits pour vous.</p>
+          <a class="btn btn-outline-primary" href="/modules/kps" data-tracking>En savoir plus sur les KPS</a></div>
+        <div class="col-5"><img src="/assets/img/illus_kps.jpg" class="img-fluid"/></div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <% } else if(account_type === 'prestataire') { %>
+
+	<article class="post-article post-article-illus prestataires">
+		<div class="post-content">
+			<div class="row no-gutters">
+				<div class="col col-content">
+					<h1>Rejoignez les Experts Kiubi</h1>
+					<p>Faites découvrir Kiubi à vos clients et accompagnez-les dans le développement de leurs projets.
+						Grâce à votre expertise de Kiubi, vous profiterez de nombreux avantages et de services exclusifs.</p>
+					<a class="btn btn-outline-primary" href="https://www.kiubi.com/devenir-partenaire.html" data-tracking target="_blank">Rejoindre les experts</a></div>
+				<div class="col-5"><img src="/assets/img/illus_experts.jpg" class="img-fluid"/></div>
+			</div>
+		</div>
+		<footer class="post-footer"></footer>
+	</article>
+
+	<article class="post-article post-article-illus prestataires">
+    <div class="post-content">
+      <div class="row no-gutters">
+        <div class="col col-content">
+          <h1>Découvrez les Kiubi Professionnal Services</h1>
+          <p>Vos clients ont des attentes particulières ?
+            Vous devez interfacer vos sites avec des services tiers ? Vos projets nécessitent un hébergement dédié ?<br>
+            Les Kiubi Professional Services sont faits pour vous.</p>
+          <a class="btn btn-outline-primary" href="/modules/kps" data-tracking>En savoir plus sur les KPS</a></div>
+        <div class="col-5"><img src="/assets/img/illus_kps.jpg" class="img-fluid"/></div>
+      </div>
+    </div>
+    <footer class="post-footer"></footer>
+  </article>
+
+  <% } %>
+  
+  <article data-role="tips"></article>
+
+</div>
