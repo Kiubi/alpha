@@ -14,8 +14,8 @@
 
 <% if (navigation) { %>
 	<div class="btn-group float-right m-0">
-		<a href="<%= navigation.previous ? navigation.previous : '#' %>" class="btn btn-lg btn-preview md-icon md-previous <%= !navigation.previous ? 'disabled' : '' %>" title="Billet précédent">&nbsp;</a>
-		<a href="<%= navigation.next ? navigation.next : '#' %>" class="btn border-left btn-lg btn-next md-icon md-next <%= !navigation.next ? 'disabled' : '' %>" title="Billet suivant">&nbsp;</a>
+		<a href="<%= navigation.previous ? navigation.previous : '#' %>" class="btn btn-lg btn-preview md-icon md-previous <%= !navigation.previous ? 'disabled' : '' %>" title="Billet précédent"></a>
+		<a href="<%= navigation.next ? navigation.next : '#' %>" class="btn border-left btn-lg btn-next md-icon md-next <%= !navigation.next ? 'disabled' : '' %>" title="Billet suivant"></a>
 	</div>
 <% } %>
 
@@ -45,7 +45,7 @@
 			<% }) %>
 		</ul>
 	<% } %>
-		
+
 	<% if(tabactions) { %>
 		<ul class="nav nav-tab tab-actions" data-role="other-actions">
 			<% _(tabactions).each(function(action, index){ %>

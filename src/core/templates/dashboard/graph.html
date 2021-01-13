@@ -4,7 +4,8 @@
 		<div class="col filters-options">
 			<span>
 			<div class="btn-group">
-				<div class="input-group">
+				<div class="input-group" data-toggle="tooltip" data-placement="top"
+					data-container="body" data-original-title="Période comprise entre 1 et 31 jours">
 					<div class="input-group-prepend"><span class="input-group-text">Période du</span></div>
 					<input data-role="datepicker" class="form-control" name="start_date" value="<%- startDate %>" placeholder="jj/mm/aaaa" type="text">
 					<div class="input-group-prepend"><span class="input-group-text">au</span></div>
@@ -17,15 +18,13 @@
 				<div class="input-group">
 					<div class="input-group-prepend"><span class="input-group-text">Comparée à</span></div>
 					<input data-role="datepicker" class="form-control" name="compare_date" value="" placeholder="jj/mm/aaaa" type="text">
-
 					<div class="input-group-append"><span class="input-group-text"><span data-role="feedback" class="md-icon float-right md-date"></span></span>
 					</div>
 				</div>
 			</div>
-			<span	class="md-icon md-help-outline d-none" data-toggle="tooltip" data-placement="right"
-					data-container="body" title="" data-original-title="Période comprise entre 1 et 31 jours"></span>
-			</span>
-		</div>
+		</span>
+	</div>
+
 		<div class="col-auto sort-options">
 			<span>
 				<div class="btn-group" role="group">

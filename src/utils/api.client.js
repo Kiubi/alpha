@@ -198,7 +198,7 @@ var Client = Marionette.Object.extend({
 				} catch (e) {
 					payload.error = {
 						'code': Errors.E_SYS_UNEXPECTED_ERROR,
-						'message': "An unexpected error has occurred.",
+						'message': "Une erreur inattendue s’est produite",
 						'fields': []
 					};
 				}

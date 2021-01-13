@@ -56,6 +56,14 @@ var View = Marionette.View.extend({
 		this.$el.removeClass('closed');
 	},
 
+	setAppContext: function(enable) {
+		if (enable) {
+			this.$el.addClass('app-context');
+		} else {
+			this.$el.removeClass('app-context');
+		}
+	},
+
 	initialize: function(options) {
 		this.mergeOptions(options, ['application']);
 

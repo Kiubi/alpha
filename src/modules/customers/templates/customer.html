@@ -108,11 +108,16 @@
 					</div>
 					<% if(customer_id) { %>
 						<div class="form-group post-subcontent">
-							<label>Numéro client</label>
+							<% if (is_enabled) { %>
+								<a href="#" class="float-right" data-role="connect">Se connecter</a></li>
+							<% } %>
+							<h4>Numéro client</h4>
+							<span class="md-icon md-icon-outlined md-account float-right"></span>
 							<p>#<%- number %></p>
 						</div>
 						<div class="form-group post-subcontent">
-							<label>Date d'inscription</label>
+							<h4>Date d'inscription</h4>
+							<span class="md-icon md-submit-date float-right"></span>
 							<p><%- creation_date %></p>
 						</div>
 					<% } %>

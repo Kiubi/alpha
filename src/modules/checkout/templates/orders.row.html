@@ -15,24 +15,28 @@
 				<%- billing_address.firstname %> <%- billing_address.lastname %>
 			<% } %>
 
-			<% if(shipping.scheduled) { %>
-				<br><span title="<%- (shipping.type == 'pickup') ? 'Date de retrait' : 'Date de livraison' %>">
-				<% if(shipping.type == 'pickup') { %>
-					<i class="md-icon md-place mr-1"></i>
-				<% } else { %>
-					<i class="md-icon md-local-shipping mr-1"></i>
-				<% } %>
-				<%- scheduled_date %></span>
+			<% if(shipping.type == 'pickup') { %><br/>
+					<% if(shipping.scheduled) { %>
+							 Retrait le <%- scheduled_date %>
+					<% } else { %>
+							<%- shipping.name %>
+					<% } %>
+			<% } else if(shipping.scheduled) { %><br/>
+					À livrer le <%- scheduled_date %>
 			<% } %>
+
 		</span>
 	</div>
 	<div class="col-2">
-		<span class="badge <%= is_paid ? 'badge-success' : 'badge-warning' %> is-toggle">
-			<span><%= is_paid ? 'Payée' : 'À payer' %></span><span>Par <%- payment_name %></span>
+		<span class="badge <%= is_paid ? 'badge-success' : 'badge-warning' %>">
+			 <%= is_paid ? 'Payée' : 'À payer' %>
 		</span>
 	</div>
 	<div class="col-2">
-		<span class="price"><%- price_total_inc_vat_label %> TTC<br/></span>
+		<span class="badge <%- statutClass %>"><%- statut %></span>
+	</div>
+	<div class="col-1 text-nowrap">
+		<span class="price"><%- price_total_inc_vat_label %> TTC</span>
 	</div>
 	<div class="col-auto">
 		<a class="btn btn-primary float-right" href="/checkout/orders/<%- order_id %>" role="button">Détail</a>

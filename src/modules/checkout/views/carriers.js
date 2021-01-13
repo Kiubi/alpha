@@ -19,6 +19,9 @@ var RowView = Marionette.View.extend({
 			case 'socolissimo':
 				type_label = "Retrait en points relais ou sur rendez-vous du réseau La Poste";
 				break;
+			case 'soco_pickup':
+				type_label = "Retrait en points relais La Poste";
+				break;
 			case 'local':
 				type_label = "Livraison locale limitée à certain codes postaux";
 				break;

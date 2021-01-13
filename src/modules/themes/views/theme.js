@@ -5,6 +5,7 @@ var _ = require('underscore');
 var FormBehavior = require('kiubi/behaviors/simple_form.js');
 var Forms = require('kiubi/utils/forms.js');
 var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
+var LoaderTpl = require('kiubi/core/templates/ui/loader.html');
 
 var Session = Backbone.Radio.channel('app').request('ctx:session');
 
@@ -20,7 +21,8 @@ module.exports = Marionette.View.extend({
 		'pwdMask': 'span[data-role="password-mask"]',
 		'defaultBtn': 'a[data-role="default"]',
 		'customBtn': 'a[data-role="custom"]',
-		'selectVariant': '[data-role="select-variant"]'
+		'selectVariant': '[data-role="select-variant"]',
+		'exportBtn': '[data-role="export"]'
 	},
 
 	events: {
@@ -93,7 +95,25 @@ module.exports = Marionette.View.extend({
 				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
 				navigationController.showErrorModal(error);
 			}.bind(this));
-		}
+		},
+		'click @ui.exportBtn': function() {
+
+			var btn = this.getUI('exportBtn');
+			btn.addClass('btn-load');
+			var old = btn.text();
+			btn.html(LoaderTpl());
+
+			this.themes.exportCustom().done(function(data) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				window.open(data.url);
+			}.bind(this)).fail(function(error) {
+				var navigationController = Backbone.Radio.channel('app').request('ctx:navigationController');
+				navigationController.showErrorModal(error);
+			}.bind(this)).always(function() {
+				btn.removeClass('btn-load');
+				btn.text(old);
+			});
+		},
 	},
 
 	initialize: function(options) {
@@ -107,7 +127,8 @@ module.exports = Marionette.View.extend({
 			theme_img: Session.convertThemePath('/themes/' + this.current.get('code') + '/illustration.jpg'),
 			theme_download: (this.current.get('code') == 'theme') ? null : Session.convertThemePath('/themes/' + this.current
 				.get('code') + '/' + this.current.get('code') + '.zip'),
-			show_conversion: this.getOption('enableConversion')
+			show_conversion: this.getOption('enableConversion'),
+			show_export: this.getOption('enableExport')
 		};
 	}
 

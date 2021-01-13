@@ -1,6 +1,8 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
+var LoaderTpl = require('kiubi/core/templates/ui/loader.html');
+
 var View = Marionette.View.extend({
 	className: 'login',
 	template: require('../templates/login.html'),
@@ -11,10 +13,12 @@ var View = Marionette.View.extend({
 		password: '#password_input',
 		group_password: '#group_password',
 		remember: '#remember_input',
-		alert: '.alert-danger'
+		alert: '.alert-danger',
+		submitBtn: 'button[data-role="submit"]'
 	},
 
 	events: {
+		'click @ui.submitBtn': 'handleSave',
 		'submit form': 'handleSave',
 		'click a[data-role="clear"]': function() {
 			this.code_site = null;
@@ -26,6 +30,7 @@ var View = Marionette.View.extend({
 	cobranding: null,
 	loaded: null,
 	Session: null,
+	lockLogin: false,
 
 	initialize: function(options) {
 		this.mergeOptions(options, ['code_site', 'cobranding', 'Session']);
@@ -42,13 +47,14 @@ var View = Marionette.View.extend({
 		} else {
 			this.loaded = true;
 		}
+		this.lockLogin = false;
 	},
 
 	templateContext: function() {
 		var cobranding_background, cobranding_logo, login;
 
 		if (this.loaded) {
-			cobranding_background = '/assets/img/bg_login_e.jpg';
+			cobranding_background = '/assets/img/bg_login_f.jpg';
 			cobranding_logo = '/assets/img/logo_kiubi.png';
 			if (this.cobranding) {
 				var cobranding = this.cobranding.get('login');
@@ -70,12 +76,22 @@ var View = Marionette.View.extend({
 	},
 
 	/**
-	 * 
+	 *
 	 * @returns {boolean}
 	 */
 	handleSave: function(e) {
 		e.preventDefault();
+
+		if (this.lockLogin) return;
+		this.lockLogin = true;
+
+		e.preventDefault();
 		this.showError();
+
+		var btn = this.getUI('submitBtn');
+		btn.addClass('btn-load');
+		var old = btn.text();
+		btn.html(LoaderTpl());
 
 		this.Session.authenticate(this.getUI('login').val(), this.getUI('password').val(), this.code_site)
 			.done(function() {
@@ -90,13 +106,18 @@ var View = Marionette.View.extend({
 			}.bind(this))
 			.fail(function(error) {
 				this.showError(error);
+				btn.removeClass('btn-load');
+				btn.text(old);
+			}.bind(this))
+			.always(function() {
+				this.lockLogin = false;
 			}.bind(this));
 
 		return false;
 	},
 
 	/**
-	 * 
+	 *
 	 * @param {String} error
 	 */
 	showError: function(error) {

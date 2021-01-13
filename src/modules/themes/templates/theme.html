@@ -123,6 +123,23 @@
 
 <% if(theme.code == 'theme') { %>
 
+	<% if(show_export) { %>
+		<article class="post-article">
+			<header class="post-header">
+				<h1>Export de thème - <span class="badge badge-warning">beta</span></h1>
+			</header>
+			<div class="post-content">
+				<p>
+					Vous pouvez exporter ce thème personnalisé et le contenu du site pour l'importer dans un autre.
+				</p>
+
+				<button type="button" class="btn btn-lg btn-success" data-role="export">Exporter le thème</button>
+
+			</div>
+			<footer class="post-footer"></footer>
+		</article>
+	<% } %>
+
 <article class="post-article">
 	<header class="post-header">
 		<h1>Accès aux templates</h1>

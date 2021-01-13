@@ -7,7 +7,7 @@ var Layouts = require('../models/layouts');
 var Builder = require('../models/builder');
 
 module.exports = Marionette.View.extend({
-	template: require('../templates/layout.selector.html'),
+	template: require('../templates/layout/selector.html'),
 	tagName: 'article',
 	className: 'post-article',
 	behaviors: [SelectifyBehavior],

@@ -70,7 +70,7 @@ module.exports = Marionette.View.extend({
 			labels: ['Ordinateurs', 'Tablettes', 'Mobiles'],
 			datasets: [{
 				data: [mobility.desktop, mobility.tablet, mobility.mobile],
-				"backgroundColor": ["#77A8FF", "#d6e9c6", "#fed558"]
+				"backgroundColor": ["#a8d6ff", "#d6e9c6", "#fed558"]
 			}]
 		};
 

@@ -241,6 +241,57 @@ var virementView = Marionette.View.extend({
 
 });
 
+var paylineView = Marionette.View.extend({
+	template: require('../templates/payment/payline.html'),
+
+	behaviors: [WysiwygBehavior, SelectifyBehavior],
+
+	fields: [
+		'intitule_long',
+		'merchant_id',
+		'access_key',
+		'contract_number',
+		'mode',
+		'message'
+	],
+
+	templateContext: function() {
+		return {
+			'domain': Session.site.get('domain'),
+			'config': this.model.get('config')
+		};
+	},
+
+	extractFields: function() {
+		return Forms.extractFields(this.fields, this);
+	}
+
+});
+
+var payplugView = Marionette.View.extend({
+	template: require('../templates/payment/payplug.html'),
+
+	behaviors: [WysiwygBehavior, SelectifyBehavior],
+
+	fields: [
+		'intitule_long',
+		'secret',
+		'message'
+	],
+
+	templateContext: function() {
+		return {
+			'domain': Session.site.get('domain'),
+			'config': this.model.get('config')
+		};
+	},
+
+	extractFields: function() {
+		return Forms.extractFields(this.fields, this);
+	}
+
+});
+
 module.exports = Marionette.View.extend({
 	template: require('../templates/payment.html'),
 	className: 'container',
@@ -286,6 +337,12 @@ module.exports = Marionette.View.extend({
 				break;
 			case 'systempay':
 				viewClass = systempayView;
+				break;
+			case 'payline':
+				viewClass = paylineView;
+				break;
+			case 'payplug':
+				viewClass = payplugView;
 				break;
 		}
 

@@ -20,7 +20,7 @@ var Restrictions = require('kiubi/modules/customers/models/restrictions');
 
 var ContentsView = require('./contents.js');
 var PageView = Marionette.View.extend({
-	template: require('../templates/page.page.html'),
+	template: require('../templates/page/page.html'),
 
 	regions: {
 		list: {
@@ -195,7 +195,7 @@ var PageView = Marionette.View.extend({
  */
 
 var InternalLinkView = Marionette.View.extend({
-	template: require('../templates/page.internal.html'),
+	template: require('../templates/page/internal.html'),
 
 	regions: {
 		'type': {
@@ -280,7 +280,7 @@ var InternalLinkView = Marionette.View.extend({
  */
 
 var ExternalLinkView = Marionette.View.extend({
-	template: require('../templates/page.external.html'),
+	template: require('../templates/page/external.html'),
 
 	fields: [
 		'url',
@@ -294,7 +294,7 @@ var ExternalLinkView = Marionette.View.extend({
  */
 
 var ParentView = Marionette.View.extend({
-	template: require('../templates/page.parent.html'),
+	template: require('../templates/page/parent.html'),
 
 	behaviors: [SaveBehavior],
 

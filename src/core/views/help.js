@@ -28,7 +28,7 @@ module.exports = Marionette.View.extend({
 		this.mergeOptions(options, ['model']);
 		this.model.fetch().done(
 			function() {
-				this.render()
+				this.render();
 			}.bind(this)
 		);
 	},

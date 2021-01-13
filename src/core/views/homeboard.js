@@ -39,7 +39,7 @@ module.exports = Marionette.View.extend({
 
 	templateContext: function() {
 		return {
-			account_type: 'porteur', //Session.site.get('account').account_type,
+			account_type: Session.site.get('account').account_type,
 			show_cms: Session.hasScope('site:cms'),
 			show_blog: Session.hasScope('site:blog'),
 			show_catalog: Session.hasScope('site:catalog') && Session.hasFeature('catalog'),
@@ -48,7 +48,7 @@ module.exports = Marionette.View.extend({
 			show_layout: Session.hasScope('site:layout'),
 			show_theme: Session.hasScope('site:theme'),
 			show_pref: Session.hasScope('site:pref')
-		}
+		};
 	},
 
 	onRender: function() {

@@ -24,7 +24,7 @@ var RowView = Marionette.View.extend({
 				type_label = "Paiement par PayPal";
 				break;
 			case 'paybox':
-				type_label = "Solution de paiement en ligne sécurisé multi-banques";
+				type_label = "Solution de paiement en ligne sécurisée multi-banques";
 				break;
 			case 'atos':
 				type_label =
@@ -36,6 +36,13 @@ var RowView = Marionette.View.extend({
 			case 'systempay':
 				type_label =
 					"Paiement par carte bancaire distribué par les banques : Banque Populaire (Cyberplus Paiement), Société générale (Sogecommerce)";
+				break;
+			case 'payline':
+				type_label =
+					"Paiement par carte bancaire distribué par : Crédits Mutuel de Bretagne, Crédits Mutuel du Sud Ouest et Arkéa (Citelis)";
+				break;
+			case 'payplug':
+				type_label = "Solution de paiement en ligne sécurisée";
 				break;
 			default:
 				break;

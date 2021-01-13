@@ -4,12 +4,7 @@
 <div class="brand-message"><h2>Découvrez la nouvelle <br>version de Kiubi</h2>
 	<p>Plus rapide, plus performante<br>
 et encore plus simple d’utilisation.</p>
-	<% if(code_site) { %>
-		<p>Mais si vous ne souhaitez pas <br>encore franchir le pas avec nous, <br>rendez-vous en terrain plus familier.</p>
-		<a href="https://<%- code_site %>.kiubi-admin.com/login/" class="btn btn-lg btn-outline-login text-white w-100 mt-2">Retour à l'ancienne version</a>
-	<% } else { %>
-		<a href="https://www.kiubi.com/" class="btn btn-lg btn-outline-login text-white mt-2">En savoir plus</a>
-	<% } %>
+		<a href="https://aide.kiubi.com/" target="_blank" class="btn btn-lg btn-outline-login text-white mt-2" >En savoir plus</a>
 </div>
 <div class="overlay"></div>
 </div>
@@ -40,10 +35,11 @@ et encore plus simple d’utilisation.</p>
 					<label for="remember_input">Se souvenir de moi</label>
 			</div>
 				<% if(code_site) { %>
-					<input type="submit" class="btn btn-lg btn-success btn-save text-truncate w-100" value="Se connecter à <%- code_site %>">
+					<button type="button" class="btn btn-lg btn-success btn-save text-truncate w-100" data-role="submit">Se connecter à <%- code_site %></button>
 				<% } else { %>
-					<input type="submit" class="btn btn-lg btn-success btn-save w-100" value="Se connecter">
+					<button type="button" class="btn btn-lg btn-success btn-save w-100" data-role="submit">Se connecter</button>
 				<% } %>
+				<input type="submit" style="display:none"/>
 				<p><a href="https://aide.kiubi.com/generalites.html#console-d-administration" target="_blank">Besoin d'aide</a> pour se connecter ?</p>
 			</form>
 		</div>

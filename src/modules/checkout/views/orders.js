@@ -29,14 +29,42 @@ var RowView = Marionette.View.extend({
 		var scheduled_date;
 
 		if (shipping.scheduled) {
-			scheduled_date = shipping.scheduled.indexOf(' ') === -1 ? format.formatDate(shipping.scheduled) : format.formatLongDateTime(
+			scheduled_date = shipping.scheduled.indexOf(' ') === -1 ? format.formatLongDate(shipping.scheduled) : format.formatLongDateTime(
 				shipping.scheduled);
+		}
+
+		var statut;
+		var statutClass;
+
+		switch (this.model.get('status')) {
+			case 'pending':
+				statut = 'À traiter';
+				statutClass = 'badge-primary';
+				break;
+			case 'processing':
+				statut = 'En cours';
+				statutClass = 'badge-warning';
+				break;
+			case 'processed':
+				statut = 'Traitée';
+				statutClass = 'badge-info';
+				break;
+			case 'shipped':
+				statut = 'Expédiée';
+				statutClass = 'badge-success';
+				break;
+			case 'cancelled':
+				statut = 'Annulée';
+				statutClass = 'badge-danger';
+				break;
 		}
 
 		return {
 			creation_date: format.formatLongDateTime(this.model.get('creation_date')),
 			creation_date_fromnow: creation_date_fromnow,
-			scheduled_date: scheduled_date
+			scheduled_date: scheduled_date,
+			statut: statut,
+			statutClass: statutClass
 		};
 	}
 });
@@ -88,7 +116,7 @@ module.exports = Marionette.View.extend({
 
 		var exportActions = [{
 			'value': 'export',
-			'label': 'Exporter les commandes',
+			'label': 'Exporter pour Excel',
 			'selected': false
 		}, {
 			'value': 'export-coliship',
@@ -96,7 +124,7 @@ module.exports = Marionette.View.extend({
 			'selected': false
 		}, {
 			'value': 'export-dpd',
-			'label': 'Exporter pour DPD',
+			'label': 'Exporter pour Station DPD',
 			'selected': false
 		}];
 

@@ -10,9 +10,9 @@ var SelectifyBehavior = require('kiubi/behaviors/selectify.js');
 var Forms = require('kiubi/utils/forms.js');
 var Layout = require('../models/layout');
 
-var tplZone = require('../templates/layout.zone.html');
-var tplBloc = require('../templates/layout.bloc.html');
-var tplWidget = require('../templates/layout.widget.html');
+var tplZone = require('../templates/layout/zone.html');
+var tplBloc = require('../templates/layout/bloc.html');
+var tplWidget = require('../templates/layout/widget.html');
 
 function buildBloc(bloc) {
 	var cells = [];
@@ -99,7 +99,7 @@ function makePosition($widget, $cell) {
 
 
 var ModalView = Marionette.View.extend({
-	template: require('../templates/layout.modal.html'),
+	template: require('../templates/layout/modal.html'),
 
 	behaviors: [SelectifyBehavior],
 

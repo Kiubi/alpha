@@ -37,22 +37,21 @@ var NewRowView = Marionette.View.extend({
 
 			var sub = data.name.indexOf("www.") == 0 ? data.name.substr(4) : 'www.' + data.name;
 
-			promise = Backbone.$.when(
-				m1.save({
-					name: data.name,
-					is_main: false
-				}, {
-					patch: true,
-					wait: true
-				}),
-				m2.save({
+			promise = m1.save({
+				name: data.name,
+				is_main: false
+			}, {
+				patch: true,
+				wait: true
+			}).then(function() {
+				return m2.save({
 					name: sub,
 					is_main: false
 				}, {
 					patch: true,
 					wait: true
-				})
-			).done(function() {
+				});
+			}).done(function() {
 				this.getUI('form').hide();
 				this.collection.add([m1, m2]);
 			}.bind(this));

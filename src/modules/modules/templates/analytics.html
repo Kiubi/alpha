@@ -17,10 +17,10 @@
     </header>
     <div class="post-content">
       <div class="form-group">
-        <label class="required" for="UA">Numéro de compte</label>
+        <label class="required" for="UA">ID de suivi / ID de mesure</label>
         <p>Ce numéro est contenu dans le fragment de code fourni pour Google Analytics à l'ouverture d'un compte.
-          Seul ce numéro, de la forme UA-XXXXX-X, doit être renseigné ci-dessous et non pas l'ensemble du fragment de code.</p>
-        <input id="UA" name="UA" class="form-control" value="<%- UA %>" placeholder="Numéro de la forme : UA-XXXXX-X">
+          Seul ce numéro, de la forme <code>UA-XXXXX-X</code>, ou <code>G-XXXXXXXX</code> pour les propriétés Google Analytics 4, doit être renseigné ci-dessous et non pas l'ensemble du fragment de code.</p>
+        <input id="UA" name="UA" class="form-control" value="<%- UA %>" placeholder="Numéro de la forme : UA-XXXXX-X ou G-XXXXXXXX">
       </div>
 
       <div class="form-group">
@@ -37,9 +37,10 @@
           <div class="form-group">
             <label for="type" >Type de Tracker</label>
             <select id="type" name="type" data-style="selectify">
-              <option value="universal" <%= type == "universal" ? 'selected="selected"' : '' %>>Tracking universel (recommandé)</option>
-              <option value="async" <%= type == "async" ? 'selected="selected"' : '' %>>Tracking web asynchrone</option>
-              <option value="sync" <%= type == "sync" ? 'selected="selected"' : '' %>>Tracking web standard</option>
+              <option value="gtag" <%= type == "gtag" ? 'selected="selected"' : '' %>>Tracking gtag (recommandé)</option>
+              <option value="universal" <%= type == "universal" ? 'selected="selected"' : '' %>>Tracking universel</option>
+              <option value="async" <%= type == "async" ? 'selected="selected"' : '' %>>Tracking web asynchrone (déprécié)</option>
+              <option value="sync" <%= type == "sync" ? 'selected="selected"' : '' %>>Tracking web standard (déprécié)</option>
             </select>
           </div>
         </div>
@@ -53,6 +54,17 @@
           </div>
         </div>
       </div>
+
+      <div class="form-group">
+        <label>Activer la demande de consentement</label>
+        <div class="form-check">
+          <input name="consent" id="no_consent" value="" <%= consent == '' ? 'checked="checked"' : '' %> type="radio">
+          <label for="no_consent" >Non</label>
+          <input name="consent" id="consent_tarteaucitron" value="tarteaucitron" <%= consent == 'tarteaucitron' ? 'checked="checked"' : '' %> type="radio">
+          <label for="consent_tarteaucitron">Oui</label> (via <a href="https://aide.kiubi.com/modules.html#tarteaucitron-consentement" target="_blank">tarteaucitron</a>)
+        </div>
+      </div>
+
       <div class="form-group">
         <label for="options">Paramètres complémentaires</label>
         <textarea class="form-control" rows="5" id="options" name="options"><%- options %></textarea>

@@ -31,7 +31,14 @@
 		<% } %>
 	</div>
 	<div class="col-auto">
-		<a class="btn btn-primary float-right" href="/customers/<%- customer_id %>" role="button">Détail</a>
+		<div class="btn-group float-right" role="group"><a class="btn btn-primary" href="/customers/<%- customer_id %>" role="button">Détail</a>
+			<% if (is_enabled) { %>
+			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a class="dropdown-item" href="#" data-role="action" data-action="login">Connecter comme</a></li>
+			</ul>
+			<% } %>
+		</div>
 	</div>
 
 </div>

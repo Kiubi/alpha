@@ -316,7 +316,19 @@ module.exports = Marionette.Object.extend({
 	triggerContent: function(event, params) {
 		if (!this.layoutView.getChildView('content')) return;
 
-		this.layoutView.getChildView('content').triggerMethod(event, params)
+		this.layoutView.getChildView('content').triggerMethod(event, params);
+	},
+
+	/*
+	 * APP
+	 */
+
+	startAppContext: function() {
+		this.layoutView.setAppContext(true);
+	},
+
+	stopAppContext: function() {
+		this.layoutView.setAppContext(false);
 	},
 
 	/*

@@ -16,7 +16,8 @@ var RowView = Marionette.View.extend({
 		return {
 			creation_date: format.formatLongDateTime(this.model.get('creation_date')),
 			creation_date_fromnow: moment(this.model.get('creation_date'), 'YYYY-MM-DD HH:mm:ss').fromNow(),
-			convertMediaPath: Session.convertMediaPath.bind(Session)
+			convertMediaPath: Session.convertMediaPath.bind(Session),
+			url: this.model.mapUrnToUrl()
 		};
 	}
 

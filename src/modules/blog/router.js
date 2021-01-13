@@ -323,7 +323,7 @@ var BlogController = Controller.extend({
 				slug: Forms.tmpSlug(),
 				is_visible: false,
 				has_comments_open: true,
-				publication_date: moment().format('YYYY-MM-DD hh:mm:ss'),
+				publication_date: moment().format('YYYY-MM-DD HH:mm:ss'),
 				category_id: categories.at(0).get('category_id')
 			});
 

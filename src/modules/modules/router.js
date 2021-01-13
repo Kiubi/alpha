@@ -37,6 +37,7 @@ var Captcha = require('kiubi/modules/prefs/models/captcha');
 var Ads = require('kiubi/modules/prefs/models/ads');
 var Symbols = require('kiubi/modules/cms/models/symbols');
 var TierPrices = require('./models/tier_prices');
+var Apps = require('./models/apps');
 
 /* Views */
 var IndexView = require('./views/index');
@@ -61,6 +62,7 @@ var IadvizeView = require('./views/iadvize');
 var AvisVerifiesView = require('./views/avisverifies');
 var BackupsView = require('./views/backups');
 var CaptchaView = require('./views/captcha');
+var AppView = require('./views/app');
 var KpsView = require('./views/kps');
 var TierPricesView = require('./views/tier_prices');
 var TierPricesGridView = require('./views/tier_prices_grid');
@@ -258,11 +260,31 @@ var ModulesController = Controller.extend({
 	}],
 
 	showIndex: function() {
-		this.navigationController.showContent(new IndexView());
+
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		this.navigationController.showContent(new IndexView({
+			apps: Session.hasFeature('apps') ? new Apps() : null
+		}));
 		this.setHeader({
 			title: 'Tous les modules'
 		}, null, HeaderTabsIndex());
 
+	},
+
+	showApp: function(id) {
+		var c = (new Apps());
+		var m = new c.model({
+			app_id: id
+		});
+		m.fetch().done(function() {
+			var view = new AppView({
+				model: m
+			});
+			this.navigationController.showContent(view);
+			this.setHeader({
+				title: m.get('name')
+			});
+		}.bind(this)).fail(this.failHandler('Application introuvable'));
 	},
 
 	showInjectcode: function() {
@@ -714,7 +736,7 @@ var ModulesController = Controller.extend({
 
 	actionNewTPGrid: function() {
 
-		var m = new(new TierPrices).model({
+		var m = new(new TierPrices()).model({
 			name: 'Grille sans titre',
 		});
 
@@ -773,6 +795,7 @@ module.exports = Router.extend({
 		'modules/kps': 'showKps',
 		'modules/tier_prices': 'showTierPrices',
 		'modules/tier_prices/:id': 'showTierPricesGrid',
+		'modules/apps/:id': 'showApp'
 	},
 
 	onRoute: function(name) {

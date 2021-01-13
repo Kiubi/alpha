@@ -52,9 +52,9 @@ module.exports = CollectionUtils.KiubiModel.extend({
 	getAvatar: function() {
 		var avatar;
 		if (this.get('gender') == 'M') {
-			avatar = 'user-avatar-m.png'
+			avatar = 'user-avatar-m.png';
 		} else {
-			avatar = 'user-avatar-f.png'
+			avatar = 'user-avatar-f.png';
 		}
 		return avatar;
 	}

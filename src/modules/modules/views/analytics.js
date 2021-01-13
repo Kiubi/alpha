@@ -16,7 +16,8 @@ module.exports = Marionette.View.extend({
 		'is_enabled',
 		'type',
 		'target',
-		'options'
+		'options',
+		'consent'
 	],
 
 	onSave: function() {

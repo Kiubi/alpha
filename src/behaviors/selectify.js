@@ -87,7 +87,7 @@ function getLabel($option) {
 module.exports = Marionette.Behavior.extend({
 
 	onRender: function() {
-		selectify(Backbone.$('select[data-style="selectify"]', this.view.el));
+		selectify(Backbone.$('select[data-style="selectify"]', this.view.el), {});
 	}
 
 });

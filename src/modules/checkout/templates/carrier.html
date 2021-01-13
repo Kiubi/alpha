@@ -41,23 +41,29 @@
 	</article>
 	<% } else { %>
 	<div class="alert alert-warning" role="alert">
-		<a href="https://aide.kiubi.com/transporteurs.html" class="md-icon md-help float-right"
-		   target="_blank"></a>
 		<% if(type == 'tranchespoids') { %>
+		<a href="https://aide.kiubi.com/transporteurs.html#ajout-d-un-transporteur" class="md-icon md-help float-right" target="_blank"></a>
 		Un transporteur est défini pour une livraison à l'adresse indiquée dans une commande.
 		Les frais de port sont calculés en fonction du <strong>pays</strong> de livraison, par <strong>tranche de
 		poids</strong>.
 		<% } else if(type == 'magasin') { %>
+		<a href="https://aide.kiubi.com/transporteurs.html#ajout-d-un-retrait-en-magasin" class="md-icon md-help float-right" target="_blank"></a>
 		Le retrait en boutique est disponible pour défaut pour toutes les commandes. Le retrait en boutique est <strong>
 		toujours gratuit</strong>.
 		<% } else if(type == 'local') { %>
+		<a href="https://aide.kiubi.com/transporteurs.html#ajout-d-un-transporteur-local" class="md-icon md-help float-right" target="_blank"></a>
 		Un transporteur local est défini pour une livraison à l'adresse indiquée dans une commande.
 		Les frais de port sont calculés en fonction du <strong>code postal</strong> de livraison, par <strong>tranche de
 		poids</strong>.
 		<% } else if(type == 'dpd') { %>
+		<a href="https://aide.kiubi.com/transporteurs.html#parametrer-dpd-relais-pickup" class="md-icon md-help float-right" target="_blank"></a>
 		DPD Relais Pickup est une solution de livraison en points relais dans toute la France. Pour plus d'informations,
 		<a href="https://www.dpd.fr/pickup" target="_blank">rendez-vous sur le site officiel de DPD</a>.
-	  <% } %>
+		<% } else if(type == 'soco_pickup') { %>
+		<a href="https://aide.kiubi.com/transporteurs.html#parametrer-colissimo-points-relais" class="md-icon md-help float-right" target="_blank"></a>
+		Colissimo Points Relais est une solution de livraison en points relais dans toute la France et en Europe. Pour plus d'informations,
+		<a href="https://www.colissimo.entreprise.laposte.fr/fr" target="_blank">rendez-vous sur le site officiel de La Poste</a>.
+		<% } %>
 	</div>
 	<% } %>
 

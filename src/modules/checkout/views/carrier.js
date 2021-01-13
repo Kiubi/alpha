@@ -41,6 +41,13 @@ var InfosDpdView = require('./carrier/dpd/infos');
 var ChargesDpdView = require('./carrier/dpd/charges');
 
 /*
+ * Socol Pickup
+ */
+
+var InfosSocoPickupView = require('./carrier/soco-pickup/infos');
+// var ChargesSocoPickupView = require('./carrier/soco-pickup/charges');
+
+/*
  * Schedule
  */
 
@@ -106,6 +113,12 @@ module.exports = Marionette.View.extend({
 		'socolissimo_secret',
 		'coliship_tradername',
 
+		// socol - pickup
+		'socolissimo_login',
+		'socolissimo_password',
+		'socolissimo_delay',
+		'socolissimo_gmaps',
+
 		// dpd
 		'dpd_customer_center',
 		'dpd_customer',
@@ -147,6 +160,18 @@ module.exports = Marionette.View.extend({
 				this.listenTo(view, 'childview:change', this.onTaxChange);
 				this.showChildView('infos', view);
 				this.showChildView('charges', new ChargesSocolView({
+					model: this.model,
+					carrierCountries: this.carrierCountries
+				}));
+				break;
+			case 'soco_pickup':
+				var view = new InfosSocoPickupView({
+					model: this.model,
+					taxes: this.taxes
+				});
+				this.listenTo(view, 'childview:change', this.onTaxChange);
+				this.showChildView('infos', view);
+				this.showChildView('charges', new ChargesTranchesView({
 					model: this.model,
 					carrierCountries: this.carrierCountries
 				}));
@@ -218,6 +243,7 @@ module.exports = Marionette.View.extend({
 			case 'local':
 			case 'tranchespoids':
 			case 'dpd':
+			case 'soco_pickup':
 				promise = function() {
 					return this.getChildView('charges').onSave();
 				}.bind(this);

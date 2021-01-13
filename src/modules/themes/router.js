@@ -45,7 +45,8 @@ var ThemesController = Controller.extend({
 				ftp: f,
 				themes: themes,
 				current: theme,
-				enableConversion: !Session.hasFeature('component')
+				enableConversion: !Session.hasFeature('component'),
+				enableExport: Session.hasFeature('theme_export'),
 			});
 			this.navigationController.showContent(view);
 			this.setHeader({

@@ -13,7 +13,8 @@ module.exports = CollectionUtils.KiubiModel.extend({
 		is_enabled: false,
 		type: '',
 		target: '',
-		options: ''
+		options: '',
+		consent: '',
 	}
 
 });

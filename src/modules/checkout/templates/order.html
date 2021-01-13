@@ -4,42 +4,47 @@
 
 <div class="order-detail">
 
-	<article class="post-article post-article-bis">
-		<div class="post-content">
-			<div class="row">
-				<div class="col-4">
+
+	<article class="post-article post-article-dark">
+	  <div class="post-content">
+
+
+
+			<div class="row align-items-center">
+				<div class="col-auto">
 					<div class="form-group">
-						<select class="form-control" name="is_paid" data-style="selectify">
-							<option value="1" <%= is_paid ? 'selected=selected' : '' %>>Commande payée</option>
-							<option value="0" <%= !is_paid ? 'selected=selected' : '' %>>Commander à payer</option>
-						</select>
+						Commande
+						créée le <%- creation_date %><%= is_reintegrated  ? ', réintégrée manuellement' : '' %>
 					</div>
 				</div>
-				<div class="col-4">
+				<div class="col-auto">
 					<div class="form-group">
-						<select class="form-control" name="status" data-style="selectify">
-							<option value="pending" <%= status == 'pending' ? 'selected=selected' : '' %>>Commande à traiter</option>
-							<option value="processing" <%= status == 'processing' ? 'selected=selected' : '' %>>Commande en cours</option>
-							<option value="processed" <%= status == 'processed' ? 'selected=selected' : '' %>>Commande traitée</option>
-							<option value="shipped" <%= status == 'shipped' ? 'selected=selected' : '' %>>Commande expédiée</option>
-							<option value="cancelled" <%= status == 'cancelled' ? 'selected=selected' : '' %>>Commande annulée</option>
-						</select>
+						<div data-role="is_paid"></div>
 					</div>
 				</div>
-				<div class="col-4">
-					<div class="form-group" data-role="notify" style="display: none">
-						<div class="checkbox" style="margin: 5px 0 -5px 0;">
-							<input id="notify" name="notify" value="1" type="checkbox">
-							<label for="notify" class="">Notifier l'acheteur par email</label>
-						</div>
+				<div class="col-auto">
+					<div class="form-group">
+						<div data-role="status"></div>
+					</div>
+				</div>
+				<div class="col">
+				<div class="form-group" data-role="notify" style="display: none">
+					<div class="checkbox">
+						<input id="notify" name="notify" value="1" type="checkbox">
+						<label for="notify" class="mb-0">Notifier l'acheteur du changement d'état</label>
 					</div>
 				</div>
 			</div>
+
 		</div>
-		<footer class="post-footer"></footer>
+
+
+
+
+
+	  </div>
+	  <footer class="post-footer"></footer>
 	</article>
-
-
 
 <div class="row">
 	<div class="col-lg-8 col-12">
@@ -120,13 +125,14 @@
 					</div>
 				</div>
 				<% } %>
-
 				<% if (fidelity_reward > 0) { %>
 				<div class="list-item order-item">
 					<span class="md-icon md-card-membership icon-left"></span> <%- fidelity_reward %> points de fidélité ajoutés au compte du membre
 				</div>
 				<% } %>
-
+				<div class="list-item order-item">
+					<span class="md-icon md-icon-outlined md-payment icon-left"></span>Paiement par <%- payment_name %>
+				</div>
 				<div class="order-total">
 					<div class="row">
 						<% if(base_price == 'TTC') { %>
@@ -158,11 +164,8 @@
 			<footer class="post-footer"></footer>
 		</article>
 
-		<% if(shipping && shipping.type != "pickup") { %>
+		<% if(shipping && shipping.type == "delivery") { %>
 		<article class="post-article">
-			<header class="post-header">
-				<h1>Informations sur la livraison</h1>
-			</header>
 			<div class="post-content">
 				<div class="form-group">
 					<label>Transporteur</label>
@@ -178,11 +181,9 @@
 		<% } %>
 
 		<article class="post-article">
-			<header class="post-header">
-				<h1>Ajouter une note</h1>
-			</header>
 			<div class="post-content">
 				<div class="form-group">
+					<label>Ajouter une note</label>
 					<p>La note est à usage interne et n'est pas visible sur la commande de l'acheteur.</p>
 					<textarea class="form-control" name="comment" rows="7"><%- comment %></textarea>
 				</div>
@@ -193,48 +194,77 @@
 	</div>
 	<div class="col-lg-4 col-12">
 		<article class="post-article">
-			<header class="post-header">
-				<h1>À propos de l'acheteur</h1>
-			</header>
 			<div class="post-content" >
 				<% if (billing_address) { %>
 				<div class="post-subcontent">
-					<% if (customer_id) { %><a href="/customers/<%- customer_id %>" class="md-icon md-person float-right"></a><% } %>
-					<h4><%- billing_address.firstname %> <%- billing_address.lastname %></h4>
-					<%- billing_address.phone %><br/>
-					<a href="mailto:<%- customer_email %>">Contacter par email</a>
+					<% if (customer_id) { %><a href="/customers/<%- customer_id %>" class="float-right">Détail</a><% } %>
+					<h4>À propos de l'acheteur</h4>
+					<span class="md-icon md-icon-outlined md-account float-right"></span>
+					<%- billing_address._civility %> <%- billing_address.firstname %> <%- billing_address.lastname %><br/>
+					#<%- customer_number %><br/>
+					<a href="mailto:<%- customer_email %>"><%- customer_email %></a>
 				</div>
 				<% } %>
+
+
 				<% if (shipping_address) { %>
 				<div class="post-subcontent">
-					<a href="<%- shipping_map %>" target="_blank" class="md-icon <%= shipping.type == 'pickup' ? 'md-place' : 'md-local-shipping' %> float-right"></a>
-					<h4><%= shipping.type == 'pickup' ? 'Retrait en magasin' : 'Adresse de livraison' %></h4>
-					<%- shipping_address.civility %> <%- shipping_address.firstname %> <%- shipping_address.lastname %><br/>
+					<% if(shipping_address.is_editable) { %><a href="#" data-role="addressEdit" data-type="shipping" class="float-right">Modifier</a><% } %>
+					<h4><%= shipping.type == 'pickup' ? shipping.name : 'Adresse de livraison' %> </h4>
+					<% if (shipping.type == 'delivery') { %>
+					<span class="md-icon md-icon-outlined md-local-shipping float-right"></span>
+					<% } else { %>
+					<span class="md-icon md-icon-outlined md-storefront float-right"></span>
+					<% } %>
+					<%- shipping_address._civility %> <%- shipping_address.firstname %> <%- shipping_address.lastname %><br/>
 					<% if (shipping_address.company) { %><%- shipping_address.company %><br/><% } %>
 					<%- shipping_address.address %><br/>
 					<%- shipping_address.zipcode %> <%- shipping_address.city %><br/>
 					<%- shipping_address.country %>
 					<% if (shipping.scheduled) { %><br/>
-					<span class="badge badge-primary mt-3"><%= shipping.type == 'pickup' ? 'À retirer' : 'À livrer' %> le <%- scheduled_date %></span>
+					<div class="mt-3">
+						<span class="badge badge-lg badge-secondary rounded-pill"><%= shipping.type == 'pickup' ? 'À retirer' : 'À livrer' %> le <%- scheduled_date %></span>
+					</div>
 					<% } %>
+					<p class="mt-3">
+					<% if (shipping.type == 'delivery') { %><a href="<%- shipping_address.map %>" target="_blank">Localiser l'adresse</a><% } %>
+					</p>
 				</div>
 				<% } %>
+
 				<% if (billing_address) { %>
 				<div class="post-subcontent">
-					<a href="<%- billing_map %>" target="_blank" class="md-icon md-receipt float-right"></a>
+					<% if(billing_address.is_editable) { %><a href="#" data-role="addressEdit" data-type="billing" class="float-right">Modifier</a><% } %>
 					<h4>Adresse de facturation</h4>
-					<%- billing_address.civility %> <%- billing_address.firstname %> <%- billing_address.lastname %><br/>
+					<span class="md-icon md-icon-outlined md-receipt float-right"></span>
+					<%- billing_address._civility %> <%- billing_address.firstname %> <%- billing_address.lastname %><br/>
 					<% if(billing_address.company) { %><%- billing_address.company %><br/><% } %>
 					<%- billing_address.address %><br/>
 					<%- billing_address.zipcode %> <%- billing_address.city %><br/>
-					<%- billing_address.country %>
+					<%- billing_address.country %><br/>
+					Tél. : <%- billing_address.phone %>
+					<p class="mt-3">
+					<a href="<%- billing_address.map %>" target="_blank">Localiser l'adresse</a>
+					</p>
 				</div>
 				<% } %>
+
+				<% if (_.isArray(xtra) && xtra.length > 0) { %>
 				<div class="post-subcontent">
-					<a href="/checkout/payments/<%- payment_id %>" class="md-icon md-credit_card float-right"></a>
-					<h4>Mode de paiement</h4>
-					<%- payment_name %>
+					<h4>Données complémentaires</h4>
+					<span class="md-icon md-icon-outlined md-extension float-right"></span>
+					<% _.each(xtra, function(field){ %>
+						<div><strong><%- field.title  %></strong> :
+							<% if (field.value === '') { %>
+							<i>(vide)</i>
+							<% } else { %>
+							<%- field.value %>
+							<% } %>
+						</div>
+					<% }) %>
 				</div>
+				<% } %>
+
 			</div>
 			<footer class="post-footer"></footer>
 		</article>

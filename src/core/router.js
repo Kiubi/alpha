@@ -179,7 +179,10 @@ var DefaultController = Controller.extend({
 			{
 				title: 'Bienvenue sur Kiubi'
 			}
-		]);
+		], [{
+			title: 'Voir le site',
+			callback: 'openSite'
+		}]);
 	},
 
 	showHomeboard: function() {
@@ -196,7 +199,15 @@ var DefaultController = Controller.extend({
 			{
 				title: 'Bienvenue sur Kiubi'
 			}
-		]);
+		], [{
+			title: 'Voir le site',
+			callback: 'openSite'
+		}]);
+	},
+
+	openSite: function() {
+		var Session = Backbone.Radio.channel('app').request('ctx:session');
+		window.open(Session.autologLink());
 	},
 
 	/**

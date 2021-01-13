@@ -9,7 +9,7 @@ var PublishModalView = require('kiubi/modules/media/views/modal.publish.js');
 var ModalPickerView = require('kiubi/modules/media/views/modal.picker.js');
 
 module.exports = Marionette.View.extend({
-	template: _.template('Ajouter une image'),
+	template: _.template('<span class="page-add md-icon md-add-page"></span>Ajouter une illustration'),
 	tagName: 'a',
 	attributes: {
 		"href": "#"

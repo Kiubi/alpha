@@ -82,8 +82,13 @@ module.exports = Marionette.View.extend({
 		}
 	},
 
+	ui: {
+		'items': '.nav-item',
+		'toggleBtn': 'span[data-role="close"]'
+	},
+
 	triggers: {
-		'click span[data-role="close"]': 'sidebarmenu:toggle'
+		'click @ui.toggleBtn': 'sidebarmenu:toggle'
 	},
 
 	events: {
@@ -113,10 +118,6 @@ module.exports = Marionette.View.extend({
 		'click a[data-role="account"]': function() {
 			window.open(this.session.autologAccountLink('/dashboard/'));
 		}
-	},
-
-	ui: {
-		'items': '.nav-item'
 	},
 
 	templateContext: function() {
@@ -178,6 +179,18 @@ module.exports = Marionette.View.extend({
 
 	onRender: function() {
 		if (this.session.user.isAuth()) this.showChildView('usage', this.usageView);
+
+		Backbone.$(this.getUI('toggleBtn'), this.el).tooltip({
+			delay: {
+				"show": 0,
+				"hide": 0
+			},
+			trigger: "hover",
+			offset: "0, 4px",
+			title: function() {
+				return Backbone.$(document.body).hasClass('closed') ? 'Agrandir' : 'Réduire';
+			}
+		});
 	},
 
 	getLinks: function(type) {

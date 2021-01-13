@@ -4,7 +4,11 @@
 		<div class="activity-type md-icon md-activity-<%- type %>"></div>
 	</div>
 	<div class="col item-body">
-		<%- text %>
+		<% if(url) { %>
+			<a href="<%- url %>"><%- text %></a>
+		<% } else { %>
+			<%- text %>
+		<% } %>
 		<h4><%- user_name %></h4>
 	</div>
 	

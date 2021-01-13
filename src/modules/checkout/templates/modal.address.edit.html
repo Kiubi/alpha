@@ -1,0 +1,87 @@
+<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+<article class="post-article">
+	<div class="post-content">
+		<form>
+
+		<div class="row">
+
+			<div class="col-12">
+				<div class="form-group">
+					<label for="modal_civility" class="required">Civilité</label>
+					<select class="form-control" id="modal_civility" name="civility" data-style="selectify">
+						<option value="Mr">Monsieur</option>
+						<option value="Mrs">Madame</option>
+						<option value="Miss">Mademoiselle</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-group">
+					<label for="modal_lastname" class="required">Nom</label>
+					<input class="form-control" id="modal_lastname" name="lastname" placeholder="" value="<%- address.lastname %>">
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-group">
+					<label for="modal_firstname" class="required">Prénom</label>
+					<input class="form-control" id="modal_firstname" name="firstname" placeholder="" value="<%- address.firstname %>">
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-group">
+					<label for="modal_company">Société</label>
+					<input class="form-control" id="modal_company" name="company" placeholder="" value="<%- address.company %>">
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-group">
+					<label for="modal_address" class="required">Adresse</label>
+					<input class="form-control" id="modal_address" name="address" placeholder="" value="<%- address.address %>">
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-group">
+					<label for="modal_zipcode" class="required">Code postal</label>
+					<input class="form-control" id="modal_zipcode" name="zipcode" placeholder="" value="<%- address.zipcode %>">
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-group">
+					<label for="modal_city" class="required">Ville</label>
+					<input class="form-control" id="modal_city" name="city" placeholder="" value="<%- address.city %>">
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-group">
+					<label for="modal_country_id">Pays</label>
+					<div data-role="countries"></div>
+				</div>
+			</div>
+
+			<% if (type === 'billing') { %>
+			<div class="col-12">
+				<div class="form-group">
+					<label for="modal_phone" class="required">Téléphone</label>
+					<input class="form-control" id="modal_phone" name="phone" placeholder="" value="<%- address.phone %>">
+				</div>
+			</div>
+			<% } %>
+		</div>
+
+		</form>
+
+		<div class="w-100"></div>
+
+
+
+	</div>
+	<footer class="post-footer"></footer>
+</article>

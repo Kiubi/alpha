@@ -72,7 +72,7 @@ var VariantImageRowView = Marionette.View.extend({
 });
 
 var NewVariantRowView = Marionette.View.extend({
-	template: require('../templates/product.variants.new.html'),
+	template: require('../templates/product/variants.new.html'),
 	className: 'post-content post-list',
 
 	behaviors: [RowActionsBehavior, VatBehavior],
@@ -216,7 +216,7 @@ var NewVariantRowView = Marionette.View.extend({
 });
 
 var VariantRowView = Marionette.View.extend({
-	template: require('../templates/product.variants.row.html'),
+	template: require('../templates/product/variants.row.html'),
 	className: 'list-item',
 
 	behaviors: [RowActionsBehavior, VatBehavior, SelectifyBehavior],
@@ -465,7 +465,7 @@ var EmptyImageRowView = Marionette.View.extend({
 });
 
 var ImagesView = Marionette.View.extend({
-	template: require('../templates/product.images.html'),
+	template: require('../templates/product/images.html'),
 	className: 'post-article',
 	tagName: 'article',
 
@@ -557,7 +557,7 @@ var ImagesView = Marionette.View.extend({
 // Type
 
 var TypeSelectorView = Marionette.View.extend({
-	template: require('../templates/product.type.html'),
+	template: require('../templates/product/type.html'),
 	className: 'post-article',
 	tagName: 'article',
 

@@ -18,6 +18,10 @@ var RowView = Marionette.View.extend({
 			plural: format.plural,
 			creation_date: format.formatLongDate(this.model.get('creation_date'))
 		};
+	},
+
+	onActionLogin: function() {
+		window.open(Session.autologLink(this.model.get('customer_id')));
 	}
 
 });

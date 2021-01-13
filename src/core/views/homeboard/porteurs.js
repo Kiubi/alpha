@@ -51,7 +51,7 @@ module.exports = Marionette.View.extend({
 					text15: '1'
 				});
 
-				return content.save()
+				return content.save();
 			}).then(function() {
 
 				// Post in contenu
@@ -67,7 +67,7 @@ module.exports = Marionette.View.extend({
 					text10: '1079'
 				});
 
-				return content.save()
+				return content.save();
 			}).then(function() {
 
 				// Component apercu in contenu
@@ -86,7 +86,7 @@ module.exports = Marionette.View.extend({
 					},
 				});
 
-				return component.save()
+				return component.save();
 			}).then(function() {
 
 				// Element 1 in apercu componement
@@ -102,7 +102,7 @@ module.exports = Marionette.View.extend({
 					}
 				});
 
-				return item.save()
+				return item.save();
 			}).then(function() {
 
 				// Element 2 in apercu componement
@@ -118,7 +118,7 @@ module.exports = Marionette.View.extend({
 					}
 				});
 
-				return item.save()
+				return item.save();
 			}).then(function() {
 
 				// Element 3 in apercu componement
@@ -134,7 +134,7 @@ module.exports = Marionette.View.extend({
 					}
 				});
 
-				return item.save()
+				return item.save();
 
 			}).then(function() {
 
@@ -174,7 +174,7 @@ module.exports = Marionette.View.extend({
 
 						}).then(function() {
 							// Return symbol id
-							return symbol.get('symbol_id')
+							return symbol.get('symbol_id');
 						});
 				});
 			}).then(function(symbol_id) {
@@ -189,7 +189,7 @@ module.exports = Marionette.View.extend({
 					zone: 'contenu'
 				});
 
-				return content.save()
+				return content.save();
 
 			}).then(function() {
 				navigationController.hideModal(); // hide overlay

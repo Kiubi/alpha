@@ -73,7 +73,35 @@ var Option = Backbone.Model.extend({
 });
 
 var SelectCollection = Backbone.Collection.extend({
-	model: Option
+	model: Option,
+
+	/**
+	 *
+	 * @returns {Backbone.Model}
+	 */
+	selected: function() {
+		return this.findWhere({
+			selected: true
+		});
+	},
+
+	/**
+	 *
+	 * @param {Number} index
+	 */
+	selectIndex: function(index) {
+		var elIndex = this.at(index);
+		if (!elIndex || elIndex.get('selected')) return null; // not found or selected
+
+		this.each(function(option, i) {
+			option.set('selected', i === index, {
+				silent: true
+			});
+		});
+
+		this.trigger('update');
+		return elIndex;
+	}
 });
 
 var KiubiModel = Backbone.Model.extend({

@@ -49,6 +49,13 @@ function getHeadersAction(options) {
 	var actions = [];
 
 
+	if (options.addCategoryOnTop) {
+		actions.push({
+			title: 'Ajouter une catégorie',
+			callback: 'actionNewCategory'
+		});
+	}
+
 	actions = actions.concat(
 		[{
 			title: 'Ajouter un produit',
@@ -56,11 +63,15 @@ function getHeadersAction(options) {
 		}, {
 			title: 'Ajouter un produit virtuel',
 			callback: ['actionNewDownload', options.targetCategory || null] // category_id
-		}, {
-			title: 'Ajouter une catégorie',
-			callback: 'actionNewCategory'
 		}]
 	);
+
+	if (!options.addCategoryOnTop) {
+		actions.push({
+			title: 'Ajouter une catégorie',
+			callback: 'actionNewCategory'
+		});
+	}
 
 	if (options.duplicateProduct) {
 		actions.push({
@@ -602,7 +613,9 @@ var CatalogController = Controller.extend({
 			this.navigationController.showContent(view);
 			this.setHeader({
 				title: 'Toutes les catégories'
-			}, getHeadersAction());
+			}, getHeadersAction({
+				addCategoryOnTop: true
+			}));
 		}.bind(this)).fail(this.failHandler('Catégories introuvables'));
 	},
 

@@ -7,7 +7,7 @@
 		<%= desc %>
 	</div>
 	<div class="col-auto">
-	<% if(has_scope && has_feature) { %>
+	<% if (is_enabled) { %>
 	<a class="btn btn-primary float-right" href="<%- href %>" role="button">Utiliser</a>
 	<% } else { %>
 	<span class="badge px-1 mx-0 float-right">Indisponible</span>

@@ -143,8 +143,8 @@ var Order = CollectionUtils.KiubiModel.extend({
 			// "form": "string",
 			// "xls": "string",
 			// "coliship": "string",
-		]
-
+		],
+		"xtra": []
 	}
 });
 

@@ -28,13 +28,17 @@ module.exports = Marionette.View.extend({
 
 	ui: {
 		'showPwdBtn': 'a[data-role="show-password"]',
-		'pwdInput': 'input[name="password"]'
+		'pwdInput': 'input[name="password"]',
+		'connectLink': 'a[data-role="connect"]'
 	},
 
 	events: {
 		'click @ui.showPwdBtn': function() {
 			this.getUI('showPwdBtn').hide();
 			this.getUI('pwdInput').show();
+		},
+		'click @ui.connectLink': function() {
+			window.open(Session.autologLink(this.model.get('customer_id')));
 		}
 	},
 

@@ -6,7 +6,13 @@
 	<div class="col-auto"><a href="#" class="md-icon md-drag btn-drag"></a></div>
 	<div class="col item-body">
 		<h4><%- label %></h4>
-		<p class="item-detail">&nbsp;<% if(!is_visible) { %><span class="text-danger">Masqué</span><% } %></p>
+		<p class="item-detail">
+			<% if(is_visible) { %>
+				&nbsp;
+			<% } else { %>
+				<span class="text-danger">Masqué</span>
+			<% } %>
+		</p>
 	</div>
 	<div class="col-auto">
 		<div class="btn-group float-right"><a class="btn btn-primary" href="#" role="button" data-role="action" data-action="edit">Détail</a>

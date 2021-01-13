@@ -164,8 +164,8 @@ module.exports = Marionette.View.extend({
 		}).done(function() {
 			// restore product_id for each link
 			this.collection.each(function(model) {
-				model.set('product_id', model.collection.product_id)
-			})
+				model.set('product_id', model.collection.product_id);
+			});
 		}.bind(this));
 	}
 

@@ -2,6 +2,20 @@ var CollectionUtils = require('kiubi/utils/collections.js');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
+var Job = require('kiubi/modules/modules/models/job');
+
+function checkExport(job) {
+
+	var token = job.get('result');
+
+	return Backbone.ajax({
+		url: 'sites/@site/export/theme/' + token,
+		method: 'GET'
+	}).then(function(data, meta) {
+		return data;
+	});
+}
+
 var Theme = CollectionUtils.KiubiModel.extend({
 
 	url: 'sites/@site/themes',
@@ -108,6 +122,27 @@ module.exports = CollectionUtils.KiubiCollection.extend({
 		}).then(function(data) {
 			//return new this.model(data);
 		}.bind(this));
+	},
+
+	/**
+	 * @param {Object} data
+	 * @returns {Promise}
+	 */
+	exportCustom: function(data) {
+		return Backbone.ajax({
+			url: 'sites/@site/export/theme',
+			method: 'POST',
+			data: data
+		}).then(function(data) {
+
+			var job = new Job({
+				job_id: data.job_id
+			});
+
+			return job.watch().then(function() {
+				return checkExport(job);
+			});
+		});
 	}
 
 });

@@ -9,12 +9,10 @@
 			<%= desc %>
 			<% if(doc) { %><a target="_blank" href="<%- doc %>">En savoir plus</a><% } %>
 		</p>
-		<% if(has_scope && has_feature) { %>
+		<% if (is_enabled) { %>
 		<a class="btn btn-outline-primary" href="<%- href %>">Utiliser</a>
-		<% } else if(has_scope && !has_feature) { %>
-		<a class="btn btn-outline-primary" href="#" data-role="subscribe" ><%- price %></a>
 		<% } else { %>
-		<span class="btn btn-outline-primary disabled">Indisponible</span>
+		<a class="btn btn-outline-primary" href="#" data-role="subscribe" ><%- price %></a>
 		<% } %>
 	</div>
 	<footer class="post-footer"></footer>

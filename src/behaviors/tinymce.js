@@ -922,7 +922,7 @@ module.exports = Marionette.Behavior.extend({
 				types: this.link_types.bind(this),
 				pages: this.link_pages.bind(this)
 			},
-			extended_valid_elements: 'style[type],script[language|type|src],span[*]',
+			extended_valid_elements: 'style[type],script[language|type|src],span[*],i[*]',
 			valid_children: "+body[style], +div[style], +span[*]",
 			init_instance_callback: function(editor) {
 				editor.on('Change', function(e) {

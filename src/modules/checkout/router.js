@@ -114,7 +114,7 @@ function getOrderAction(options) {
 
 	if (options.dpd) {
 		actions.push({
-			title: 'Exporter pour DPD',
+			title: 'Exporter pour Station DPD',
 			callback: ['actionOpenURL', options.dpd]
 		});
 	}
@@ -252,7 +252,7 @@ var CheckoutController = Controller.extend({
 
 		m.fetch({
 			data: {
-				extra_fields: 'activity,price_label'
+				extra_fields: 'activity,price_label,xtra'
 			}
 		}).done(function() {
 

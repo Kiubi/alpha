@@ -48,12 +48,17 @@ var Carrier = CollectionUtils.KiubiModel.extend({
 		'dpd_customer': null,
 		'dpd_gmaps': null,
 		'dpd_insurance_threshold': null,
-		'dpd_gsm_notification': null
+		'dpd_gsm_notification': null,
+		// soco-pickup
+		'socolissimo_login': null,
+		'socolissimo_password': null,
+		'socolissimo_delay': null,
+		'socolissimo_gmaps': null
 	},
 
 	isSupported: function() {
 		return (this.get('type') == 'magasin' || this.get('type') == 'socolissimo' || this.get('type') == 'local' || this.get(
-			'type') == 'tranchespoids' || this.get('type') == 'dpd');
+			'type') == 'tranchespoids' || this.get('type') == 'dpd' || this.get('type') == 'soco_pickup');
 	},
 
 	isDeletable: function() {

@@ -93,7 +93,9 @@ module.exports = Marionette.View.extend({
 		'is_stock_unlimited': 'select[name="is_stock_unlimited"]',
 
 		'quota_fields': 'div[data-role="quota"]',
-		'is_quota_unlimited': 'select[name="is_quota_unlimited"]'
+		'is_quota_unlimited': 'select[name="is_quota_unlimited"]',
+
+		'code_field': 'input[name="code"]'
 	},
 
 	events: {
@@ -110,6 +112,9 @@ module.exports = Marionette.View.extend({
 			} else {
 				this.getUI('quota_fields').show();
 			}
+		},
+		'input @ui.code_field': function(event) {
+			if (event.currentTarget.value) event.currentTarget.value = event.currentTarget.value.toUpperCase();
 		}
 	},
 

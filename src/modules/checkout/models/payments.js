@@ -9,7 +9,9 @@ var supported = [
 	'virement',
 	'paypal',
 	'cm_cic',
-	'atos'
+	'atos',
+	'payline',
+	'payplug'
 ];
 
 var Payment = CollectionUtils.KiubiModel.extend({

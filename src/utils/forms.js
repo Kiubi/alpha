@@ -83,7 +83,7 @@ function displayErrors(error, $errorEl, el, options) {
 		if (error.fields.length) {
 			html += '<ul>' + _.reduce(error.fields, function(acc, field) {
 				acc.push('<li>' + field.message + '</li>');
-				return acc
+				return acc;
 			}, []).join('') + '</ul>';
 		}
 		$errorEl.html(html);
