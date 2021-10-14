@@ -44,6 +44,9 @@ var RowView = Marionette.View.extend({
 			case 'payplug':
 				type_label = "Solution de paiement en ligne sécurisée";
 				break;
+			case 'manuel':
+				type_label = "Paiement générique par virement ou par chèque";
+				break;
 			default:
 				break;
 		}

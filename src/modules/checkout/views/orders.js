@@ -126,6 +126,10 @@ module.exports = Marionette.View.extend({
 			'value': 'export-dpd',
 			'label': 'Exporter pour Station DPD',
 			'selected': false
+		}, {
+			'value': 'export-mondialrelay',
+			'label': 'Exporter pour Mondial Relay Connect',
+			'selected': false
 		}];
 
 		if (this.hasAccounting) {
@@ -387,12 +391,12 @@ module.exports = Marionette.View.extend({
 		if (!filter.view) return;
 		var view = filter.view;
 
-		var max = 3;
+		var max = 4;
 		if (this.hasAccounting) {
 			max++;
 		}
 
-		if (filter.value == 'export' || filter.value == 'export-coliship' || filter.value == 'export-dpd' || filter.value == 'export-accounting') {
+		if (filter.value == 'export' || filter.value == 'export-coliship' || filter.value == 'export-dpd' || filter.value == 'export-accounting' || filter.value == 'export-mondialrelay') {
 			if (view.collection.length > max) {
 				return;
 			}
@@ -404,6 +408,7 @@ module.exports = Marionette.View.extend({
 			if (filter.value == 'export-coliship') data.type = 'coliship';
 			else if (filter.value == 'export-accounting') data.type = 'accounting';
 			else if (filter.value == 'export-dpd') data.type = 'dpd';
+			else if (filter.value == 'export-mondialrelay') data.type = 'mondialrelay';
 
 			if (this.filters.status != null) data.status = this.filters.status;
 			if (this.filters.is_paid != null) data.is_paid = this.filters.is_paid;

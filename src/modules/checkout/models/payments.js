@@ -11,7 +11,8 @@ var supported = [
 	'cm_cic',
 	'atos',
 	'payline',
-	'payplug'
+	'payplug',
+	'manuel'
 ];
 
 var Payment = CollectionUtils.KiubiModel.extend({

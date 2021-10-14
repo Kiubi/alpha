@@ -49,6 +49,14 @@ var Carrier = CollectionUtils.KiubiModel.extend({
 		'dpd_gmaps': null,
 		'dpd_insurance_threshold': null,
 		'dpd_gsm_notification': null,
+		// dpd
+		'mondialrelay_customer': null,
+		'mondialrelay_secret': null,
+		'mondialrelay_delay': null,
+		'mondialrelay_brand': null,
+		'mondialrelay_insurance_threshold': null,
+		'mondialrelay_insurance_level': null,
+		'mondialrelay_gmaps': null,
 		// soco-pickup
 		'socolissimo_login': null,
 		'socolissimo_password': null,
@@ -58,7 +66,7 @@ var Carrier = CollectionUtils.KiubiModel.extend({
 
 	isSupported: function() {
 		return (this.get('type') == 'magasin' || this.get('type') == 'socolissimo' || this.get('type') == 'local' || this.get(
-			'type') == 'tranchespoids' || this.get('type') == 'dpd' || this.get('type') == 'soco_pickup');
+			'type') == 'tranchespoids' || this.get('type') == 'dpd' || this.get('type') == 'soco_pickup' || this.get('type') == 'mondialrelay');
 	},
 
 	isDeletable: function() {

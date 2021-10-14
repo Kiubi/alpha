@@ -9,7 +9,8 @@ module.exports = Marionette.View.extend({
 	ui: {
 		'exportSelect': 'select[data-role="export_type"]',
 		'colishipForm': 'div[data-role="coliship"]',
-		'dpdForm': 'div[data-role="dpd"]'
+		'dpdForm': 'div[data-role="dpd"]',
+		'mrForm': 'div[data-role="mondialrelay"]'
 	},
 
 	events: {
@@ -20,14 +21,22 @@ module.exports = Marionette.View.extend({
 				default:
 					this.getUI('colishipForm').hide();
 					this.getUI('dpdForm').hide();
+					this.getUI('mrForm').hide();
 					break;
 				case 'coliship':
 					this.getUI('colishipForm').show();
 					this.getUI('dpdForm').hide();
+					this.getUI('mrForm').hide();
 					break;
 				case 'dpd':
 					this.getUI('colishipForm').hide();
 					this.getUI('dpdForm').show();
+					this.getUI('mrForm').hide();
+					break;
+				case 'mondialrelay':
+					this.getUI('colishipForm').hide();
+					this.getUI('dpdForm').hide();
+					this.getUI('mrForm').show();
 					break;
 			}
 		}
@@ -50,6 +59,8 @@ module.exports = Marionette.View.extend({
 			this.getUI('colishipForm').show();
 		} else if (this.model.get('export_type') == 'dpd') {
 			this.getUI('dpdForm').show();
+		} else if (this.model.get('export_type') == 'mondialrelay') {
+			this.getUI('mrForm').show();
 		}
 	}
 

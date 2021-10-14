@@ -22,7 +22,8 @@ var DetailView = Marionette.View.extend({
 			convertMediaPath: Session.convertMediaPath.bind(Session),
 			nl2br: function(text) {
 				return _.escape('' + text).replace(/(\r\n|\n\r|\r|\n)+/g, '<br />');
-			}
+			},
+			readableStatus: this.model.getEmailStatus()
 		};
 	},
 

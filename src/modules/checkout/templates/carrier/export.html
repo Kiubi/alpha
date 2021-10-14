@@ -12,6 +12,7 @@
 							<option value="">Pas de solution de colisage</option>
 							<option value="coliship" <%= export_type == 'coliship' ? 'selected="selected"' : '' %>>Colissimo pour Coliship ou Expeditor INET</option>
 							<option value="dpd" <%= export_type == 'dpd' ? 'selected="selected"' : '' %>>DPD pour Station DPD</option>
+							<option value="mondialrelay" <%= export_type == 'mondialrelay' ? 'selected="selected"' : '' %>>Mondial Relay Connect (hors France)</option>
 						</select>
 					</div>
 				</div>
@@ -53,7 +54,7 @@
 			</div>
 			<div class="form-group">
 				<label for="dpd_insurance_threshold">Assurance Ad Valorem</label>
-				<p>Souscrite automatiquement pour les commandes dont le montant total TTC, est supérieur ou égal au seuil défini.</p>
+				<p>Souscrite automatiquement pour les commandes dont le montant total TTC est supérieur ou égal au seuil défini.</p>
 				<div class="row">
 					<div class="col-6">
 						<div class="input-group">
@@ -61,6 +62,35 @@
 							<input class="form-control" id="dpd_insurance_threshold" name="dpd_insurance_threshold" value="<%- dpd_insurance_threshold %>" placeholder="—" type="text">
 							<div class="input-group-append"><span class="input-group-text"><%= currency %> TTC</span></div>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div data-role="mondialrelay" style="display: none;">
+			<p>Les commandes utilisant ce transporteur peuvent être incluses dans les exports pour Mondial Relay Connect.</p>
+			<div class="form-group">
+				<label for="mondialrelay_insurance_threshold">Seuil d'assurance</label>
+				<p>Souscrite automatiquement pour les commandes dont le montant total TTC est supérieur ou égal au seuil défini.</p>
+				<div class="row">
+					<div class="col-6">
+						<div class="input-group">
+							<div class="input-group-prepend"><span class="input-group-text">À partir de</span></div>
+							<input class="form-control" id="mondialrelay_insurance_threshold" name="mondialrelay_insurance_threshold" value="<%- mondialrelay_insurance_threshold %>" placeholder="—" type="text">
+							<div class="input-group-append"><span class="input-group-text"><%= currency %> TTC</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="mondialrelay_insurance_level">Niveau d'assurance</label>
+				<p>Stratégie du choix du niveau d'assurance par rapport au montant de la commande.</p>
+				<div class="row">
+					<div class="col-6">
+						<select id="mondialrelay_insurance_level" name="mondialrelay_insurance_level" data-style="selectify">
+							<option value="floor" <%= mondialrelay_insurance_level === 'floor' ? 'selected="selected"' : '' %>>Tranche inférieure la plus proche</option>
+							<option value="ceil" <%= mondialrelay_insurance_level === 'ceil' ? 'selected="selected"' : '' %>>Tranche supérieure la plus proche</option>
+						</select>
 					</div>
 				</div>
 			</div>

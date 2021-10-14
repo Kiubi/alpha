@@ -7,7 +7,7 @@ var WysiwygBehavior = require('kiubi/behaviors/tinymce.js');
 var TaxView = require('kiubi/modules/catalog/views/select.taxes.js');
 
 module.exports = Marionette.View.extend({
-	template: require('../../../templates/carrier/soco-pickup/infos.html'),
+	template: require('../../../templates/carrier/mondialrelay/infos.html'),
 
 	behaviors: [WysiwygBehavior],
 

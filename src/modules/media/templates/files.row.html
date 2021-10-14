@@ -5,8 +5,8 @@
 	</div>
 	<div class="col-auto">
 		<% if(type == 'image' && has_thumb) { %>
-		<div class="media-object md-icon md-image img-default"></div>
-		<div class="media-object"><img alt="" src="<%- convertMediaPath('/media/miniature/' + media_id + '.jpg') %>" /></div>
+		<div class="media-object md-icon img-default"></div>
+		<div class="media-object"><img alt="" src="<%- convertMediaPath('/media/icone/' + media_id) %>" /></div>
 		<% } else { %>
 		<div class="md-icon md-file media-object file"></div><span class="file-type"><%- ext %></span>
 		<% } %>

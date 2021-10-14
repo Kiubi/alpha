@@ -26,6 +26,7 @@ var Backups = require('./models/backups');
 var MerchantCenter = require('kiubi/modules/prefs/models/merchantcenter');
 var ImportProducts = require('./models/import.products');
 var ImportColiship = require('./models/import.coliship');
+var ImportMondialrelay = require('./models/import/mondialrelay');
 var ImportContents = require('./models/import.contents');
 var ImportWordpress = require('./models/import.wordpress');
 var ImportFiles = require('./models/import.files');
@@ -54,6 +55,7 @@ var SubscribersView = require('./views/subscribers');
 var ImportContentsView = require('./views/import.contents');
 var ImportProductsView = require('./views/import.products');
 var ImportColishipView = require('./views/import.coliship');
+var ImportMondialrelayView = require('./views/import/mondialrelay');
 var ImportWordpressView = require('./views/import.wordpress');
 var ImportFilesView = require('./views/import.files');
 var MerchantCenterView = require('./views/merchantcenter');
@@ -190,6 +192,7 @@ function ctlScope(name) {
 		case 'showImportProducts':
 			return 'site:catalog';
 		case 'showImportColiship':
+		case 'showImportMondialrelay':
 			return 'site:checkout';
 		case 'showImportWordpress':
 			return 'site:blog';
@@ -209,6 +212,7 @@ function ctlFeature(name) {
 		case 'showAvisVerifies':
 		case 'showMerchantCenter':
 		case 'showImportColiship':
+		case 'showImportMondialrelay':
 			return 'checkout';
 		case 'showImportProducts':
 			return 'catalog';
@@ -532,6 +536,15 @@ var ModulesController = Controller.extend({
 		});
 	},
 
+	showImportMondialrelay: function() {
+		this.navigationController.showContent(new ImportMondialrelayView({
+			model: new ImportMondialrelay()
+		}));
+		this.setHeader({
+			title: 'Import Mondial Relay'
+		});
+	},
+
 	showImportWordpress: function() {
 		var posts = new Posts();
 		this.navigationController.showContent(new ImportWordpressView({
@@ -784,6 +797,7 @@ module.exports = Router.extend({
 		'modules/import/contents': 'showImportContents',
 		'modules/import/products': 'showImportProducts',
 		'modules/import/coliship': 'showImportColiship',
+		'modules/import/mondialrelay': 'showImportMondialrelay',
 		'modules/import/wordpress': 'showImportWordpress',
 		'modules/import/files': 'showImportFiles',
 		'modules/merchantcenter': 'showMerchantCenter',

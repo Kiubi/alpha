@@ -73,6 +73,12 @@ module.exports = Marionette.View.extend({
 			'value': 'revenues',
 			'label': "Chiffre d'affaire"
 		}]);
+		if (this.getOption('enableFidelity')) {
+			addFilters.add({
+				'value': 'fidelity',
+				'label': "Points de fidélité"
+			});
+		}
 		if (this.getOption('enableExtranet')) {
 			addFilters.add({
 				'value': 'group',
@@ -158,6 +164,10 @@ module.exports = Marionette.View.extend({
 			data.order_revenues_min = this.filters.order_revenues[0];
 			data.order_revenues_max = this.filters.order_revenues[1];
 		}
+		if (this.filters.fidelity != null) {
+			data.fidelity_min = this.filters.fidelity[0];
+			data.fidelity_max = this.filters.fidelity[1];
+		}
 
 		this.collection.fetch({
 			reset: true,
@@ -218,6 +228,10 @@ module.exports = Marionette.View.extend({
 			if (this.filters.order_revenues != null) {
 				data.order_revenues_min = this.filters.order_revenues[0];
 				data.order_revenues_max = this.filters.order_revenues[1];
+			}
+			if (this.filters.fidelity != null) {
+				data.fidelity_min = this.filters.fidelity[0];
+				data.fidelity_max = this.filters.fidelity[1];
 			}
 
 			this.collection.exportAll(data).done(function(data) {
@@ -282,6 +296,11 @@ module.exports = Marionette.View.extend({
 
 	onRevenuesFilterChange: function(filter) {
 		this.filters.order_revenues = filter.value;
+		this.start();
+	},
+
+	onFidelityFilterChange: function(filter) {
+		this.filters.fidelity = filter.value;
 		this.start();
 	},
 
@@ -383,6 +402,15 @@ module.exports = Marionette.View.extend({
 					title: '',
 					type: 'interval',
 					prependText: ['CA entre', 'et'],
+					canDelete: true
+				};
+				break;
+			case 'fidelity':
+				cfg = {
+					id: filter.value,
+					title: '',
+					type: 'interval',
+					prependText: ['Pt fidélité entre', 'et'],
 					canDelete: true
 				};
 				break;

@@ -3,6 +3,8 @@ var Marionette = require('backbone.marionette');
 
 var LoaderTpl = require('kiubi/core/templates/ui/loader.html');
 
+var TipsView = require('./login.tips.js');
+
 var View = Marionette.View.extend({
 	className: 'login',
 	template: require('../templates/login.html'),
@@ -25,6 +27,14 @@ var View = Marionette.View.extend({
 			this.render();
 		}
 	},
+
+	regions: {
+		tips: {
+			el: "div[data-role='tips']",
+			replaceElement: true
+		}
+	},
+
 
 	code_site: null,
 	cobranding: null,
@@ -51,15 +61,19 @@ var View = Marionette.View.extend({
 	},
 
 	templateContext: function() {
-		var cobranding_background, cobranding_logo, login;
+		var cobranding_background, cobranding_logo, login, cobranded;
 
 		if (this.loaded) {
 			cobranding_background = '/assets/img/bg_login_f.jpg';
 			cobranding_logo = '/assets/img/logo_kiubi.png';
+			cobranded = false;
 			if (this.cobranding) {
 				var cobranding = this.cobranding.get('login');
 				if (cobranding.background) cobranding_background = cobranding.background;
-				if (cobranding.logo) cobranding_logo = cobranding.logo;
+				if (cobranding.logo) {
+					cobranding_logo = cobranding.logo;
+					cobranded = true;
+				}
 			}
 		}
 
@@ -71,7 +85,8 @@ var View = Marionette.View.extend({
 			cobranding_logo: cobranding_logo,
 			year: new Date().getFullYear(),
 			login: this.Session.getValue('last_login') || '',
-			account: config.get('account')
+			account: config.get('account'),
+			cobranded: cobranded
 		};
 	},
 
@@ -132,6 +147,10 @@ var View = Marionette.View.extend({
 		this.getUI('alert').show();
 		this.getUI('group_login').addClass('has-error');
 		this.getUI('group_password').addClass('has-error');
+	},
+
+	onRender: function() {
+		this.showChildView('tips', new TipsView({}));
 	}
 
 });

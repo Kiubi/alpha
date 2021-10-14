@@ -9,7 +9,7 @@ Vous trouverez une version fonctionnelle à l'adresse : [https://admin.kiubi.com
 
 ## Débuter
 
-L'application compilée est déjà disponible dans le dépôt. Si vous disposez déjà de `npm` et de `python`, vous pouvez
+L'application compilée est déjà disponible dans le dépôt. Si vous disposez déjà de `npm` et de `php`, vous pouvez
 démarrer le serveur web de test et y accéder avec votre navigateur par http://localhost:8000/
 
 	$ npm run start
@@ -26,7 +26,7 @@ ses sources, il est nécessaire d'installer d'abord ses dépendances :
 	$ npm install
 	$ npm run build
 
-Un micro serveur web Python est inclus pour faciliter le développement. Il se lance sur le port local 8000 à l'aide de
+Un serveur web de test est inclus pour faciliter le développement. Il se lance sur le port local 8000 à l'aide de
 la commande :
 
 	$ npm run start

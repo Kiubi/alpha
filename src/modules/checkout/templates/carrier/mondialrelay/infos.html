@@ -1,0 +1,110 @@
+<article class="post-article">
+	<header class="post-header">
+		<h1>Paramètres de configuration</h1>
+	</header>
+	<div class="post-content">
+
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<label class="required" for="mondialrelay_customer">Code enseigne</label>
+					<input class="form-control" id="mondialrelay_customer" name="mondialrelay_customer" value="<%- mondialrelay_customer %>" placeholder="Code fourni par Mondial Relay" type="text">
+				</div>
+			</div>
+			<div class="col-6">
+				<div class="form-group">
+					<label class="required" for="mondialrelay_secret">Clé privée</label>
+					<input class="form-control" id="mondialrelay_secret" name="mondialrelay_secret" value="<%- mondialrelay_secret %>" placeholder="Code fourni fourni par Mondial Relay" type="text">
+				</div>
+			</div>
+			<div class="col-6">
+				<div class="form-group">
+					<label class="required" for="mondialrelay_brand">Code marque</label>
+					<input class="form-control" id="mondialrelay_brand" name="mondialrelay_brand" value="<%- mondialrelay_brand %>" placeholder="Code fourni par Mondial Relay" type="text">
+				</div>
+			</div>
+		</div>
+
+				<div class="form-group">
+					<label for="mondialrelay_insurance_threshold">Seuil d'assurance</label>
+					<p>Souscrite automatiquement pour les commandes dont le montant total TTC est supérieur ou égal au seuil défini.</p>
+
+					<div class="row">
+						<div class="col-6">
+
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text">À partir de</span></div>
+						<input class="form-control" id="mondialrelay_insurance_threshold" name="mondialrelay_insurance_threshold" value="<%- mondialrelay_insurance_threshold %>" placeholder="—" type="text">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %> TTC</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+				<div class="form-group">
+				<label for="mondialrelay_insurance_level">Niveau d'assurance</label>
+				<p>Stratégie du choix du niveau d'assurance par rapport au montant de la commande.</p>
+
+				<div class="row">
+					<div class="col-6">
+
+				<select id="mondialrelay_insurance_level" name="mondialrelay_insurance_level" data-style="selectify">
+					<option value="floor" <%= mondialrelay_insurance_level === 'floor' ? 'selected="selected"' : '' %>>Tranche inférieure la plus proche</option>
+					<option value="ceil" <%= mondialrelay_insurance_level === 'ceil' ? 'selected="selected"' : '' %>>Tranche supérieure la plus proche</option>
+				</select>
+			</div>
+		</div>
+
+				</div>
+
+		<div class="form-group">
+		<label class="required" for="mondialrelay_delay">Délai de préparation des colis</label>
+			<p>Délai moyen avant expédition nécessaire pour sélectionner les points de retrait ouverts à la date probable de réception du colis.</p>
+			<div class="row">
+				<div class="col-6">
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text">À partir de</span></div>
+						<input class="form-control" id="mondialrelay_delay" name="mondialrelay_delay" value="<%- mondialrelay_delay %>" placeholder="—" type="text">
+						<div class="input-group-append"><span class="input-group-text">jours</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="mondialrelay_gmaps">Clé API Google Maps</label>
+			<p>Permet l'affichage des points relais sur une carte.</p>
+			<input class="form-control" id="mondialrelay_gmaps" name="mondialrelay_gmaps" value="<%- mondialrelay_gmaps %>" placeholder="Laisser vide pour désactiver la carte" type="text">
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Informations complémentaires</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label for="description">Description</label>
+			<textarea class="form-control" id="description" name="description" placeholder="Description du transporteur telle qu'elle apparaîtra dans le choix de la livraison" data-role="wysiwyg" data-wysiwyg-toolbar="micro" rows="14"><%- description %></textarea>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<label for="threshold">Montant de commande minimum</label>
+					<div class="input-group">
+						<div class="input-group-prepend"><span class="input-group-text">Actif à partir de</span></div>
+						<input class="form-control" id="threshold" name="threshold" value="<%- threshold %>" placeholder="1,00">
+						<div class="input-group-append"><span class="input-group-text"><%= currency %> <%- base_price %> d'achat</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="col-3">
+				<div data-role="taxes"></div>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>

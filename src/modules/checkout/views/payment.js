@@ -292,6 +292,30 @@ var payplugView = Marionette.View.extend({
 
 });
 
+var manuelView = Marionette.View.extend({
+	template: require('../templates/payment/manuel.html'),
+
+	behaviors: [WysiwygBehavior],
+
+	fields: [
+		'intitule_long',
+		'instructions',
+		'ordre',
+		'message'
+	],
+
+	templateContext: function() {
+		return {
+			'config': this.model.get('config')
+		};
+	},
+
+	extractFields: function() {
+		return Forms.extractFields(this.fields, this);
+	}
+
+});
+
 module.exports = Marionette.View.extend({
 	template: require('../templates/payment.html'),
 	className: 'container',
@@ -343,6 +367,9 @@ module.exports = Marionette.View.extend({
 				break;
 			case 'payplug':
 				viewClass = payplugView;
+				break;
+			case 'manuel':
+				viewClass = manuelView;
 				break;
 		}
 

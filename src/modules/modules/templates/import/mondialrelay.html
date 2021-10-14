@@ -1,0 +1,120 @@
+<% if(step == 0) { %>
+<form>
+
+<div class="alert alert-warning" role="alert">
+	<a href="https://aide.kiubi.com/transporteurs.html#export-pour-coliship"
+	   class="md-icon md-help float-right" target="_blank"></a>
+	Grâce au système d'import données d'expéditions de Kiubi, mettez à jour les urls de suivi de vos expéditions,
+	et informez vos clients de l'avancement dans le traitement de leur commande.
+	Nous vous conseillons avant tout import de produits de <a
+		href="https://aide.kiubi.com/transporteurs.html#export-pour-coliship"
+		target="_blank">consulter la documentation en ligne</a>
+	et de <a href="/modules/backups" target="_blank">réaliser un point de sauvegarde</a>.
+</div>
+
+<div class="alert alert-danger" data-role="errors" role="alert" style="display:none"></div>
+
+<article class="post-article">
+	<header class="post-header">
+		<h1>Paramètres d'import</h1>
+	</header>
+	<div class="post-content">
+		<div class="form-group">
+			<label>Fichier d'import</label>
+			<div data-role="file"></div>
+		</div>
+
+		<div class="form-group">
+			<label>Notifier par email le changement de status</label>
+			<div class="form-check">
+				<input name="notify" id="notify1" value="1" type="radio">
+				<label for="notify1" class="">Oui</label>
+				<input name="notify" id="notify0" value="0" type="radio" checked="checked">
+				<label for="notify0" class="">Non</label>
+			</div>
+		</div>
+	</div>
+	<footer class="post-footer"></footer>
+</article>
+</form>
+
+<div class="save">
+<div class="btn-toolbar" role="toolbar">
+	<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Importer</button>
+</div>
+</div>
+
+<% } else if(step == 1) { %>
+
+	<% if (report.warnings && report.warnings.length > 0) { %>
+	<div class="alert alert-warning">
+		<strong>Il y a des alertes</strong>
+		<% if(!report.errors || report.errors.length == 0) { %>mais vous pouvez quand même valider l'import de données d'expéditions<% } %>.<br/>
+		Il est cependant conseillé avant de valider un import d'<a href="/modules/backups" target="_blank">effectuer un
+		point de sauvegarde</a> de son site.<br/><br/>
+	<ul>
+		<% _.each(report.warnings, function(msg){ %>
+		<li><%= msg %></li>
+		<% }); %>
+	</ul>
+	</div>
+	<% } %>
+
+	<% if (report.errors && report.errors.length > 0) { %>
+	<div class="alert alert-danger">
+		<strong>Il y a des erreurs dans le fichier</strong>, vous ne pouvez pas valider l'import de données d'expéditions.
+		Veuillez <a
+			href="https://aide.kiubi.com/transporteurs.html#import-depuis-mondialrelay"
+			target="_blank" class="alert-link">consulter la documentation en ligne</a> afin de corriger ces erreurs.<br/><br/>
+	<ul>
+		<% _.each(report.errors, function(msg){ %>
+		<li><%= msg %></li>
+		<% }); %>
+	</ul>
+	</div>
+	<% } %>
+
+	<% if(!report.errors || report.errors.length == 0) { %>
+		<div class="alert alert-info">
+		<strong>Les données sont prêtes à être importées.</strong><br/>
+		Il est cependant conseillé avant de valider un import d'<a href="/modules/backups" target="_blank" class="alert-link">effectuer un point de sauvegarde</a>
+		de son site.
+		</div>
+	<% } %>
+
+
+<div class="save">
+<div class="btn-toolbar" role="toolbar">
+	<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel">Retour</button>
+	<% if(!report.errors || report.errors.length == 0) { %>
+	<button type="button" class="btn btn-lg btn-success btn-save ml-auto" data-role="save">Importer</button>
+	<% } %>
+</div>
+</div>
+
+<% } else { %>
+
+	<% if (report.errors && report.errors.length > 0) { %>
+	<div class="alert alert-danger">
+		<strong>L'import n'a pas été réalisé</strong>, il y a des erreurs dans le fichier.<br/><br/>
+		<ul>
+			<% _.each(report.errors, function(msg){ %>
+			<li><%= msg %></li>
+			<% }); %>
+		</ul>
+	</div>
+	<% } else { %>
+		<div class="alert alert-success">
+		<strong>Import réussi</strong>, les données d'expédition ont été correctement importées !
+		</div>
+	<% } %>
+
+<div class="save">
+<div class="btn-toolbar" role="toolbar">
+	<button type="button" class="btn btn-lg btn-primary btn-cancel" data-role="cancel">Retour</button>
+</div>
+</div>
+
+<% } %>
+
+<footer class="footer"></footer>

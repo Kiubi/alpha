@@ -119,6 +119,13 @@ function getOrderAction(options) {
 		});
 	}
 
+	if (options.mondialrelay) {
+		actions.push({
+			title: 'Exporter pour Mondial Relay Connect',
+			callback: ['actionOpenURL', options.mondialrelay]
+		});
+	}
+
 	var saveAction = {
 		title: 'Enregistrer',
 		callback: 'actionSave',
@@ -266,7 +273,8 @@ var CheckoutController = Controller.extend({
 				xls: m.get('download').xls ? m.get('download').xls : null,
 				coliship: m.get('download').coliship ? m.get('download').coliship : null,
 				form: m.get('download').form ? m.get('download').form : null,
-				dpd: m.get('download').dpd ? m.get('download').dpd : null
+				dpd: m.get('download').dpd ? m.get('download').dpd : null,
+				mondialrelay: m.get('download').mondialrelay ? m.get('download').mondialrelay : null,
 			}));
 		}.bind(this)).fail(this.failHandler('Commande introuvable'));
 	},

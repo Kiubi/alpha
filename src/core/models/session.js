@@ -7,6 +7,8 @@ var createHash = require('sha.js');
 
 var Site = require('./site.js');
 
+var Cache = require('../../utils/cache');
+
 /* Storage */
 
 var CookieStorage = function() {
@@ -197,6 +199,10 @@ var Session = CollectionUtils.KiubiModel.extend({
 		this.user = options.user;
 		this.site = new Site();
 		this.storage = storageFactory();
+		this.cache = new Cache();
+		this.listenTo(this.site, 'change:site', function() {
+			this.clear()
+		}.bind(this.cache)); // clear cache on site change
 	},
 
 	defaults: {

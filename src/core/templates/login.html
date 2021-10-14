@@ -1,55 +1,76 @@
-<div class="brand" style="<%- cobranding_background ? 'background-image:url('+cobranding_background+')' : '' %> ">
 
-	<div class="brand-logo"><img src="<%- cobranding_logo ? cobranding_logo : '' %>" alt="Kiubi"></div>
-<div class="brand-message"><h2>Découvrez la nouvelle <br>version de Kiubi</h2>
-	<p>Plus rapide, plus performante<br>
-et encore plus simple d’utilisation.</p>
-		<a href="https://aide.kiubi.com/" target="_blank" class="btn btn-lg btn-outline-login text-white mt-2" >En savoir plus</a>
-</div>
-<div class="overlay"></div>
-</div>
-<div class="login-box">
-	<article class="post-article">
-		<header class="post-header">
-			<h1>Connectez-vous à votre site</h1>
-			<p class="my-4">Vous n'avez pas de compte ? <a href="<%- account %>/login/register.html">Inscrivez-vous</a></p>
-		</header>
-		<div class="post-content">
-			<form>
-			<div class="alert alert-danger" role="alert" style="display:none"></div>
-			<div id="group_login" class="form-group has-feedback">
-				<label for="login_input">Identifiant <span>ou</span> email</label>
-				<input class="form-control form-control-lg" id="login_input" value="<%- login %>" placeholder="" type="text">
-				<span class="md-feedback md-person"></span>
-			</div>
-			<div id="group_password" class="form-group has-feedback">
+<div class="row no-gutters w-100">
 
-				<a href="<%- account %>/login/mdp.html" target="_blank" class="float-right">Oublié ?</a>
+	<div class="col-12 col-lg-6 col-xl-4 d-flex flex-column login-box">
 
-				<label for="password_input">Mot de passe</label>
-				<input class="form-control form-control-lg" id="password_input" placeholder="" type="password">
-				<span class="md-feedback md-key"></span>
-			</div>
-			<div class="form-group">
-					<input id="remember_input" value="1" checked="checked" type="checkbox">
-					<label for="remember_input">Se souvenir de moi</label>
-			</div>
-				<% if(code_site) { %>
-					<button type="button" class="btn btn-lg btn-success btn-save text-truncate w-100" data-role="submit">Se connecter à <%- code_site %></button>
-				<% } else { %>
-					<button type="button" class="btn btn-lg btn-success btn-save w-100" data-role="submit">Se connecter</button>
-				<% } %>
-				<input type="submit" style="display:none"/>
-				<p><a href="https://aide.kiubi.com/generalites.html#console-d-administration" target="_blank">Besoin d'aide</a> pour se connecter ?</p>
-			</form>
+		<div class="login-logo">
+			<% if(cobranded) { %><img src="/assets/img/logo_kiubi.png" alt="Kiubi">	<% } %>
 		</div>
-		<footer class="post-footer">
-			<% if(code_site) { %>
-				<p class="mb-1"><a href="#" data-role="clear" class="text-info">Vous ne voulez pas vous connecter à ce site ?</a></p>
+
+		<article class="post-article">
+
+			<header class="post-header">
+				<h1>Connectez-vous à votre site</h1>
+				<p class="my-4">Vous n'avez pas de compte ? <a href="<%- account %>/login/register.html">Inscrivez-vous</a></p>
+			</header>
+
+			<div class="post-content">
+				<form>
+
+					<div class="alert alert-danger" role="alert" style="display:none"></div>
+
+					<div id="group_login" class="form-group has-feedback">
+						<label for="login_input">Identifiant <span>ou</span> email</label>
+						<input class="form-control form-control-lg" id="login_input" value="<%- login %>" placeholder="" type="text">
+						<span class="md-feedback md-person"></span>
+					</div>
+
+					<div id="group_password" class="form-group has-feedback">
+						<a href="<%- account %>/login/mdp.html" target="_blank" class="float-right">Oublié ?</a>
+						<label for="password_input">Mot de passe</label>
+						<input class="form-control form-control-lg" id="password_input" placeholder="" type="password">
+						<span class="md-feedback md-key"></span>
+					</div>
+
+					<div class="form-group">
+						<input id="remember_input" value="1" checked="checked" type="checkbox">
+						<label for="remember_input">Se souvenir de moi</label>
+					</div>
+
+					<% if(code_site) { %>
+					<button type="button" class="btn btn-lg btn-success btn-save text-truncate w-100" data-role="submit">Se connecter à <%- code_site %></button>
+					<% } else { %>
+					<button type="button" class="btn btn-lg btn-success btn-save w-100" data-role="submit">Se connecter</button>
+					<% } %>
+
+					<input type="submit" style="display:none"/>
+
+					<p><a href="https://aide.kiubi.com/generalites.html#console-d-administration" target="_blank">Besoin d'aide</a> pour se connecter ?</p>
+				</form>
+			</div>
+
+			<footer class="post-footer"></footer>
+
+		</article>
+		
+		<footer class="copyright">
+		<% if(code_site) { %>
+			<p class="mb-1"><a href="#" data-role="clear" class="text-info">Vous ne voulez pas vous connecter à ce site ?</a></p>
 			<% } %>
 			<a href="https://www.kiubi.com/mentions-legales.html" target="_blank">Informations légales</a> | <a href="http://www.kiubi.com/theme/fr/CGV_Kiubi.pdf" target="_blank">Conditions générales d'utilisation</a><br>
-			Copyright © <%- year %> Kiubi. Tous droits réservés. <br>
-			100% fabriqué et hébergé avec ♥ en France.
+			Copyright © <%- year %> Kiubi. Tous droits réservés. 100% fabriqué et hébergé avec ♥ en France.
 		</footer>
-	</article>
+
+	</div>
+
+	<div class="col-12 col-lg-6 col-xl-8 d-none d-lg-flex flex-column brand" style="<%- cobranding_background ? 'background-image:url('+cobranding_background+')' : '' %> ">
+
+		<div class="brand-logo <%- cobranded ? 'branded-logo' : '' %>"><img src="<%- cobranding_logo ? cobranding_logo : '' %>" alt="Kiubi"></div>
+
+		<div data-role="tips"></div>
+
+		<div class="overlay"></div>
+
+	</div>
+				<!--  -->
 </div>

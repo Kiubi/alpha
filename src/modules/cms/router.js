@@ -505,6 +505,11 @@ var CMSController = Controller.extend({
 		}).done(function() {
 			this.addContext('page_id', m.get('page_id'));
 
+			if (m.get('is_home')) {
+				this.navigationController.navigate('/cms');
+				return;
+			}
+
 			var view = new PageView({
 				model: m,
 				menus: new Menus(),
@@ -1095,11 +1100,11 @@ var CMSController = Controller.extend({
 			});
 			content.save().done(function() {
 				this.navigationController.hideModal();
-				var path = '/cms/' + content.get('container_type') + 's/' + content.get('container_id');
-				if (this.navigationController.getPath() === path) {
-					this.navigationController.triggerContent('add:symbol');
-				} else {
+				if (this.navigationController.getPath().match(/^\/cms\/contents\//)) {
+					var path = '/cms/' + content.get('container_type') + 's/' + content.get('container_id');
 					this.navigationController.navigate(path);
+				} else {
+					this.navigationController.triggerContent('add:symbol');
 				}
 			}.bind(this)).fail(fail);
 		});

@@ -30,6 +30,7 @@ var Response = CollectionUtils.KiubiModel.extend({
 		"form_name": '', // with extra_fields=forms
 		"subject": '', // with extra_fields=forms
 		"is_read": false,
+		"email_status": null,
 		"fields": [
 			/*{
 				"field_id": "integer",
@@ -57,6 +58,38 @@ var Response = CollectionUtils.KiubiModel.extend({
 			if (memo.length >= l) return memo.substring(0, l - 3) + '...';
 			return memo;
 		}, '');
+	},
+
+	getEmailStatus: function() {
+		switch (this.get('email_status')) {
+			default:
+				return null;
+			case 'SENT':
+				return {
+					label: 'L\'email de notification a été envoyé',
+						warning: false
+				};
+			case 'DISABLED':
+				return {
+					label: 'Pas d\'envoi d\'email de notification',
+						warning: true
+				};
+			case 'DISABLED_CAPTCHA':
+				return {
+					label: 'Non : le captcha est désactivé',
+						warning: true
+				};
+			case 'CANCELED_TPL':
+				return {
+					label: 'Non : le template de l\'email est introuvable',
+						warning: true
+				};
+			case 'CANCELED_SPAM':
+				return {
+					label: 'Non : le contenu est probablement un spam',
+						warning: true
+				};
+		}
 	}
 
 });

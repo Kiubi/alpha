@@ -23,6 +23,14 @@
       <label>IP | Host</label>
       <p class="form-control-static"><%- ip %> | <%- reverse_host %></p>
     </div>
+
+    <% if(readableStatus) { %>
+    <div class="form-group">
+        <label>Envoi de l'email de notification</label>
+        <p class="form-control-static <%- readableStatus.warning ? 'text-danger' : 'text-success' %>"><%- readableStatus.label %></p>
+    </div>
+    <% } %>
+
 <% } else { %>
 
 <% } %>

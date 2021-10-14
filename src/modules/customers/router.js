@@ -178,6 +178,7 @@ var CustomersController = Controller.extend({
 			collection: new Customers(),
 			groups: new Groups(),
 			enableExtranet: Session.hasFeature('extranet'),
+			enableFidelity: Session.hasFeature('fidelity'),
 			filters: qs
 		});
 		this.navigationController.showContent(view);

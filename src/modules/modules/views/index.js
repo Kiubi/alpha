@@ -246,6 +246,14 @@ module.exports = Marionette.View.extend({
 				require_feature: 'checkout',
 				feature: 'checkout'
 			}, {
+				name: 'Import Mondial Relay',
+				icon: 'publish',
+				desc: 'Importer des données d\'expédition de Mondial Relay Connect.',
+				href: '/modules/import/mondialrelay',
+				require_scope: 'site:checkout',
+				require_feature: 'checkout',
+				feature: 'checkout'
+			}, {
 				name: 'Gestion des sauvegardes',
 				icon: 'backup',
 				desc: 'Restaurer ou créer des points de sauvegarde pour sécurier toutes les données du site.',
@@ -288,8 +296,8 @@ module.exports = Marionette.View.extend({
 						// App
 						{
 							name: app.get('name'),
-							icon: 'settings_applications',
-							color: '#337ab7', // TODO
+							icon: app.get('icon') || 'settings_applications',
+							color: app.get('color') || '#337ab7',
 							desc: app.get('description'),
 							href: '/modules/apps/' + app.get('app_id'),
 							//doc: 'https://aide.kiubi.com/formulaires-dismoi.html',

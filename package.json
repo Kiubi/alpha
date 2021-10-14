@@ -9,7 +9,7 @@
     "watch-js": "./bin/watch-js",
     "watch-css": "./bin/watch-css",
     "watch": "npm run-script watch-js & npm run-script watch-css",
-    "start": "pushd ./dist && ../bin/server",
+    "start": "php -S localhost:8000 -t ./dist",
     "jshint": "jshint -c .jshintrc --exclude-path .gitignore ./src || true",
     "js-beautify": "find ./src | grep -v '^./src/vendor' | grep '.js$' | xargs js-beautify -r | grep -vE 'unchanged' || true"
   },

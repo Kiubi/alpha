@@ -48,6 +48,12 @@ var InfosSocoPickupView = require('./carrier/soco-pickup/infos');
 // var ChargesSocoPickupView = require('./carrier/soco-pickup/charges');
 
 /*
+ * Mondial Relay
+ */
+
+var InfosMondialrelayView = require('./carrier/mondialrelay/infos');
+
+/*
  * Schedule
  */
 
@@ -125,6 +131,15 @@ module.exports = Marionette.View.extend({
 		'dpd_gmaps',
 		'dpd_insurance_threshold',
 		'dpd_gsm_notification',
+
+		// mondialrelay
+		'mondialrelay_customer',
+		'mondialrelay_secret',
+		'mondialrelay_delay',
+		'mondialrelay_brand',
+		'mondialrelay_insurance_threshold',
+		'mondialrelay_insurance_level',
+		'mondialrelay_gmaps',
 	],
 
 	initialize: function(options) {
@@ -205,6 +220,19 @@ module.exports = Marionette.View.extend({
 					carrierCountries: this.carrierCountries
 				}));
 				break;
+			case 'mondialrelay':
+				// InfosDpdView
+				var view = new InfosMondialrelayView({
+					model: this.model,
+					taxes: this.taxes
+				});
+				this.listenTo(view, 'childview:change', this.onTaxChange);
+				this.showChildView('infos', view);
+				this.showChildView('charges', new ChargesTranchesView({
+					model: this.model,
+					carrierCountries: this.carrierCountries
+				}));
+				break;
 			case 'tranchespoids':
 				var view = new InfosView({
 					model: this.model,
@@ -243,6 +271,7 @@ module.exports = Marionette.View.extend({
 			case 'local':
 			case 'tranchespoids':
 			case 'dpd':
+			case 'mondialrelay':
 			case 'soco_pickup':
 				promise = function() {
 					return this.getChildView('charges').onSave();
@@ -272,13 +301,24 @@ module.exports = Marionette.View.extend({
 				delete data.dpd_customer_center;
 				delete data.dpd_customer;
 				delete data.dpd_insurance_threshold;
+				delete data.mondialrelay_insurance_threshold;
+				delete data.mondialrelay_insurance_level;
 			} else if (data.export_type === 'dpd') {
 				delete data.coliship_type;
+				delete data.mondialrelay_insurance_threshold;
+				delete data.mondialrelay_insurance_level;
+			} else if (data.export_type === 'mondialrelay') {
+				delete data.coliship_type;
+				delete data.dpd_customer_center;
+				delete data.dpd_customer;
+				delete data.dpd_insurance_threshold;
 			} else {
 				delete data.coliship_type;
 				delete data.dpd_customer_center;
 				delete data.dpd_insurance_threshold;
 				delete data.dpd_customer;
+				delete data.mondialrelay_insurance_threshold;
+				delete data.mondialrelay_insurance_level;
 			}
 		}
 

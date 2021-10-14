@@ -1,13 +1,13 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
-var Tips = require('../../models/tips.js');
+var Tips = require('../models/tips.js');
 
 module.exports = Marionette.View.extend({
-	template: require('../../templates/dashboard/tips.html'),
+	template: require('../templates/login.tips.html'),
 
-	tagName: 'article',
-	className: 'post-article container tips',
+	tagName: 'div',
+	className: 'brand-message',
 
 	tipsList: null,
 
@@ -18,18 +18,10 @@ module.exports = Marionette.View.extend({
 
 	templateContext: function() {
 		var tip = this.tipsList.pickRandom();
-		var link = null;
-
-		if (tip.link) {
-			link = tip.link
-		} else if (tip.help) {
-			link = tip.help
-		};
 
 		return {
 			tip: tip,
-			is_external: (link && link.match(/^http/) !== null),
-			link: link
+			link: tip.help
 		};
 	}
 

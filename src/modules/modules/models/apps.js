@@ -10,6 +10,8 @@ var App = CollectionUtils.KiubiModel.extend({
 	defaults: {
 		"app_id": null,
 		"name": '',
+		"color": '',
+		"icon": '',
 		"description": ''
 	},
 

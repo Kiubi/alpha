@@ -31,6 +31,9 @@ var RowView = Marionette.View.extend({
 			case 'dpd':
 				type_label = "Retrait en points relais du réseau DPD Relais Pickup";
 				break;
+			case 'mondialrelay':
+				type_label = "Retrait en points relais du réseau Mondial Relay";
+				break;
 			default:
 				break;
 		}
