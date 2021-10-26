@@ -24,7 +24,7 @@
     "codemirror": "^5.49.2",
     "form-serialize": "^0.7.2",
     "jquery": "^3.4.1",
-    "jquery-ui": "1.12.x",
+    "jquery-ui": "1.13.x",
     "jquery.cookie": "^1.4.1",
     "jqvmap-novulnerability": "^1.5.1",
     "keypress.js": "2.1.5",
