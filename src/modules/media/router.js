@@ -17,7 +17,6 @@ var FolderView = require('./views/folder');
 var FileView = require('./views/file');
 var PublishModalView = require('./views/modal.publish');
 var ImportFTPView = require('./views/ftp');
-var MenuTree = require('kiubi/core/views/ui/menuTree.js');
 
 /* Actions */
 function getHeadersAction(options) {
@@ -85,83 +84,7 @@ function HeaderTabsFolder(folder_id) {
 	}];
 }
 
-var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
-var SidebarMenuView = Marionette.View.extend({
-	template: require('./templates/sidebarMenu.html'),
-	service: 'media',
-	behaviors: [ActiveLinksBehaviors],
-
-	events: {
-		'show.bs.collapse': function(event) {
-			Backbone.$('[href="#' + event.target.id + '"]', this.el).parent().
-			removeClass('menu-expand-more').addClass('menu-expand-less');
-			this.menuTree.openNode(parseInt(event.target.id.substring(8)));
-		},
-		'hide.bs.collapse': function(event) {
-			Backbone.$('[href="#' + event.target.id + '"]', this.el).parent().
-			removeClass('menu-expand-less').addClass('menu-expand-more');
-			this.menuTree.closeNode(parseInt(event.target.id.substring(8)));
-		},
-		'click a': function(event) {
-			var $link = Backbone.$(event.currentTarget);
-			if ($link.attr('href') == '#') return; // Not a treemenu link
-			Backbone.$('a', this.el).parent().removeClass('active');
-			$link.parent().addClass('active');
-		}
-	},
-
-	folder_id: -1,
-
-	initialize: function(options) {
-		this.collection = new Folders();
-
-		this.folder_id = -1;
-
-		this.fetchAndRender();
-
-		var that = this;
-		this.menuTree = new MenuTree({
-			nodeInfo: function(model) {
-				return {
-					url: '/media/folders/' + model.get('folder_id') + '/files',
-					name: model.get('name'),
-					is_active: model.get('folder_id') == that.folder_id,
-					extraClassname: (model.get('has_restrictions')) ? ' pagetype-extranet' : ''
-				};
-			}
-		});
-	},
-
-	templateContext: function() {
-		return {
-			renderMenu: function() {
-				if (this.folder_id == -1) return '';
-				return this.menuTree.render(this.collection.getMenuTree()).html;
-			}.bind(this)
-		};
-	},
-
-	onChangeFolder: function(folder_id) {
-		if (this.folder_id == folder_id) return;
-		this.folder_id = folder_id;
-		this.render();
-	},
-
-	onRefreshFolders: function() {
-		this.fetchAndRender();
-	},
-
-	fetchAndRender: function() {
-		this.collection.fetch({
-			data: {
-				extra_fields: 'recursive'
-			}
-		}).done(function() {
-			this.render();
-		}.bind(this));
-	}
-
-});
+var SidebarMenuView = require('./views/sidebarMenu.js');
 
 var MediaController = Controller.extend({
 

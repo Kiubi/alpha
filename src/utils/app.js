@@ -13,6 +13,7 @@ module.exports = Marionette.Application.extend({
 
 	serviceProvider: null,
 	session: null,
+	notificationCenter: null,
 
 	initialize: function(options) {
 		console.info('Initialize Application');
@@ -27,8 +28,11 @@ module.exports = Marionette.Application.extend({
 		};
 
 		var application = this;
+		var notificationCenter = this.serviceProvider.getNotificationCenter();
 
-		var layout = new LayoutView();
+		var layout = new LayoutView({
+			notificationCollection: notificationCenter ? notificationCenter.collection : null
+		});
 		layout.render();
 
 		this.navigationController = new NavigationController({
@@ -47,6 +51,15 @@ module.exports = Marionette.Application.extend({
 		this.listenTo(this.session, 'logout', function() {
 			this.navigationController.navigate('/login');
 		}.bind(this));
+
+		if (notificationCenter) {
+			this.listenTo(this.session.site, 'change:site', function() {
+				notificationCenter.register(this.session.storage.getItem('AccesToken'), this.session.site.get('code_site')); // FIXME more elegant
+			}.bind(this));
+			this.listenTo(this.session, 'logout', function() {
+				notificationCenter.close();
+			}.bind(this));
+		}
 	},
 
 	/**

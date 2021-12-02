@@ -76,6 +76,83 @@ module.exports = CollectionUtils.KiubiCollection.extend({
 		return 'sites/@site/cms/symbols';
 	},
 
-	model: Symbol
+	model: Symbol,
+
+	getMenuTree: function() {
+
+		var hashCategories = new Map();
+
+		var root = this.reduce(function(acc, symbol) {
+
+			var split = symbol.get('params').title.split('/');
+			var category, title;
+			if (split.length == 2) {
+				category = split[0].trim();
+				title = split[1].trim();
+			} else {
+				category = '';
+				title = symbol.get('params').title;
+			}
+
+			if (category === '') {
+				acc.childs.push({
+					model: new Backbone.Model({
+						id: symbol.get('symbol_id'),
+						name: title,
+						type: 'symbol'
+					}),
+					childs: []
+				});
+				return acc;
+			}
+
+			if (!hashCategories.has(category)) {
+				hashCategories.set(category, acc.childs.length);
+			}
+
+			if (!acc.childs[hashCategories.get(category)]) {
+				acc.childs[hashCategories.get(category)] = {
+					model: new Backbone.Model({
+						id: 'c' + hashCategories.get(category),
+						name: category,
+						type: 'category'
+					}),
+					childs: []
+				}
+			}
+
+			acc.childs[hashCategories.get(category)].childs.push({
+				model: new Backbone.Model({
+					id: symbol.get('symbol_id'),
+					name: title,
+					type: 'symbol'
+				}),
+				childs: []
+			});
+
+			return acc;
+		}, {
+			model: new Backbone.Model({
+				id: 0,
+				name: '',
+				type: 'category'
+			}),
+			childs: []
+		});
+
+		var sortFct = function(a, b) {
+			if (a.childs.length === 0 && b.childs.length > 0) return -1;
+			if (a.childs.length > 0 && b.childs.length === 0) return 1;
+			return a.model.get('name') > b.model.get('name');
+		};
+
+		// Sorting root and 1st level childs
+		root.childs.sort(sortFct);
+		_.each(root.childs, function(node) {
+			node.childs.sort(sortFct);
+		});
+
+		return root;
+	}
 
 });

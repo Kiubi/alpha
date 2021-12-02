@@ -5,7 +5,6 @@ var format = require('kiubi/utils/format.js');
 var moment = require('moment');
 
 var Activities = require('kiubi/core/models/activities.js');
-var Session; // Must wait because this model is loaded BEFORE session start
 
 var RowView = Marionette.View.extend({
 	template: require('../../templates/dashboard/activities.row.html'),
@@ -13,11 +12,16 @@ var RowView = Marionette.View.extend({
 
 	templateContext: function() {
 
+		var type = this.model.get('type');
+
+		if (type == 'comment') {
+			type = this.model.get('urn').match(/^\/blog\//) ? 'comment' : 'evaluation';
+		}
+
 		return {
-			creation_date: format.formatLongDateTime(this.model.get('creation_date')),
 			creation_date_fromnow: moment(this.model.get('creation_date'), 'YYYY-MM-DD HH:mm:ss').fromNow(),
-			convertMediaPath: Session.convertMediaPath.bind(Session),
-			url: this.model.mapUrnToUrl()
+			url: this.model.mapUrnToUrl(),
+			type: type
 		};
 	}
 
@@ -32,7 +36,16 @@ var NoChildrenView = Marionette.View.extend({
 var ListView = Marionette.CollectionView.extend({
 	className: 'post-content post-list no-hover ',
 	childView: RowView,
-	emptyView: NoChildrenView
+	emptyView: NoChildrenView,
+
+	initialize: function(options) {
+		this.renderInterval = setInterval(this.render.bind(this), 30 * 1000); // 30 sec
+	},
+
+	onBeforeDestroy: function() {
+		if (this.renderInterval) clearInterval(this.renderInterval);
+	}
+
 });
 
 
@@ -82,14 +95,18 @@ module.exports = Marionette.View.extend({
 
 	initialize: function(options) {
 
-		// Must wait because this model is loaded BEFORE session start
-		Session = Backbone.Radio.channel('app').request('ctx:session');
-
 		this.mergeOptions(options, []);
 
 		this.collection = new Activities();
 
 		this.listenTo(this.collection, 'sync', this.onFetch);
+
+		var notificationcenter = Backbone.Radio.channel('app').request('ctx:notificationCenter');
+		if (notificationcenter) {
+			this.listenTo(notificationcenter, 'notification:comment notification:response notification:order notification:evaluation', function() {
+				this.start();
+			});
+		}
 
 		this.start();
 	},

@@ -13,6 +13,10 @@ var RowView = Marionette.View.extend({
 
 	behaviors: [RowActionsBehavior],
 
+	initialize: function(options) {
+		this.mergeOptions(options);
+	},
+
 	templateContext: function() {
 
 		var creation_date = moment(this.model.get('creation_date'), 'YYYY-MM-DD HH:mm:ss');
@@ -66,6 +70,10 @@ var RowView = Marionette.View.extend({
 			statut: statut,
 			statutClass: statutClass
 		};
+	},
+
+	onRender: function() {
+		if (this.getOption('proxy').lastListId && this.getOption('proxy').lastListId < this.model.get('order_id')) this.$el.addClass("new-item");
 	}
 });
 
@@ -110,6 +118,18 @@ module.exports = Marionette.View.extend({
 				this.collection.remove(model);
 			}
 		}.bind(this));
+
+		var notificationcenter = Backbone.Radio.channel('app').request('ctx:notificationCenter');
+		if (notificationcenter) {
+			this.listenTo(notificationcenter, 'notification:order', function() {
+				// Only for simple pending list
+				var filterCompact = _.compact(this.filters);
+				if (filterCompact.length === 1 && filterCompact[0] == 'pending') {
+					this.start();
+				}
+			});
+		}
+
 	},
 
 	onRender: function() {
@@ -165,6 +185,7 @@ module.exports = Marionette.View.extend({
 		var view = new ListView({
 			collection: this.collection,
 			rowView: RowView,
+			renderInterval: (30 * 1000), // 30 sec
 
 			title: 'Liste des commandes',
 			selection: [{
@@ -327,7 +348,22 @@ module.exports = Marionette.View.extend({
 		this.collection.fetch({
 			reset: true,
 			data: data
-		});
+		}).done(function() {
+			var filterCompact = _.compact(this.filters);
+			if (filterCompact.length === 1 && filterCompact[0] === 'pending') {
+				if (this.getChildView('list') && this.collection.length) {
+					if (this.lastListId == null) {
+						this.lastListId = this.collection.at(0).get('order_id');
+						this.getChildView('list').lastListId = this.lastListId;
+					}
+				}
+			} else {
+				if (this.getChildView('list')) {
+					this.lastListId = null;
+					this.getChildView('list').lastListId = this.lastListId;
+				}
+			}
+		}.bind(this));
 	},
 
 	/* Actions */

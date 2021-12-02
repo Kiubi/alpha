@@ -27,24 +27,7 @@ var ShortcutView = require('./views/shortcut');
 var GdprView = require('./views/gdpr');
 var L10nView = require('./views/l10n');
 var L10nImportView = require('./views/l10n.import');
-
-var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
-var SidebarMenuView = Marionette.View.extend({
-	template: require('./templates/sidebarMenu.html'),
-	service: 'prefs',
-	behaviors: [ActiveLinksBehaviors],
-
-	templateContext: function() {
-		var Session = Backbone.Radio.channel('app').request('ctx:session');
-
-		return {
-			has_scope_pref: Session.hasScope('site:pref'),
-			has_scope_domains: Session.hasScope('site:domains'),
-			has_scope_cms: Session.hasScope('site:cms'),
-			has_scope_seo: Session.hasScope('site:seo')
-		};
-	}
-});
+var SidebarMenuView = require('./views/sidebarMenu.js');
 
 /* Tabs  */
 function HeaderTabsL10n() {

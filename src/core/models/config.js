@@ -6,6 +6,7 @@ module.exports = Backbone.Model.extend({
 		'api_version': 1,
 		'account': 'https://www.kiubi-admin.com',
 		'client_version': 1,
-		'ga_tracker': null
+		'ga_tracker': null,
+		'notificationSocket': null
 	}
 });

@@ -3,7 +3,6 @@ var Marionette = require('backbone.marionette');
 
 var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
-var ControllerChannel = Backbone.Radio.channel('controller');
 
 var Forms = require('./models/forms');
 var Fields = require('./models/fields');
@@ -15,50 +14,7 @@ var FormView = require('./views/form');
 var SettingsView = require('./views/settings');
 var GdprView = require('./views/gdpr');
 
-var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
-var SidebarMenuView = Marionette.View.extend({
-	template: require('./templates/sidebarMenu.html'),
-	service: 'forms',
-	behaviors: [ActiveLinksBehaviors],
-
-	initialize: function(options) {
-
-		this.unread_count = 0;
-
-		this.forms = new Forms();
-		this.listenTo(this.forms, 'sync', function() {
-			this.unread_count = this.forms.reduce(function(memo, model) {
-				return memo + model.get('replies_unread_count');
-			}, 0);
-			this.render();
-		}.bind(this));
-		this.forms.fetch();
-
-		this.listenTo(ControllerChannel, 'refresh:forms', this.onRefreshForms);
-	},
-
-	templateContext: function() {
-		return {
-			unread_count: this.unread_count
-		};
-	},
-
-	onRefreshForms: function(delta) {
-
-		if (delta == null) {
-			this.forms.fetch();
-			return;
-		}
-
-		if (this.unread_count + delta < 0) {
-			this.unread_count = 0;
-		} else {
-			this.unread_count += delta;
-		}
-
-		this.render();
-	}
-});
+var SidebarMenuView = require('./views/sidebarMenu.js');
 
 /* Tabs  */
 function HeaderTabsForm(form_id) {
@@ -195,7 +151,6 @@ var FormsController = Controller.extend({
 				}).done(function(duplicate) {
 					navigationController.showOverlay(300);
 					navigationController.navigate('/forms/' + duplicate.get('form_id'));
-					//ControllerChannel.trigger('refresh:categories');
 				}).fail(function(error) {
 					navigationController.showErrorModal(error);
 				});

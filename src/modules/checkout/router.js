@@ -3,7 +3,6 @@ var Marionette = require('backbone.marionette');
 
 var Router = require('kiubi/utils/router.js');
 var Controller = require('kiubi/controller.js');
-var ControllerChannel = Backbone.Radio.channel('controller');
 
 /* Models */
 var Checkout = require('./models/checkout');
@@ -142,42 +141,7 @@ function getOrderAction(options) {
 	return actions;
 }
 
-var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
-var SidebarMenuView = Marionette.View.extend({
-	template: require('./templates/sidebarMenu.html'),
-	service: 'checkout',
-	behaviors: [ActiveLinksBehaviors],
-
-	initialize: function(options) {
-
-		this.overview = new Checkout();
-
-		this.fetchAndRender();
-	},
-
-	fetchAndRender: function() {
-		Backbone.$.when(
-			this.overview.fetch()
-		).done(function() {
-			this.render();
-		}.bind(this)).fail(function() {
-			// TODO
-			console.log('FAIL');
-		});
-	},
-
-	templateContext: function() {
-		return {
-			overview: this.overview.toJSON()
-		};
-	},
-
-	onRefreshOrders: function() {
-		this.overview.fetch().done(function() {
-			this.render();
-		}.bind(this));
-	}
-});
+var SidebarMenuView = require('./views/sidebarMenu.js');
 
 var CheckoutController = Controller.extend({
 

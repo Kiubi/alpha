@@ -24,8 +24,16 @@
 		<% } %>
 	</li>
 	<% }) %>
-	<li class="nav-item bt-closed"><span class="nav-link" data-placement="right" data-role="close"><span class="md-icon md-icon-menu"></span></span></li>
+
+	<li class="nav-item notifications dropup <%- showNotifications ? '' : 'd-none' %>">
+		<a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span data-toggle="tooltip" data-placement="right" data-original-title="Notifications" class="md-icon md-icon-menu md-notifications"></span></a>
+		<div data-role="notifications"></div>
+	</li>
+
+
 </ul>
+
+<span class="btn-closed md-icon" data-placement="right" data-role="close"></span>
 
 <% if(isAuth) { %>
 <div class="user dropup">

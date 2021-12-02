@@ -4,70 +4,10 @@ var _ = require('underscore');
 var format = require('kiubi/utils/format.js');
 
 var TooltipBehavior = require('kiubi/behaviors/tooltip');
-
-var UsageView = Marionette.View.extend({
-
-	template: require('../templates/account.usage.html'),
-
-	behaviors: [TooltipBehavior],
-
-	initialize: function(options) {
-		this.mergeOptions(options, ['model']);
-
-		this.listenTo(this.model, 'sync', this.render);
-	},
-
-	templateContext: function() {
-
-		var prct_medias = 0,
-			prct_ftp = 0,
-			prct_datas = 0,
-			prct_free = 0,
-			prct_products = 0,
-			prct_users = 0,
-			prct_forms = 0;
-
-		if (this.model.get('space').total) {
-			var total_used = Math.max(this.model.get('space').used, this.model.get('space').total);
-			prct_medias = Math.round(this.model.get('space').medias * 100 / total_used);
-			prct_ftp = Math.round(this.model.get('space').ftp * 100 / total_used);
-			prct_datas = Math.round(this.model.get('space').datas * 100 / total_used);
-		}
-		if (this.model.get('products').total) {
-			prct_products = Math.round(this.model.get('products').used * 100 / this.model.get('products').total);
-		}
-		if (this.model.get('users').total) {
-			prct_users = Math.round(this.model.get('users').used * 100 / this.model.get('users').total);
-		}
-		if (this.model.get('forms').total) {
-			prct_forms = Math.round(this.model.get('forms').used * 100 / this.model.get('forms').total);
-		}
-
-		return {
-			formatBytes: format.formatBytes,
-			prct_medias: prct_medias,
-			prct_ftp: prct_ftp,
-			prct_datas: prct_datas,
-			prct_free: Math.max(0, 100 - prct_medias - prct_ftp - prct_datas),
-			prct_products: prct_products,
-			prct_users: prct_users,
-			prct_forms: prct_forms
-		};
-	},
-
-	fetch: function() {
-		this.model.fetch({
-			data: {
-				extra_fields: 'forms,products,users'
-			}
-		});
-	}
-
-});
-
-var Usage = require('kiubi/core/models/usage');
-
 var navigationChannel = Backbone.Radio.channel('navigation');
+
+var UsageView = require('./sidebar/usage');
+var NotificationView = require('./sidebar/notifications');
 
 module.exports = Marionette.View.extend({
 
@@ -79,12 +19,17 @@ module.exports = Marionette.View.extend({
 		'usage': {
 			el: '[data-role="usage"]',
 			replaceElement: true
+		},
+		'notifications': {
+			el: '[data-role="notifications"]',
+			replaceElement: true
 		}
 	},
 
 	ui: {
 		'items': '.nav-item',
-		'toggleBtn': 'span[data-role="close"]'
+		'toggleBtn': 'span[data-role="close"]',
+		'notificationBtn': '.nav-item.notifications'
 	},
 
 	triggers: {
@@ -95,7 +40,13 @@ module.exports = Marionette.View.extend({
 		'click a[data-role="logout"]': function() {
 			this.session.logout();
 		},
-		'shown.bs.dropdown': function(event) {
+		'shown.bs.dropdown .notifications': function(event) {
+			if (this.getChildView('notifications')) {
+				this.notificationcenter.markAsRead();
+				this.getChildView('notifications').fetch();
+			}
+		},
+		'shown.bs.dropdown .user': function(event) {
 			this.usageView.fetch();
 		},
 		'click a[data-role="me"]': function() {
@@ -117,6 +68,30 @@ module.exports = Marionette.View.extend({
 		},
 		'click a[data-role="account"]': function() {
 			window.open(this.session.autologAccountLink('/dashboard/'));
+		}
+	},
+
+	initialize: function(options) {
+		this.mergeOptions(options, ['session', 'collection']);
+
+		this.listenTo(navigationChannel, 'change:url', this.onChangeURL);
+		this.listenTo(this.session.site, 'change:site', function() {
+			this.render();
+			this.usageView.fetch();
+		}.bind(this));
+
+		this.usageView = new UsageView();
+
+		this.notificationcenter = Backbone.Radio.channel('app').request('ctx:notificationCenter');
+		if (this.notificationcenter) {
+			this.timeoutNotification = null;
+			this.listenTo(this.notificationcenter, 'notification:order notification:response notification:comment notification:evaluation', function() {
+				this.getUI('notificationBtn').addClass('dring');
+				this.timeoutNotification = setTimeout(function() {
+					this.getUI('notificationBtn').removeClass('dring');
+				}.bind(this), 6000);
+			});
+			this.listenTo(this.notificationcenter, 'update:unread', this.onChangeNotificationCount);
 		}
 	},
 
@@ -153,22 +128,9 @@ module.exports = Marionette.View.extend({
 			has_scope_users: this.session.hasScope('site:users'),
 			userAvatar: this.session.user.getAvatar(),
 			accountBadge: account_badge,
-			accountLabel: account_label
+			accountLabel: account_label,
+			showNotifications: !!this.notificationcenter
 		};
-	},
-
-	initialize: function(options) {
-		this.mergeOptions(options, ['session', 'collection']);
-
-		this.listenTo(navigationChannel, 'change:url', this.onChangeURL);
-		this.listenTo(this.session.site, 'change:site', function() {
-			this.render();
-			this.usageView.fetch();
-		}.bind(this));
-
-		this.usageView = new UsageView({
-			model: new Usage()
-		});
 	},
 
 	onBeforeRender: function() {
@@ -178,9 +140,16 @@ module.exports = Marionette.View.extend({
 	},
 
 	onRender: function() {
-		if (this.session.user.isAuth()) this.showChildView('usage', this.usageView);
+		if (this.session.user.isAuth()) {
+			this.showChildView('usage', this.usageView);
 
-		Backbone.$(this.getUI('toggleBtn'), this.el).tooltip({
+			if (this.notificationcenter) {
+				this.showChildView('notifications', new NotificationView());
+				this.notificationcenter.refreshCount();
+			}
+		}
+
+		/*Backbone.$(this.getUI('toggleBtn'), this.el).tooltip({
 			delay: {
 				"show": 0,
 				"hide": 0
@@ -190,7 +159,11 @@ module.exports = Marionette.View.extend({
 			title: function() {
 				return Backbone.$(document.body).hasClass('closed') ? 'Agrandir' : 'Réduire';
 			}
-		});
+		});*/
+	},
+
+	onBeforeDetach: function() {
+		if (this.timeoutNotification) clearTimeout(this.timeoutNotification);
 	},
 
 	getLinks: function(type) {
@@ -216,7 +189,15 @@ module.exports = Marionette.View.extend({
 		this.getUI('items').removeClass('active');
 
 		var query = (root === '/') ? "a[href='" + root + "']" : "a[href^='" + root + "']";
-		this.getUI('items').find(query).parent().addClass('active');
+		this.getUI('items').children(query).parent().addClass('active');
+	},
+
+	onChangeNotificationCount: function(count) {
+		if (count > 0) {
+			this.getUI('notificationBtn').addClass('notifications-active');
+		} else {
+			this.getUI('notificationBtn').removeClass('notifications-active');
+		}
 	}
 
 });

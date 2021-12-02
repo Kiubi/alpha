@@ -15,13 +15,7 @@ var ThemeView = require('./views/theme');
 var CustomView = require('./views/custom');
 var ImportView = require('./views/import');
 var ConversionView = require('./views/conversion');
-
-var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
-var SidebarMenuView = Marionette.View.extend({
-	template: require('./templates/sidebarMenu.html'),
-	service: 'themes',
-	behaviors: [ActiveLinksBehaviors]
-});
+var SidebarMenuView = require('./views/sidebarMenu.js');
 
 var ThemesController = Controller.extend({
 

@@ -29,20 +29,7 @@ var SettingsView = require('./views/settings');
 var GroupsView = require('./views/groups');
 var GroupView = require('./views/group');
 
-var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
-var SidebarMenuView = Marionette.View.extend({
-	template: require('./templates/sidebarMenu.html'),
-	service: 'customers',
-	behaviors: [ActiveLinksBehaviors],
-
-	templateContext: function() {
-		var Session = Backbone.Radio.channel('app').request('ctx:session');
-
-		return {
-			has_feature_extranet: Session.hasFeature('extranet')
-		};
-	}
-});
+var SidebarMenuView = require('./views/sidebarMenu.js');
 
 /* Actions */
 function getGroupHeadersAction(options) {

@@ -1,10 +1,5 @@
 <h2>Symboles (<%- usage %>/<%- limit %>)</h2>
 <a href="#" data-role="page-add" class="page-add md-icon md-add-page" title="Nouveau symbole"></a>
 <p>Modifiez le contenu et les widgets des symboles et ajoutez-les à une page</p>
-<div class="menu-tree">
-	<ul class="nav nav-sidebar flex-column">
-		<% _.each(symbols, function(symbol){ %>
-			<li class="nav-item pagetype-symbole <%- (symbol.symbol_id == symbol_id) ? 'active' : '' %>"><a href="/cms/symbols/<%- symbol.symbol_id %>" title="Navigation" class="nav-link"><span class="md-icon"></span><%- symbol.params.title %></a></li>
-		<% }) %>
-	</ul>
-</div>
+
+<div data-role="tree"></div>

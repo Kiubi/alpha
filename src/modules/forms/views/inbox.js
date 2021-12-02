@@ -145,6 +145,18 @@ module.exports = Marionette.View.extend({
 			}
 
 		}.bind(this));
+
+		var notificationcenter = Backbone.Radio.channel('app').request('ctx:notificationCenter');
+		if (notificationcenter) {
+			this.listenTo(notificationcenter, 'notification:response', function() {
+				// Only for unfiltred list
+				var filterCompact = _.compact(this.filters);
+				if (filterCompact.length === 0) {
+					this.start();
+				}
+			});
+		}
+
 	},
 
 	onRender: function() {
@@ -156,6 +168,7 @@ module.exports = Marionette.View.extend({
 			extraListClassname: 'answers-list',
 			detailView: this.detailView,
 			scrollContentEl: 'div.answers-list',
+			renderInterval: (30 * 1000), // 30 sec
 
 			title: 'Liste des réponses',
 			selection: [{

@@ -1,4 +1,6 @@
+var Backbone = require('backbone');
 var CollectionUtils = require('kiubi/utils/collections.js');
+var moment = require('moment');
 
 var Activity = CollectionUtils.KiubiModel.extend({
 
@@ -32,9 +34,10 @@ var Activity = CollectionUtils.KiubiModel.extend({
 			case 'blog':
 			case 'cms':
 			case 'customers':
-			case 'forms':
 			case 'themes':
 				return this.get('urn');
+			case 'forms':
+				return '/forms/inbox?id=' + split[2];
 			case 'backups':
 				return '/modules/backups';
 			case 'catalog':
@@ -79,6 +82,20 @@ module.exports = CollectionUtils.KiubiCollection.extend({
 
 	url: 'sites/@site/logs',
 
-	model: Activity
+	model: Activity,
+
+	countActivitiesSince: function(timestamp) {
+		var date = new Date(timestamp * 1000);
+		return Backbone.ajax({
+			url: this.url,
+			data: {
+				since: moment(date).format('DD/MM/YYYY HH:mm:ss'),
+				type: 'comment,checkout,form',
+				limit: 1
+			}
+		}).then(function(data, meta) {
+			return meta.items_count;
+		}.bind(this));
+	}
 
 });

@@ -12,8 +12,7 @@ var Layouts = require('./models/layouts');
 var LayoutsView = require('./views/layouts');
 var LayoutView = require('./views/layout');
 var SidebarMenuLayoutView = require('./views/layout.sidebar');
-
-var ActiveLinksBehaviors = require('kiubi/behaviors/active_links.js');
+var SidebarMenuView = require('./views/sidebarMenu');
 
 /* Actions */
 function getHeadersAction(options) {
@@ -26,33 +25,6 @@ function getHeadersAction(options) {
 
 	return actions;
 }
-
-
-var SidebarMenuView = Marionette.View.extend({
-	template: require('./templates/sidebarMenu.html'),
-	service: 'appearance',
-	behaviors: [ActiveLinksBehaviors],
-
-	pages: [],
-
-	initialize: function(options) {
-
-		var m = new Layout();
-
-		m.getTypes().done(function(types) {
-			this.types = types;
-			this.render();
-		}.bind(this));
-
-	},
-
-	templateContext: function() {
-		return {
-			types: this.types
-		};
-	}
-
-});
 
 var AppearanceController = Controller.extend({
 

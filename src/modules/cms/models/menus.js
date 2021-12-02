@@ -247,6 +247,33 @@ module.exports = CollectionUtils.KiubiCollection.extend({
 		});
 
 		return collector;
-	}
+	},
+
+	/**
+	 * Suggest page
+	 *
+	 * @param {String} term
+	 * @param {Number[]} limit
+	 * @returns {Promise}
+	 */
+	suggest: function(term, limit) {
+		return Backbone.ajax({
+			url: 'sites/@site/suggest/cms/pages',
+			data: {
+				term: term,
+				limit: limit || 5
+			}
+		}).then(function(data) {
+			return _.map(data, function(page) {
+				return {
+					page_id: page.page_id,
+					is_home: page.is_home,
+					name: page.name,
+					slug: page.slug,
+					page_type: page.page_type
+				};
+			});
+		});
+	},
 
 });

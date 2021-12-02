@@ -7,7 +7,7 @@ module.exports = Marionette.Object.extend({
 	openNodes: [],
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['nodeInfo', 'rootFooter']);
+		this.mergeOptions(options, ['nodeInfo', 'expandByDefault']);
 		this.openNodes = [];
 	},
 
@@ -21,10 +21,6 @@ module.exports = Marionette.Object.extend({
 			extraClassname: ''
 			// is_exp: false
 		};
-	},
-
-	rootFooter: function(node) {
-		return '';
 	},
 
 	/**
@@ -52,10 +48,12 @@ module.exports = Marionette.Object.extend({
 	 * @param {Number} id
 	 */
 	isNodeOpen: function(id) {
-		return (_.indexOf(this.openNodes, id) >= 0);
+		return (this.getOption('expandByDefault') || _.indexOf(this.openNodes, id) >= 0);
 	},
 
 	render: function(node) {
+
+		if (!node) return '';
 
 		var html = '';
 		var has_active_child = false;
@@ -76,6 +74,7 @@ module.exports = Marionette.Object.extend({
 				className += expand ? 'menu-expand-less' : 'menu-expand-more';
 				aria = 'data-toggle="collapse" ' +
 					'href="#menutree' + id + '" ' +
+					'data-id="' + id + '" ' +
 					'aria-expanded="' + (expand ? 'true' : 'false') + '" ' +
 					'aria-controls="menutree' + id + '"';
 				if (expand) {
@@ -115,8 +114,7 @@ module.exports = Marionette.Object.extend({
 				'</ul></div>';
 		} else {
 			// ROOT
-			html = this.rootFooter(node) + '<div class="menu-tree"><ul class="nav nav-sidebar flex-column">' +
-				html + '</ul></div>';
+			html = '<div class="menu-tree"><ul class="nav nav-sidebar flex-column">' + html + '</ul></div>';
 		}
 
 		return {

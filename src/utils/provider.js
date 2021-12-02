@@ -9,12 +9,14 @@ module.exports = Marionette.Object.extend({
 		'ctx:session': 'getSession',
 		'ctx:config': 'getConfig',
 		'ctx:navigationController': 'getNavigationController',
-		'ctx:keyListener': 'getKeyListener'
+		'ctx:keyListener': 'getKeyListener',
+		'ctx:notificationCenter': 'getNotificationCenter'
 	},
 
 	app: null,
 	config: null,
 	keyListener: null,
+	notificationCenter: null,
 
 	/**
 	 * @param {Marionette.Application} app
@@ -72,6 +74,21 @@ module.exports = Marionette.Object.extend({
 	 */
 	getKeyListener: function() {
 		return this.keyListener;
-	}
+	},
+
+	/**
+	 * @param {NotificationCenter} notificationCenter
+	 */
+	registerNotificationCenter: function(notificationCenter) {
+		this.notificationCenter = notificationCenter;
+	},
+
+
+	/**
+	 * @returns {NotificationCenter}
+	 */
+	getNotificationCenter: function() {
+		return this.notificationCenter;
+	},
 
 });

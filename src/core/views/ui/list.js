@@ -83,6 +83,15 @@ var ListView = Marionette.CollectionView.extend({
 		'sortupdate': 'onSortUpdate'
 	},
 
+	initialize: function(options) {
+		this.mergeOptions(options);
+		if (this.getOption('renderInterval') > 0) this.renderInterval = setInterval(this.render.bind(this), this.getOption('renderInterval'));
+	},
+
+	onBeforeDestroy: function() {
+		if (this.renderInterval) clearInterval(this.renderInterval);
+	},
+
 	onRender: function() {
 		var scrollfix = 0;
 
@@ -279,6 +288,7 @@ module.exports = Marionette.View.extend({
 			childView: this.rowView,
 			childViewOptions: childViewOptions,
 			extraListClassname: this.getOption('extraListClassname'),
+			renderInterval: this.getOption('renderInterval') || null,
 			fixRelativeDragNDrop: this.getOption('fixRelativeDragNDrop') || false
 		}));
 

@@ -1,4 +1,5 @@
 var Marionette = require('backbone.marionette');
+var Backbone = require('backbone');
 var _ = require('underscore');
 var format = require('kiubi/utils/format.js');
 var moment = require('moment');
@@ -38,7 +39,16 @@ var NoChildrenView = Marionette.View.extend({
 var ListView = Marionette.CollectionView.extend({
 	className: 'post-content post-list',
 	childView: RowView,
-	emptyView: NoChildrenView
+	emptyView: NoChildrenView,
+
+	initialize: function(options) {
+		this.renderInterval = setInterval(this.render.bind(this), 30 * 1000); // 30 sec
+	},
+
+	onBeforeDestroy: function() {
+		if (this.renderInterval) clearInterval(this.renderInterval);
+	}
+
 });
 
 module.exports = Marionette.View.extend({
@@ -62,6 +72,13 @@ module.exports = Marionette.View.extend({
 		this.mergeOptions(options, []);
 
 		this.collection = new Orders();
+
+		var notificationcenter = Backbone.Radio.channel('app').request('ctx:notificationCenter');
+		if (notificationcenter) {
+			this.listenTo(notificationcenter, 'notification:order', function() {
+				this.start();
+			});
+		}
 
 		this.start();
 	},

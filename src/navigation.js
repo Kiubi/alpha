@@ -5,7 +5,7 @@ var _ = require('underscore');
 var NavigationChannel = Backbone.Radio.channel('navigation');
 
 var SidebarView = require('kiubi/core/views/sidebar');
-var SidebarMenuView = require('kiubi/core/views/sidebarMenu');
+var SidebarMenuView = require('kiubi/core/views/sidebarMenuTop');
 var HeaderView = require('kiubi/core/views/header');
 var ModalView = require('kiubi/core/views/ui/modal');
 
@@ -62,6 +62,19 @@ module.exports = Marionette.Object.extend({
 			var header = this.layoutView.getChildView('header');
 			if (header) updateTitle(header.links);
 		}.bind(this));
+
+		var notificationcenter = Backbone.Radio.channel('app').request('ctx:notificationCenter');
+		if (notificationcenter) {
+			this.listenTo(notificationcenter, 'update:unread', function(count) {
+				Backbone.$("link[rel*='icon']").each(function(index, link) {
+					if (count === 0) {
+						link.href = link.href.replace('/favicon-notif.', '/favicon.');
+					} else {
+						link.href = link.href.replace('/favicon.', '/favicon-notif.');
+					}
+				});
+			}.bind(this));
+		}
 
 		this.listenTo(NavigationChannel, 'critical:error', function(error, meta) {
 			this.showErrorModal(error);

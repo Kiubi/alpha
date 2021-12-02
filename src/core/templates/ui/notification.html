@@ -1,0 +1,7 @@
+<div class="toast fade hide mt-2 toast-<%- code %>" role="alert" aria-live="assertive" aria-atomic="true" data-delay="<%- delay %>">
+	<div class="toast-body d-flex align-items-center">
+		<% if(icon) { %><span class="md-icon <%- icon %> mr-3"></span><% } %>
+		<a href="<%- url %>" class="mr-auto" title="<%- label %>"><%- title %></a>
+		<button type="button" class="close md-icon md-close" data-dismiss="toast" aria-label="Close"></button>
+	</div>
+</div>

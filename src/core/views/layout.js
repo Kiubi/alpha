@@ -2,6 +2,8 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+var NotificationView = require('kiubi/core/views/ui/notification');
+
 var View = Marionette.View.extend({
 	el: 'body',
 	template: _.noop,
@@ -10,7 +12,8 @@ var View = Marionette.View.extend({
 		sidebar: "#sidebar",
 		sidebarMenu: "#sidebar-menu",
 		content: "#content",
-		modal: "#modal"
+		modal: "#modal",
+		notification: "#notification",
 	},
 	// Desactive le comportement par défaut du drag and drop, dans
 	// l'ensemble de l'application
@@ -65,7 +68,7 @@ var View = Marionette.View.extend({
 	},
 
 	initialize: function(options) {
-		this.mergeOptions(options, ['application']);
+		this.mergeOptions(options, ['notificationCollection']);
 
 		var that = this;
 		Backbone.$(window).resize(_.debounce(function(e) {
@@ -97,7 +100,16 @@ var View = Marionette.View.extend({
 			}
 			this.trigger('navigate', Backbone.$(event.currentTarget).attr('href'), options);
 		}
+	},
+
+	onRender: function() {
+		if (this.notificationCollection) {
+			this.showChildView('notification', new NotificationView({
+				collection: this.notificationCollection
+			}))
+		}
 	}
+
 });
 
 module.exports = View;

@@ -1,0 +1,41 @@
+<div class="sidebar-header">
+
+	<h1 title="Voir le site : <%- name %>">
+		<a href="#" data-role="login">
+			<span><%- name %></span>
+			<span class="md-icon md-launch"></span>
+		</a>
+	</h1>
+
+
+	<div class="dropdown toggle-site" data-role="site-dropdown">
+		<a href="#" class="dropdown-toggle" id="toggle-site" role="button"
+		   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="<%- domain %>">
+			<span class="btn-content"><%- fqdn %></span>
+		</a>
+		<ul class="dropdown-menu" aria-labelledby="toggle-site" data-container="body" data-role="site-search">
+			<li class="dropdown-item-text">
+			<span class="form-group has-feedback">
+				<input class="form-control search-site" placeholder="Rechercher un site">
+				<span class="md-feedback md-search"></span>
+			</span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="overlay fade"></div>
+
+	<div data-role="term"></div>
+
+</div>
+
+
+<div class="sidebar-content">
+
+	<div>
+
+		<div data-role="content"></div>
+
+	</div>
+
+</div>

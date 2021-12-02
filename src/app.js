@@ -19,6 +19,11 @@ var keypressContainer = require('keypress.js');
 var keyListener = new keypressContainer.keypress.Listener();
 SP.registerKeyListener(keyListener);
 
+var NotificationCenter = require('./utils/notificationCenter');
+if (Cfg.get('notificationSocket')) {
+	SP.registerNotificationCenter(new NotificationCenter(Cfg.get('notificationSocket')));
+}
+
 /**
  * Application
  */
